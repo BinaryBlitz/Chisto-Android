@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.Category;
 import com.chisto.R;
+import com.chisto.Utils.Image;
 
 import java.util.ArrayList;
 
@@ -47,9 +48,12 @@ public class CategoriesAdapter extends RecyclerListView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
         final ViewHolder holder = (ViewHolder) viewHolder;
 
-        holder.name.setText(categories.get(position).getName());
-        holder.description.setText(categories.get(position).getDesc());
-        //holder.name.setText(categories.get(position).getName());
+        Category category = categories.get(position);
+
+        holder.name.setText(category.getName());
+        holder.description.setText(category.getDesc());
+
+        Image.loadPhoto(category.getIcon(), holder.icon);
     }
 
     @Override
