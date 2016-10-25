@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
+import com.chisto.Adapters.CategoriesAdapter;
 import com.chisto.Adapters.CitiesAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
@@ -25,7 +26,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SelectCategoryActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private CitiesAdapter adapter;
+    private CategoriesAdapter adapter;
     private SwipeRefreshLayout layout;
 
     @Override
@@ -44,7 +45,7 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
-        adapter = new CitiesAdapter(this);
+        adapter = new CategoriesAdapter(this);
         view.setAdapter(adapter);
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         layout.setOnRefreshListener(this);
