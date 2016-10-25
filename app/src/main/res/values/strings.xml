@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Chisto</string>
+    <string name="lost_connection_str">Потеряно соединение с интернетом.</string>
+    <string name="board1">Добавьте в список вещи, которые хотите сдать в чистку</string>
+    <string name="board2">Ознакомтесь с ценой и сроками выполнения вашего заказа</string>
+    <string name="board3">Выберите подходящего Вам исполнителя</string>
+    <string name="board4">Оплатите заказ удобным для Вас способом</string>
+    <string name="board5">Ожидайте звонка. Оператор позвонит Вам и согласует время забора и доставки вещей.</string>
+    <string name="city_select_str">Выбор города</string>
+    <string name="location_error">Невозможно получить текущее местоположение.</string>
+    <string name="city_error">Вашего города нет в списке.</string>
+    <string name="order_str">Заказ</string>
+    <string name="order_help_str">С какой вещью\nВам требуется помочь?</string>
+    <string name="add_str">Добавить</string>
+    <string name="continue_btn">Продолжить</string>
+    <string name="select_part_str">Выбор вещи</string>
+    <string name="city_not_found_str">Не нашли свой город?</string>
+    <string name="start_str">Начать</string>
+    <string name="simple_str">Все очень просто:</string>
+    <string name="chisto_str">С Chisto Вам больше не нужно\nтратить время на походы\nв химчистку</string>
+</resources>
