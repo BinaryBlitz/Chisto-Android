@@ -6,12 +6,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.chisto.Custom.RecyclerListView;
+import com.chisto.Model.Category;
+
+import java.util.ArrayList;
 
 public class CategoriesAdapter extends RecyclerListView.Adapter<RecyclerView.ViewHolder> {
     private Activity context;
 
+    private ArrayList<Category> categories;
+
     public CategoriesAdapter(Activity context) {
         this.context = context;
+        categories = new ArrayList<>();
+    }
+
+    public void setCategories(ArrayList<Category> categories) {
+        this.categories = categories;
     }
 
     @Override
