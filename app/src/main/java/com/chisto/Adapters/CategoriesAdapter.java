@@ -1,6 +1,7 @@
 package com.chisto.Adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.chisto.Activities.CategoryInfoActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.Category;
 import com.chisto.R;
@@ -22,6 +24,7 @@ public class CategoriesAdapter extends RecyclerListView.Adapter<RecyclerView.Vie
 
     public CategoriesAdapter(Activity context) {
         this.context = context;
+        Image.init(context);
         categories = new ArrayList<>();
     }
 
@@ -54,11 +57,19 @@ public class CategoriesAdapter extends RecyclerListView.Adapter<RecyclerView.Vie
         holder.description.setText(category.getDesc());
 
         Image.loadPhoto(category.getIcon(), holder.icon);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CategoryInfoActivity.class);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return categories.size();
     }
 
     private class ViewHolder extends RecyclerView.ViewHolder {

@@ -1,6 +1,7 @@
 package com.chisto.Activities;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,10 +16,13 @@ import com.chisto.Adapters.CategoriesAdapter;
 import com.chisto.Adapters.CitiesAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
+import com.chisto.Model.Category;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
 import com.chisto.Utils.LogUtil;
 import com.crashlytics.android.Crashlytics;
+
+import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -71,7 +75,21 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
                 LogUtil.logError(response.body().toString());
                 layout.setRefreshing(false);
                 if(response.isSuccessful()) {
+                    ArrayList<Category> collection = new ArrayList<>();
+                    JsonArray array = response.body();
 
+                    for (int i = 0; i < array.size(); i++) {
+                        JsonObject object = array.get(i).getAsJsonObject();
+                        collection.add(new Category(
+                                object.get("id").getAsInt(),
+                                object.get("name").getAsString(),
+                                object.get("description").getAsString(),
+                                object.get("icon").getAsString()
+                        ));
+                    }
+
+                    adapter.setCategories(collection);
+                    adapter.notifyDataSetChanged();
                 } else {
                     onInternetConnectionError();
                 }
