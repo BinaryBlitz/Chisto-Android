@@ -31,6 +31,11 @@ object AndroidUtilities {
         imm.hideSoftInputFromWindow(v.windowToken, 0)
     }
 
+    fun dpToPx(context: Context, dipValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dipValue * scale + 0.5f).toInt()
+    }
+
     fun encodeToBase64(image: Bitmap): String {
         val baos = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
