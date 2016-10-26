@@ -3,6 +3,7 @@ package com.chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -84,7 +85,8 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
                                 object.get("id").getAsInt(),
                                 object.get("name").getAsString(),
                                 object.get("description").getAsString(),
-                                object.get("icon").getAsString()
+                                object.get("icon").getAsString(),
+                                Color.parseColor("#212121")
                         ));
                     }
 

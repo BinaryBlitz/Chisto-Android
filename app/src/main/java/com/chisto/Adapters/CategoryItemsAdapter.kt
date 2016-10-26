@@ -9,21 +9,21 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.chisto.Activities.CategoryInfoActivity
-import com.chisto.Model.Category
+import com.chisto.Model.CategoryItem
 import com.chisto.R
 import com.chisto.Utils.Image
 import java.util.*
 
-class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var categories: ArrayList<Category>? = null
+    private var categories: ArrayList<CategoryItem>? = null
 
     init {
         Image.init(context)
-        categories = ArrayList<Category>()
+        categories = ArrayList<CategoryItem>()
     }
 
-    fun setCategories(categories: ArrayList<Category>) {
+    fun setCategories(categories: ArrayList<CategoryItem>) {
         this.categories = categories
     }
 
@@ -34,7 +34,7 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_category_item, parent, false)
 
         return ViewHolder(itemView)
     }
@@ -42,17 +42,15 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        val category = categories!![position]
+        val item = categories!![position]
 
-        holder.name.text = category.name
-        holder.description.text = category.desc
+        holder.name.text = item.name
+        holder.description.text = item.desc
 
-        Image.loadPhoto(category.icon, holder.icon)
+        Image.loadPhoto(item.icon, holder.icon)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, CategoryInfoActivity::class.java)
-            intent.putExtra("id", category.id)
-            intent.putExtra("color", category.color)
             context.startActivity(intent)
         }
     }
