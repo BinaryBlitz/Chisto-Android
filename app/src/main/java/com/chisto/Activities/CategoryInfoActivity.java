@@ -3,9 +3,6 @@ package com.chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,8 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.chisto.Adapters.CategoryItemsAdapter;
 import com.chisto.Base.BaseActivity;
