@@ -3,6 +3,9 @@ package com.chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import android.app.Activity;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -10,6 +13,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.chisto.Adapters.CategoryItemsAdapter;
 import com.chisto.Base.BaseActivity;
@@ -17,6 +22,7 @@ import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.CategoryItem;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
+import com.chisto.Utils.AndroidUtilities;
 import com.chisto.Utils.LogUtil;
 import com.crashlytics.android.Crashlytics;
 
@@ -38,6 +44,7 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         setContentView(R.layout.activity_category_info);
 
         findViewById(R.id.toolbar).setBackgroundColor(getIntent().getIntExtra("color", 0));
+        AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", 0));
 
         findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
             @Override

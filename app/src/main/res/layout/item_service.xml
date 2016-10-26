@@ -1,7 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:background="?attr/selectableItemBackground"
+             android:layout_height="120dp">
 
-</LinearLayout>
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/name"
+              android:layout_marginStart="12dp"
+              android:textStyle="bold"
+              android:textSize="20sp"
+              android:textColor="#212121"
+              android:layout_marginLeft="12dp"
+              android:layout_gravity="center_vertical"
+              android:layout_marginBottom="14dp"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/description"
+              android:textSize="16sp"
+              android:textColor="#727272"
+              android:layout_marginStart="12dp"
+              android:layout_marginLeft="12dp"
+              android:layout_gravity="center_vertical"
+              android:layout_marginTop="14dp"/>
+
+    <com.chisto.Custom.CheckBox.SmoothCheckBox
+            android:layout_width="38dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_height="38dp"/>
+
+    <View android:layout_width="match_parent"
+          android:layout_gravity="bottom"
+          android:background="#b6b6b6"
+          android:layout_height="1px"/>
+
+</FrameLayout>
