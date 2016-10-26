@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.chisto.Activities.CategoryInfoActivity
+import com.chisto.Activities.SelectServiceActivity
 import com.chisto.Model.CategoryItem
 import com.chisto.R
 import com.chisto.Utils.Image
@@ -50,8 +52,26 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         Image.loadPhoto(item.icon, holder.icon)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, CategoryInfoActivity::class.java)
-            context.startActivity(intent)
+            MaterialDialog.Builder(context)
+                    .title("Chisto")
+                    .content("Eсть ли у вещи декоративная отделка?")
+                    .positiveText("ДА")
+                    .negativeText("НЕТ")
+                    .onPositive { dialog, action ->
+                        run {
+                            val intent = Intent(context, SelectServiceActivity::class.java)
+                            intent.putExtra("decor", true)
+                            context.startActivity(intent)
+                        }
+                    }
+                    .onNegative { dialog, action ->
+                        run {
+                            val intent = Intent(context, SelectServiceActivity::class.java)
+                            intent.putExtra("decor", false)
+                            context.startActivity(intent)
+                        }
+                    }
+                    .show()
         }
     }
 
