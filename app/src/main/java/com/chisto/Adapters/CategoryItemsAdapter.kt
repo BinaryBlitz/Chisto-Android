@@ -61,12 +61,14 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
                         run {
                             val intent = Intent(context, SelectServiceActivity::class.java)
                             intent.putExtra("decor", true)
+                            intent.putExtra("id", item.id)
                             context.startActivity(intent)
                         }
                     }
                     .onNegative { dialog, action ->
                         run {
                             val intent = Intent(context, SelectServiceActivity::class.java)
+                            intent.putExtra("id", item.id)
                             intent.putExtra("decor", false)
                             context.startActivity(intent)
                         }
