@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/contentView"
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,7 +12,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true">
-
         <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
@@ -103,5 +102,23 @@
                 </android.support.v7.widget.Toolbar>
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
+
+        <com.chisto.Custom.RecyclerListView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="56dp"
+                android:layout_height="match_parent">
+        </com.chisto.Custom.RecyclerListView>
+
+        <TextView
+                android:text="@string/ready_str"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:id="@+id/cont_btn"
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimary"
+                android:textSize="22sp"
+                android:layout_gravity="bottom"
+                android:gravity="center"/>
     </android.support.design.widget.CoordinatorLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

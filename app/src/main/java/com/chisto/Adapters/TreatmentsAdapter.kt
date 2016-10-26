@@ -1,14 +1,12 @@
 package com.chisto.Adapters
 
 import android.app.Activity
-import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
-import com.chisto.Activities.ItemInfoActivity
 import com.chisto.Model.Treatment
 import com.chisto.R
 import java.util.*
@@ -21,6 +19,17 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_service, parent, false)
 
         return ViewHolder(itemView)
+    }
+
+    fun getSelected(): ArrayList<Int> {
+        val selected = ArrayList <Int>()
+        for (i in collection.indices) {
+            if (collection[i].select) {
+                selected.add(collection[i].id)
+            }
+        }
+
+        return selected
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
@@ -36,11 +45,6 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         }
 
         holder.checkBox.setOnCheckedChangeListener { compoundButton, b -> collection[holder.adapterPosition].select = b }
-
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, ItemInfoActivity::class.java)
-            context.startActivity(intent)
-        }
     }
 
     override fun getItemCount(): Int {

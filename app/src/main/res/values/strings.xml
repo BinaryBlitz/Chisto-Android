@@ -22,4 +22,6 @@
     <string name="nothing_selected_str">Ничего не выбрано</string>
     <string name="service_select_str">Выбор услуг</string>
     <string name="what_need_to_do_str">Что нужно сделать с вещью?</string>
+    <string name="continue_str">Продолжить</string>
+    <string name="nothing_selected_code_str">Ничего не выбрано.</string>
 </resources>

@@ -3,9 +3,11 @@ package com.chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +51,18 @@ public class SelectServiceActivity extends BaseActivity implements SwipeRefreshL
             }
         });
 
+        findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(adapter.getSelected().size() != 0) {
+                    Intent intent = new Intent(SelectServiceActivity.this, ItemInfoActivity.class);
+                    startActivity(intent);
+                } else {
+                    Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code_str, Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
@@ -80,6 +94,12 @@ public class SelectServiceActivity extends BaseActivity implements SwipeRefreshL
                 if(response.isSuccessful()) {
                     ArrayList<Treatment> collection = new ArrayList<>();
                     JsonArray array = response.body();
+
+                    collection.add(new Treatment(
+                            1,
+                            "Декор",
+                            "Описание",
+                            false));
 
                     for (int i = 0; i < array.size(); i++) {
                         JsonObject object = array.get(i).getAsJsonObject();
