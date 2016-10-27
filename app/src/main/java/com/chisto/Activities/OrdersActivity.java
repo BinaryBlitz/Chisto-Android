@@ -80,7 +80,6 @@ public class OrdersActivity extends BaseActivity {
                 initiated = true;
             }
 
-            // not important, we don't want drag & drop
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;

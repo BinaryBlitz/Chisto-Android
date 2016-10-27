@@ -25,4 +25,5 @@
     <string name="continue_str">Продолжить</string>
     <string name="nothing_selected_code_str">Ничего не выбрано.</string>
     <string name="save_str">Сохранить</string>
+    <string name="selected_tr_str">Выбранные услуги</string>
 </resources>
