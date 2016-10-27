@@ -65,6 +65,7 @@ public class SelectCityActivity extends BaseActivity
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
         adapter = new CitiesAdapter(this);
         view.setAdapter(adapter);
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
