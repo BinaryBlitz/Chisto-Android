@@ -9,11 +9,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.chisto.Activities.CategoryInfoActivity
 import com.chisto.Activities.SelectServiceActivity
 import com.chisto.Model.CategoryItem
+import com.chisto.Model.Order
 import com.chisto.R
 import com.chisto.Utils.Image
+import com.chisto.Utils.OrderList
 import java.util.*
 
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -62,6 +63,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
                             val intent = Intent(context, SelectServiceActivity::class.java)
                             intent.putExtra("decor", true)
                             intent.putExtra("id", item.id)
+                            OrderList.add(Order(item, null, 1))
                             context.startActivity(intent)
                         }
                     }
@@ -70,6 +72,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
                             val intent = Intent(context, SelectServiceActivity::class.java)
                             intent.putExtra("id", item.id)
                             intent.putExtra("decor", false)
+                            OrderList.add(Order(item, null, 1))
                             context.startActivity(intent)
                         }
                     }
