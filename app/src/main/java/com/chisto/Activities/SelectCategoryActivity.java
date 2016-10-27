@@ -10,17 +10,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 
 import com.chisto.Adapters.CategoriesAdapter;
-import com.chisto.Adapters.CitiesAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.Category;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
 import com.chisto.Utils.LogUtil;
+import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -43,6 +42,7 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
         findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                OrderList.removeCurrent();
                 finish();
             }
         });
@@ -62,6 +62,12 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
                 load();
             }
         }, 200);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        OrderList.removeCurrent();
     }
 
     @Override

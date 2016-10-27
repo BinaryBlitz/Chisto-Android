@@ -21,11 +21,11 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         return ViewHolder(itemView)
     }
 
-    fun getSelected(): ArrayList<Int> {
-        val selected = ArrayList <Int>()
+    fun getSelected(): ArrayList<Treatment> {
+        val selected = ArrayList <Treatment>()
         for (i in collection.indices) {
             if (collection[i].select) {
-                selected.add(collection[i].id)
+                selected.add(collection[i])
             }
         }
 
