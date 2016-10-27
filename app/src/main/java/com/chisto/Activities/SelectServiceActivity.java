@@ -70,6 +70,7 @@ public class SelectServiceActivity extends BaseActivity implements SwipeRefreshL
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
         adapter = new TreatmentsAdapter(this);
         view.setAdapter(adapter);
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);

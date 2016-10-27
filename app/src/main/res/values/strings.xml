@@ -24,4 +24,5 @@
     <string name="what_need_to_do_str">Что нужно сделать с вещью?</string>
     <string name="continue_str">Продолжить</string>
     <string name="nothing_selected_code_str">Ничего не выбрано.</string>
+    <string name="save_str">Сохранить</string>
 </resources>

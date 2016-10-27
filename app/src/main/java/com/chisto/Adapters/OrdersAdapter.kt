@@ -2,6 +2,7 @@ package com.chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -13,16 +14,21 @@ import com.chisto.Activities.ItemInfoActivity
 import com.chisto.Model.Order
 import com.chisto.R
 import com.chisto.Utils.Image
-
-import java.util.ArrayList
+import com.chisto.Utils.OrderList
+import java.util.*
 
 class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var collection = ArrayList<Order>()
+    private val PENDING_REMOVAL_TIMEOUT: Long = 2000
+    var itemsPendingRemoval: ArrayList<Order>? = null
+    var undoOn: Boolean = false
+
+    private val handler = Handler()
+    var pendingRunnables: HashMap<Order, Runnable> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_order, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -44,7 +50,6 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         }
 
         holder.description.text = description
-
         holder.count.text = "&#x2022" + order.count + " шт"
 
         Image.loadPhoto(order.category.icon, holder.icon)
@@ -61,6 +66,34 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     fun setCollection(collection: ArrayList<Order>) {
         this.collection = collection
+    }
+
+    fun pendingRemoval(position: Int) {
+        val item = collection.get(position)
+        if (!itemsPendingRemoval!!.contains(item)) {
+            itemsPendingRemoval!!.add(item)
+            notifyItemChanged(position)
+            val pendingRemovalRunnable = Runnable { remove(collection.indexOf(item)) }
+            handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT)
+            pendingRunnables.put(item, pendingRemovalRunnable)
+        }
+    }
+
+    fun remove(position: Int) {
+        val item = collection.get(position)
+        if (itemsPendingRemoval!!.contains(item)) {
+            itemsPendingRemoval!!.remove(item)
+        }
+        if (collection.contains(item)) {
+            collection.removeAt(position)
+            OrderList.remove(position)
+            notifyItemRemoved(position)
+        }
+    }
+
+    fun isPendingRemoval(position: Int): Boolean {
+        val item = collection.get(position)
+        return itemsPendingRemoval!!.contains(item)
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
