@@ -7,6 +7,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,11 +16,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chisto.Adapters.OrdersAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.R;
+import com.chisto.Utils.Animations;
 import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
@@ -28,6 +34,9 @@ public class OrdersActivity extends BaseActivity {
 
     private OrdersAdapter adapter;
     private RecyclerListView view;
+
+    private TextView contBtn;
+    private static boolean dialogOpened = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,6 +49,8 @@ public class OrdersActivity extends BaseActivity {
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
         view.setEmptyView(findViewById(R.id.empty_orders));
+
+        contBtn = (TextView) findViewById(R.id.textView2);
 
         adapter = new OrdersAdapter(this);
         view.setAdapter(adapter);
@@ -62,6 +73,40 @@ public class OrdersActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.dialog).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialogOpened = false;
+                        Animations.animateRevealHide(findViewById(R.id.dialog));
+                    }
+                });
+            }
+        });
+
+        findViewById(R.id.main_dialog_part).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(dialogOpened) {
+            new Handler().post(new Runnable() {
+                @Override
+                public void run() {
+                    dialogOpened = false;
+                    Animations.animateRevealHide(findViewById(R.id.dialog));
+                }
+            });
+        }
     }
 
     private void setUpItemTouchHelper() {
@@ -205,7 +250,30 @@ public class OrdersActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.setCollection(OrderList.get());
-        adapter.notifyDataSetChanged();
+        if(OrderList.get() != null) {
+            adapter.setCollection(OrderList.get());
+            adapter.notifyDataSetChanged();
+
+            if(adapter.getItemCount() != 0) {
+                contBtn.setText("Продолжить");
+                contBtn.setBackgroundColor(Color.parseColor("#4bc2f7"));
+                contBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialogOpened = true;
+                                Animations.animateRevealShow(findViewById(R.id.dialog), OrdersActivity.this);
+                            }
+                        });
+                    }
+                });
+            } else {
+                contBtn.setText("Ничего не выбрано");
+                contBtn.setBackgroundColor(Color.parseColor("#727272"));
+                contBtn.setOnClickListener(null);
+            }
+        }
     }
 }

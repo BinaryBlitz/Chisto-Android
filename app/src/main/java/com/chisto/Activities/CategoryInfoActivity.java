@@ -3,7 +3,7 @@ package com.chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -39,8 +39,8 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_category_info);
 
-        findViewById(R.id.toolbar).setBackgroundColor(getIntent().getIntExtra("color", 0));
-        AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", 0));
+        findViewById(R.id.toolbar).setBackgroundColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
+        AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", Color.parseColor("#212121")));
 
         findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +58,8 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         layout.setOnRefreshListener(this);
         layout.setColorSchemeResources(R.color.colorAccent);
+
+        adapter.setColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -86,9 +88,9 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
                         JsonObject object = array.get(i).getAsJsonObject();
                         collection.add(new CategoryItem(
                                 object.get("id").getAsInt(),
+                                object.get("icon").getAsString(),
                                 object.get("name").getAsString(),
-                                object.get("description").getAsString(),
-                                object.get("icon").getAsString()
+                                object.get("description").isJsonNull() ? "" : object.get("description").getAsString()
                         ));
                     }
 
