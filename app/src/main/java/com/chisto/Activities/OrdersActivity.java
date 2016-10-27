@@ -11,6 +11,7 @@ import com.chisto.Adapters.OrdersAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.R;
+import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
@@ -49,4 +50,13 @@ public class OrdersActivity extends BaseActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.setCollection(OrderList.get());
+        adapter.notifyDataSetChanged();
+    }
+
+
 }
