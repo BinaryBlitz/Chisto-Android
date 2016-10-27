@@ -37,7 +37,7 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_user"
+                    android:src="@drawable/ic_user_white"
                     android:padding="13dp"
                     android:layout_gravity="start"
             />
@@ -77,4 +77,16 @@
             android:textSize="22sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:background="#99000000"
+            android:clickable="true"
+            android:id="@+id/dialog"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/old_order_popup" />
+
+    </FrameLayout>
 </FrameLayout>

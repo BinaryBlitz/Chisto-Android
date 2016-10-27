@@ -21,7 +21,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     private var collection = ArrayList<Order>()
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
-    var itemsPendingRemoval: ArrayList<Order>? = null
+    var itemsPendingRemoval: ArrayList<Order> = ArrayList()
     var undoOn: Boolean = false
 
     private val handler = Handler()
@@ -42,15 +42,15 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         var description = ""
 
         if (order.treatments != null) {
-            for (i in 0..order.treatments!!.size - 1) {
-                description += order.treatments!![i].name + " &#x2022 "
+            for (i in 0..order.treatments!!.size - 2) {
+                description += order.treatments!![i].name + " \u2022 "
             }
 
             description += order.treatments!![order.treatments!!.size - 1].name
         }
 
         holder.description.text = description
-        holder.count.text = "&#x2022" + order.count + " шт"
+        holder.count.text = "\u00D7" + order.count + " шт"
 
         Image.loadPhoto(order.category.icon, holder.icon)
 
@@ -69,9 +69,9 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     }
 
     fun pendingRemoval(position: Int) {
-        val item = collection.get(position)
-        if (!itemsPendingRemoval!!.contains(item)) {
-            itemsPendingRemoval!!.add(item)
+        val item = collection[position]
+        if (!itemsPendingRemoval.contains(item)) {
+            itemsPendingRemoval.add(item)
             notifyItemChanged(position)
             val pendingRemovalRunnable = Runnable { remove(collection.indexOf(item)) }
             handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT)
@@ -80,9 +80,9 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     }
 
     fun remove(position: Int) {
-        val item = collection.get(position)
-        if (itemsPendingRemoval!!.contains(item)) {
-            itemsPendingRemoval!!.remove(item)
+        val item = collection[position]
+        if (itemsPendingRemoval.contains(item)) {
+            itemsPendingRemoval.remove(item)
         }
         if (collection.contains(item)) {
             collection.removeAt(position)
@@ -92,8 +92,8 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     }
 
     fun isPendingRemoval(position: Int): Boolean {
-        val item = collection.get(position)
-        return itemsPendingRemoval!!.contains(item)
+        val item = collection[position]
+        return itemsPendingRemoval.contains(item)
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

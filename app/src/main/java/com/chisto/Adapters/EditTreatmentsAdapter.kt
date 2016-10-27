@@ -23,7 +23,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     var pendingRunnables: HashMap<Treatment, Runnable> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_service, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_treatment_info, parent, false)
 
         return ViewHolder(itemView)
     }
@@ -33,7 +33,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
         holder.name.text = collection[position].name
         holder.desc.text = collection[position].description
-        holder.index.text = position.toString()
+        holder.index.text = (position + 1).toString()
     }
 
     override fun getItemCount(): Int {

@@ -6,6 +6,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonArray;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,12 +23,15 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chisto.Adapters.CitiesAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
 import com.chisto.Utils.LogUtil;
+import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import java.io.IOException;
@@ -39,6 +43,8 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
 public class SelectCityActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -83,6 +89,7 @@ public class SelectCityActivity extends BaseActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                layout.setEnabled(true);
                 load();
             }
         }, 200);
@@ -97,7 +104,27 @@ public class SelectCityActivity extends BaseActivity
         findViewById(R.id.city_not_found_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                new MaterialDialog.Builder(SelectCityActivity.this)
+                        .title("Chisto")
+                        .customView(R.layout.city_not_found_dialog, true)
+                        .positiveText("ОТПРАВИТЬ")
+                        .negativeText("НАЗАД")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                Intent intent = new Intent(SelectCityActivity.this, OrdersActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        })
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
     }
