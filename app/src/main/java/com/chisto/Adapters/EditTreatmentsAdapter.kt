@@ -1,70 +1,46 @@
 package com.chisto.Adapters
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-
-import com.chisto.Activities.ItemInfoActivity
-import com.chisto.Model.Order
+import com.chisto.Model.Treatment
 import com.chisto.R
-import com.chisto.Utils.Image
 import com.chisto.Utils.OrderList
 import java.util.*
 
-class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var collection = ArrayList<Order>()
+    private var collection = ArrayList<Treatment>()
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
-    var itemsPendingRemoval: ArrayList<Order>? = null
+    var itemsPendingRemoval: ArrayList<Treatment>? = null
     var undoOn: Boolean = false
 
     private val handler = Handler()
-    var pendingRunnables: HashMap<Order, Runnable> = HashMap()
+    var pendingRunnables: HashMap<Treatment, Runnable> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_order, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_service, parent, false)
+
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        val order = collection[position]
-
-        holder.name.text = order.category.name
-
-        var description = ""
-
-        if (order.treatments != null) {
-            for (i in 0..order.treatments!!.size - 1) {
-                description += order.treatments!![i].name + " &#x2022 "
-            }
-
-            description += order.treatments!![order.treatments!!.size - 1].name
-        }
-
-        holder.description.text = description
-        holder.count.text = "&#x2022" + order.count + " шт"
-
-        Image.loadPhoto(order.category.icon, holder.icon)
-
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, ItemInfoActivity::class.java)
-            context.startActivity(intent)
-        }
+        holder.name.text = collection[position].name
+        holder.desc.text = collection[position].description
+        holder.index.text = position.toString()
     }
 
     override fun getItemCount(): Int {
         return collection.size
     }
 
-    fun setCollection(collection: ArrayList<Order>) {
+    fun setCollection(collection: ArrayList<Treatment>) {
         this.collection = collection
     }
 
@@ -86,8 +62,8 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         }
         if (collection.contains(item)) {
             collection.removeAt(position)
-            OrderList.remove(position)
-            notifyItemRemoved(position)
+            OrderList.removeTreatment(collection[position].id)
+            notifyDataSetChanged()
         }
     }
 
@@ -98,15 +74,13 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView
-        val description: TextView
-        val count: TextView
-        val icon: ImageView
+        val desc: TextView
+        val index: TextView
 
         init {
             name = itemView.findViewById(R.id.name) as TextView
-            description = itemView.findViewById(R.id.description) as TextView
-            count = itemView.findViewById(R.id.count) as TextView
-            icon = itemView.findViewById(R.id.category_icon) as ImageView
+            desc = itemView.findViewById(R.id.description) as TextView
+            index = itemView.findViewById(R.id.index) as TextView
         }
     }
 }

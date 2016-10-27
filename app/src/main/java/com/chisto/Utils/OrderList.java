@@ -21,8 +21,17 @@ public class OrderList {
         currentItem = 0;
     }
 
+    public static Order get(int i) {
+        currentItem = i;
+        return orders.get(i);
+    }
+
     public static ArrayList<Order> get() {
         return orders;
+    }
+
+    public static ArrayList<Treatment> getTreatments() {
+        return orders.get(currentItem).getTreatments();
     }
 
     public static void remove(int i) {
