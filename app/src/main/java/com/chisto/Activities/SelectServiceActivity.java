@@ -57,10 +57,14 @@ public class SelectServiceActivity extends BaseActivity implements SwipeRefreshL
             public void onClick(View view) {
                 if(adapter.getSelected().size() != 0) {
                     OrderList.addTreatments(adapter.getSelected());
-                    Intent intent = new Intent(SelectServiceActivity.this, OrdersActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                    if(getIntent().getBooleanExtra("edit", false)) {
+                        Intent intent = new Intent(SelectServiceActivity.this, OrdersActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        finish();
+                    }
                 } else {
                     Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code_str, Snackbar.LENGTH_SHORT).show();
                 }
@@ -70,6 +74,7 @@ public class SelectServiceActivity extends BaseActivity implements SwipeRefreshL
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
         adapter = new TreatmentsAdapter(this);
         view.setAdapter(adapter);
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
