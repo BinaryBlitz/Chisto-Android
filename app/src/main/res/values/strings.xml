@@ -27,4 +27,6 @@
     <string name="save_str">Сохранить</string>
     <string name="selected_tr_str">Выбранные услуги</string>
     <string name="count_str">Количество таких вещей</string>
+    <string name="last_order_str">В прошлый раз Вы заказывали</string>
+    <string name="view_all_str">Посмотреть все предложения</string>
 </resources>
