@@ -13,18 +13,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.TextView;
 
-import com.chisto.Adapters.OrdersAdapter;
+import com.chisto.Adapters.EditTreatmentsAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
+import com.chisto.Model.Order;
 import com.chisto.R;
+import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 
 public class ItemInfoActivity extends BaseActivity {
 
-    private OrdersAdapter adapter;
+    private EditTreatmentsAdapter adapter;
     private RecyclerListView view;
 
     @Override
@@ -33,18 +36,48 @@ public class ItemInfoActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_item_info);
 
+        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
-        view.setEmptyView(findViewById(R.id.empty_orders));
+        view.setEmptyView(null);
 
-        adapter = new OrdersAdapter(this);
+        adapter = new EditTreatmentsAdapter(this);
         view.setAdapter(adapter);
-
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
 
+        Order order = OrderList.get(getIntent().getIntExtra("index", 0));
+
+        if(order.getTreatments() != null) {
+            adapter.setCollection(order.getTreatments());
+            adapter.notifyDataSetChanged();
+        }
+
+        ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
+        ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDesc());
+        ((TextView) findViewById(R.id.textView)).setText(order.getCount());
+
+        findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        findViewById(R.id.minus).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setUpItemTouchHelper() {
@@ -71,7 +104,7 @@ public class ItemInfoActivity extends BaseActivity {
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 int position = viewHolder.getAdapterPosition();
-                OrdersAdapter testAdapter = (OrdersAdapter)recyclerView.getAdapter();
+                EditTreatmentsAdapter testAdapter = (EditTreatmentsAdapter)recyclerView.getAdapter();
                 if (testAdapter.getUndoOn() && testAdapter.isPendingRemoval(position)) {
                     return 0;
                 }
@@ -81,7 +114,7 @@ public class ItemInfoActivity extends BaseActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                OrdersAdapter adapter = (OrdersAdapter)view.getAdapter();
+                EditTreatmentsAdapter adapter = (EditTreatmentsAdapter)view.getAdapter();
                 boolean undoOn = adapter.getUndoOn();
                 if (undoOn) {
                     adapter.pendingRemoval(swipedPosition);

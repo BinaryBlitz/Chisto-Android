@@ -21,6 +21,10 @@ public class OrderList {
         currentItem = 0;
     }
 
+    public static Order get(int i) {
+        return orders.get(i);
+    }
+
     public static ArrayList<Order> get() {
         return orders;
     }
