@@ -10,8 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.chisto.Activities.CategoryInfoActivity
 import com.chisto.Model.Category
+import com.chisto.Model.Order
 import com.chisto.R
 import com.chisto.Utils.Image
+import com.chisto.Utils.OrderList
 import java.util.*
 
 class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
