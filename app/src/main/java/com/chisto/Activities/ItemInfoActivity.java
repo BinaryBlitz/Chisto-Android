@@ -1,11 +1,13 @@
 package com.chisto.Activities;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +17,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chisto.Adapters.EditTreatmentsAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
@@ -30,6 +34,8 @@ public class ItemInfoActivity extends BaseActivity {
     private EditTreatmentsAdapter adapter;
     private RecyclerListView view;
 
+    private TextView count;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,8 @@ public class ItemInfoActivity extends BaseActivity {
                 finish();
             }
         });
+
+        count = (TextView) findViewById(R.id.textView);
 
         view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
@@ -56,11 +64,6 @@ public class ItemInfoActivity extends BaseActivity {
 
         Order order = OrderList.get(getIntent().getIntExtra("index", 0));
 
-        if(order.getTreatments() != null) {
-            adapter.setCollection(order.getTreatments());
-            adapter.notifyDataSetChanged();
-        }
-
         ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
         ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDesc());
         ((TextView) findViewById(R.id.textView)).setText(order.getCount());
@@ -68,14 +71,47 @@ public class ItemInfoActivity extends BaseActivity {
         findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(ItemInfoActivity.this, SelectServiceActivity.class);
+                intent.putExtra("edit", true);
+                startActivity(intent);
+            }
+        });
 
+
+        findViewById(R.id.plus_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count.setText(Integer.toString(Integer.parseInt(count.getText().toString()) + 1));
             }
         });
 
         findViewById(R.id.minus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(Integer.parseInt(count.getText().toString()) == 1) {
+                    new MaterialDialog.Builder(ItemInfoActivity.this)
+                            .title("Chisto")
+                            .content("Вы хотите удалить эту вещь из заказа?")
+                            .positiveText("ДА")
+                            .negativeText("НЕТ")
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    OrderList.removeCurrent();
+                                    finish();
+                                }
+                            })
+                            .show();
+                    return;
+                }
+                count.setText(Integer.toString(Integer.parseInt(count.getText().toString()) - 1));
+            }
+        });
 
+        findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                OrderList.change(Integer.parseInt(count.getText().toString()));
             }
         });
     }
@@ -216,5 +252,12 @@ public class ItemInfoActivity extends BaseActivity {
             }
 
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.setCollection(OrderList.getTreatments());
+        adapter.notifyDataSetChanged();
     }
 }

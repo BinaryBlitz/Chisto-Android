@@ -57,10 +57,14 @@ public class SelectServiceActivity extends BaseActivity implements SwipeRefreshL
             public void onClick(View view) {
                 if(adapter.getSelected().size() != 0) {
                     OrderList.addTreatments(adapter.getSelected());
-                    Intent intent = new Intent(SelectServiceActivity.this, OrdersActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
+                    if(getIntent().getBooleanExtra("edit", false)) {
+                        Intent intent = new Intent(SelectServiceActivity.this, OrdersActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        finish();
+                    }
                 } else {
                     Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code_str, Snackbar.LENGTH_SHORT).show();
                 }

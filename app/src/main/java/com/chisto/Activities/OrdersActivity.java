@@ -208,6 +208,4 @@ public class OrdersActivity extends BaseActivity {
         adapter.setCollection(OrderList.get());
         adapter.notifyDataSetChanged();
     }
-
-
 }
