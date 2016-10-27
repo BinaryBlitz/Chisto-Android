@@ -2,6 +2,7 @@ package com.chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +21,15 @@ import java.util.*
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categories: ArrayList<CategoryItem>? = null
+    private var color: Int = Color.parseColor("#212121")
 
     init {
         Image.init(context)
         categories = ArrayList<CategoryItem>()
+    }
+
+    fun setColor(color: Int) {
+        this.color = color
     }
 
     fun setCategories(categories: ArrayList<CategoryItem>) {
@@ -63,7 +69,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
                             val intent = Intent(context, SelectServiceActivity::class.java)
                             intent.putExtra("decor", true)
                             intent.putExtra("id", item.id)
-                            OrderList.add(Order(item, null, 1))
+                            intent.putExtra("name", item.name)
+                            OrderList.add(Order(item, null, 1, color))
                             context.startActivity(intent)
                         }
                     }
@@ -72,7 +79,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
                             val intent = Intent(context, SelectServiceActivity::class.java)
                             intent.putExtra("id", item.id)
                             intent.putExtra("decor", false)
-                            OrderList.add(Order(item, null, 1))
+                            intent.putExtra("name", item.name)
+                            OrderList.add(Order(item, null, 1, color))
                             context.startActivity(intent)
                         }
                     }
