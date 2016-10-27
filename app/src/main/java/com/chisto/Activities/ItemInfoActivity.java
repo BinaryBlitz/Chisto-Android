@@ -24,6 +24,7 @@ import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.Order;
 import com.chisto.R;
+import com.chisto.Utils.AndroidUtilities;
 import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
@@ -51,6 +52,9 @@ public class ItemInfoActivity extends BaseActivity {
 
         count = (TextView) findViewById(R.id.textView);
 
+        findViewById(R.id.appbar).setBackgroundColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
+        AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", Color.parseColor("#212121")));
+
         view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
@@ -62,17 +66,20 @@ public class ItemInfoActivity extends BaseActivity {
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
 
-        Order order = OrderList.get(getIntent().getIntExtra("index", 0));
-
-        ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
-        ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDesc());
-        ((TextView) findViewById(R.id.textView)).setText(order.getCount());
+        final Order order = OrderList.get(getIntent().getIntExtra("index", 0));
+        if (order != null) {
+            ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
+            ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDesc());
+            ((TextView) findViewById(R.id.textView)).setText(Integer.toString(order.getCount()));
+        }
 
         findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ItemInfoActivity.this, SelectServiceActivity.class);
                 intent.putExtra("edit", true);
+                intent.putExtra("id", order.getCategory().getId());
+                intent.putExtra("name", order.getCategory().getName());
                 startActivity(intent);
             }
         });
@@ -88,7 +95,7 @@ public class ItemInfoActivity extends BaseActivity {
         findViewById(R.id.minus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Integer.parseInt(count.getText().toString()) == 1) {
+                if (Integer.parseInt(count.getText().toString()) == 1) {
                     new MaterialDialog.Builder(ItemInfoActivity.this)
                             .title("Chisto")
                             .content("Вы хотите удалить эту вещь из заказа?")
@@ -111,7 +118,8 @@ public class ItemInfoActivity extends BaseActivity {
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OrderList.change(Integer.parseInt(count.getText().toString()));
+                OrderList.changeCount(Integer.parseInt(count.getText().toString()));
+                finish();
             }
         });
     }
@@ -140,7 +148,7 @@ public class ItemInfoActivity extends BaseActivity {
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 int position = viewHolder.getAdapterPosition();
-                EditTreatmentsAdapter testAdapter = (EditTreatmentsAdapter)recyclerView.getAdapter();
+                EditTreatmentsAdapter testAdapter = (EditTreatmentsAdapter) recyclerView.getAdapter();
                 if (testAdapter.getUndoOn() && testAdapter.isPendingRemoval(position)) {
                     return 0;
                 }
@@ -150,7 +158,7 @@ public class ItemInfoActivity extends BaseActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                EditTreatmentsAdapter adapter = (EditTreatmentsAdapter)view.getAdapter();
+                EditTreatmentsAdapter adapter = (EditTreatmentsAdapter) view.getAdapter();
                 boolean undoOn = adapter.getUndoOn();
                 if (undoOn) {
                     adapter.pendingRemoval(swipedPosition);
@@ -179,7 +187,7 @@ public class ItemInfoActivity extends BaseActivity {
 
                 int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
                 int xMarkRight = itemView.getRight() - xMarkMargin;
-                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
                 int xMarkBottom = xMarkTop + intrinsicHeight;
                 xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
 
@@ -254,10 +262,13 @@ public class ItemInfoActivity extends BaseActivity {
         });
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.setCollection(OrderList.getTreatments());
-        adapter.notifyDataSetChanged();
+        if (OrderList.getTreatments() != null) {
+            adapter.setCollection(OrderList.getTreatments());
+            adapter.notifyDataSetChanged();
+        }
     }
 }
