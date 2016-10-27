@@ -47,7 +47,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
         holder.count.text = "&#x2022" + order.count + " шт"
 
-        Image.loadPhoto(order.icon, holder.icon)
+        Image.loadPhoto(order.category.icon, holder.icon)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ItemInfoActivity::class.java)

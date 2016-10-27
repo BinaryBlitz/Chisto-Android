@@ -21,6 +21,7 @@ import com.chisto.R;
 import com.chisto.Server.ServerApi;
 import com.chisto.Utils.AndroidUtilities;
 import com.chisto.Utils.LogUtil;
+import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class SelectServiceActivity extends BaseActivity implements SwipeRefreshL
             @Override
             public void onClick(View view) {
                 if(adapter.getSelected().size() != 0) {
+                    OrderList.addTreatments(adapter.getSelected());
                     Intent intent = new Intent(SelectServiceActivity.this, OrdersActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
