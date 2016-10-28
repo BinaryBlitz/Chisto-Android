@@ -42,15 +42,15 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         var description = ""
 
         if (order.treatments != null) {
-            for (i in 0..order.treatments!!.size - 1) {
-                description += order.treatments!![i].name + " &#x2022 "
+            for (i in 0..order.treatments!!.size - 2) {
+                description += order.treatments!![i].name + " \u2022 "
             }
 
             description += order.treatments!![order.treatments!!.size - 1].name
         }
 
         holder.description.text = description
-        holder.count.text = "&#x2022" + order.count + " шт"
+        holder.count.text = "\u00D7" + order.count + " шт"
 
         Image.loadPhoto(order.category.icon, holder.icon)
 

@@ -63,9 +63,15 @@ public class OrderList {
         currentItem = i;
     }
 
-    public static void change(int count) {
+    public static void changeCount(int count) {
         if(currentItem < orders.size()) {
             orders.get(currentItem).setCount(count);
+        }
+    }
+
+    public static void changeColor(int color) {
+        if(currentItem < orders.size()) {
+            orders.get(currentItem).setColor(color);
         }
     }
 

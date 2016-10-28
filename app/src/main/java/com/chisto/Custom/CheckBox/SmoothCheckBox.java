@@ -65,6 +65,14 @@ public class SmoothCheckBox extends View implements Checkable {
         init(attrs);
     }
 
+    public int getmCheckedColor() {
+        return mCheckedColor;
+    }
+
+    public void setmCheckedColor(int mCheckedColor) {
+        this.mCheckedColor = mCheckedColor;
+    }
+
     private void init(AttributeSet attrs) {
 
         TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.SmoothCheckBox);

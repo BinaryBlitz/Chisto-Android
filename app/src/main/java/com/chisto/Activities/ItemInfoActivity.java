@@ -24,6 +24,7 @@ import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.Order;
 import com.chisto.R;
+import com.chisto.Utils.AndroidUtilities;
 import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
@@ -51,6 +52,9 @@ public class ItemInfoActivity extends BaseActivity {
 
         count = (TextView) findViewById(R.id.textView);
 
+        findViewById(R.id.appbar).setBackgroundColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
+        AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", Color.parseColor("#212121")));
+
         view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
@@ -62,11 +66,11 @@ public class ItemInfoActivity extends BaseActivity {
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
 
-        Order order = OrderList.get(getIntent().getIntExtra("index", 0));
+        final Order order = OrderList.get(getIntent().getIntExtra("index", 0));
         if (order != null) {
             ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
             ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDesc());
-            ((TextView) findViewById(R.id.textView)).setText(order.getCount());
+            ((TextView) findViewById(R.id.textView)).setText(Integer.toString(order.getCount()));
         }
 
         findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
@@ -74,6 +78,8 @@ public class ItemInfoActivity extends BaseActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(ItemInfoActivity.this, SelectServiceActivity.class);
                 intent.putExtra("edit", true);
+                intent.putExtra("id", order.getCategory().getId());
+                intent.putExtra("name", order.getCategory().getName());
                 startActivity(intent);
             }
         });
@@ -112,7 +118,8 @@ public class ItemInfoActivity extends BaseActivity {
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OrderList.change(Integer.parseInt(count.getText().toString()));
+                OrderList.changeCount(Integer.parseInt(count.getText().toString()));
+                finish();
             }
         });
     }

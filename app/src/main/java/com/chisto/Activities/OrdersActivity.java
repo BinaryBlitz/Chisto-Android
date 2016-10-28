@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.TextView;
 
 import com.chisto.Adapters.OrdersAdapter;
 import com.chisto.Base.BaseActivity;
@@ -29,6 +30,8 @@ public class OrdersActivity extends BaseActivity {
     private OrdersAdapter adapter;
     private RecyclerListView view;
 
+    private TextView contBtn;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,8 @@ public class OrdersActivity extends BaseActivity {
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
         view.setEmptyView(findViewById(R.id.empty_orders));
+
+        contBtn = (TextView) findViewById(R.id.textView2);
 
         adapter = new OrdersAdapter(this);
         view.setAdapter(adapter);
@@ -205,7 +210,24 @@ public class OrdersActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.setCollection(OrderList.get());
-        adapter.notifyDataSetChanged();
+        if(OrderList.get() != null) {
+            adapter.setCollection(OrderList.get());
+            adapter.notifyDataSetChanged();
+
+            if(adapter.getItemCount() != 0) {
+                contBtn.setText("Продолжить");
+                contBtn.setBackgroundColor(Color.parseColor("#4bc2f7"));
+                contBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            } else {
+                contBtn.setText("Ничего не выбрано");
+                contBtn.setBackgroundColor(Color.parseColor("#727272"));
+                contBtn.setOnClickListener(null);
+            }
+        }
     }
 }
