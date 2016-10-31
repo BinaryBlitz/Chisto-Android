@@ -2,8 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-             android:background="#ffffff"
-              android:layout_height="match_parent">
+              android:background="#ffffff"
+              android:id="@+id/main_dialog_part"
+              android:layout_margin="12dp"
+             android:layout_gravity="center"
+              android:layout_height="500dp">
     <ImageView
         android:layout_width="match_parent"
         android:background="#212121"

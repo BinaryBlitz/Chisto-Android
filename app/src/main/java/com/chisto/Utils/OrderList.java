@@ -54,7 +54,7 @@ public class OrderList {
     }
 
     public static void removeCurrent() {
-        if(currentItem < orders.size()) {
+        if(currentItem < orders.size() - 1) {
             orders.remove(currentItem);
         }
     }
@@ -95,6 +95,13 @@ public class OrderList {
             if (orders.get(currentItem).getTreatments() == null) {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
+
+            for(int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+                if(orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) {
+                    return;
+                }
+            }
+
             orders.get(currentItem).getTreatments().add(treatment);
         }
     }
@@ -105,6 +112,15 @@ public class OrderList {
             if (orders.get(currentItem).getTreatments() == null) {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
+
+            for(int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+                for(int j = 0; j < treatments.size(); j++) {
+                    if (orders.get(currentItem).getTreatments().get(i).getId() == treatments.get(j).getId()) {
+                        return;
+                    }
+                }
+            }
+
             orders.get(currentItem).getTreatments().addAll(treatments);
         }
     }
