@@ -103,7 +103,7 @@
                                 android:padding="8dp"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
-                                  android:text="Позвонить нам"
+                                  android:text="@string/call_us_str"
                                   android:textColor="@color/colorAccent"
                                   android:layout_marginTop="8dp"
                                   android:textSize="16sp"
@@ -124,7 +124,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
-                                  android:text="Написать письмо"
+                                  android:text="@string/email_str"
                                   android:textColor="@color/colorAccent"
                                   android:textSize="16sp"
                                   android:layout_marginTop="8dp"

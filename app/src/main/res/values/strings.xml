@@ -39,4 +39,9 @@
     <string name="rules_str">Правила пользования</string>
     <string name="my_orders_str">Мои заказы</string>
     <string name="contact_data_str">Контактные данные</string>
+    <string name="cost_str">Стоимость</string>
+    <string name="delivery_str">Доставка</string>
+    <string name="courier_str">Курьер</string>
+    <string name="call_us_str">Позвонить нам</string>
+    <string name="email_str">Написать письмо</string>
 </resources>
