@@ -58,6 +58,7 @@
                     android:layout_marginTop="32dp"
                     android:layout_gravity="bottom"
                     android:background="#ffffff"
+                    android:id="@+id/contact_data_btn"
                     android:layout_height="88dp">
 
                 <ImageView
@@ -93,6 +94,7 @@
                     android:layout_marginTop="32dp"
                     android:layout_gravity="bottom"
                     android:background="#ffffff"
+                    android:id="@+id/my_orders_btn"
                     android:layout_height="88dp">
 
                 <ImageView
@@ -128,6 +130,7 @@
                     android:layout_marginTop="32dp"
                     android:layout_gravity="bottom"
                     android:background="#ffffff"
+                    android:id="@+id/about_btn"
                     android:layout_height="88dp">
 
                 <ImageView
@@ -162,6 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="32dp"
                     android:layout_gravity="bottom"
+                    android:id="@+id/rules_btn"
                     android:background="#ffffff"
                     android:layout_height="88dp">
 
