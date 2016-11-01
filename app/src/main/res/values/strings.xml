@@ -29,4 +29,10 @@
     <string name="count_str">Количество таких вещей</string>
     <string name="last_order_str">В прошлый раз Вы заказывали</string>
     <string name="view_all_str">Посмотреть все предложения</string>
+    <string name="contact_us_str">Как с нами связаться?</string>
+    <string name="about_str">О приложении</string>
+    <string name="about_social_str">Мы в социальных сетях</string>
+    <string name="rate_str">Оставить отзыв</string>
+    <string name="about_bottom_str">Вы представитель химчистки?</string>
+    <string name="about_bottom_str2">Напишите нам для сотрудничества</string>
 </resources>
