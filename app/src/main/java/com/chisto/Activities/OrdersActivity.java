@@ -58,6 +58,14 @@ public class OrdersActivity extends BaseActivity {
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
 
+        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrdersActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
         findViewById(R.id.drawer_indicator2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
