@@ -44,9 +44,11 @@
             <ImageView
                     android:layout_width="44dp"
                     android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_courier"
+                    android:padding="3dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="Курьер"
+                      android:text="@string/courier_str"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -72,10 +74,12 @@
                 android:layout_height="wrap_content">
             <ImageView
                     android:layout_width="44dp"
+                    android:src="@drawable/ic_delivery"
+                    android:padding="3dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="Доставка"
+                      android:text="@string/delivery_str"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -101,9 +105,11 @@
             <ImageView
                     android:layout_width="44dp"
                     android:layout_gravity="center_horizontal|top"
+                    android:src="@drawable/ic_cost"
+                    android:padding="4dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="Стоимость"
+                      android:text="@string/cost_str"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
