@@ -35,4 +35,8 @@
     <string name="rate_str">Оставить отзыв</string>
     <string name="about_bottom_str">Вы представитель химчистки?</string>
     <string name="about_bottom_str2">Напишите нам для сотрудничества</string>
+    <string name="profile_str">Профиль</string>
+    <string name="rules_str">Правила пользования</string>
+    <string name="my_orders_str">Мои заказы</string>
+    <string name="contact_data_str">Контактные данные</string>
 </resources>
