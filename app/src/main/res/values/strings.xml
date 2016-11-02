@@ -44,4 +44,11 @@
     <string name="courier_str">Курьер</string>
     <string name="call_us_str">Позвонить нам</string>
     <string name="email_str">Написать письмо</string>
+    <string name="delete_from_order_str">Вы хотите удалить эту вещь из заказа?</string>
+    <string name="yes_code_str">ДА</string>
+    <string name="no_code_str">НЕТ</string>
+    <string name="cont_code_str">Продолжить</string>
+    <string name="send_code_str">ОТПРАВИТЬ</string>
+    <string name="back_code_str">НАЗАД</string>
+    <string name="decor_question_str">Eсть ли у вещи декоративная отделка?</string>
 </resources>

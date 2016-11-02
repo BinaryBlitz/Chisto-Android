@@ -1,35 +1,32 @@
-package com.chisto.CircularReveal.animation;
+package com.chisto.Utils.CircularReveal.animation;
 
-import android.animation.Animator;
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.view.animation.Interpolator;
+
+import com.nineoldandroids.animation.Animator;
 
 import java.lang.ref.WeakReference;
 
-@TargetApi(Build.VERSION_CODES.HONEYCOMB)
-final class SupportAnimatorLollipop extends SupportAnimator{
+final class SupportAnimatorPreL extends SupportAnimator {
 
-    WeakReference<Animator> mNativeAnimator;
+    WeakReference<Animator> mSupportFramework;
 
-    SupportAnimatorLollipop(Animator animator) {
-        mNativeAnimator = new WeakReference<Animator>(animator);
+    SupportAnimatorPreL(Animator animator) {
+        mSupportFramework = new WeakReference<Animator>(animator);
     }
 
     @Override
     public boolean isNativeAnimator() {
-        return true;
+        return false;
     }
 
     @Override
     public Object get() {
-        return mNativeAnimator.get();
+        return mSupportFramework.get();
     }
-
 
     @Override
     public void start() {
-        Animator a = mNativeAnimator.get();
+        Animator a = mSupportFramework.get();
         if(a != null) {
             a.start();
         }
@@ -37,7 +34,7 @@ final class SupportAnimatorLollipop extends SupportAnimator{
 
     @Override
     public void setDuration(int duration) {
-        Animator a = mNativeAnimator.get();
+        Animator a = mSupportFramework.get();
         if(a != null) {
             a.setDuration(duration);
         }
@@ -45,7 +42,7 @@ final class SupportAnimatorLollipop extends SupportAnimator{
 
     @Override
     public void setInterpolator(Interpolator value) {
-        Animator a = mNativeAnimator.get();
+        Animator a = mSupportFramework.get();
         if(a != null) {
             a.setInterpolator(value);
         }
@@ -53,7 +50,7 @@ final class SupportAnimatorLollipop extends SupportAnimator{
 
     @Override
     public void addListener(final AnimatorListener listener) {
-        Animator a = mNativeAnimator.get();
+        Animator a = mSupportFramework.get();
         if(a == null) {
             return;
         }
@@ -88,7 +85,7 @@ final class SupportAnimatorLollipop extends SupportAnimator{
 
     @Override
     public boolean isRunning() {
-        Animator a = mNativeAnimator.get();
+        Animator a = mSupportFramework.get();
         return a != null && a.isRunning();
     }
 }

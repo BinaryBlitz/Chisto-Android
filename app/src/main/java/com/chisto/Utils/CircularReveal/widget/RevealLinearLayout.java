@@ -1,4 +1,4 @@
-package com.chisto.CircularReveal.widget;
+package com.chisto.Utils.CircularReveal.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.chisto.CircularReveal.animation.RevealAnimator;
+import com.chisto.Utils.CircularReveal.animation.RevealAnimator;
 
 public class RevealLinearLayout extends LinearLayout implements RevealAnimator {
 
@@ -34,48 +34,21 @@ public class RevealLinearLayout extends LinearLayout implements RevealAnimator {
         mRevealPath = new Path();
     }
 
-    /**
-     * @hide
-     */
     @Override
     public void setTarget(View view){
         mTarget = view;
     }
 
-    /**
-     * @hide
-     */
     @Override
     public void setCenter(float centerX, float centerY){
         mCenterX = centerX;
         mCenterY = centerY;
     }
 
-    /**
-     * @hide
-     */
     @Override
     public void setClipOutlines(boolean clip){
         mClipOutlines = clip;
     }
-
-    /**
-     * @hide
-     */
-    @Override
-    public void setRevealRadius(float radius){
-        mRadius = radius;
-        invalidate();
-    }
-
-    /**
-     * @hide
-     */
-    @Override
-    public float getRevealRadius(){
-        return mRadius;
-    }
-
 
     @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {

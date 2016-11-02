@@ -42,7 +42,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:id="@+id/title"
+                            android:id="@+id/main_title"
                             android:textColor="#ffffff"
                             android:textSize="28sp"
                             app:layout_collapseMode="pin"

@@ -37,24 +37,31 @@ public class ItemInfoActivity extends BaseActivity {
 
     private TextView count;
 
+    public static final String EXTRA_COLOR = "color";
+    public static final String EXTRA_INDEX = "index";
+    public static final String EXTRA_EDIT = "edit";
+    public static final String EXTRA_ID = "id";
+    public static final String EXTRA_NAME = "name";
+
+    public static final int DEFAULT_COLOR = Color.parseColor("#212121");
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_item_info);
 
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
         count = (TextView) findViewById(R.id.textView);
 
-        findViewById(R.id.appbar).setBackgroundColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
-        AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", Color.parseColor("#212121")));
+        initRecyclerView();
 
+        final Order order = OrderList.get(getIntent().getIntExtra(EXTRA_INDEX, 0));
+
+        setInfo(order);
+        setOnClickListeners(order);
+    }
+
+    private void initRecyclerView() {
         view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
@@ -65,25 +72,33 @@ public class ItemInfoActivity extends BaseActivity {
         view.setAdapter(adapter);
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
+    }
 
-        final Order order = OrderList.get(getIntent().getIntExtra("index", 0));
+    private void setInfo(final Order order) {
+        findViewById(R.id.appbar).setBackgroundColor(getIntent().getIntExtra(EXTRA_COLOR, DEFAULT_COLOR));
+        AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra(EXTRA_COLOR, DEFAULT_COLOR));
+
         if (order != null) {
             ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
             ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDesc());
             ((TextView) findViewById(R.id.textView)).setText(Integer.toString(order.getCount()));
         }
+    }
+
+    private void setOnClickListeners(final Order order) {
+        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ItemInfoActivity.this, SelectServiceActivity.class);
-                intent.putExtra("edit", true);
-                intent.putExtra("id", order.getCategory().getId());
-                intent.putExtra("name", order.getCategory().getName());
-                startActivity(intent);
+                openActivity(order);
             }
         });
-
 
         findViewById(R.id.plus_btn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,20 +111,7 @@ public class ItemInfoActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (Integer.parseInt(count.getText().toString()) == 1) {
-                    new MaterialDialog.Builder(ItemInfoActivity.this)
-                            .title("Chisto")
-                            .content("Вы хотите удалить эту вещь из заказа?")
-                            .positiveText("ДА")
-                            .negativeText("НЕТ")
-                            .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                @Override
-                                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                    OrderList.removeCurrent();
-                                    finish();
-                                }
-                            })
-                            .show();
-                    return;
+                    showDialog();
                 }
                 count.setText(Integer.toString(Integer.parseInt(count.getText().toString()) - 1));
             }
@@ -122,6 +124,30 @@ public class ItemInfoActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    private void openActivity(final Order order) {
+        Intent intent = new Intent(ItemInfoActivity.this, SelectServiceActivity.class);
+        intent.putExtra(EXTRA_EDIT, true);
+        intent.putExtra(EXTRA_ID, order != null ? order.getCategory().getId() : 0);
+        intent.putExtra(EXTRA_NAME, order != null ? order.getCategory().getName() : "");
+        startActivity(intent);
+    }
+
+    private void showDialog() {
+        new MaterialDialog.Builder(ItemInfoActivity.this)
+                .title(R.string.app_name)
+                .content(R.string.delete_from_order_str)
+                .positiveText(R.string.yes_code_str)
+                .negativeText(R.string.no_code_str)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        OrderList.removeCurrent();
+                        finish();
+                    }
+                })
+                .show();
     }
 
     private void setUpItemTouchHelper() {
@@ -197,6 +223,7 @@ public class ItemInfoActivity extends BaseActivity {
             }
 
         };
+
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         mItemTouchHelper.attachToRecyclerView(view);
     }

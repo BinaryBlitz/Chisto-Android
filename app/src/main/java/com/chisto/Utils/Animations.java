@@ -7,8 +7,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.chisto.CircularReveal.animation.SupportAnimator;
-import com.chisto.CircularReveal.animation.ViewAnimationUtils;
+import com.chisto.Utils.CircularReveal.animation.SupportAnimator;
+import com.chisto.Utils.CircularReveal.animation.ViewAnimationUtils;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
 public class Animations {

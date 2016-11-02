@@ -12,7 +12,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
             android:textSize="18sp"
-            android:id="@+id/textView4"/>
+            android:id="@+id/name"/>
 
     <ImageView
             android:layout_width="32dp"

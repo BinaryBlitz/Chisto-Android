@@ -19,7 +19,6 @@ import com.chisto.Model.CategoryItem;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
 import com.chisto.Utils.AndroidUtilities;
-import com.chisto.Utils.LogUtil;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -78,24 +77,9 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         ServerApi.get(this).api().getItems(getIntent().getIntExtra("id", 0)).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                LogUtil.logError(response.body().toString());
                 layout.setRefreshing(false);
-                if(response.isSuccessful()) {
-                    ArrayList<CategoryItem> collection = new ArrayList<>();
-                    JsonArray array = response.body();
-
-                    for (int i = 0; i < array.size(); i++) {
-                        JsonObject object = array.get(i).getAsJsonObject();
-                        collection.add(new CategoryItem(
-                                object.get("id").getAsInt(),
-                                object.get("icon").getAsString(),
-                                object.get("name").getAsString(),
-                                object.get("description").isJsonNull() ? "" : object.get("description").getAsString()
-                        ));
-                    }
-
-                    adapter.setCategories(collection);
-                    adapter.notifyDataSetChanged();
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
                 } else {
                     onInternetConnectionError();
                 }
@@ -107,5 +91,22 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
                 onInternetConnectionError();
             }
         });
+    }
+
+    private void parseAnswer(JsonArray array) {
+        ArrayList<CategoryItem> collection = new ArrayList<>();
+
+        for (int i = 0; i < array.size(); i++) {
+            JsonObject object = array.get(i).getAsJsonObject();
+            collection.add(new CategoryItem(
+                    object.get("id").getAsInt(),
+                    object.get("icon").getAsString(),
+                    object.get("name").getAsString(),
+                    object.get("description").isJsonNull() ? "" : object.get("description").getAsString()
+            ));
+        }
+
+        adapter.setCategories(collection);
+        adapter.notifyDataSetChanged();
     }
 }

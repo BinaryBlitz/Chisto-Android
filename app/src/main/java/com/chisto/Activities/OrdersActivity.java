@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,8 +17,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.chisto.Adapters.OrdersAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
@@ -44,20 +41,26 @@ public class OrdersActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_orders);
 
+        contBtn = (TextView) findViewById(R.id.textView2);
+
+        initRecyclerView();
+        setOnClickListeners();
+    }
+
+    private void initRecyclerView() {
         view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
         view.setEmptyView(findViewById(R.id.empty_orders));
 
-        contBtn = (TextView) findViewById(R.id.textView2);
-
         adapter = new OrdersAdapter(this);
         view.setAdapter(adapter);
-
         setUpItemTouchHelper();
         setUpAnimationDecoratorHelper();
+    }
 
+    private void setOnClickListeners() {
         findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,7 +109,7 @@ public class OrdersActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(dialogOpened) {
+        if (dialogOpened) {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
@@ -114,6 +117,41 @@ public class OrdersActivity extends BaseActivity {
                     Animations.animateRevealHide(findViewById(R.id.dialog));
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        update();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void update() {
+        if (OrderList.get() != null) {
+            adapter.setCollection(OrderList.get());
+            adapter.notifyDataSetChanged();
+
+            if (adapter.getItemCount() != 0) {
+                contBtn.setText(R.string.cont_code_str);
+                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, R.color.colorPrimary));
+                contBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        new Handler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                dialogOpened = true;
+                                Animations.animateRevealShow(findViewById(R.id.dialog), OrdersActivity.this);
+                            }
+                        });
+                    }
+                });
+            } else {
+                contBtn.setText(R.string.nothing_selected_code_str);
+                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, R.color.greyColor));
+                contBtn.setOnClickListener(null);
+            }
         }
     }
 
@@ -141,7 +179,7 @@ public class OrdersActivity extends BaseActivity {
             @Override
             public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
                 int position = viewHolder.getAdapterPosition();
-                OrdersAdapter testAdapter = (OrdersAdapter)recyclerView.getAdapter();
+                OrdersAdapter testAdapter = (OrdersAdapter) recyclerView.getAdapter();
                 if (testAdapter.getUndoOn() && testAdapter.isPendingRemoval(position)) {
                     return 0;
                 }
@@ -151,7 +189,7 @@ public class OrdersActivity extends BaseActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
                 int swipedPosition = viewHolder.getAdapterPosition();
-                OrdersAdapter adapter = (OrdersAdapter)view.getAdapter();
+                OrdersAdapter adapter = (OrdersAdapter) view.getAdapter();
                 boolean undoOn = adapter.getUndoOn();
                 if (undoOn) {
                     adapter.pendingRemoval(swipedPosition);
@@ -180,7 +218,7 @@ public class OrdersActivity extends BaseActivity {
 
                 int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
                 int xMarkRight = itemView.getRight() - xMarkMargin;
-                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
+                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
                 int xMarkBottom = xMarkTop + intrinsicHeight;
                 xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
 
@@ -253,35 +291,5 @@ public class OrdersActivity extends BaseActivity {
             }
 
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(OrderList.get() != null) {
-            adapter.setCollection(OrderList.get());
-            adapter.notifyDataSetChanged();
-
-            if(adapter.getItemCount() != 0) {
-                contBtn.setText("Продолжить");
-                contBtn.setBackgroundColor(Color.parseColor("#4bc2f7"));
-                contBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialogOpened = true;
-                                Animations.animateRevealShow(findViewById(R.id.dialog), OrdersActivity.this);
-                            }
-                        });
-                    }
-                });
-            } else {
-                contBtn.setText("Ничего не выбрано");
-                contBtn.setBackgroundColor(Color.parseColor("#727272"));
-                contBtn.setOnClickListener(null);
-            }
-        }
     }
 }

@@ -1,4 +1,4 @@
-package com.chisto.CircularReveal.animation;
+package com.chisto.Utils.CircularReveal.animation;
 
 import android.annotation.TargetApi;
 import android.graphics.Rect;
@@ -9,29 +9,22 @@ import com.nineoldandroids.animation.Animator;
 
 import java.lang.ref.WeakReference;
 
-/**
- * @hide
- */
 public interface RevealAnimator{
 
-    public void setClipOutlines(boolean clip);
+    void setClipOutlines(boolean clip);
 
-    public void setCenter(float cx, float cy);
+    void setCenter(float cx, float cy);
 
-    public void setTarget(View target);
+    void setTarget(View target);
 
-    public void setRevealRadius(float value);
+    void invalidate(Rect bounds);
 
-    public float getRevealRadius();
-
-    public void invalidate(Rect bounds);
-
-    static class RevealFinishedGingerbread extends ViewAnimationUtils.SimpleAnimationListener {
+    class RevealFinishedGingerbread extends ViewAnimationUtils.SimpleAnimationListener {
         WeakReference<RevealAnimator> mReference;
         volatile Rect mInvalidateBounds;
 
         RevealFinishedGingerbread(RevealAnimator target, Rect bounds) {
-            mReference = new WeakReference<RevealAnimator>(target);
+            mReference = new WeakReference<>(target);
             mInvalidateBounds = bounds;
         }
 
@@ -52,7 +45,7 @@ public interface RevealAnimator{
         }
     }
 
-    static class RevealFinishedIceCreamSandwich extends ViewAnimationUtils.SimpleAnimationListener {
+    class RevealFinishedIceCreamSandwich extends ViewAnimationUtils.SimpleAnimationListener {
         WeakReference<RevealAnimator> mReference;
         volatile Rect mInvalidateBounds;
 
@@ -92,7 +85,7 @@ public interface RevealAnimator{
         }
     }
 
-    static class RevealFinishedJellyBeanMr2 extends ViewAnimationUtils.SimpleAnimationListener {
+    class RevealFinishedJellyBeanMr2 extends ViewAnimationUtils.SimpleAnimationListener {
         WeakReference<RevealAnimator> mReference;
         volatile Rect mInvalidateBounds;
 
