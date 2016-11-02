@@ -51,4 +51,5 @@
     <string name="send_code_str">ОТПРАВИТЬ</string>
     <string name="back_code_str">НАЗАД</string>
     <string name="decor_question_str">Eсть ли у вещи декоративная отделка?</string>
+    <string name="laundaries_str">Прачечные</string>
 </resources>

@@ -14,6 +14,9 @@ public interface ApiEndpoints {
     @GET("categories")
     Call<JsonArray> getCategories();
 
+    @GET("cities/{id}/laundries")
+    Call<JsonArray> getLaundries(@Path("id") int id);
+
     @GET("categories/{id}/items")
     Call<JsonArray> getItems(@Path("id") int id);
 
