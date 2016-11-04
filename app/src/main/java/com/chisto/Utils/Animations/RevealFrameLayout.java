@@ -1,4 +1,4 @@
-package com.chisto.Utils.CircularReveal.widget;
+package com.chisto.Utils.Animations;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,8 +6,6 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
-
-import com.chisto.Utils.CircularReveal.animation.RevealAnimator;
 
 public class RevealFrameLayout extends FrameLayout implements RevealAnimator {
 
@@ -35,24 +33,24 @@ public class RevealFrameLayout extends FrameLayout implements RevealAnimator {
     }
 
     @Override
-    public void setTarget(View view){
+    public void setTarget(View view) {
         mTarget = view;
     }
 
     @Override
-    public void setCenter(float centerX, float centerY){
+    public void setCenter(float centerX, float centerY) {
         mCenterX = centerX;
         mCenterY = centerY;
     }
 
     @Override
-    public void setClipOutlines(boolean clip){
+    public void setClipOutlines(boolean clip) {
         mClipOutlines = clip;
     }
 
     @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
-        if(!mClipOutlines && child != mTarget)
+        if (!mClipOutlines && child != mTarget)
             return super.drawChild(canvas, child, drawingTime);
 
         final int state = canvas.save();
@@ -68,5 +66,4 @@ public class RevealFrameLayout extends FrameLayout implements RevealAnimator {
 
         return isInvalided;
     }
-
 }

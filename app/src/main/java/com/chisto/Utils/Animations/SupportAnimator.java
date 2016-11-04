@@ -1,10 +1,8 @@
-package com.chisto.Utils.CircularReveal.animation;
+package com.chisto.Utils.Animations;
 
 import android.view.animation.Interpolator;
 
-public abstract class SupportAnimator {
-
-    public abstract boolean isNativeAnimator();
+abstract class SupportAnimator {
 
     public abstract Object get();
 
@@ -16,9 +14,7 @@ public abstract class SupportAnimator {
 
     public abstract void addListener(AnimatorListener listener);
 
-    public abstract boolean isRunning();
-
-    public interface AnimatorListener {
+    interface AnimatorListener {
 
         void onAnimationStart();
 

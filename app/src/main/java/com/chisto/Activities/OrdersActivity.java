@@ -21,7 +21,7 @@ import com.chisto.Adapters.OrdersAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.R;
-import com.chisto.Utils.Animations;
+import com.chisto.Utils.Animations.Animations;
 import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 

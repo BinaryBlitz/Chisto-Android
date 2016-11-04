@@ -1,4 +1,4 @@
-package com.chisto.Utils;
+package com.chisto.Utils.Animations;
 
 import android.app.Activity;
 import android.graphics.Point;
@@ -7,15 +7,13 @@ import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 
-import com.chisto.Utils.CircularReveal.animation.SupportAnimator;
-import com.chisto.Utils.CircularReveal.animation.ViewAnimationUtils;
 import com.nineoldandroids.view.ViewPropertyAnimator;
 
+@SuppressWarnings("unused")
 public class Animations {
 
     //region Circular Reveal
     public static void animateRevealShow(final View v, Activity activity) {
-        // get the center for the clipping circle
         int cx = 0;
         int cy = 0;
 
@@ -25,7 +23,6 @@ public class Animations {
         int width = size.x;
         int height = size.y;
 
-        // get the final radius for the clipping circle
         int finalRadius = Math.max(width, height);
         SupportAnimator animator =
                 ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, finalRadius);

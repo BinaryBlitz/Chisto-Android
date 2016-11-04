@@ -1,61 +1,64 @@
-package com.chisto.Utils.CircularReveal.animation;
+package com.chisto.Utils.Animations;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.view.animation.Interpolator;
-
-import com.nineoldandroids.animation.Animator;
 
 import java.lang.ref.WeakReference;
 
-final class SupportAnimatorPreL extends SupportAnimator {
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+final class SupportAnimatorLollipop extends SupportAnimator {
 
-    WeakReference<Animator> mSupportFramework;
+    private WeakReference<Animator> mNativeAnimator;
 
-    SupportAnimatorPreL(Animator animator) {
-        mSupportFramework = new WeakReference<Animator>(animator);
+    SupportAnimatorLollipop(Animator animator) {
+        mNativeAnimator = new WeakReference<>(animator);
     }
 
     @Override
     public boolean isNativeAnimator() {
-        return false;
+        return true;
     }
 
     @Override
     public Object get() {
-        return mSupportFramework.get();
+        return mNativeAnimator.get();
     }
+
 
     @Override
     public void start() {
-        Animator a = mSupportFramework.get();
-        if(a != null) {
+        Animator a = mNativeAnimator.get();
+        if (a != null) {
             a.start();
         }
     }
 
     @Override
     public void setDuration(int duration) {
-        Animator a = mSupportFramework.get();
-        if(a != null) {
+        Animator a = mNativeAnimator.get();
+        if (a != null) {
             a.setDuration(duration);
         }
     }
 
     @Override
     public void setInterpolator(Interpolator value) {
-        Animator a = mSupportFramework.get();
-        if(a != null) {
+        Animator a = mNativeAnimator.get();
+        if (a != null) {
             a.setInterpolator(value);
         }
     }
 
     @Override
     public void addListener(final AnimatorListener listener) {
-        Animator a = mSupportFramework.get();
-        if(a == null) {
+        Animator a = mNativeAnimator.get();
+        if (a == null) {
             return;
         }
 
-        if(listener == null){
+        if (listener == null) {
             a.addListener(null);
             return;
         }
@@ -85,7 +88,7 @@ final class SupportAnimatorPreL extends SupportAnimator {
 
     @Override
     public boolean isRunning() {
-        Animator a = mSupportFramework.get();
+        Animator a = mNativeAnimator.get();
         return a != null && a.isRunning();
     }
 }

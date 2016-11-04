@@ -1,4 +1,4 @@
-package com.chisto.Utils.CircularReveal.animation;
+package com.chisto.Utils.Animations;
 
 import android.annotation.TargetApi;
 import android.graphics.Rect;
@@ -9,7 +9,7 @@ import com.nineoldandroids.animation.Animator;
 
 import java.lang.ref.WeakReference;
 
-public interface RevealAnimator{
+interface RevealAnimator {
 
     void setClipOutlines(boolean clip);
 
@@ -34,7 +34,7 @@ public interface RevealAnimator{
 
             RevealAnimator target = mReference.get();
 
-            if(target == null){
+            if (target == null) {
                 return;
             }
 
@@ -74,7 +74,7 @@ public interface RevealAnimator{
 
             RevealAnimator target = mReference.get();
 
-            if(target == null){
+            if (target == null) {
                 return;
             }
 
@@ -114,7 +114,7 @@ public interface RevealAnimator{
 
             RevealAnimator target = mReference.get();
 
-            if(target == null){
+            if (target == null) {
                 return;
             }
 
