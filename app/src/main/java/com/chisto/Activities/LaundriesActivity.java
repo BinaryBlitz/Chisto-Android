@@ -11,6 +11,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.chisto.Adapters.LaundriesAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
@@ -44,6 +45,13 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
             }
         });
 
+        findViewById(R.id.right_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
@@ -68,6 +76,26 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         load();
+    }
+
+    private void showDialog() {
+        ArrayList<String> items = new ArrayList<>();
+        items.add(getString(R.string.cost_filter_str));
+        items.add(getString(R.string.speed_filter_str));
+        items.add(getString(R.string.rate_filter_str));
+
+        new MaterialDialog.Builder(this)
+                .title(R.string.title)
+                .items(items)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        // TODO
+                        return true;
+                    }
+                })
+                .positiveText(R.string.choose)
+                .show();
     }
 
     private void load() {

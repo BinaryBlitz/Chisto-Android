@@ -52,4 +52,9 @@
     <string name="back_code_str">НАЗАД</string>
     <string name="decor_question_str">Eсть ли у вещи декоративная отделка?</string>
     <string name="laundaries_str">Прачечные</string>
+    <string name="title">Фильтр</string>
+    <string name="choose">Выбрать</string>
+    <string name="cost_filter_str">По цене</string>
+    <string name="speed_filter_str">По скорости</string>
+    <string name="rate_filter_str">По рейтингу</string>
 </resources>

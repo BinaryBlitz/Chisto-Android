@@ -30,7 +30,6 @@
                 android:gravity="center"
                 android:textColor="#ffffff"
                 android:paddingBottom="26dp"
-                android:text="qwerty"
                 android:layout_height="72dp"/>
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -40,7 +39,6 @@
                   android:layout_marginEnd="100dp"
                   android:layout_marginRight="100dp"
                   android:textSize="18sp"
-                  android:text="qwerty"
                   android:textColor="#212121"
                   android:layout_marginLeft="100dp"
                   android:layout_gravity="center_vertical"
@@ -51,7 +49,6 @@
                   android:id="@+id/description"
                   android:textSize="16sp"
                   android:textColor="#727272"
-                  android:text="qwety"
                   android:layout_marginStart="100dp"
                   android:layout_marginLeft="100dp"
                   android:layout_marginEnd="100dp"
@@ -96,13 +93,11 @@
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="qwerty"
                       android:layout_gravity="center_horizontal"
                       android:layout_marginTop="12dp"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
-                      android:text="qwerty"
                       android:layout_marginTop="4dp"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
@@ -127,13 +122,11 @@
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="qwerty"
                       android:layout_marginTop="12dp"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
-                      android:text="qwerty"
                       android:layout_marginTop="4dp"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
@@ -157,7 +150,6 @@
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="3400Р"
                       android:layout_marginTop="18dp"
                       android:textSize="18sp"
                       android:textColor="#388E3C"
