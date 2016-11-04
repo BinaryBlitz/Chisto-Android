@@ -18,6 +18,7 @@ import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.Laundry;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
+import com.chisto.Server.ServerConfig;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -125,7 +126,7 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
             JsonObject object = array.get(i).getAsJsonObject();
             collection.add(new Laundry(
                     object.get("id").getAsInt(),
-                    object.get("logo_url").getAsString(),
+                    ServerConfig.INSTANCE.getImageUrl() + object.get("logo_url").getAsString(),
                     object.get("name").getAsString(),
                     object.get("description").getAsString(),
                     object.get("category").getAsString()

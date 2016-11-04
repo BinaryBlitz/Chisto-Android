@@ -18,6 +18,7 @@ import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.CategoryItem;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
+import com.chisto.Server.ServerConfig;
 import com.chisto.Utils.AndroidUtilities;
 import com.crashlytics.android.Crashlytics;
 
@@ -100,7 +101,7 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
             JsonObject object = array.get(i).getAsJsonObject();
             collection.add(new CategoryItem(
                     object.get("id").getAsInt(),
-                    object.get("icon").getAsString(),
+                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon").getAsString(),
                     object.get("name").getAsString(),
                     object.get("description").isJsonNull() ? "" : object.get("description").getAsString()
             ));

@@ -57,4 +57,6 @@
     <string name="cost_filter_str">По цене</string>
     <string name="speed_filter_str">По скорости</string>
     <string name="rate_filter_str">По рейтингу</string>
+    <string name="laundary_code_str">"В химчистке "</string>
+    <string name="order_code_str">"Заказать в "</string>
 </resources>

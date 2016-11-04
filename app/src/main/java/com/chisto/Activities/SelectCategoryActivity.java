@@ -18,6 +18,7 @@ import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.Category;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
+import com.chisto.Server.ServerConfig;
 import com.chisto.Utils.LogUtil;
 import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
@@ -108,7 +109,7 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
                     object.get("id").getAsInt(),
                     object.get("name").getAsString(),
                     object.get("description").getAsString(),
-                    object.get("icon").getAsString(),
+                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon").getAsString(),
                     ContextCompat.getColor(this, R.color.greyColor)
             ));
         }

@@ -15,11 +15,6 @@ final class SupportAnimatorPreL extends SupportAnimator {
     }
 
     @Override
-    public boolean isNativeAnimator() {
-        return false;
-    }
-
-    @Override
     public Object get() {
         return mSupportFramework.get();
     }
@@ -81,11 +76,5 @@ final class SupportAnimatorPreL extends SupportAnimator {
                 listener.onAnimationRepeat();
             }
         });
-    }
-
-    @Override
-    public boolean isRunning() {
-        Animator a = mSupportFramework.get();
-        return a != null && a.isRunning();
     }
 }

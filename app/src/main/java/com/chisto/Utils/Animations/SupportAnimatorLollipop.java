@@ -17,15 +17,9 @@ final class SupportAnimatorLollipop extends SupportAnimator {
     }
 
     @Override
-    public boolean isNativeAnimator() {
-        return true;
-    }
-
-    @Override
     public Object get() {
         return mNativeAnimator.get();
     }
-
 
     @Override
     public void start() {
@@ -84,11 +78,5 @@ final class SupportAnimatorLollipop extends SupportAnimator {
                 listener.onAnimationRepeat();
             }
         });
-    }
-
-    @Override
-    public boolean isRunning() {
-        Animator a = mNativeAnimator.get();
-        return a != null && a.isRunning();
     }
 }

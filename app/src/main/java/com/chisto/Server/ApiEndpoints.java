@@ -1,6 +1,7 @@
 package com.chisto.Server;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,4 +23,7 @@ public interface ApiEndpoints {
 
     @GET("items/{id}/treatments")
     Call<JsonArray> getTreatments(@Path("id") int id);
+
+    @GET("laundries/{id}?api_token=foobar")
+    Call<JsonObject> getLaundry(@Path("id") int id);
 }
