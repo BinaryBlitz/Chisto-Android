@@ -41,7 +41,7 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         findViewById(R.id.toolbar).setBackgroundColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
         AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", Color.parseColor("#212121")));
 
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

@@ -61,7 +61,7 @@ public class OrdersActivity extends BaseActivity {
     }
 
     private void setOnClickListeners() {
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OrdersActivity.this, ProfileActivity.class);
@@ -69,7 +69,7 @@ public class OrdersActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.drawer_indicator2).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.right_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OrdersActivity.this, SelectCategoryActivity.class);
@@ -138,13 +138,15 @@ public class OrdersActivity extends BaseActivity {
                 contBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialogOpened = true;
-                                Animations.animateRevealShow(findViewById(R.id.dialog), OrdersActivity.this);
-                            }
-                        });
+                        Intent intent = new Intent(OrdersActivity.this, LaundriesActivity.class);
+                        startActivity(intent);
+//                        new Handler().post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                dialogOpened = true;
+//                                Animations.animateRevealShow(findViewById(R.id.dialog), OrdersActivity.this);
+//                            }
+//                        });
                     }
                 });
             } else {

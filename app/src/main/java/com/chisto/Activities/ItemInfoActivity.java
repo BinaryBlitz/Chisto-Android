@@ -86,7 +86,7 @@ public class ItemInfoActivity extends BaseActivity {
     }
 
     private void setOnClickListeners(final Order order) {
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

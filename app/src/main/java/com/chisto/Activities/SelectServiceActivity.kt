@@ -48,7 +48,7 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
         (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
 
-        findViewById(R.id.drawer_indicator).setOnClickListener { finish() }
+        findViewById(R.id.left_btn).setOnClickListener { finish() }
 
         findViewById(R.id.cont_btn).setOnClickListener {
             openActivity()
@@ -113,6 +113,7 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
     private fun parseAnswer(array: JsonArray) {
         val collection = ArrayList<Treatment>()
 
+        // TODO change this
         collection.add(Treatment(
                 1,
                 "Декор",

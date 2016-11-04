@@ -14,7 +14,7 @@ public interface ApiEndpoints {
     @GET("categories")
     Call<JsonArray> getCategories();
 
-    @GET("cities/{id}/laundries")
+    @GET("cities/{id}/laundries?api_token=foobar")
     Call<JsonArray> getLaundries(@Path("id") int id);
 
     @GET("categories/{id}/items")

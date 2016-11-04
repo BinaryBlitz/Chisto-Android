@@ -1,20 +1,25 @@
 package com.chisto.Activities;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.chisto.Adapters.CitiesAdapter;
+import com.chisto.Adapters.LaundriesAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
+import com.chisto.Model.Laundry;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
 import com.crashlytics.android.Crashlytics;
+
+import java.util.ArrayList;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -23,7 +28,7 @@ import retrofit2.Response;
 
 public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private CitiesAdapter adapter;
+    private LaundriesAdapter adapter;
     private SwipeRefreshLayout layout;
 
     @Override
@@ -32,7 +37,7 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_laundries);
 
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -45,18 +50,24 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
         view.setHasFixedSize(true);
         view.setEmptyView(null);
 
-//        adapter = new CitiesAdapter(this);
-//        view.setAdapter(adapter);
+        adapter = new LaundriesAdapter(this);
+        view.setAdapter(adapter);
 
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         layout.setOnRefreshListener(this);
         layout.setColorSchemeResources(R.color.colorAccent);
 
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                load();
+            }
+        }, 150);
     }
 
     @Override
     public void onRefresh() {
-
+        load();
     }
 
     private void load() {
@@ -64,8 +75,8 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if(response.isSuccessful()) {
-
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
                 } else {
                     onInternetConnectionError();
                 }
@@ -77,5 +88,23 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
                 onInternetConnectionError();
             }
         });
+    }
+
+    private void parseAnswer(JsonArray array) {
+        ArrayList<Laundry> collection = new ArrayList<>();
+
+        for(int i = 0; i < array.size(); i++) {
+            JsonObject object = array.get(i).getAsJsonObject();
+            collection.add(new Laundry(
+                    object.get("id").getAsInt(),
+                    object.get("logo_url").getAsString(),
+                    object.get("name").getAsString(),
+                    object.get("description").getAsString(),
+                    object.get("category").getAsString()
+            ));
+        }
+
+        adapter.setCollection(collection);
+        adapter.notifyDataSetChanged();
     }
 }

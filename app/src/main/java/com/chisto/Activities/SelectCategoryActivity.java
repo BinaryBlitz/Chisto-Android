@@ -39,7 +39,7 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_select_category);
 
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 OrderList.removeCurrent();

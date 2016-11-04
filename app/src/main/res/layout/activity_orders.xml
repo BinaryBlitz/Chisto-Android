@@ -33,7 +33,7 @@
                 android:id="@+id/action_bar">
 
             <ImageView
-                    android:id="@+id/drawer_indicator"
+                    android:id="@+id/left_btn"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
@@ -43,7 +43,7 @@
             />
 
             <ImageView
-                    android:id="@+id/drawer_indicator2"
+                    android:id="@+id/right_btn"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
