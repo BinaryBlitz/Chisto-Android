@@ -25,10 +25,9 @@ public class Image {
         config.threadPriority(Thread.NORM_PRIORITY - 2);
         config.denyCacheImageMultipleSizesInMemory();
         config.diskCacheFileNameGenerator(new Md5FileNameGenerator());
-        config.diskCacheSize(50 * 1024 * 1024); // 50 MiB
+        config.diskCacheSize(50 * 1024 * 1024);
         config.tasksProcessingOrder(QueueProcessingType.LIFO);
 
-        // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config.build());
 
         options = new DisplayImageOptions.Builder()

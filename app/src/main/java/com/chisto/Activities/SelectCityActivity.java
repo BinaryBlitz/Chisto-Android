@@ -31,7 +31,6 @@ import com.chisto.Custom.RecyclerListView;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
 import com.chisto.Utils.LogUtil;
-import com.chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import java.io.IOException;
@@ -43,8 +42,6 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
 
 public class SelectCityActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -68,15 +65,7 @@ public class SelectCityActivity extends BaseActivity
             }
         });
 
-        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
-        view.setLayoutManager(new LinearLayoutManager(this));
-        view.setItemAnimator(new DefaultItemAnimator());
-        view.setHasFixedSize(true);
-        adapter = new CitiesAdapter(this);
-        view.setAdapter(adapter);
-        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(R.color.colorAccent);
+        initList();
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -94,39 +83,7 @@ public class SelectCityActivity extends BaseActivity
             }
         }, 200);
 
-        findViewById(R.id.my_loc_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getLocation();
-            }
-        });
-
-        findViewById(R.id.city_not_found_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MaterialDialog.Builder(SelectCityActivity.this)
-                        .title("Chisto")
-                        .customView(R.layout.city_not_found_dialog, true)
-                        .positiveText("ОТПРАВИТЬ")
-                        .negativeText("НАЗАД")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                Intent intent = new Intent(SelectCityActivity.this, OrdersActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
-                        })
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-            }
-        });
+        setOnClickListeners();
     }
 
     @Override
@@ -184,21 +141,43 @@ public class SelectCityActivity extends BaseActivity
         Snackbar.make(findViewById(R.id.main), R.string.city_error, Snackbar.LENGTH_SHORT).show();
     }
 
+    private void setOnClickListeners() {
+        findViewById(R.id.my_loc_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLocation();
+            }
+        });
+
+        findViewById(R.id.city_not_found_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialog();
+            }
+        });
+    }
+
+    private void initList() {
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
+        view.setLayoutManager(new LinearLayoutManager(this));
+        view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
+
+        adapter = new CitiesAdapter(this);
+        view.setAdapter(adapter);
+
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(this);
+        layout.setColorSchemeResources(R.color.colorAccent);
+    }
+
     private void load() {
         ServerApi.get(this).api().getCitiesList().enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
                 if (response.isSuccessful()) {
-                    JsonArray array = response.body();
-                    ArrayList<CitiesAdapter.City> collection = new ArrayList<>();
-
-                    for (int i = 0; i < array.size(); i++) {
-                        collection.add(new CitiesAdapter.City(array.get(i).getAsJsonObject().get("name").getAsString(), false));
-                    }
-
-                    adapter.setCollection(collection);
-                    adapter.notifyDataSetChanged();
+                    parseAnswer(response.body());
                 } else {
                     onInternetConnectionError();
                 }
@@ -210,6 +189,41 @@ public class SelectCityActivity extends BaseActivity
                 onInternetConnectionError();
             }
         });
+    }
+
+    private void parseAnswer(JsonArray array) {
+        ArrayList<CitiesAdapter.City> collection = new ArrayList<>();
+
+        for (int i = 0; i < array.size(); i++) {
+            collection.add(new CitiesAdapter.City(array.get(i).getAsJsonObject().get("name").getAsString(), false));
+        }
+
+        adapter.setCollection(collection);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showDialog() {
+        new MaterialDialog.Builder(SelectCityActivity.this)
+                .title(R.string.app_name)
+                .customView(R.layout.city_not_found_dialog, true)
+                .positiveText(R.string.send_code_str)
+                .negativeText(R.string.back_code_str)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(SelectCityActivity.this, OrdersActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
     }
 
     private void load(double latitude, double longitude) {

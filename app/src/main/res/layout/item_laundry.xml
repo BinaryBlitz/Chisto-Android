@@ -1,28 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:background="#ffffff"
-              android:id="@+id/main_dialog_part"
-              android:layout_margin="12dp"
-             android:layout_gravity="center"
-              android:layout_height="500dp">
-    <ImageView
-        android:layout_width="match_parent"
-        android:background="#212121"
-        android:id="@+id/back_image"
-        android:layout_height="110dp"/>
+              android:layout_height="match_parent">
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+        <ImageView
+                android:layout_width="72dp"
+                android:layout_gravity="end"
+                android:id="@+id/type"
+                android:src="@drawable/premium_bg"
+                android:layout_height="72dp"/>
+        <ImageView
+                android:layout_width="72dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="12dp"
+                android:layout_marginStart="12dp"
+                android:id="@+id/category_icon"
+                android:src="@drawable/ic_app_mini_logo"
+                android:layout_height="72dp"/>
 
-    <ImageView
-            android:layout_width="56dp"
-            android:src="@drawable/ic_near_me"
-            android:background="@drawable/blue_circle"
-            android:padding="5dp"
-            android:id="@+id/logo_image"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="82dp"
-            android:layout_height="56dp"/>
+        <TextView
+                android:layout_width="72dp"
+                android:layout_gravity="end"
+                android:id="@+id/type_text"
+                android:rotation="45"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:paddingBottom="26dp"
+                android:layout_height="72dp"/>
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/name"
+                  android:layout_marginStart="100dp"
+                  android:textStyle="bold"
+                  android:layout_marginEnd="100dp"
+                  android:layout_marginRight="100dp"
+                  android:textSize="18sp"
+                  android:textColor="#212121"
+                  android:layout_marginLeft="100dp"
+                  android:layout_gravity="center_vertical"
+                  android:layout_marginBottom="26dp"/>
 
+        <TextView android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/description"
+                  android:textSize="16sp"
+                  android:textColor="#727272"
+                  android:layout_marginStart="100dp"
+                  android:layout_marginLeft="100dp"
+                  android:layout_marginEnd="100dp"
+                  android:layout_marginRight="100dp"
+                  android:layout_gravity="center_vertical"
+                  android:layout_marginBottom="4dp"/>
+
+        <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:rating="3.5"
+                android:stepSize="0.5"
+                android:numStars="5"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="18dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginLeft="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </FrameLayout>
     <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
@@ -112,56 +157,4 @@
                       android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
-
-    <TextView android:layout_width="wrap_content"
-              android:text="@string/last_order_str"
-              android:textColor="#ffffff"
-              android:layout_marginTop="18dp"
-              android:textSize="18sp"
-              android:layout_gravity="top|center_horizontal"
-              android:layout_height="wrap_content"/>
-
-    <TextView android:layout_width="wrap_content"
-              android:textColor="#ffffff"
-              android:layout_marginTop="46dp"
-              android:textSize="18sp"
-              android:id="@+id/name_text"
-              android:textStyle="bold"
-              android:layout_gravity="top|center_horizontal"
-              android:layout_height="wrap_content"/>
-
-    <TextView android:layout_width="wrap_content"
-              android:textColor="#212121"
-              android:layout_marginTop="156dp"
-              android:textSize="16sp"
-              android:id="@+id/desc_text"
-              android:layout_gravity="top|center_horizontal"
-              android:layout_height="wrap_content"/>
-
-    <TextView android:layout_width="wrap_content"
-              android:textColor="#727272"
-              android:layout_marginBottom="86dp"
-              android:background="@drawable/rounded_grey_border"
-              android:paddingTop="12dp"
-              android:paddingEnd="24dp"
-              android:paddingLeft="24dp"
-              android:paddingBottom="12dp"
-              android:paddingRight="24dp"
-              android:id="@+id/order_current_btn"
-              android:paddingStart="24dp"
-              android:gravity="center"
-              android:textSize="18sp"
-              android:layout_gravity="bottom|center_horizontal"
-              android:layout_height="wrap_content"/>
-
-    <TextView
-            android:text="@string/view_all_str"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:id="@+id/cont_btn"
-            android:textColor="#ffffff"
-            android:background="@color/colorPrimary"
-            android:textSize="16sp"
-            android:layout_gravity="bottom"
-            android:gravity="center"/>
-</FrameLayout>
+</LinearLayout>

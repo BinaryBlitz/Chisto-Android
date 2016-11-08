@@ -22,7 +22,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     private var collection = ArrayList<Order>()
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
     var itemsPendingRemoval: ArrayList<Order> = ArrayList()
-    var undoOn: Boolean = false
+    var undoOn = false
 
     private val handler = Handler()
     var pendingRunnables: HashMap<Order, Runnable> = HashMap()
