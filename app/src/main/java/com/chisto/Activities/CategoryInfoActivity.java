@@ -49,17 +49,7 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
             }
         });
 
-        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
-        view.setLayoutManager(new LinearLayoutManager(this));
-        view.setItemAnimator(new DefaultItemAnimator());
-        view.setHasFixedSize(true);
-        adapter = new CategoryItemsAdapter(this);
-        view.setAdapter(adapter);
-        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(R.color.colorAccent);
-
-        adapter.setColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
+        initList();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -72,6 +62,20 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
     @Override
     public void onRefresh() {
         load();
+    }
+
+    private void initList() {
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
+        view.setLayoutManager(new LinearLayoutManager(this));
+        view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
+        adapter = new CategoryItemsAdapter(this);
+        view.setAdapter(adapter);
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(this);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
+        adapter.setColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
     }
 
     private void load() {

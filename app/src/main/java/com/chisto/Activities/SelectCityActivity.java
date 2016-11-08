@@ -65,17 +65,7 @@ public class SelectCityActivity extends BaseActivity
             }
         });
 
-        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
-        view.setLayoutManager(new LinearLayoutManager(this));
-        view.setItemAnimator(new DefaultItemAnimator());
-        view.setHasFixedSize(true);
-
-        adapter = new CitiesAdapter(this);
-        view.setAdapter(adapter);
-
-        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(R.color.colorAccent);
+        initList();
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -165,6 +155,20 @@ public class SelectCityActivity extends BaseActivity
                 showDialog();
             }
         });
+    }
+
+    private void initList() {
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
+        view.setLayoutManager(new LinearLayoutManager(this));
+        view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
+
+        adapter = new CitiesAdapter(this);
+        view.setAdapter(adapter);
+
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(this);
+        layout.setColorSchemeResources(R.color.colorAccent);
     }
 
     private void load() {

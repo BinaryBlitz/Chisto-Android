@@ -53,6 +53,16 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
             openActivity()
         }
 
+        initList()
+
+        Handler().postDelayed({ load() }, 200)
+    }
+
+    override fun onRefresh() {
+        load()
+    }
+
+    private fun initList() {
         val view = findViewById(R.id.recyclerView) as RecyclerListView
         view.layoutManager = LinearLayoutManager(this)
         view.itemAnimator = DefaultItemAnimator()
@@ -65,12 +75,6 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         layout = findViewById(R.id.refresh) as SwipeRefreshLayout
         layout!!.setOnRefreshListener(this)
         layout!!.setColorSchemeResources(R.color.colorAccent)
-
-        Handler().postDelayed({ load() }, 200)
-    }
-
-    override fun onRefresh() {
-        load()
     }
 
     private fun openActivity() {
@@ -81,10 +85,9 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
                 val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
-                finish()
-            } else {
-                finish()
             }
+
+            finish()
         } else {
             Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code_str, Snackbar.LENGTH_SHORT).show()
         }

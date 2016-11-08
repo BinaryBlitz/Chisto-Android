@@ -53,18 +53,7 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
             }
         });
 
-        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
-        view.setLayoutManager(new LinearLayoutManager(this));
-        view.setItemAnimator(new DefaultItemAnimator());
-        view.setHasFixedSize(true);
-        view.setEmptyView(null);
-
-        adapter = new LaundriesAdapter(this);
-        view.setAdapter(adapter);
-
-        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(R.color.colorAccent);
+        initList();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -77,6 +66,21 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     public void onRefresh() {
         load();
+    }
+
+    private void initList() {
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
+        view.setLayoutManager(new LinearLayoutManager(this));
+        view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
+        view.setEmptyView(null);
+
+        adapter = new LaundriesAdapter(this);
+        view.setAdapter(adapter);
+
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(this);
+        layout.setColorSchemeResources(R.color.colorAccent);
     }
 
     private void showDialog() {

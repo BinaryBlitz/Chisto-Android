@@ -59,4 +59,8 @@
     <string name="rate_filter_str">По рейтингу</string>
     <string name="laundary_code_str">"В химчистке "</string>
     <string name="order_code_str">"Заказать в "</string>
+    <string name="reg_str">Регистрация</string>
+    <string name="sign_in">Регистрация</string>
+    <string name="send_str">Отправить</string>
+    <string name="code_str">Код подтверждения</string>
 </resources>
