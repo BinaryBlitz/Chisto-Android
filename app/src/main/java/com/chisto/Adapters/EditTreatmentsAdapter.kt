@@ -45,7 +45,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     }
 
     fun pendingRemoval(position: Int) {
-        val item = collection.get(position)
+        val item = collection[position]
         if (!itemsPendingRemoval!!.contains(item)) {
             itemsPendingRemoval!!.add(item)
             notifyItemChanged(position)
@@ -56,7 +56,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     }
 
     fun remove(position: Int) {
-        val item = collection.get(position)
+        val item = collection[position]
         if (itemsPendingRemoval!!.contains(item)) {
             itemsPendingRemoval!!.remove(item)
         }
@@ -68,7 +68,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     }
 
     fun isPendingRemoval(position: Int): Boolean {
-        val item = collection.get(position)
+        val item = collection[position]
         return itemsPendingRemoval!!.contains(item)
     }
 

@@ -26,7 +26,8 @@ public class ServerApi {
                 .Builder()
                 .cache(new Cache(context.getCacheDir(), 10 * 1024 * 1024))
                 .addInterceptor(new Interceptor() {
-                    @Override public Response intercept(Chain chain) throws IOException {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
                         if (AndroidUtilities.INSTANCE.isConnected(context)) {
                             request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
