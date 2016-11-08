@@ -32,10 +32,12 @@ public class RecyclerListView extends RecyclerView {
         checkIfEmpty();
     }
 
+    @SuppressWarnings("unused")
     public View getEmptyView() {
         return emptyView;
     }
 
+    @SuppressWarnings("unused")
     public void invalidateViews() {
         int count = getChildCount();
         for (int a = 0; a < count; a++) {

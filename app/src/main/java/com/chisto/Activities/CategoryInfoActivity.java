@@ -18,8 +18,8 @@ import com.chisto.Custom.RecyclerListView;
 import com.chisto.Model.CategoryItem;
 import com.chisto.R;
 import com.chisto.Server.ServerApi;
+import com.chisto.Server.ServerConfig;
 import com.chisto.Utils.AndroidUtilities;
-import com.chisto.Utils.LogUtil;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -42,24 +42,14 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         findViewById(R.id.toolbar).setBackgroundColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
         AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", Color.parseColor("#212121")));
 
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
-        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
-        view.setLayoutManager(new LinearLayoutManager(this));
-        view.setItemAnimator(new DefaultItemAnimator());
-        view.setHasFixedSize(true);
-        adapter = new CategoryItemsAdapter(this);
-        view.setAdapter(adapter);
-        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(R.color.colorAccent);
-
-        adapter.setColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
+        initList();
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -74,28 +64,27 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         load();
     }
 
+    private void initList() {
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
+        view.setLayoutManager(new LinearLayoutManager(this));
+        view.setItemAnimator(new DefaultItemAnimator());
+        view.setHasFixedSize(true);
+        adapter = new CategoryItemsAdapter(this);
+        view.setAdapter(adapter);
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(this);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
+        adapter.setColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
+    }
+
     private void load() {
         ServerApi.get(this).api().getItems(getIntent().getIntExtra("id", 0)).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                LogUtil.logError(response.body().toString());
                 layout.setRefreshing(false);
-                if(response.isSuccessful()) {
-                    ArrayList<CategoryItem> collection = new ArrayList<>();
-                    JsonArray array = response.body();
-
-                    for (int i = 0; i < array.size(); i++) {
-                        JsonObject object = array.get(i).getAsJsonObject();
-                        collection.add(new CategoryItem(
-                                object.get("id").getAsInt(),
-                                object.get("icon").getAsString(),
-                                object.get("name").getAsString(),
-                                object.get("description").isJsonNull() ? "" : object.get("description").getAsString()
-                        ));
-                    }
-
-                    adapter.setCategories(collection);
-                    adapter.notifyDataSetChanged();
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
                 } else {
                     onInternetConnectionError();
                 }
@@ -107,5 +96,22 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
                 onInternetConnectionError();
             }
         });
+    }
+
+    private void parseAnswer(JsonArray array) {
+        ArrayList<CategoryItem> collection = new ArrayList<>();
+
+        for (int i = 0; i < array.size(); i++) {
+            JsonObject object = array.get(i).getAsJsonObject();
+            collection.add(new CategoryItem(
+                    object.get("id").getAsInt(),
+                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon").getAsString(),
+                    object.get("name").getAsString(),
+                    object.get("description").isJsonNull() ? "" : object.get("description").getAsString()
+            ));
+        }
+
+        adapter.setCategories(collection);
+        adapter.notifyDataSetChanged();
     }
 }

@@ -19,6 +19,10 @@ public class ProfileActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_profile);
 
+        setOnClickListeners();
+    }
+
+    private void setOnClickListeners() {
         findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
