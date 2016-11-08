@@ -25,7 +25,7 @@ public class OrderList {
 
     @Nullable
     public static Order get(int i) {
-        if(i < orders.size()) {
+        if (i < orders.size()) {
             currentItem = i;
             return orders.get(i);
         } else {
@@ -38,23 +38,22 @@ public class OrderList {
         return orders;
     }
 
-    @Nullable
     public static ArrayList<Treatment> getTreatments() {
-        if(currentItem < orders.size()) {
-            return orders.get(currentItem).getTreatments();
+        if (currentItem < orders.size()) {
+            return orders.get(currentItem).getTreatments() == null ? new ArrayList<Treatment>() : orders.get(currentItem).getTreatments();
         } else {
-            return null;
+            return new ArrayList<>();
         }
     }
 
     public static void remove(int i) {
-        if(i < orders.size()) {
+        if (i < orders.size()) {
             orders.remove(i);
         }
     }
 
     public static void removeCurrent() {
-        if(currentItem < orders.size() - 1) {
+        if (currentItem < orders.size() - 1) {
             orders.remove(currentItem);
         }
     }
@@ -64,20 +63,20 @@ public class OrderList {
     }
 
     public static void changeCount(int count) {
-        if(currentItem < orders.size()) {
+        if (currentItem < orders.size()) {
             orders.get(currentItem).setCount(count);
         }
     }
 
     public static void changeColor(int color) {
-        if(currentItem < orders.size()) {
+        if (currentItem < orders.size()) {
             orders.get(currentItem).setColor(color);
         }
     }
 
     @SuppressWarnings("ConstantConditions")
     public static void removeTreatment(int treatmentId) {
-        if(currentItem < orders.size()) {
+        if (currentItem < orders.size()) {
             if (orders.get(currentItem).getTreatments() != null) {
                 for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
                     if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
@@ -91,13 +90,13 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void addTreatment(Treatment treatment) {
-        if(currentItem < orders.size()) {
+        if (currentItem < orders.size()) {
             if (orders.get(currentItem).getTreatments() == null) {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
 
-            for(int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-                if(orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) {
+            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+                if (orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) {
                     return;
                 }
             }
@@ -108,13 +107,13 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void addTreatments(ArrayList<Treatment> treatments) {
-        if(currentItem < orders.size()) {
+        if (currentItem < orders.size()) {
             if (orders.get(currentItem).getTreatments() == null) {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
 
-            for(int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-                for(int j = 0; j < treatments.size(); j++) {
+            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+                for (int j = 0; j < treatments.size(); j++) {
                     if (orders.get(currentItem).getTreatments().get(i).getId() == treatments.get(j).getId()) {
                         return;
                     }
