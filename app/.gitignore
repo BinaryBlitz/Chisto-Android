@@ -1,2 +1,12 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
 /build
-/gradlew
+/captures
+.externalNativeBuild
+libs/
+src/main/java/com/chisto/Utils/Animations/
+/app/fabric.properties

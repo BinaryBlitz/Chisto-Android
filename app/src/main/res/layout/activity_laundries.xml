@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
              android:orientation="vertical"
              android:id="@+id/main"
              android:layout_width="match_parent"
              android:background="#eaeaea"
              android:layout_height="match_parent">
 
-    <include layout="@layout/fragment_empty_order_list" />
-
+    <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp">
     <com.chisto.Custom.RecyclerListView
             android:id="@+id/recyclerView"
-            android:layout_marginBottom="56dp"
-            android:layout_marginTop="56dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
     </com.chisto.Custom.RecyclerListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -37,7 +40,7 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_user_white"
+                    android:src="@drawable/ic_back"
                     android:padding="13dp"
                     android:layout_gravity="start"
             />
@@ -47,7 +50,7 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_plus"
+                    android:src="@drawable/ic_filter"
                     android:padding="13dp"
                     android:layout_gravity="end"
             />
@@ -56,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/order_str"
+                    android:text="@string/laundaries_str"
                     android:layout_gravity="center"
                     android:id="@+id/date_text_view"
                     android:gravity="center_vertical"
@@ -66,26 +69,4 @@
 
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
-
-    <TextView
-            android:text="@string/nothing_selected_str"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:id="@+id/textView2"
-            android:textColor="#ffffff"
-            android:background="#727272"
-            android:textSize="22sp"
-            android:layout_gravity="bottom"
-            android:gravity="center"/>
-
-    <FrameLayout
-            android:layout_width="match_parent"
-            android:background="#99000000"
-            android:id="@+id/dialog"
-            android:visibility="gone"
-            android:layout_height="match_parent">
-
-        <include layout="@layout/old_order_popup" />
-
-    </FrameLayout>
-</com.chisto.Utils.Animations.RevealFrameLayout>
+</FrameLayout>
