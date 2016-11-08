@@ -1,4 +1,4 @@
-package com.chisto.CircularReveal.animation;
+package com.chisto.Utils.Animations;
 
 import android.view.animation.Interpolator;
 
@@ -8,15 +8,10 @@ import java.lang.ref.WeakReference;
 
 final class SupportAnimatorPreL extends SupportAnimator {
 
-    WeakReference<Animator> mSupportFramework;
+    private WeakReference<Animator> mSupportFramework;
 
     SupportAnimatorPreL(Animator animator) {
-        mSupportFramework = new WeakReference<Animator>(animator);
-    }
-
-    @Override
-    public boolean isNativeAnimator() {
-        return false;
+        mSupportFramework = new WeakReference<>(animator);
     }
 
     @Override
@@ -27,7 +22,7 @@ final class SupportAnimatorPreL extends SupportAnimator {
     @Override
     public void start() {
         Animator a = mSupportFramework.get();
-        if(a != null) {
+        if (a != null) {
             a.start();
         }
     }
@@ -35,7 +30,7 @@ final class SupportAnimatorPreL extends SupportAnimator {
     @Override
     public void setDuration(int duration) {
         Animator a = mSupportFramework.get();
-        if(a != null) {
+        if (a != null) {
             a.setDuration(duration);
         }
     }
@@ -43,7 +38,7 @@ final class SupportAnimatorPreL extends SupportAnimator {
     @Override
     public void setInterpolator(Interpolator value) {
         Animator a = mSupportFramework.get();
-        if(a != null) {
+        if (a != null) {
             a.setInterpolator(value);
         }
     }
@@ -51,11 +46,11 @@ final class SupportAnimatorPreL extends SupportAnimator {
     @Override
     public void addListener(final AnimatorListener listener) {
         Animator a = mSupportFramework.get();
-        if(a == null) {
+        if (a == null) {
             return;
         }
 
-        if(listener == null){
+        if (listener == null) {
             a.addListener(null);
             return;
         }
@@ -81,11 +76,5 @@ final class SupportAnimatorPreL extends SupportAnimator {
                 listener.onAnimationRepeat();
             }
         });
-    }
-
-    @Override
-    public boolean isRunning() {
-        Animator a = mSupportFramework.get();
-        return a != null && a.isRunning();
     }
 }

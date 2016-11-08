@@ -1,7 +1,6 @@
 package com.chisto.Custom.CheckBox;
 
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -9,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -57,16 +55,6 @@ public class SmoothCheckBox extends View implements Checkable {
     public SmoothCheckBox(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(attrs);
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SmoothCheckBox(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        init(attrs);
-    }
-
-    public int getmCheckedColor() {
-        return mCheckedColor;
     }
 
     public void setmCheckedColor(int mCheckedColor) {
@@ -160,6 +148,7 @@ public class SmoothCheckBox extends View implements Checkable {
         }
     }
 
+    @SuppressWarnings("unused")
     public void setChecked(boolean checked, boolean animate) {
         if (animate) {
             mTickDrawing = false;

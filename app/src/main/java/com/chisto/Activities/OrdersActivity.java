@@ -1,39 +1,41 @@
 package com.chisto.Activities;
 
+import com.google.gson.JsonObject;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.chisto.Adapters.OrdersAdapter;
 import com.chisto.Base.BaseActivity;
 import com.chisto.Custom.RecyclerListView;
 import com.chisto.R;
-import com.chisto.Utils.Animations;
+import com.chisto.Server.ServerApi;
+import com.chisto.Server.ServerConfig;
+import com.chisto.Utils.Animations.Animations;
+import com.chisto.Utils.Image;
 import com.chisto.Utils.OrderList;
+import com.chisto.Utils.SwipeItemDecoration;
+import com.chisto.Utils.TouchHelper;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrdersActivity extends BaseActivity {
 
     private OrdersAdapter adapter;
-    private RecyclerListView view;
 
     private TextView contBtn;
     private static boolean dialogOpened = false;
@@ -44,21 +46,29 @@ public class OrdersActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_orders);
 
-        view = (RecyclerListView) findViewById(R.id.recyclerView);
+        contBtn = (TextView) findViewById(R.id.textView2);
+
+        initRecyclerView();
+        setOnClickListeners();
+    }
+
+    private void initRecyclerView() {
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
         view.setEmptyView(findViewById(R.id.empty_orders));
 
-        contBtn = (TextView) findViewById(R.id.textView2);
-
         adapter = new OrdersAdapter(this);
         view.setAdapter(adapter);
 
-        setUpItemTouchHelper();
-        setUpAnimationDecoratorHelper();
+        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new TouchHelper(0, ItemTouchHelper.LEFT, this, view));
+        mItemTouchHelper.attachToRecyclerView(view);
+        view.addItemDecoration(new SwipeItemDecoration());
+    }
 
-        findViewById(R.id.drawer_indicator).setOnClickListener(new View.OnClickListener() {
+    private void setOnClickListeners() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OrdersActivity.this, ProfileActivity.class);
@@ -66,7 +76,7 @@ public class OrdersActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.drawer_indicator2).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.right_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(OrdersActivity.this, SelectCategoryActivity.class);
@@ -106,7 +116,7 @@ public class OrdersActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(dialogOpened) {
+        if (dialogOpened) {
             new Handler().post(new Runnable() {
                 @Override
                 public void run() {
@@ -117,171 +127,81 @@ public class OrdersActivity extends BaseActivity {
         }
     }
 
-    private void setUpItemTouchHelper() {
-
-        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-            Drawable background;
-            Drawable xMark;
-            int xMarkMargin;
-            boolean initiated;
-
-            private void init() {
-                background = new ColorDrawable(Color.RED);
-                xMark = ContextCompat.getDrawable(OrdersActivity.this, R.drawable.ic_clear_24dp);
-                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-                xMarkMargin = (int) OrdersActivity.this.getResources().getDimension(R.dimen.ic_clear_margin);
-                initiated = true;
-            }
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-                int position = viewHolder.getAdapterPosition();
-                OrdersAdapter testAdapter = (OrdersAdapter)recyclerView.getAdapter();
-                if (testAdapter.getUndoOn() && testAdapter.isPendingRemoval(position)) {
-                    return 0;
-                }
-                return super.getSwipeDirs(recyclerView, viewHolder);
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int swipedPosition = viewHolder.getAdapterPosition();
-                OrdersAdapter adapter = (OrdersAdapter)view.getAdapter();
-                boolean undoOn = adapter.getUndoOn();
-                if (undoOn) {
-                    adapter.pendingRemoval(swipedPosition);
-                } else {
-                    adapter.remove(swipedPosition);
-                }
-            }
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                View itemView = viewHolder.itemView;
-                if (viewHolder.getAdapterPosition() == -1) {
-                    return;
-                }
-
-                if (!initiated) {
-                    init();
-                }
-
-                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-                background.draw(c);
-
-                int itemHeight = itemView.getBottom() - itemView.getTop();
-                int intrinsicWidth = xMark.getIntrinsicWidth();
-                int intrinsicHeight = xMark.getIntrinsicWidth();
-
-                int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
-                int xMarkRight = itemView.getRight() - xMarkMargin;
-                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
-                int xMarkBottom = xMarkTop + intrinsicHeight;
-                xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
-
-                xMark.draw(c);
-
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-
-        };
-        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-        mItemTouchHelper.attachToRecyclerView(view);
-    }
-
-    private void setUpAnimationDecoratorHelper() {
-        view.addItemDecoration(new RecyclerView.ItemDecoration() {
-
-            Drawable background;
-            boolean initiated;
-
-            private void init() {
-                background = new ColorDrawable(Color.RED);
-                initiated = true;
-            }
-
-            @Override
-            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-
-                if (!initiated) {
-                    init();
-                }
-
-                if (parent.getItemAnimator().isRunning()) {
-                    View lastViewComingDown = null;
-                    View firstViewComingUp = null;
-
-                    int left = 0;
-                    int right = parent.getWidth();
-
-                    int top = 0;
-                    int bottom = 0;
-
-                    int childCount = parent.getLayoutManager().getChildCount();
-                    for (int i = 0; i < childCount; i++) {
-                        View child = parent.getLayoutManager().getChildAt(i);
-                        if (child.getTranslationY() < 0) {
-                            lastViewComingDown = child;
-                        } else if (child.getTranslationY() > 0) {
-                            if (firstViewComingUp == null) {
-                                firstViewComingUp = child;
-                            }
-                        }
-                    }
-
-                    if (lastViewComingDown != null && firstViewComingUp != null) {
-                        top = lastViewComingDown.getBottom() + (int) lastViewComingDown.getTranslationY();
-                        bottom = firstViewComingUp.getTop() + (int) firstViewComingUp.getTranslationY();
-                    } else if (lastViewComingDown != null) {
-                        top = lastViewComingDown.getBottom() + (int) lastViewComingDown.getTranslationY();
-                        bottom = lastViewComingDown.getBottom();
-                    } else if (firstViewComingUp != null) {
-                        top = firstViewComingUp.getTop();
-                        bottom = firstViewComingUp.getTop() + (int) firstViewComingUp.getTranslationY();
-                    }
-
-                    background.setBounds(left, top, right, bottom);
-                    background.draw(c);
-
-                }
-                super.onDraw(c, parent, state);
-            }
-
-        });
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        if(OrderList.get() != null) {
+        update();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void update() {
+        if (OrderList.get() != null) {
             adapter.setCollection(OrderList.get());
             adapter.notifyDataSetChanged();
 
-            if(adapter.getItemCount() != 0) {
-                contBtn.setText("Продолжить");
-                contBtn.setBackgroundColor(Color.parseColor("#4bc2f7"));
+            if (adapter.getItemCount() != 0) {
+                contBtn.setText(R.string.cont_code_str);
+                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, R.color.colorPrimary));
                 contBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                dialogOpened = true;
-                                Animations.animateRevealShow(findViewById(R.id.dialog), OrdersActivity.this);
-                            }
-                        });
+                        loadLastOrder();
                     }
                 });
             } else {
-                contBtn.setText("Ничего не выбрано");
-                contBtn.setBackgroundColor(Color.parseColor("#727272"));
+                contBtn.setText(R.string.nothing_selected_code_str);
+                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, R.color.greyColor));
                 contBtn.setOnClickListener(null);
             }
         }
+    }
+
+    private void loadLastOrder() {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.show();
+
+        ServerApi.get(OrdersActivity.this).api().getLaundry(1).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogOpened = true;
+                            Animations.animateRevealShow(findViewById(R.id.dialog), OrdersActivity.this);
+                        }
+                    });
+                } else {
+                    onInternetConnectionError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                dialog.dismiss();
+                onInternetConnectionError();
+            }
+        });
+    }
+
+    private void parseAnswer(JsonObject object) {
+        ((TextView) findViewById(R.id.name_text)).setText(getString(R.string.laundary_code_str) + object.get("name").getAsString());
+        ((TextView) findViewById(R.id.desc_text)).setText(object.get("description").getAsString());
+        ((TextView) findViewById(R.id.order_current_btn)).setText(getString(R.string.order_code_str) + object.get("name").getAsString());
+
+        Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
+                object.get("background_image_url").getAsString(), (ImageView) findViewById(R.id.back_image));
+        Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
+                object.get("logo_url").getAsString(), (ImageView) findViewById(R.id.logo_image));
+
+        findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(OrdersActivity.this, LaundriesActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

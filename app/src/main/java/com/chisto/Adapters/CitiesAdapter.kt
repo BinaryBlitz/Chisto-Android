@@ -2,7 +2,7 @@ package com.chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -32,10 +32,10 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.name.text = collection[position].name
 
         if (collection[position].selected) {
-            holder.name.setTextColor(Color.parseColor("#4bc2f7"))
+            holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
             holder.marker.visibility = View.VISIBLE
         } else {
-            holder.name.setTextColor(Color.parseColor("#212121"))
+            holder.name.setTextColor(ContextCompat.getColor(context, R.color.greyColor))
             holder.marker.visibility = View.GONE
         }
 
@@ -80,7 +80,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         val marker: ImageView
 
         init {
-            name = itemView.findViewById(R.id.textView4) as TextView
+            name = itemView.findViewById(R.id.name) as TextView
             marker = itemView.findViewById(R.id.marker) as ImageView
         }
     }

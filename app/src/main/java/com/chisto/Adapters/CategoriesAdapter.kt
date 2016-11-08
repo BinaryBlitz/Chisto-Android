@@ -10,15 +10,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.chisto.Activities.CategoryInfoActivity
 import com.chisto.Model.Category
-import com.chisto.Model.Order
 import com.chisto.R
 import com.chisto.Utils.Image
-import com.chisto.Utils.OrderList
 import java.util.*
 
 class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categories: ArrayList<Category>? = null
+
+    val EXTRA_COLOR = "color"
+    val EXTRA_ID = "id"
 
     init {
         Image.init(context)
@@ -53,8 +54,8 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, CategoryInfoActivity::class.java)
-            intent.putExtra("id", category.id)
-            intent.putExtra("color", category.color)
+            intent.putExtra(EXTRA_ID, category.id)
+            intent.putExtra(EXTRA_COLOR, category.color)
             context.startActivity(intent)
         }
     }
