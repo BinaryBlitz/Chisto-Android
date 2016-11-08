@@ -143,5 +143,4 @@ object AndroidUtilities {
 
         fileOrDirectory.delete()
     }
-
 }

@@ -23,6 +23,10 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     private var categories: ArrayList<CategoryItem>? = null
     private var color: Int = Color.parseColor("#212121")
 
+    val EXTRA_DECOR = "decor"
+    val EXTRA_ID = "id"
+    val EXTRA_NAME = "name"
+
     init {
         Image.init(context)
         categories = ArrayList<CategoryItem>()
@@ -59,33 +63,37 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         Image.loadPhoto(item.icon, holder.icon)
 
         holder.itemView.setOnClickListener {
-            MaterialDialog.Builder(context)
-                    .title("Chisto")
-                    .content("Eсть ли у вещи декоративная отделка?")
-                    .positiveText("ДА")
-                    .negativeText("НЕТ")
-                    .onPositive { dialog, action ->
-                        run {
-                            val intent = Intent(context, SelectServiceActivity::class.java)
-                            intent.putExtra("decor", true)
-                            intent.putExtra("id", item.id)
-                            intent.putExtra("name", item.name)
-                            OrderList.add(Order(item, null, 1, color))
-                            context.startActivity(intent)
-                        }
-                    }
-                    .onNegative { dialog, action ->
-                        run {
-                            val intent = Intent(context, SelectServiceActivity::class.java)
-                            intent.putExtra("id", item.id)
-                            intent.putExtra("decor", false)
-                            intent.putExtra("name", item.name)
-                            OrderList.add(Order(item, null, 1, color))
-                            context.startActivity(intent)
-                        }
-                    }
-                    .show()
+            showDialog(item)
         }
+    }
+
+    private fun showDialog(item: CategoryItem) {
+        MaterialDialog.Builder(context)
+                .title(R.string.app_name)
+                .content(R.string.decor_question_str)
+                .positiveText(R.string.yes_code_str)
+                .negativeText(R.string.no_code_str)
+                .onPositive { dialog, action ->
+                    run {
+                        val intent = Intent(context, SelectServiceActivity::class.java)
+                        intent.putExtra(EXTRA_DECOR, true)
+                        intent.putExtra(EXTRA_ID, item.id)
+                        intent.putExtra(EXTRA_NAME, item.name)
+                        OrderList.add(Order(item, null, 1, color))
+                        context.startActivity(intent)
+                    }
+                }
+                .onNegative { dialog, action ->
+                    run {
+                        val intent = Intent(context, SelectServiceActivity::class.java)
+                        intent.putExtra(EXTRA_DECOR, false)
+                        intent.putExtra(EXTRA_ID, item.id)
+                        intent.putExtra(EXTRA_NAME, item.name)
+                        OrderList.add(Order(item, null, 1, color))
+                        context.startActivity(intent)
+                    }
+                }
+                .show()
     }
 
     override fun getItemCount(): Int {

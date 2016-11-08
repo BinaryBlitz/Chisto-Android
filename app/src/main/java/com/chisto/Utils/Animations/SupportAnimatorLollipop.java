@@ -1,4 +1,4 @@
-package com.chisto.CircularReveal.animation;
+package com.chisto.Utils.Animations;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
@@ -8,17 +8,12 @@ import android.view.animation.Interpolator;
 import java.lang.ref.WeakReference;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-final class SupportAnimatorLollipop extends SupportAnimator{
+final class SupportAnimatorLollipop extends SupportAnimator {
 
-    WeakReference<Animator> mNativeAnimator;
+    private WeakReference<Animator> mNativeAnimator;
 
     SupportAnimatorLollipop(Animator animator) {
-        mNativeAnimator = new WeakReference<Animator>(animator);
-    }
-
-    @Override
-    public boolean isNativeAnimator() {
-        return true;
+        mNativeAnimator = new WeakReference<>(animator);
     }
 
     @Override
@@ -26,11 +21,10 @@ final class SupportAnimatorLollipop extends SupportAnimator{
         return mNativeAnimator.get();
     }
 
-
     @Override
     public void start() {
         Animator a = mNativeAnimator.get();
-        if(a != null) {
+        if (a != null) {
             a.start();
         }
     }
@@ -38,7 +32,7 @@ final class SupportAnimatorLollipop extends SupportAnimator{
     @Override
     public void setDuration(int duration) {
         Animator a = mNativeAnimator.get();
-        if(a != null) {
+        if (a != null) {
             a.setDuration(duration);
         }
     }
@@ -46,7 +40,7 @@ final class SupportAnimatorLollipop extends SupportAnimator{
     @Override
     public void setInterpolator(Interpolator value) {
         Animator a = mNativeAnimator.get();
-        if(a != null) {
+        if (a != null) {
             a.setInterpolator(value);
         }
     }
@@ -54,11 +48,11 @@ final class SupportAnimatorLollipop extends SupportAnimator{
     @Override
     public void addListener(final AnimatorListener listener) {
         Animator a = mNativeAnimator.get();
-        if(a == null) {
+        if (a == null) {
             return;
         }
 
-        if(listener == null){
+        if (listener == null) {
             a.addListener(null);
             return;
         }
@@ -84,11 +78,5 @@ final class SupportAnimatorLollipop extends SupportAnimator{
                 listener.onAnimationRepeat();
             }
         });
-    }
-
-    @Override
-    public boolean isRunning() {
-        Animator a = mNativeAnimator.get();
-        return a != null && a.isRunning();
     }
 }

@@ -22,14 +22,13 @@
                 android:id="@+id/action_bar">
 
             <ImageView
-                    android:id="@+id/drawer_indicator"
+                    android:id="@+id/left_btn"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_back"
                     android:padding="13dp"
-                    android:layout_gravity="start"
-            />
+                    android:layout_gravity="start"/>
 
             <TextView
                     android:layout_width="wrap_content"
@@ -203,7 +202,6 @@
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_gravity="bottom"
-
             android:layout_height="56dp">
         <TextView
                 android:text="@string/about_bottom_str"
