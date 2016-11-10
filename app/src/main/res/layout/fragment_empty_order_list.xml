@@ -26,9 +26,9 @@
               android:layout_height="wrap_content"
               android:paddingBottom="12dp"
               android:paddingTop="12dp"
-              android:paddingEnd="24dp"
-              android:paddingLeft="24dp"
-              android:paddingRight="24dp"
-              android:paddingStart="24dp"/>
+              android:paddingEnd="28dp"
+              android:paddingLeft="28dp"
+              android:paddingRight="28dp"
+              android:paddingStart="28dp"/>
 
 </FrameLayout>

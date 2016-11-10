@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:orientation="vertical"
-             android:id="@+id/main"
-             android:layout_width="match_parent"
-             android:background="#eaeaea"
-             android:layout_height="match_parent">
+<ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:orientation="vertical"
+                                              android:id="@+id/main"
+                                              android:layout_width="match_parent"
+                                              android:background="#eaeaea"
+                                              android:layout_height="match_parent">
 
     <include layout="@layout/fragment_empty_order_list" />
 
-    <com.chisto.Custom.RecyclerListView
+    <ru.binaryblitz.Chisto.Custom.RecyclerListView
             android:id="@+id/recyclerView"
             android:layout_marginBottom="56dp"
             android:layout_marginTop="56dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-    </com.chisto.Custom.RecyclerListView>
+    </ru.binaryblitz.Chisto.Custom.RecyclerListView>
 
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -33,17 +33,17 @@
                 android:id="@+id/action_bar">
 
             <ImageView
-                    android:id="@+id/drawer_indicator"
+                    android:id="@+id/left_btn"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_user"
+                    android:src="@drawable/ic_user_white"
                     android:padding="13dp"
                     android:layout_gravity="start"
             />
 
             <ImageView
-                    android:id="@+id/drawer_indicator2"
+                    android:id="@+id/right_btn"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
@@ -68,7 +68,7 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
-            android:text="Ничего не выбрано"
+            android:text="@string/nothing_selected_str"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:id="@+id/textView2"
@@ -77,4 +77,15 @@
             android:textSize="22sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
-</FrameLayout>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:background="#99000000"
+            android:id="@+id/dialog"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/old_order_popup" />
+
+    </FrameLayout>
+</ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout>
