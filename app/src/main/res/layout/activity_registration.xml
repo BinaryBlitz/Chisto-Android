@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/main">
+
+    <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="56dp"
+            android:visibility="visible">
+
+        <FrameLayout android:layout_width="match_parent"
+                     android:layout_weight="1.0"
+                     android:layout_height="wrap_content">
+            <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/code"
+                    android:textColor="@color/colorAccent"
+                    android:inputType="numberSigned"
+                    android:textSize="20sp"
+                    android:lines="1"
+                    android:text="+7"
+                    android:gravity="center"
+                    android:maxLength="10"
+                    app:met_underlineColor="@color/colorAccent"
+                    app:met_baseColor="@color/colorAccent"
+                    app:met_textColor="@color/colorAccent"
+                    app:met_errorColor="@color/colorAccent"
+                    app:met_floatingLabel="none"
+                    app:met_helperTextColor="@color/colorAccent"
+                    app:met_primaryColor="@color/colorAccent"
+                    android:textColorHint="@color/colorAccent"
+                    android:layout_gravity="bottom" />
+
+            <FrameLayout android:layout_width="match_parent"
+                         android:id="@+id/code_btn"
+                         android:layout_height="match_parent"/>
+        </FrameLayout>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phone"
+                android:textColor="#212121"
+                android:layout_weight="0.2"
+                android:inputType="numberSigned"
+                android:textSize="20sp"
+                android:hint="(XXX)-XXX-XX-XX"
+                android:lines="1"
+                android:maxLength="15"
+                app:met_underlineColor="#212121"
+                app:met_baseColor="#212121"
+                app:met_textColor="#212121"
+                app:met_errorColor="#ffffff"
+                app:met_floatingLabel="none"
+                app:met_helperTextColor="#212121"
+                app:met_primaryColor="@color/colorAccent"
+                android:textColorHint="#212121" />
+
+    </LinearLayout>
+
+    <FrameLayout
+            android:id="@+id/l2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="56dp"
+            android:visibility="gone">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phon2e"
+                android:textColor="@color/colorAccent"
+                android:inputType="numberSigned"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:hint="@string/code_str"
+                app:met_underlineColor="@color/colorAccent"
+                app:met_baseColor="@color/colorAccent"
+                app:met_textColor="@color/colorAccent"
+                app:met_errorColor="@color/colorAccent"
+                app:met_floatingLabel="none"
+                app:met_helperTextColor="@color/colorAccent"
+                app:met_primaryColor="@color/colorAccent"
+                app:met_typeface="fonts/roboto.ttf"
+                android:textColorHint="@color/colorAccent"
+                android:layout_gravity="bottom"
+                android:visibility="visible" />
+
+    </FrameLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView23"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:textSize="18sp"
+            android:textColor="#727272"
+            android:gravity="center"
+            android:layout_marginTop="44dp" />
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView37"
+            android:layout_gravity="center"
+            android:textColor="#727272"
+            android:textSize="16sp"
+            android:visibility="gone" />
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize">
+        <FrameLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/action_bar">
+
+            <ImageView
+                    android:id="@+id/left_btn"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back"
+                    android:padding="13dp"
+                    android:layout_gravity="start"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/reg_str"
+                    android:layout_gravity="center"
+                    android:id="@+id/date_text_view"
+                    android:gravity="center_vertical"
+                    android:typeface="sans"
+                    android:textSize="22sp"
+                    android:textColor="#ffffff" />
+
+        </FrameLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView2"
+            android:layout_gravity="center"
+            android:textColor="#727272"
+            android:textSize="16sp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginTop="44dp"
+            android:gravity="center" />
+
+    <android.support.v7.widget.AppCompatButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send_str"
+            android:id="@+id/button"
+            android:layout_gravity="center_horizontal|bottom"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginBottom="56dp" />
+
+</FrameLayout>
