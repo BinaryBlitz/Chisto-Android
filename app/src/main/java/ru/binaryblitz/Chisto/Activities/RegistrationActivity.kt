@@ -38,8 +38,6 @@ class RegistrationActivity : BaseActivity() {
     private var codeEditText: MaterialEditText? = null
     private var countyCodeEditText: MaterialEditText? = null
 
-    infix fun <T> Boolean.then(param: T): T? = if (this) param else null
-
     private val myRunnable = Runnable {
         messageForUser = getString(R.string.send_code_after_str) + (milis.toDouble() / SECOND.toDouble()).toInt()
         if (milis < 2 * SECOND) messageForUser = REPEAT_STR
@@ -150,7 +148,7 @@ class RegistrationActivity : BaseActivity() {
 
         findViewById(R.id.button).setOnClickListener { v ->
             AndroidUtilities.hideKeyboard(v)
-            code then verifyRequest() ?: processPhoneInput()
+            if(code) verifyRequest() else processPhoneInput()
         }
 
         findViewById(R.id.textView37).setOnClickListener(View.OnClickListener {
@@ -236,7 +234,10 @@ class RegistrationActivity : BaseActivity() {
     private fun processText(): String {
         var phone = countyCodeEditText!!.text.toString()
         var phoneNext = phoneEditText!!.text.toString()
-        phoneNext = phoneNext.replace(Regex("[\\-\\(\\)\\s+]*"), "")
+        phoneNext = phoneNext.replace("(", "")
+        phoneNext = phoneNext.replace(")", "")
+        phoneNext = phoneNext.replace("-", "")
+        phoneNext = phoneNext.replace(" ", "")
         phone += phoneNext
         LogUtil.logError(phone)
         return phone
