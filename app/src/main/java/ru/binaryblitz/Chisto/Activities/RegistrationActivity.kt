@@ -97,8 +97,8 @@ class RegistrationActivity : BaseActivity() {
         initTimer()
 
         phoneEditText = findViewById(R.id.phone) as MaterialEditText
-        codeEditText = findViewById(R.id.phon2e) as MaterialEditText
-        countyCodeEditText = findViewById(R.id.code) as MaterialEditText
+        codeEditText = findViewById(R.id.code_field) as MaterialEditText
+        countyCodeEditText = findViewById(R.id.county_code_field) as MaterialEditText
         phoneEditText!!.addTextChangedListener(watcher)
     }
 
@@ -124,23 +124,12 @@ class RegistrationActivity : BaseActivity() {
                     }
                 })
                 .playOn(findViewById(R.id.l2))
-
-        YoYo.with(Techniques.SlideOutRight)
-                .duration(ANIMATION_DURATION.toLong())
-                .withListener(object : AnimationStartListener() {
-                    override fun onStart() {
-                        findViewById(R.id.textView2).visibility = View.VISIBLE
-
-                        YoYo.with(Techniques.SlideInLeft)
-                                .duration(ANIMATION_DURATION.toLong())
-                                .playOn(findViewById(R.id.textView2))
-                    }
-                })
-                .playOn(findViewById(R.id.textView23))
     }
 
     private fun resetFields() {
         codeEditText!!.setText("")
+        (findViewById(R.id.textView23) as TextView).text = getString(R.string.code_send_str)
+        (findViewById(R.id.title_text) as TextView).text = getString(R.string.type_phone_str)
         messageTextView!!.visibility = View.GONE
         code = false
     }
@@ -199,8 +188,8 @@ class RegistrationActivity : BaseActivity() {
                         if (!response.isSuccessful || response.body() == null) {
                             Snackbar.make(findViewById(R.id.main), R.string.wrong_code_str, Snackbar.LENGTH_SHORT).show()
                         } else {
-                            val `object` = response.body()
-                            DeviceInfoStore.saveToken(this@RegistrationActivity, `object`.get("api_token").asString)
+                            val obj = response.body()
+                            DeviceInfoStore.saveToken(this@RegistrationActivity, obj.get("api_token").asString)
                         }
                     }
 
@@ -219,12 +208,12 @@ class RegistrationActivity : BaseActivity() {
                 object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        LogUtil.logError(response.body().toString())
                         if (response.isSuccessful && response.body() != null) {
                             parseAuthRequestAnswer(response.body())
                             if (animate) {
                                 playOutAnimation(findViewById(R.id.l1), findViewById(R.id.textView2))
                             }
+                            startTimer()
                         } else {
                             onInternetConnectionError()
                         }
@@ -238,11 +227,11 @@ class RegistrationActivity : BaseActivity() {
         )
     }
 
-    private fun parseAuthRequestAnswer(`object`: JsonObject) {
+    private fun parseAuthRequestAnswer(obj: JsonObject) {
         code = true
         messageTextView!!.visibility = View.VISIBLE
-        token = `object`.get("token").asString
-        phoneFromServer = `object`.get("phone_number").asString
+        token = obj.get("token").asString
+        phoneFromServer = obj.get("phone_number").asString
     }
 
     private fun processText(): String {
@@ -275,11 +264,10 @@ class RegistrationActivity : BaseActivity() {
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        findViewById(R.id.textView23).visibility = View.VISIBLE
+                        (findViewById(R.id.textView23) as TextView).text =
+                                getString(R.string.number_code_str) + " " + phoneFromServer + getString(R.string.code_sent_str)
 
-                        YoYo.with(Techniques.SlideInRight)
-                                .duration(ANIMATION_DURATION.toLong())
-                                .playOn(findViewById(R.id.textView23))
+                        (findViewById(R.id.title_text) as TextView).text = getString(R.string.code_title_str)
                     }
                 })
                 .playOn(v2)
