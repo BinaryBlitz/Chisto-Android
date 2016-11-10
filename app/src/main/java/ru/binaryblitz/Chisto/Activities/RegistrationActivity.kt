@@ -38,6 +38,8 @@ class RegistrationActivity : BaseActivity() {
     private var codeEditText: MaterialEditText? = null
     private var countyCodeEditText: MaterialEditText? = null
 
+    infix fun <T> Boolean.then(param: T): T? = if (this) param else null
+
     private val myRunnable = Runnable {
         messageForUser = getString(R.string.send_code_after_str) + (milis.toDouble() / SECOND.toDouble()).toInt()
         if (milis < 2 * SECOND) messageForUser = REPEAT_STR
@@ -148,10 +150,7 @@ class RegistrationActivity : BaseActivity() {
 
         findViewById(R.id.button).setOnClickListener { v ->
             AndroidUtilities.hideKeyboard(v)
-            if (!code)
-                processPhoneInput()
-            else
-                verifyRequest()
+            code then verifyRequest() ?: processPhoneInput()
         }
 
         findViewById(R.id.textView37).setOnClickListener(View.OnClickListener {
@@ -237,10 +236,7 @@ class RegistrationActivity : BaseActivity() {
     private fun processText(): String {
         var phone = countyCodeEditText!!.text.toString()
         var phoneNext = phoneEditText!!.text.toString()
-        phoneNext = phoneNext.replace("(", "")
-        phoneNext = phoneNext.replace(")", "")
-        phoneNext = phoneNext.replace("-", "")
-        phoneNext = phoneNext.replace(" ", "")
+        phoneNext = phoneNext.replace(Regex("[\\-\\(\\)\\s+]*"), "")
         phone += phoneNext
         LogUtil.logError(phone)
         return phone
@@ -289,7 +285,7 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun initTimer() {
-        val t = object : Thread() {
+        val timerThread = object : Thread() {
             override fun run() {
                 try {
                     while (!isInterrupted) {
@@ -309,7 +305,7 @@ class RegistrationActivity : BaseActivity() {
             }
         }
 
-        t.start()
+        timerThread.start()
     }
 
     private fun updateMessageText() {
