@@ -63,4 +63,13 @@
     <string name="sign_in">Регистрация</string>
     <string name="send_str">Отправить</string>
     <string name="code_str">Код подтверждения</string>
+    <string name="send_code_after_str">"Отправить код повторно через "</string>
+    <string name="empty_field_str">Поле не может быть пустым</string>
+    <string name="wrong_code_str">Неверный код.</string>
+    <string name="send_again_str">Отправить код повторно</string>
+    <string name="code_send_str">На этот номер будет отправлен 5-значный код</string>
+    <string name="number_code_str">На номер</string>
+    <string name="code_sent_str">" был отправлен код"</string>
+    <string name="type_phone_str">Введите номер вашего телефона</string>
+    <string name="code_title_str">Введите код</string>
 </resources>

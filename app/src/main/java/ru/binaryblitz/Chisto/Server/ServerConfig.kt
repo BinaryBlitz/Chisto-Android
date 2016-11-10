@@ -8,4 +8,7 @@ object ServerConfig {
         get() {
             return baseUrl
         }
+
+    val prefsName = "ChistoPrefs"
+    val tokenEntity = "auth_token"
 }
