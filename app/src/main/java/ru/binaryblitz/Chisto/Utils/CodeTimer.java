@@ -9,6 +9,10 @@ public class CodeTimer {
         void onFinish();
     }
 
+    private void postwithDelay() {
+
+    }
+
     private static OnTimer onTimer;
 
     public static void with(OnTimer onTimer) {

@@ -95,7 +95,6 @@
                 app:met_floatingLabel="none"
                 app:met_helperTextColor="@color/colorAccent"
                 app:met_primaryColor="@color/colorAccent"
-                app:met_typeface="fonts/roboto.ttf"
                 android:textColorHint="@color/colorAccent"
                 android:layout_gravity="bottom"
                 android:visibility="visible" />

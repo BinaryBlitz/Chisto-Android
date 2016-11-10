@@ -63,4 +63,8 @@
     <string name="sign_in">Регистрация</string>
     <string name="send_str">Отправить</string>
     <string name="code_str">Код подтверждения</string>
+    <string name="send_code_after_str">\"Отправить код повторно через \"</string>
+    <string name="empty_field_str">Поле не может быть пустым</string>
+    <string name="wrong_code_str">Неверный код.</string>
+    <string name="send_again_str">Отправить код повторно</string>
 </resources>
