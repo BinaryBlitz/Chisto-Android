@@ -8,5 +8,5 @@
 /captures
 .externalNativeBuild
 libs/
-src/main/java/com/chisto/Utils/Animations/
+src/main/java/ru/Chisto/Utils/Animations/
 /app/fabric.properties

@@ -15,7 +15,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "24.0.3"
     defaultConfig {
-        applicationId "com.chisto"
+        applicationId "ru.binaryblitz.Chisto"
         minSdkVersion 15
         targetSdkVersion 25
         versionCode 6
