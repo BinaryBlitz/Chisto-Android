@@ -26,7 +26,7 @@
               android:layout_gravity="center_vertical"
               android:layout_marginTop="14dp"/>
 
-    <com.chisto.Custom.CheckBox.SmoothCheckBox
+    <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
             android:layout_width="38dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="12dp"

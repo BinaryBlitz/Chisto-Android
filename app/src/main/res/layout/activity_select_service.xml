@@ -103,13 +103,13 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <com.chisto.Custom.RecyclerListView
+        <ru.binaryblitz.Chisto.Custom.RecyclerListView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_marginBottom="56dp"
                 android:layout_height="match_parent">
-        </com.chisto.Custom.RecyclerListView>
+        </ru.binaryblitz.Chisto.Custom.RecyclerListView>
 
         <TextView
                 android:text="@string/ready_str"

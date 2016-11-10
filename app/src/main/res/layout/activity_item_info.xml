@@ -95,13 +95,13 @@
                     android:layout_height="38dp"/>
         </FrameLayout>
 
-        <com.chisto.Custom.RecyclerListView
+        <ru.binaryblitz.Chisto.Custom.RecyclerListView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="56dp"
                 android:layout_marginTop="234dp"
                 android:layout_height="match_parent">
-        </com.chisto.Custom.RecyclerListView>
+        </ru.binaryblitz.Chisto.Custom.RecyclerListView>
 
     <FrameLayout
             android:layout_width="match_parent"

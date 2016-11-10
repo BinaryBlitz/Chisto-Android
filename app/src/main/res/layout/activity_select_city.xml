@@ -11,11 +11,11 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="56dp"
             android:layout_marginTop="56dp">
-        <com.chisto.Custom.RecyclerListView
+        <ru.binaryblitz.Chisto.Custom.RecyclerListView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-        </com.chisto.Custom.RecyclerListView>
+        </ru.binaryblitz.Chisto.Custom.RecyclerListView>
     </android.support.v4.widget.SwipeRefreshLayout>
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

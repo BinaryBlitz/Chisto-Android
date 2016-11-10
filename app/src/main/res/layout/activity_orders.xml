@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:orientation="vertical"
-             android:id="@+id/main"
-             android:layout_width="match_parent"
-             android:background="#eaeaea"
-             android:layout_height="match_parent">
+<ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:orientation="vertical"
+                                              android:id="@+id/main"
+                                              android:layout_width="match_parent"
+                                              android:background="#eaeaea"
+                                              android:layout_height="match_parent">
 
     <include layout="@layout/fragment_empty_order_list" />
 
-    <com.chisto.Custom.RecyclerListView
+    <ru.binaryblitz.Chisto.Custom.RecyclerListView
             android:id="@+id/recyclerView"
             android:layout_marginBottom="56dp"
             android:layout_marginTop="56dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-    </com.chisto.Custom.RecyclerListView>
+    </ru.binaryblitz.Chisto.Custom.RecyclerListView>
 
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -88,4 +88,4 @@
         <include layout="@layout/old_order_popup" />
 
     </FrameLayout>
-</com.chisto.Utils.Animations.RevealFrameLayout>
+</ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout>
