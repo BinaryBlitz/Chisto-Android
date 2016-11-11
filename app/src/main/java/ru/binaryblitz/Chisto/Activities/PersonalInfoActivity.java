@@ -8,6 +8,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.Model.User;
 import ru.binaryblitz.Chisto.R;
 
 public class PersonalInfoActivity extends BaseActivity {
@@ -20,7 +21,7 @@ public class PersonalInfoActivity extends BaseActivity {
     private MaterialEditText flat;
     private MaterialEditText comment;
     private MaterialEditText phone;
-    
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,5 +36,8 @@ public class PersonalInfoActivity extends BaseActivity {
         flat = (MaterialEditText) findViewById(R.id.flat_text);
         phone = (MaterialEditText) findViewById(R.id.phone);
         comment = (MaterialEditText) findViewById(R.id.comment_text);
+    }
+
+    private void validateFields() {
     }
 }
