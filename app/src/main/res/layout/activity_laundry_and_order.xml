@@ -101,6 +101,27 @@
               android:layout_gravity="top|center_horizontal"
               android:layout_height="wrap_content"/>
 
+    <RatingBar
+            style="?android:attr/ratingBarStyleSmall"
+            android:rating="3.5"
+            android:stepSize="0.5"
+            android:numStars="5"
+            android:layout_marginTop="80dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:layout_marginTop="80dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_gravity="end"
+            android:textColor="#ffffff"
+            android:text="Отзывы"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <FrameLayout
             android:layout_width="match_parent"
             android:background="#eaeaea"
