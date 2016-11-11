@@ -88,4 +88,5 @@
     <string name="comment_title_str">Комментарий к заказу</string>
     <string name="personal_info_str">Персональная информация</string>
     <string name="cost_reg_str">Стоимость заказа</string>
+    <string name="wrong_data_str">Неверные данные</string>
 </resources>
