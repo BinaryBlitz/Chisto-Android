@@ -2,7 +2,6 @@ package ru.binaryblitz.Chisto.Activities
 
 import android.os.Bundle
 import android.widget.EditText
-import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.rengwuxian.materialedittext.MaterialEditText
@@ -11,8 +10,6 @@ import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
-import ru.binaryblitz.Chisto.Utils.LogUtil
-import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
