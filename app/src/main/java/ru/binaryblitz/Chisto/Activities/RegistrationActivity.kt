@@ -3,6 +3,7 @@ package ru.binaryblitz.Chisto.Activities
 import com.google.gson.JsonObject
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -30,6 +31,8 @@ import ru.binaryblitz.Chisto.Utils.CodeTimer
 import ru.binaryblitz.Chisto.Utils.LogUtil
 
 class RegistrationActivity : BaseActivity() {
+
+    val EXTRA_PHONE = "phone"
 
     private var code = false
 
@@ -187,6 +190,9 @@ class RegistrationActivity : BaseActivity() {
                         } else {
                             val obj = response.body()
                             DeviceInfoStore.saveToken(this@RegistrationActivity, obj.get("api_token").asString)
+                            val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
+                            intent.putExtra(EXTRA_PHONE, phoneFromServer)
+                            startActivity(intent)
                         }
                     }
 
