@@ -75,4 +75,17 @@
     <string name="delivery2_str">Доставка</string>
     <string name="your_order_str">Ваш заказ</string>
     <string name="order_help_text">Указаны ближайшие даты. Точное время Вы сможете согласовать с сотрудником химчистки</string>
+    <string name="name_text">Имя</string>
+    <string name="lastname_str">Фамилия</string>
+    <string name="phone_text">Телефон</string>
+    <string name="city_text">Город</string>
+    <string name="street_text">Улица</string>
+    <string name="house_text">Дом</string>
+    <string name="flat_text">Квартира</string>
+    <string name="comment_text">Комментарий к заказу</string>
+    <string name="contact_info_str">Контактная информация</string>
+    <string name="delivery_address_str">Адрес доставки</string>
+    <string name="comment_title_str">Комментарий к заказу</string>
+    <string name="personal_info_str">Персональная информация</string>
+    <string name="cost_reg_str">Стоимость заказа</string>
 </resources>

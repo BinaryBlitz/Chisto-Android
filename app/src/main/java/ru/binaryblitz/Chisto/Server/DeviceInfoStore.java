@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import ru.binaryblitz.Chisto.Model.City;
 
+
+
 public class DeviceInfoStore {
     public static void saveToken(Context context, String token) {
         SharedPreferences prefs = context.getSharedPreferences(
