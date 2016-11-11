@@ -17,6 +17,7 @@ import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.Laundry;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import com.crashlytics.android.Crashlytics;
@@ -104,7 +105,7 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     private void load() {
-        ServerApi.get(this).api().getLaundries(1).enqueue(new Callback<JsonArray>() {
+        ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this).getId()).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
@@ -126,7 +127,7 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
     private void parseAnswer(JsonArray array) {
         ArrayList<Laundry> collection = new ArrayList<>();
 
-        for(int i = 0; i < array.size(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
             collection.add(new Laundry(
                     object.get("id").getAsInt(),

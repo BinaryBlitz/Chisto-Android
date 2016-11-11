@@ -1,19 +1,20 @@
 package ru.binaryblitz.Chisto.Adapters
 
 import android.app.Activity
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import ru.binaryblitz.Chisto.Model.CategoryItem
+import ru.binaryblitz.Chisto.Activities.LaundryAndOrderActivity
 import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
 import java.util.*
 
-class LaundriesAdapter(context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var collection = ArrayList<Laundry>()
 
@@ -36,6 +37,11 @@ class LaundriesAdapter(context: Activity) : RecyclerView.Adapter<RecyclerView.Vi
         holder.category.text = collection[position].type
 
         Image.loadPhoto(collection[position].icon, holder.icon)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, LaundryAndOrderActivity::class.java)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {
