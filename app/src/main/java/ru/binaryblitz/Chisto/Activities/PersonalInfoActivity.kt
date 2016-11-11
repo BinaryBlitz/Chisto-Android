@@ -2,6 +2,8 @@ package ru.binaryblitz.Chisto.Activities
 
 import android.os.Bundle
 import android.widget.EditText
+import com.afollestad.materialdialogs.DialogAction
+import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
@@ -9,9 +11,12 @@ import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
+import ru.binaryblitz.Chisto.Utils.LogUtil
+import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
+    val EXTRA_PHONE = "phone"
 
     private var name: MaterialEditText? = null
     private var lastname: MaterialEditText? = null
@@ -57,10 +62,12 @@ class PersonalInfoActivity : BaseActivity() {
         setTextToField(phone!!, user!!.phone)
         setTextToField(house!!, user!!.house)
         setTextToField(street!!, user!!.street)
+
+        setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
     }
 
     private fun setData() {
-        if (user == null) return
+        if (user == null) user = User(1, null, null, null, null, null, null, null)
 
         user!!.name = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
@@ -71,10 +78,18 @@ class PersonalInfoActivity : BaseActivity() {
         user!!.house = house!!.text.toString()
 
         DeviceInfoStore.saveUser(this, user)
+
+        //TEST
+        MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content("To be continued...")
+                .positiveText(R.string.yes_code_str)
+                .negativeText(R.string.no_code_str)
+                .show()
     }
 
     private fun setTextToField(editText: EditText, text: String?) {
-        if (text == null || text.isEmpty()) {
+        if (text != null && !text.isEmpty()) {
             editText.setText(text)
         }
     }

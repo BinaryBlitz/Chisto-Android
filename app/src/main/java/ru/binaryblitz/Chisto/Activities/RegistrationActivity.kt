@@ -181,26 +181,30 @@ class RegistrationActivity : BaseActivity() {
         val dialog = ProgressDialog(this@RegistrationActivity)
         dialog.show()
 
-        ServerApi.get(this@RegistrationActivity).api().verifyPhoneNumber(token, codeEditText!!.text.toString(), phoneFromServer)
-                .enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                        dialog.dismiss()
-                        if (!response.isSuccessful || response.body() == null) {
-                            Snackbar.make(findViewById(R.id.main), R.string.wrong_code_str, Snackbar.LENGTH_SHORT).show()
-                        } else {
-                            val obj = response.body()
-                            DeviceInfoStore.saveToken(this@RegistrationActivity, obj.get("api_token").asString)
-                            val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
-                            intent.putExtra(EXTRA_PHONE, phoneFromServer)
-                            startActivity(intent)
-                        }
-                    }
+//        ServerApi.get(this@RegistrationActivity).api().verifyPhoneNumber(token, codeEditText!!.text.toString(), phoneFromServer)
+//                .enqueue(object : Callback<JsonObject> {
+//                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+//                        dialog.dismiss()
+//                        if (!response.isSuccessful || response.body() == null) {
+//                            Snackbar.make(findViewById(R.id.main), R.string.wrong_code_str, Snackbar.LENGTH_SHORT).show()
+//                        } else {
+//                            val obj = response.body()
+//                            DeviceInfoStore.saveToken(this@RegistrationActivity, obj.get("api_token").asString)
+//                            val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
+//                            intent.putExtra(EXTRA_PHONE, phoneFromServer)
+//                            startActivity(intent)
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+//                        dialog.dismiss()
+//                        onInternetConnectionError()
+//                    }
+//                })
 
-                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                        dialog.dismiss()
-                        onInternetConnectionError()
-                    }
-                })
+        val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
+        intent.putExtra(EXTRA_PHONE, phoneFromServer)
+        startActivity(intent)
     }
 
     private fun authRequest(animate: Boolean) {
