@@ -72,4 +72,7 @@
     <string name="code_sent_str">" был отправлен код"</string>
     <string name="type_phone_str">Введите номер вашего телефона</string>
     <string name="code_title_str">Введите код</string>
+    <string name="delivery2_str">Доставка</string>
+    <string name="your_order_str">Ваш заказ</string>
+    <string name="order_help_text">Указаны ближайшие даты. Точное время Вы сможете согласовать с сотрудником химчистки</string>
 </resources>
