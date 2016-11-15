@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +30,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class LaundriesActivity extends BaseActivity
+        implements AppBarLayout.OnOffsetChangedListener, SwipeRefreshLayout.OnRefreshListener {
 
     private LaundriesAdapter adapter;
     private SwipeRefreshLayout layout;
@@ -122,6 +124,15 @@ public class LaundriesActivity extends BaseActivity implements SwipeRefreshLayou
                 onInternetConnectionError();
             }
         });
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+        if (i == 0) {
+            layout.setEnabled(true);
+        } else {
+            layout.setEnabled(false);
+        }
     }
 
     private void parseAnswer(JsonArray array) {

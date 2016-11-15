@@ -2,7 +2,6 @@ package ru.binaryblitz.Chisto.Activities
 
 import android.os.Bundle
 import android.widget.EditText
-import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
@@ -78,7 +77,7 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun setTextToField(editText: EditText, text: String?) {
-        if (text != null && !text.isEmpty()) {
+        if (text != null && !text.isEmpty() && text != "null") {
             editText.setText(text)
         }
     }

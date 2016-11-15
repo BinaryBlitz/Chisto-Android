@@ -1,7 +1,9 @@
 package ru.binaryblitz.Chisto.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -16,5 +18,13 @@ public class LaundryAndOrderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_laundry_and_order);
+
+        findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LaundryAndOrderActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
