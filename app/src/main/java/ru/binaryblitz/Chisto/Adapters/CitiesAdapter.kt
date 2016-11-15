@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import ru.binaryblitz.Chisto.Activities.OrdersActivity
 import ru.binaryblitz.Chisto.Activities.SelectCityActivity
+import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import java.util.*
@@ -45,6 +46,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
             DeviceInfoStore.saveCity(context, collection[position].city)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
+            DeviceInfoStore.saveUser(context, User(1, null, null, null, collection[position].city.name, null, null, null))
             context.finish()
         }
     }
