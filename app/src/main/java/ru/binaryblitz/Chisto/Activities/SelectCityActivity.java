@@ -4,6 +4,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import android.Manifest;
 import android.content.Intent;
@@ -25,11 +26,6 @@ import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import ru.binaryblitz.Chisto.Adapters.CitiesAdapter;
-import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.Custom.RecyclerListView;
-import ru.binaryblitz.Chisto.Server.ServerApi;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 import com.crashlytics.android.Crashlytics;
 
 import java.io.IOException;
@@ -41,6 +37,12 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.binaryblitz.Chisto.Adapters.CitiesAdapter;
+import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.Custom.RecyclerListView;
+import ru.binaryblitz.Chisto.Model.City;
+import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SelectCityActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -194,7 +196,13 @@ public class SelectCityActivity extends BaseActivity
         ArrayList<CitiesAdapter.City> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
-            collection.add(new CitiesAdapter.City(array.get(i).getAsJsonObject().get("name").getAsString(), false));
+            JsonObject object = array.get(i).getAsJsonObject();
+            City city = new City(object.get("id").getAsInt(),
+                    object.get("name").getAsString(),
+                    object.get("latitude").getAsDouble(),
+                    object.get("longitude").getAsDouble());
+
+            collection.add(new CitiesAdapter.City(city, false));
         }
 
         adapter.setCollection(collection);
