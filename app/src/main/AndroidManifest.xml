@@ -15,7 +15,7 @@
                  android:theme="@style/AppTheme">
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.RegistrationActivity"
+                android:name="ru.binaryblitz.Chisto.Activities.StartActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
@@ -46,18 +46,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <!--<activity-->
-                <!--android:name="ru.binaryblitz.Chisto.Activities.RegistrationActivity"-->
-                <!--android:configChanges="orientation|keyboardHidden|screenSize"-->
-                <!--android:screenOrientation="portrait"-->
-                <!--android:windowSoftInputMode="adjustPan" >-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW" />-->
-                <!--<category android:name="android.intent.category.DEFAULT" />-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
-
         <activity
                 android:name="ru.binaryblitz.Chisto.Activities.LaundriesActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"

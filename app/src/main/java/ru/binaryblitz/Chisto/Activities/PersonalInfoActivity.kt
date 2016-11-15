@@ -75,14 +75,6 @@ class PersonalInfoActivity : BaseActivity() {
         user!!.house = house!!.text.toString()
 
         DeviceInfoStore.saveUser(this, user)
-
-        //TEST
-        MaterialDialog.Builder(this)
-                .title(R.string.app_name)
-                .content("To be continued...")
-                .positiveText(R.string.yes_code_str)
-                .negativeText(R.string.no_code_str)
-                .show()
     }
 
     private fun setTextToField(editText: EditText, text: String?) {
