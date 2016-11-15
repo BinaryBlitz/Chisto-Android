@@ -128,8 +128,7 @@ public class LaundriesActivity extends BaseActivity
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        if (i == 0) layout.setEnabled(true);
-        else layout.setEnabled(false);
+        layout.setEnabled(i == 0);
     }
 
     private void parseAnswer(JsonArray array) {
