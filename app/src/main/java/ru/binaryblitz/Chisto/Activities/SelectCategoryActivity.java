@@ -12,14 +12,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import ru.binaryblitz.Chisto.Adapters.CategoriesAdapter;
-import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.Custom.RecyclerListView;
-import ru.binaryblitz.Chisto.Model.Category;
-import ru.binaryblitz.Chisto.Server.ServerApi;
-import ru.binaryblitz.Chisto.Server.ServerConfig;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
-import ru.binaryblitz.Chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -28,6 +20,14 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.binaryblitz.Chisto.Adapters.CategoriesAdapter;
+import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.Custom.RecyclerListView;
+import ru.binaryblitz.Chisto.Model.Category;
+import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Server.ServerConfig;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
+import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
     private CategoriesAdapter adapter;
@@ -110,9 +110,9 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
             JsonObject object = array.get(i).getAsJsonObject();
             collection.add(new Category(
                     object.get("id").getAsInt(),
+                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon_url").getAsString(),
                     object.get("name").getAsString(),
                     object.get("description").getAsString(),
-                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon").getAsString(),
                     ContextCompat.getColor(this, ru.binaryblitz.Chisto.R.color.greyColor)
             ));
         }

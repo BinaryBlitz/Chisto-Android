@@ -12,4 +12,5 @@ object ServerConfig {
     val prefsName = "ChistoPrefs"
     val tokenEntity = "auth_token"
     val cityEntity = "city_token"
+    val userEntity = "auth_info"
 }

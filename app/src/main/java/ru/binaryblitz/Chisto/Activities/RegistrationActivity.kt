@@ -1,28 +1,24 @@
 package ru.binaryblitz.Chisto.Activities
 
-import com.google.gson.JsonObject
-
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
 import android.widget.TextView
-
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
+import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
-
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.R
-import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
@@ -30,6 +26,8 @@ import ru.binaryblitz.Chisto.Utils.CodeTimer
 import ru.binaryblitz.Chisto.Utils.LogUtil
 
 class RegistrationActivity : BaseActivity() {
+
+    val EXTRA_PHONE = "phone"
 
     private var code = false
 
@@ -178,23 +176,9 @@ class RegistrationActivity : BaseActivity() {
         val dialog = ProgressDialog(this@RegistrationActivity)
         dialog.show()
 
-        ServerApi.get(this@RegistrationActivity).api().verifyPhoneNumber(token, codeEditText!!.text.toString(), phoneFromServer)
-                .enqueue(object : Callback<JsonObject> {
-                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                        dialog.dismiss()
-                        if (!response.isSuccessful || response.body() == null) {
-                            Snackbar.make(findViewById(R.id.main), R.string.wrong_code_str, Snackbar.LENGTH_SHORT).show()
-                        } else {
-                            val obj = response.body()
-                            DeviceInfoStore.saveToken(this@RegistrationActivity, obj.get("api_token").asString)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                        dialog.dismiss()
-                        onInternetConnectionError()
-                    }
-                })
+        val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
+        intent.putExtra(EXTRA_PHONE, phoneFromServer)
+        startActivity(intent)
     }
 
     private fun authRequest(animate: Boolean) {
