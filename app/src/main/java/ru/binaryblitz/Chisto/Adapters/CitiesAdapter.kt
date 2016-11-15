@@ -12,11 +12,12 @@ import android.widget.TextView
 import ru.binaryblitz.Chisto.Activities.OrdersActivity
 import ru.binaryblitz.Chisto.Activities.SelectCityActivity
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import java.util.*
 
 class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class City(val name: String, var selected: Boolean)
+    class City(val city: ru.binaryblitz.Chisto.Model.City, var selected: Boolean)
 
     private var collection = ArrayList<City>()
 
@@ -29,7 +30,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        holder.name.text = collection[position].name
+        holder.name.text = collection[position].city.name
 
         if (collection[position].selected) {
             holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -41,6 +42,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, OrdersActivity::class.java)
+            DeviceInfoStore.saveCity(context, collection[position].city)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
             context.finish()
@@ -58,7 +60,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     fun selectCity(cityName: String) {
         var position = 0
         for (i in collection.indices) {
-            if (collection[i].name == cityName) {
+            if (collection[i].city.name == cityName) {
                 position = i
             }
 
