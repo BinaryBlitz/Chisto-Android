@@ -19,6 +19,7 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+<<<<<<< 87231e1a46a68d8d086bef4fbba520efa4dee03b
 import ru.binaryblitz.Chisto.Adapters.LaundriesAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
@@ -27,6 +28,8 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
+=======
+>>>>>>> First fix
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 
 public class LaundriesActivity extends BaseActivity {
