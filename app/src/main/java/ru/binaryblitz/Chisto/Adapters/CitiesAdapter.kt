@@ -61,6 +61,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     fun selectCity(latitude: Double, longitude: Double) {
         var position = 0
+<<<<<<< dfa965ec95e7bfc80c25fa751b3f82fe06fc55fc
         var min = Float.MAX_VALUE
         for (i in collection.indices) {
             val dist = distanceBetween(collection[i].city.latitude, collection[i].city.longitude, latitude, longitude)
@@ -68,6 +69,15 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
             if (dist < min) {
                 position = i
                 min = dist
+=======
+        var max = 0f
+        for (i in collection.indices) {
+            val dist = distanceBetween(collection[i].city.latitude, collection[i].city.longitude, latitude, longitude)
+
+            if (dist > max) {
+                position = i
+                max = dist
+>>>>>>> Fix swipes and design
             }
         }
 
