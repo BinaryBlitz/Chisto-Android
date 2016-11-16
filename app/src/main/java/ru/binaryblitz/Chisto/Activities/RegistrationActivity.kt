@@ -30,6 +30,7 @@ import ru.binaryblitz.Chisto.Utils.AnimationStartListener
 import ru.binaryblitz.Chisto.Utils.CodeTimer
 import ru.binaryblitz.Chisto.Utils.LogUtil
 
+
 class RegistrationActivity : BaseActivity() {
 
     val EXTRA_PHONE = "phone"
