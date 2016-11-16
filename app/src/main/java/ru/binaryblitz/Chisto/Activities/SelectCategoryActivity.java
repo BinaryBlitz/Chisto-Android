@@ -26,6 +26,7 @@ import ru.binaryblitz.Chisto.Model.Category;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity {
