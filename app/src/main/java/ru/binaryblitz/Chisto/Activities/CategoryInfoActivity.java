@@ -103,10 +103,10 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
             collection.add(new CategoryItem(
-                    object.get("id").getAsInt(),
-                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon_url").getAsString(),
-                    object.get("name").getAsString(),
-                    object.get("description").isJsonNull() ? "" : object.get("description").getAsString()
+                    AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
+                    ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description"))
             ));
         }
 

@@ -33,7 +33,8 @@ class PersonalInfoActivity : BaseActivity() {
         initFields()
         setInfo()
 
-        findViewById(R.id.ok_btn).setOnClickListener { if (validateFields()) setData() }
+        // TODO save info
+        // findViewById(R.id.ok_btn).setOnClickListener { if (validateFields()) setData() }
     }
 
     private fun initFields() {

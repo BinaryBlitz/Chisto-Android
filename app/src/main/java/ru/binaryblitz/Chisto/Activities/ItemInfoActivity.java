@@ -144,6 +144,12 @@ public class ItemInfoActivity extends BaseActivity {
                         finish();
                     }
                 })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        count.setText(Integer.toString(1));
+                    }
+                })
                 .show();
     }
 

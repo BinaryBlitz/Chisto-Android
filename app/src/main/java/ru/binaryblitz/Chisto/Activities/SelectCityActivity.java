@@ -42,6 +42,7 @@ import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.City;
 import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SelectCityActivity extends BaseActivity
@@ -198,9 +199,9 @@ public class SelectCityActivity extends BaseActivity
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
             City city = new City(object.get("id").getAsInt(),
-                    object.get("name").getAsString(),
-                    object.get("latitude").getAsDouble(),
-                    object.get("longitude").getAsDouble());
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                    AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("latitude")),
+                    AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("longitude")));
 
             collection.add(new CitiesAdapter.City(city, false));
         }

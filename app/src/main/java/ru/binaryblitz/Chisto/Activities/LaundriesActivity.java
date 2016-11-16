@@ -29,6 +29,7 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 
 public class LaundriesActivity extends BaseActivity
         implements AppBarLayout.OnOffsetChangedListener, SwipeRefreshLayout.OnRefreshListener {
@@ -137,11 +138,11 @@ public class LaundriesActivity extends BaseActivity
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
             collection.add(new Laundry(
-                    object.get("id").getAsInt(),
-                    ServerConfig.INSTANCE.getImageUrl() + object.get("logo_url").getAsString(),
-                    object.get("name").getAsString(),
-                    object.get("description").getAsString(),
-                    object.get("category").getAsString()
+                    AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
+                    ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("logo_url")),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("category"))
             ));
         }
 

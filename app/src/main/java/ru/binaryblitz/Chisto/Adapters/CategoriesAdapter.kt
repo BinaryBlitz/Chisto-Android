@@ -14,7 +14,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
 import java.util.*
 
-class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class  CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categories: ArrayList<Category>? = null
 

@@ -1,6 +1,7 @@
 package ru.binaryblitz.Chisto.Activities
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -9,10 +10,13 @@ import android.text.Editable
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.View
+import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.google.gson.JsonObject
+import com.nineoldandroids.animation.Animator
 import com.rengwuxian.materialedittext.MaterialEditText
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,6 +28,7 @@ import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
 import ru.binaryblitz.Chisto.Utils.CodeTimer
 import ru.binaryblitz.Chisto.Utils.LogUtil
+
 
 class RegistrationActivity : BaseActivity() {
 
@@ -98,6 +103,10 @@ class RegistrationActivity : BaseActivity() {
         codeEditText = findViewById(R.id.code_field) as MaterialEditText
         countyCodeEditText = findViewById(R.id.county_code_field) as MaterialEditText
         phoneEditText!!.addTextChangedListener(watcher)
+
+        Handler().post {
+            phoneEditText!!.requestFocus()
+        }
     }
 
     override fun onBackPressed() {
@@ -119,6 +128,9 @@ class RegistrationActivity : BaseActivity() {
                         YoYo.with(Techniques.SlideInLeft)
                                 .duration(ANIMATION_DURATION.toLong())
                                 .playOn(findViewById(R.id.l1))
+
+                        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.showSoftInput(phoneEditText, InputMethodManager.SHOW_IMPLICIT)
                     }
                 })
                 .playOn(findViewById(R.id.l2))
@@ -149,6 +161,15 @@ class RegistrationActivity : BaseActivity() {
             if(code) verifyRequest() else processPhoneInput()
         }
 
+        findViewById(R.id.left_btn).setOnClickListener {
+            if (!code)
+                super.onBackPressed()
+            else {
+                animateBackBtn()
+                resetFields()
+            }
+        }
+
         findViewById(R.id.textView37).setOnClickListener(View.OnClickListener {
             if (!AndroidUtilities.isConnected(this@RegistrationActivity)) {
                 onInternetConnectionError()
@@ -177,7 +198,7 @@ class RegistrationActivity : BaseActivity() {
         dialog.show()
 
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
-        intent.putExtra(EXTRA_PHONE, phoneFromServer)
+        intent.putExtra(EXTRA_PHONE, countyCodeEditText!!.text.toString() + phoneEditText!!.text.toString())
         startActivity(intent)
     }
 
@@ -233,10 +254,15 @@ class RegistrationActivity : BaseActivity() {
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
                         findViewById(R.id.l2).visibility = View.VISIBLE
-
                         YoYo.with(Techniques.SlideInRight)
                                 .duration(ANIMATION_DURATION.toLong())
                                 .playOn(findViewById(R.id.l2))
+                    }
+
+                    override fun onAnimationEnd(animation: Animator?) {
+                        super.onAnimationEnd(animation)
+                        codeEditText!!.requestFocus()
+                        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
                     }
                 })
                 .playOn(v1)
@@ -246,7 +272,8 @@ class RegistrationActivity : BaseActivity() {
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
                         (findViewById(R.id.textView23) as TextView).text =
-                                getString(R.string.number_code_str) + " " + phoneFromServer + getString(R.string.code_sent_str)
+                                getString(R.string.number_code_str) + " " + countyCodeEditText!!.text.toString() +
+                                        phoneEditText!!.text.toString() + getString(R.string.code_sent_str)
 
                         (findViewById(R.id.title_text) as TextView).text = getString(R.string.code_title_str)
                     }

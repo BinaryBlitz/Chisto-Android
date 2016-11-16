@@ -26,6 +26,7 @@ import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.Category;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
@@ -109,10 +110,10 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
             collection.add(new Category(
-                    object.get("id").getAsInt(),
-                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon_url").getAsString(),
-                    object.get("name").getAsString(),
-                    object.get("description").getAsString(),
+                    AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
+                    ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
                     ContextCompat.getColor(this, ru.binaryblitz.Chisto.R.color.greyColor)
             ));
         }

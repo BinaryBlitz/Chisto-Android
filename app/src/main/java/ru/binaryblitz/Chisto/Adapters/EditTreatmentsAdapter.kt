@@ -16,7 +16,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
     private var collection = ArrayList<Treatment>()
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
-    var itemsPendingRemoval: ArrayList<Treatment>? = null
+    var itemsPendingRemoval: ArrayList<Treatment>? = ArrayList()
     var undoOn: Boolean = false
 
     private val handler = Handler()

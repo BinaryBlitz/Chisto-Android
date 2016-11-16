@@ -115,21 +115,15 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
     private fun parseAnswer(array: JsonArray) {
         val collection = ArrayList<Treatment>()
 
-        // TODO change this
-        collection.add(Treatment(
-                1,
-                "Декор",
-                "Описание",
-                intent.getBooleanExtra(EXTRA_DECOR, false)))
-
-        for (i in 0..array.size() - 1) {
-            val obj = array.get(i).asJsonObject
-            collection.add(Treatment(
-                    obj.get("id").asInt,
-                    obj.get("name").asString,
-                    obj.get("description").asString,
-                    false))
-        }
+        (0..array.size() - 1)
+                .map { array.get(it).asJsonObject }
+                .mapTo(collection) {
+                    Treatment(
+                            AndroidUtilities.getIntFieldFromJson(it.get("id")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("name")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("description")),
+                            false)
+                }
 
         main_loop@ for (i in collection.indices) {
             for (j in 0..OrderList.getTreatments()!!.size - 1) {
@@ -141,6 +135,15 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         }
 
         adapter!!.setCollection(collection)
+        adapter!!.notifyDataSetChanged()
+
+        // TODO change this
+        adapter!!.add(Treatment(
+                1,
+                "Декор",
+                "Описание",
+                intent.getBooleanExtra(EXTRA_DECOR, false)))
+
         adapter!!.notifyDataSetChanged()
     }
 }
