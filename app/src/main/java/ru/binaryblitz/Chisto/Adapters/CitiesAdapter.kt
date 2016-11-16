@@ -2,6 +2,7 @@ package ru.binaryblitz.Chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.location.Location
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import ru.binaryblitz.Chisto.Activities.OrdersActivity
-import ru.binaryblitz.Chisto.Activities.SelectCityActivity
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
@@ -59,24 +59,36 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         this.collection = collection
     }
 
-    fun selectCity(cityName: String) {
+    fun selectCity(latitude: Double, longitude: Double) {
         var position = 0
+        var max = 0f
         for (i in collection.indices) {
-            if (collection[i].city.name == cityName) {
-                position = i
-            }
+            val dist = distanceBetween(collection[i].city.latitude, collection[i].city.longitude, latitude, longitude)
 
-            if (i == collection.size - 1) {
-                (context as SelectCityActivity).cityError()
-                return
+            if (dist > max) {
+                position = i
+                max = dist
             }
         }
+
         collection[position].selected = true
         val city = collection[0]
         collection[0] = collection[position]
         collection[position] = city
 
         notifyDataSetChanged()
+    }
+
+    fun distanceBetween(firstLat: Double, firstLon: Double, secondLat: Double, secondLon: Double): Float {
+        val loc1 = Location("")
+        val loc2 = Location("")
+
+        loc1.latitude = firstLat
+        loc1.longitude = firstLon
+        loc2.latitude = secondLat
+        loc2.longitude = secondLon
+
+        return loc1.distanceTo(loc2)
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

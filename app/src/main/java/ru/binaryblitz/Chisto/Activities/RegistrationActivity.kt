@@ -29,7 +29,6 @@ import ru.binaryblitz.Chisto.Utils.AnimationStartListener
 import ru.binaryblitz.Chisto.Utils.CodeTimer
 import ru.binaryblitz.Chisto.Utils.LogUtil
 
-
 class RegistrationActivity : BaseActivity() {
 
     val EXTRA_PHONE = "phone"
@@ -180,6 +179,15 @@ class RegistrationActivity : BaseActivity() {
                 startTimer()
             }, 50)
         })
+
+        findViewById(R.id.left_btn).setOnClickListener {
+            if (!code)
+                super.onBackPressed()
+            else {
+                animateBackBtn()
+                resetFields()
+            }
+        }
     }
 
     private fun checkCodeInput(): Boolean {

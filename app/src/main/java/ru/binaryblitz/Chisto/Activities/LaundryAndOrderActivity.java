@@ -1,5 +1,6 @@
 package ru.binaryblitz.Chisto.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 
 public class LaundryAndOrderActivity extends BaseActivity {
 
@@ -22,9 +24,16 @@ public class LaundryAndOrderActivity extends BaseActivity {
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LaundryAndOrderActivity.this, RegistrationActivity.class);
-                startActivity(intent);
+                boolean userExists = DeviceInfoStore.getUser(LaundryAndOrderActivity.this).equals("null");
+
+                if (!userExists) openActivity(RegistrationActivity.class);
+                else openActivity(ContactInfoActivity.class);
             }
         });
+    }
+
+    private void openActivity(Class<? extends Activity> activity) {
+        Intent intent = new Intent(LaundryAndOrderActivity.this, activity);
+        startActivity(intent);
     }
 }

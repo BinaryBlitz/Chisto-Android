@@ -25,7 +25,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="8dp"
-            android:hint="Название города"
+            android:hint="Город"
             android:ems="10"
             android:id="@+id/editText2"/>
 </LinearLayout>

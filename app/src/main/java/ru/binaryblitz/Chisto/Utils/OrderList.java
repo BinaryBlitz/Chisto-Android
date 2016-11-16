@@ -53,7 +53,7 @@ public class OrderList {
     }
 
     public static void removeCurrent() {
-        if (currentItem < orders.size() - 1) {
+        if (currentItem <= orders.size() - 1) {
             orders.remove(currentItem);
         }
     }

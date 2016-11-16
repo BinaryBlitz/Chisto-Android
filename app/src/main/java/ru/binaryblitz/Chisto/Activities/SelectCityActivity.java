@@ -243,7 +243,7 @@ public class SelectCityActivity extends BaseActivity
                 if (adapter.getItemCount() == 0) {
                     cityError();
                 } else {
-                    adapter.selectCity(addresses.get(0).getLocality());
+                    adapter.selectCity(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                 }
             } else {
                 onLocationError();
