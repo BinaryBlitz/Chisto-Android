@@ -91,8 +91,12 @@
     <string name="wrong_data_str">Неверные данные</string>
     <string name="ordering_code_str">Заказать</string>
     <string name="contact_profile_str">Контактные данные</string>
+<<<<<<< 62a38094b05f212937c032c66d6673c8bb67fe1b
 <<<<<<< dfa965ec95e7bfc80c25fa751b3f82fe06fc55fc
     <string name="seconds_code_str">" c"</string>
 =======
 >>>>>>> Fix swipes and design
+=======
+    <string name="seconds_code_str">" c"</string>
+>>>>>>> New bug and design fixes
 </resources>
