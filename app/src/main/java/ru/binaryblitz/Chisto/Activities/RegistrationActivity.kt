@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.SpannableString
@@ -41,7 +42,7 @@ class RegistrationActivity : BaseActivity() {
     private var countyCodeEditText: MaterialEditText? = null
 
     private val myRunnable = Runnable {
-        messageForUser = getString(R.string.send_code_after_str) + (milis.toDouble() / SECOND.toDouble()).toInt()
+        messageForUser = getString(R.string.send_code_after_str) + (milis.toDouble() / SECOND.toDouble()).toInt() + getString(R.string.seconds_code_str)
         if (milis < 2 * SECOND) messageForUser = REPEAT_STR
     }
 
@@ -61,6 +62,12 @@ class RegistrationActivity : BaseActivity() {
         override fun afterTextChanged(s: Editable) {
             val string = s.toString()
             val phone = string.replace("[^\\d]".toRegex(), "")
+
+            if (string.length >= 15) {
+                phoneEditText!!.setTextColor(ContextCompat.getColor(this@RegistrationActivity, R.color.colorPrimary))
+            } else {
+                phoneEditText!!.setTextColor(ContextCompat.getColor(this@RegistrationActivity, R.color.greyColor))
+            }
 
             if (!editedFlag) {
                 if (phone.length >= 8 && !backspacingFlag) {

@@ -67,14 +67,18 @@
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
 
-    <TextView
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/BrandButtonStyle"
             android:text="@string/nothing_selected_str"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="68dp"
             android:id="@+id/textView2"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginBottom="-8dp"
             android:textColor="#ffffff"
-            android:background="#727272"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
 

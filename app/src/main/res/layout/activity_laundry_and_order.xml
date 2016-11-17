@@ -98,6 +98,7 @@
             android:rating="3.5"
             android:stepSize="0.5"
             android:numStars="5"
+            android:id="@+id/ratingBar"
             android:layout_marginTop="80dp"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
@@ -199,14 +200,18 @@
                   android:textColor="@color/colorAccent"
                   android:layout_gravity="end|center_vertical"/>
     </FrameLayout>
-    <TextView
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/BrandButtonStyle"
             android:text="Оформить заказ: 4 300 \u20bd"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="68dp"
             android:id="@+id/cont_btn"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginBottom="-8dp"
             android:textColor="#ffffff"
-            android:background="@color/colorPrimary"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
 </FrameLayout>

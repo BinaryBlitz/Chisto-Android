@@ -2,9 +2,13 @@ package ru.binaryblitz.Chisto.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
+import android.widget.RatingBar;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -30,6 +34,12 @@ public class LaundryAndOrderActivity extends BaseActivity {
                 else openActivity(ContactInfoActivity.class);
             }
         });
+
+        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+
+        Drawable progress = ratingBar.getProgressDrawable();
+        DrawableCompat.setTint(progress, Color.WHITE);
+        ratingBar.setProgressDrawable(progress);
     }
 
     private void openActivity(Class<? extends Activity> activity) {

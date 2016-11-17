@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -194,6 +195,7 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void parseAnswer(JsonArray array) {
+        Log.e("qwerty", array.toString());
         ArrayList<CitiesAdapter.City> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {

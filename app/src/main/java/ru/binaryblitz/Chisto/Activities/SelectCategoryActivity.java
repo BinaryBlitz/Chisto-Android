@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -27,12 +26,10 @@ import ru.binaryblitz.Chisto.Model.Category;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
-public class SelectCategoryActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class SelectCategoryActivity extends BaseActivity {
     private CategoriesAdapter adapter;
-    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,11 +61,6 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
         OrderList.removeCurrent();
     }
 
-    @Override
-    public void onRefresh() {
-        load();
-    }
-
     private void initList() {
         RecyclerListView view = (RecyclerListView) findViewById(ru.binaryblitz.Chisto.R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
@@ -77,18 +69,12 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
 
         adapter = new CategoriesAdapter(this);
         view.setAdapter(adapter);
-
-        layout = (SwipeRefreshLayout) findViewById(ru.binaryblitz.Chisto.R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(ru.binaryblitz.Chisto.R.color.colorAccent);
     }
 
     private void load() {
         ServerApi.get(this).api().getCategories().enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                LogUtil.logError(response.body().toString());
-                layout.setRefreshing(false);
                 if (response.isSuccessful()) {
                     parseAnswer(response.body());
                 } else {
@@ -98,7 +84,6 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
-                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });

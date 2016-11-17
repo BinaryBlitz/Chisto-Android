@@ -141,7 +141,7 @@ public class OrdersActivity extends BaseActivity {
 
             if (adapter.getItemCount() != 0) {
                 contBtn.setText(ru.binaryblitz.Chisto.R.string.cont_code_str);
-                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.colorPrimary));
+              //  contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.colorPrimary));
                 contBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -150,7 +150,8 @@ public class OrdersActivity extends BaseActivity {
                 });
             } else {
                 contBtn.setText(ru.binaryblitz.Chisto.R.string.nothing_selected_code_str);
-                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.greyColor));
+                contBtn.setEnabled(false);
+               // contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.greyColor));
                 contBtn.setOnClickListener(null);
             }
         }

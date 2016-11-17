@@ -104,14 +104,18 @@
                 android:layout_height="match_parent">
         </ru.binaryblitz.Chisto.Custom.RecyclerListView>
 
-        <TextView
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/BrandButtonStyle"
                 android:text="@string/ready_str"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="68dp"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginBottom="-8dp"
                 android:id="@+id/cont_btn"
                 android:textColor="#ffffff"
-                android:background="@color/colorPrimary"
-                android:textSize="22sp"
+                android:textSize="18sp"
                 android:layout_gravity="bottom"
                 android:gravity="center"/>
     </android.support.design.widget.CoordinatorLayout>

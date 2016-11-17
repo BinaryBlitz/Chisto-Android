@@ -7,18 +7,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import ru.binaryblitz.Chisto.Adapters.CategoryItemsAdapter;
-import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.Custom.RecyclerListView;
-import ru.binaryblitz.Chisto.Model.CategoryItem;
-import ru.binaryblitz.Chisto.Server.ServerApi;
-import ru.binaryblitz.Chisto.Server.ServerConfig;
-import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
@@ -27,10 +19,16 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.binaryblitz.Chisto.Adapters.CategoryItemsAdapter;
+import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.Custom.RecyclerListView;
+import ru.binaryblitz.Chisto.Model.CategoryItem;
+import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Server.ServerConfig;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 
-public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class CategoryInfoActivity extends BaseActivity{
     private CategoryItemsAdapter adapter;
-    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,11 +56,6 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         }, 200);
     }
 
-    @Override
-    public void onRefresh() {
-        load();
-    }
-
     private void initList() {
         RecyclerListView view = (RecyclerListView) findViewById(ru.binaryblitz.Chisto.R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
@@ -70,9 +63,6 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         view.setHasFixedSize(true);
         adapter = new CategoryItemsAdapter(this);
         view.setAdapter(adapter);
-        layout = (SwipeRefreshLayout) findViewById(ru.binaryblitz.Chisto.R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(ru.binaryblitz.Chisto.R.color.colorAccent);
 
         adapter.setColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
     }
@@ -81,7 +71,6 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
         ServerApi.get(this).api().getItems(getIntent().getIntExtra("id", 0)).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                layout.setRefreshing(false);
                 if (response.isSuccessful()) {
                     parseAnswer(response.body());
                 } else {
@@ -91,7 +80,6 @@ public class CategoryInfoActivity extends BaseActivity implements SwipeRefreshLa
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
-                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });

@@ -18,7 +18,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_height="56dp">
+                    android:layout_height="48dp">
                 <ImageView
                         android:layout_width="56dp"
                         android:layout_gravity="center_vertical"
@@ -49,7 +49,6 @@
                     android:layout_marginEnd="24dp"
                     android:layout_marginStart="56dp"
                     android:layout_marginLeft="56dp"
-                    android:layout_marginTop="12dp"
                     app:met_underlineColor="@color/greyColor"
                     app:met_baseColor="@color/blackColor"
                     app:met_textColor="@color/blackColor"
@@ -111,7 +110,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_height="56dp">
+                    android:layout_height="48dp">
                 <ImageView
                         android:layout_width="56dp"
                         android:layout_gravity="center_vertical"
@@ -144,7 +143,6 @@
                     android:enabled="false"
                     android:layout_marginStart="56dp"
                     android:layout_marginLeft="56dp"
-                    android:layout_marginTop="12dp"
                     app:met_underlineColor="@color/greyColor"
                     app:met_baseColor="@color/blackColor"
                     app:met_textColor="@color/blackColor"
@@ -195,6 +193,8 @@
                         android:hint="@string/house_text"
                         android:layout_marginStart="56dp"
                         android:layout_marginLeft="56dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginEnd="12dp"
                         android:layout_marginTop="12dp"
                         app:met_underlineColor="@color/greyColor"
                         app:met_baseColor="@color/blackColor"
@@ -233,7 +233,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:layout_height="56dp">
+                    android:layout_height="48dp">
                 <ImageView
                         android:layout_width="56dp"
                         android:layout_gravity="center_vertical"
@@ -267,7 +267,6 @@
                     android:layout_marginEnd="24dp"
                     android:layout_marginStart="56dp"
                     android:layout_marginLeft="56dp"
-                    android:layout_marginTop="12dp"
                     app:met_underlineColor="@color/greyColor"
                     app:met_baseColor="@color/blackColor"
                     app:met_textColor="@color/blackColor"
@@ -317,6 +316,15 @@
                     android:typeface="sans"
                     android:textSize="20sp"
                     android:textColor="#ffffff" />
+
+            <ImageView
+                    android:id="@+id/right_btn"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_checkmark"
+                    android:padding="13dp"
+                    android:layout_gravity="end"/>
 
         </FrameLayout>
     </android.support.v7.widget.Toolbar>

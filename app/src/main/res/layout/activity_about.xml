@@ -179,14 +179,16 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content"
+            <Button
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:theme="@style/BrandButtonStyle"
+                    android:layout_width="wrap_content"
                       android:text="@string/rate_str"
                       android:gravity="center"
                       android:layout_gravity="center_horizontal|bottom"
                       android:textColor="#ffffff"
                       android:id="@+id/add_btn"
                       android:textSize="18sp"
-                      android:background="@drawable/button_border"
                       android:layout_marginTop="24dp"
                       android:layout_height="wrap_content"
                       android:paddingBottom="12dp"
