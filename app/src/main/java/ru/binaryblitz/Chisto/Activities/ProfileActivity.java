@@ -1,22 +1,15 @@
 package ru.binaryblitz.Chisto.Activities;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.R;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
-import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.R;
 
 public class ProfileActivity extends BaseActivity {
 
