@@ -24,6 +24,7 @@
             <ImageView
                     android:id="@+id/left_btn"
                     android:layout_width="56dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_back"

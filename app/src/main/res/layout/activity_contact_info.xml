@@ -301,6 +301,7 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_back"
                     android:padding="13dp"
                     android:layout_gravity="start"/>
@@ -316,15 +317,6 @@
                     android:typeface="sans"
                     android:textSize="20sp"
                     android:textColor="#ffffff" />
-
-            <ImageView
-                    android:id="@+id/right_btn"
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_checkmark"
-                    android:padding="13dp"
-                    android:layout_gravity="end"/>
 
         </FrameLayout>
     </android.support.v7.widget.Toolbar>

@@ -25,6 +25,7 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_back"
                     android:padding="13dp"
                     android:layout_gravity="start"
@@ -87,6 +88,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -123,6 +130,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -159,6 +172,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -195,6 +214,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
         </LinearLayout>
     </ScrollView>

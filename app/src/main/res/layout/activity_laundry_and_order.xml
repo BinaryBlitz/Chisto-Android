@@ -10,6 +10,10 @@
             android:id="@+id/back_image"
             android:layout_height="110dp"/>
 
+    <View android:layout_width="match_parent"
+          android:background="@drawable/card_gradient"
+          android:layout_height="110dp"/>
+
     <ImageView
             android:layout_width="56dp"
             android:src="@drawable/ic_near_me"

@@ -177,6 +177,7 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_back"
                     android:padding="13dp"
                     android:layout_gravity="start"/>

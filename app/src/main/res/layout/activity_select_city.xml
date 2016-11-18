@@ -35,6 +35,7 @@
 
             <ImageView
                     android:id="@+id/back_btn"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
@@ -45,6 +46,7 @@
 
             <ImageView
                     android:id="@+id/my_loc_btn"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"

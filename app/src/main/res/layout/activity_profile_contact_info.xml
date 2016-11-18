@@ -301,6 +301,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_back"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="13dp"
                     android:layout_gravity="start"/>
 
