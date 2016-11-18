@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
@@ -37,4 +38,7 @@ public interface ApiEndpoints {
 
     @POST("verification_tokens")
     Call<JsonObject> authWithPhoneNumber(@Query("phone_number") String number);
+
+    @POST("laundries/{id}/orders?api_token=foobar")
+    Call<JsonObject> sendOrder(@Path("id") int id, @Body JsonObject object);
 }

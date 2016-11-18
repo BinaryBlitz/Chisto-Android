@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class OrderList {
     private static ArrayList<Order> orders = new ArrayList<>();
-
+    private static int laundryId = 0;
     private static int currentItem = 0;
 
     public static void add(Order order) {
@@ -21,6 +21,14 @@ public class OrderList {
     public static void clear() {
         orders.clear();
         currentItem = 0;
+    }
+
+    public static void setLaundryId(int laundryId) {
+        OrderList.laundryId = laundryId;
+    }
+
+    public static int getLaundryId() {
+        return laundryId;
     }
 
     @Nullable
