@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import ru.binaryblitz.Chisto.Model.City;
 import ru.binaryblitz.Chisto.Model.User;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class DeviceInfoStore {
     public static void saveToken(Context context, String token) {
@@ -42,6 +43,7 @@ public class DeviceInfoStore {
         try {
             return User.Companion.fromString(DeviceInfoStore.getUser(context));
         } catch (Exception e) {
+            LogUtil.logException(e);
             return null;
         }
     }

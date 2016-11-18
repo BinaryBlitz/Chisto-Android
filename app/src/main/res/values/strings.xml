@@ -92,4 +92,6 @@
     <string name="ordering_code_str">Заказать</string>
     <string name="contact_profile_str">Контактные данные</string>
     <string name="seconds_code_str">" c"</string>
+    <string name="bank_str">Банковской\nкартой</string>
+    <string name="pay_str">Наличными\nкурьеру</string>
 </resources>
