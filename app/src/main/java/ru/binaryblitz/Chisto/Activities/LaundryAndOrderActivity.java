@@ -28,10 +28,11 @@ public class LaundryAndOrderActivity extends BaseActivity {
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean userExists = DeviceInfoStore.getUser(LaundryAndOrderActivity.this).equals("null");
+                boolean userNotLogged = DeviceInfoStore.getUserObject(LaundryAndOrderActivity.this) == null ||
+                        DeviceInfoStore.getUserObject(LaundryAndOrderActivity.this).getPhone().equals("null");
 
-                if (!userExists) openActivity(RegistrationActivity.class);
-                else openActivity(ContactInfoActivity.class);
+                if (userNotLogged) openActivity(RegistrationActivity.class);
+                else openActivity(PersonalInfoActivity.class);
             }
         });
 

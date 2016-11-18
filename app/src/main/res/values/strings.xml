@@ -94,9 +94,14 @@
 <<<<<<< 62a38094b05f212937c032c66d6673c8bb67fe1b
 <<<<<<< dfa965ec95e7bfc80c25fa751b3f82fe06fc55fc
     <string name="seconds_code_str">" c"</string>
+<<<<<<< 30833d680ba576c88a4c1401cfcb78527e76ff42
 =======
 >>>>>>> Fix swipes and design
 =======
     <string name="seconds_code_str">" c"</string>
 >>>>>>> New bug and design fixes
+=======
+    <string name="bank_str">Банковской\nкартой</string>
+    <string name="pay_str">Наличными\nкурьеру</string>
+>>>>>>> Create splash screen and fix bugs with login
 </resources>
