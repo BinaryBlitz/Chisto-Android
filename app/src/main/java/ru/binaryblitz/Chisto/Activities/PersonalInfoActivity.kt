@@ -92,6 +92,8 @@ class PersonalInfoActivity : BaseActivity() {
         val toSend = JsonObject()
         toSend.add("order", obj)
 
+        LogUtil.logError(toSend.toString())
+
         ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), toSend).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
