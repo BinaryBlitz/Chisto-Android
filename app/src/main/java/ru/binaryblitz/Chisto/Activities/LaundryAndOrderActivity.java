@@ -6,11 +6,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
@@ -29,7 +26,6 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
-import ru.binaryblitz.Chisto.Utils.Animations.Animations;
 import ru.binaryblitz.Chisto.Utils.Image;
 
 public class LaundryAndOrderActivity extends BaseActivity {
