@@ -2,11 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-<<<<<<< dbea4d64684c7ccf5ad4933a96976b9d8fb68c7a
             <solid android:color="#e2e2e2" />
-=======
-            <solid android:color="#b6b6b6" />
->>>>>>> Create splash screen and fix bugs with login
         </shape>
     </item>
     <item android:right="2px">
