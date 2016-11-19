@@ -1,6 +1,8 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.EditText
 import com.crashlytics.android.Crashlytics
 import com.rengwuxian.materialedittext.MaterialEditText
@@ -33,7 +35,14 @@ class PersonalInfoActivity : BaseActivity() {
         initFields()
         setInfo()
 
-        findViewById(R.id.ok_btn).setOnClickListener { if (validateFields()) setData() }
+        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
+
+        // TODO save info
+        // findViewById(R.id.ok_btn).setOnClickListener { if (validateFields()) setData() }
+    }
+
+    override fun onBackPressed() {
+        finishActivity()
     }
 
     private fun initFields() {
@@ -120,5 +129,12 @@ class PersonalInfoActivity : BaseActivity() {
             count++
 
         return count
+    }
+
+    private fun finishActivity() {
+        val intent = Intent(this@PersonalInfoActivity, OrdersActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

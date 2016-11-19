@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.gson.JsonElement
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -45,6 +46,21 @@ object AndroidUtilities {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = color
         }
+    }
+
+    fun getStringFieldFromJson(element: JsonElement?): String {
+        if(element == null || element.isJsonNull) return ""
+        else return element.asString
+    }
+
+    fun getIntFieldFromJson(element: JsonElement?): Int {
+        if(element == null || element.isJsonNull) return 0
+        else return element.asInt
+    }
+
+    fun getDoubleFieldFromJson(element: JsonElement?): Double {
+        if(element == null || element.isJsonNull) return 0.0
+        else return element.asDouble
     }
 
     fun encodeToBase64(image: Bitmap): String {

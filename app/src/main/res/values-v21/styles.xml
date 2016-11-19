@@ -1,0 +1,10 @@
+<resources>
+
+    <style name="BrandButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">0dp</item>
+        <item name="colorButtonNormal">@color/greyColor</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
+    </style>
+
+</resources>

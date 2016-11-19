@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -42,6 +43,7 @@ import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.City;
 import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SelectCityActivity extends BaseActivity
@@ -193,14 +195,15 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void parseAnswer(JsonArray array) {
+        Log.e("qwerty", array.toString());
         ArrayList<CitiesAdapter.City> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
             City city = new City(object.get("id").getAsInt(),
-                    object.get("name").getAsString(),
-                    object.get("latitude").getAsDouble(),
-                    object.get("longitude").getAsDouble());
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                    AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("latitude")),
+                    AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("longitude")));
 
             collection.add(new CitiesAdapter.City(city, false));
         }
@@ -242,7 +245,7 @@ public class SelectCityActivity extends BaseActivity
                 if (adapter.getItemCount() == 0) {
                     cityError();
                 } else {
-                    adapter.selectCity(addresses.get(0).getLocality());
+                    adapter.selectCity(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                 }
             } else {
                 onLocationError();

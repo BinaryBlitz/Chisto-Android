@@ -10,13 +10,14 @@ import android.widget.TextView
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.OrderList
+import ru.binaryblitz.Chisto.Utils.SwipeToDeleteAdapter
 import java.util.*
 
-class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SwipeToDeleteAdapter {
 
     private var collection = ArrayList<Treatment>()
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
-    var itemsPendingRemoval: ArrayList<Treatment>? = null
+    var itemsPendingRemoval: ArrayList<Treatment>? = ArrayList()
     var undoOn: Boolean = false
 
     private val handler = Handler()
@@ -44,7 +45,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
         this.collection = collection
     }
 
-    fun pendingRemoval(position: Int) {
+    override fun pendingRemoval(position: Int) {
         val item = collection[position]
         if (!itemsPendingRemoval!!.contains(item)) {
             itemsPendingRemoval!!.add(item)
@@ -55,7 +56,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
         }
     }
 
-    fun remove(position: Int) {
+    override fun remove(position: Int) {
         val item = collection[position]
         if (itemsPendingRemoval!!.contains(item)) {
             itemsPendingRemoval!!.remove(item)
@@ -67,7 +68,11 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
         }
     }
 
-    fun isPendingRemoval(position: Int): Boolean {
+    override fun isUndo(): Boolean {
+        return undoOn
+    }
+
+    override fun isPendingRemoval(position: Int): Boolean {
         val item = collection[position]
         return itemsPendingRemoval!!.contains(item)
     }

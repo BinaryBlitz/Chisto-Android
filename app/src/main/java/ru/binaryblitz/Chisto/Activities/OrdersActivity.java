@@ -18,6 +18,7 @@ import android.widget.TextView;
 import ru.binaryblitz.Chisto.Adapters.OrdersAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
+import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.Animations.Animations;
@@ -140,7 +141,7 @@ public class OrdersActivity extends BaseActivity {
 
             if (adapter.getItemCount() != 0) {
                 contBtn.setText(ru.binaryblitz.Chisto.R.string.cont_code_str);
-                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.colorPrimary));
+              //  contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.colorPrimary));
                 contBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -149,7 +150,8 @@ public class OrdersActivity extends BaseActivity {
                 });
             } else {
                 contBtn.setText(ru.binaryblitz.Chisto.R.string.nothing_selected_code_str);
-                contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.greyColor));
+                contBtn.setEnabled(false);
+               // contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.greyColor));
                 contBtn.setOnClickListener(null);
             }
         }
@@ -188,7 +190,7 @@ public class OrdersActivity extends BaseActivity {
     private void parseAnswer(JsonObject object) {
         ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.name_text)).setText(getString(ru.binaryblitz.Chisto.R.string.laundary_code_str) + object.get("name").getAsString());
         ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.desc_text)).setText(object.get("description").getAsString());
-        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.order_current_btn)).setText(getString(ru.binaryblitz.Chisto.R.string.order_code_str) + object.get("name").getAsString());
+        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.order_current_btn)).setText(R.string.ordering_code_str);
 
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));

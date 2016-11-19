@@ -1,5 +1,6 @@
 package ru.binaryblitz.Chisto.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -60,7 +61,6 @@ public class ItemInfoActivity extends BaseActivity {
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
-        view.setHasFixedSize(true);
         view.setEmptyView(null);
 
         adapter = new EditTreatmentsAdapter(this);
@@ -137,11 +137,23 @@ public class ItemInfoActivity extends BaseActivity {
                 .content(R.string.delete_from_order_str)
                 .positiveText(R.string.yes_code_str)
                 .negativeText(R.string.no_code_str)
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        count.setText(Integer.toString(1));
+                    }
+                })
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         OrderList.removeCurrent();
                         finish();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        count.setText(Integer.toString(1));
                     }
                 })
                 .show();
