@@ -27,7 +27,6 @@
                         android:id="@+id/title"
                         android:textColor="#ffffff"
                         android:textSize="28sp"
-                        android:text="qwery"
                         app:layout_collapseMode="pin"
                         android:textStyle="bold"
                         android:maxLines="1"
@@ -101,7 +100,7 @@
         <ru.binaryblitz.Chisto.Custom.RecyclerListView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_marginBottom="56dp"
+                android:layout_marginBottom="186dp"
                 android:layout_marginTop="184dp"
                 android:layout_height="match_parent">
         </ru.binaryblitz.Chisto.Custom.RecyclerListView>

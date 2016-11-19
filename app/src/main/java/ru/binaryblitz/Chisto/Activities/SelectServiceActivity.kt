@@ -46,8 +46,11 @@ class SelectServiceActivity : BaseActivity() {
         (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
 
         findViewById(R.id.left_btn).setOnClickListener {
-            OrderList.removeCurrent()
+            if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+                OrderList.removeCurrent()
+            }
             finish()
+
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
@@ -115,15 +118,6 @@ class SelectServiceActivity : BaseActivity() {
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
                             false)
                 }
-
-        main_loop@ for (i in collection.indices) {
-            for (j in 0..OrderList.getTreatments()!!.size - 1) {
-                if (collection[i].id == OrderList.getTreatments()!![j].id) {
-                    collection[i].select = true
-                    continue@main_loop
-                }
-            }
-        }
 
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
