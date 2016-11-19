@@ -18,6 +18,7 @@ import java.util.*
 class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var collection = ArrayList<Laundry>()
+    private val EXTRA_ID = "id"
 
     init {
         Image.init(context)
@@ -44,6 +45,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.itemView.setOnClickListener {
             val intent = Intent(context, LaundryAndOrderActivity::class.java)
             OrderList.setLaundryId(laundry.id)
+            intent.putExtra(EXTRA_ID, laundry.id)
             context.startActivity(intent)
         }
     }
