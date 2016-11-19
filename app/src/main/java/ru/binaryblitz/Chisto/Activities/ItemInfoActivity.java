@@ -109,6 +109,7 @@ public class ItemInfoActivity extends BaseActivity {
             public void onClick(View view) {
                 if (Integer.parseInt(count.getText().toString()) == 1) {
                     showDialog();
+                    return;
                 }
                 count.setText(Integer.toString(Integer.parseInt(count.getText().toString()) - 1));
             }

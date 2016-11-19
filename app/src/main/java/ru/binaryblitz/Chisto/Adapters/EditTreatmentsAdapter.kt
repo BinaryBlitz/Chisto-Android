@@ -64,7 +64,6 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
             itemsPendingRemoval!!.remove(item)
         }
         if (collection.contains(item)) {
-            collection.removeAt(position)
             OrderList.removeTreatment(collection[position].id)
             notifyDataSetChanged()
         }

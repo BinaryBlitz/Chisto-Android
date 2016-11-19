@@ -120,15 +120,15 @@ public class OrderList {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
 
-            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-                for (int j = 0; j < treatments.size(); j++) {
-                    if (orders.get(currentItem).getTreatments().get(i).getId() == treatments.get(j).getId()) {
-                        return;
-                    }
-                }
-            }
+//            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+//                for (int j = 0; j < treatments.size(); j++) {
+//                    if (orders.get(currentItem).getTreatments().get(i).getId() == treatments.get(j).getId()) {
+//                        return;
+//                    }
+//                }
+//            }
 
-            orders.get(currentItem).getTreatments().addAll(treatments);
+            orders.get(currentItem).setTreatments(treatments);
         }
     }
 }

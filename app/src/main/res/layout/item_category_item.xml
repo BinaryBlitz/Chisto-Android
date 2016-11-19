@@ -24,19 +24,20 @@
               android:layout_marginEnd="24dp"
               android:layout_marginLeft="70dp"
               android:layout_gravity="center_vertical"
-              android:layout_marginBottom="14dp"/>
+              android:layout_marginBottom="18dp"/>
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/description"
               android:textSize="16sp"
               android:textColor="#727272"
+              android:maxLines="2"
               android:layout_marginRight="24dp"
               android:layout_marginEnd="24dp"
               android:layout_marginStart="70dp"
               android:layout_marginLeft="70dp"
               android:layout_gravity="center_vertical"
-              android:layout_marginTop="14dp"/>
+              android:layout_marginTop="18dp"/>
 
     <View android:layout_width="match_parent"
           android:layout_gravity="bottom"
