@@ -10,8 +10,13 @@
     <ImageView
         android:layout_width="match_parent"
         android:background="#212121"
+        android:scaleType="centerCrop"
         android:id="@+id/back_image"
         android:layout_height="110dp"/>
+
+    <View android:layout_width="match_parent"
+          android:background="@drawable/card_gradient"
+          android:layout_height="110dp"/>
 
     <ImageView
             android:layout_width="56dp"
@@ -50,10 +55,12 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_gravity="center_horizontal"
                       android:layout_marginTop="12dp"
+                      android:text="15.09.2016"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="4dp"
+                      android:text="Бесплатно"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -79,10 +86,13 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="12dp"
                       android:layout_gravity="center_horizontal"
+                      android:text="11.09.2016"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="4dp"
+                      android:text="с 11:00 до 20:00"
+                      android:textSize="12sp"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -107,6 +117,7 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="18dp"
                       android:textSize="18sp"
+                      android:text="3 800 \u20bd"
                       android:textColor="#388E3C"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
@@ -142,10 +153,10 @@
               android:textColor="#727272"
               android:layout_marginBottom="86dp"
               android:background="@drawable/rounded_grey_border"
-              android:paddingTop="12dp"
+              android:paddingTop="8dp"
               android:paddingEnd="24dp"
               android:paddingLeft="24dp"
-              android:paddingBottom="12dp"
+              android:paddingBottom="8dp"
               android:paddingRight="24dp"
               android:id="@+id/order_current_btn"
               android:paddingStart="24dp"
@@ -154,14 +165,18 @@
               android:layout_gravity="bottom|center_horizontal"
               android:layout_height="wrap_content"/>
 
-    <TextView
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/BrandButtonStyle"
             android:text="@string/view_all_str"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="68dp"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginBottom="-8dp"
             android:id="@+id/cont_btn"
             android:textColor="#ffffff"
-            android:background="@color/colorPrimary"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
 </FrameLayout>

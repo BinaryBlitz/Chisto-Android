@@ -27,13 +27,14 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         this.color = color
     }
 
+    fun add(treatment: Treatment) {
+        collection.add(0, treatment)
+    }
+
     fun getSelected(): ArrayList<Treatment> {
-        val selected = ArrayList <Treatment>()
-        for (i in collection.indices) {
-            if (collection[i].select) {
-                selected.add(collection[i])
-            }
-        }
+        val selected = collection.indices
+                .filter { collection[it].select }
+                .mapTo(ArrayList <Treatment>()) { collection[it] }
 
         return selected
     }
@@ -43,13 +44,19 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
         holder.name.text = collection[position].name
         holder.desc.text = collection[position].description
+        holder.checkBox.setmCheckedColor(color)
 
         if (collection[position].select) {
             holder.checkBox.isChecked = true
         } else {
             holder.checkBox.isChecked = false
         }
-        holder.checkBox.setmCheckedColor(color)
+
+        holder.itemView.setOnClickListener {
+            collection[holder.adapterPosition].select = !collection[holder.adapterPosition].select
+            holder.checkBox.isChecked = collection[holder.adapterPosition].select
+        }
+
         holder.checkBox.setOnCheckedChangeListener { compoundButton, b -> collection[holder.adapterPosition].select = b }
     }
 

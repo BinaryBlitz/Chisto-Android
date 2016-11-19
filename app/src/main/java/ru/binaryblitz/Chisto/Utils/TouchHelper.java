@@ -43,8 +43,8 @@ public class TouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int position = viewHolder.getAdapterPosition();
-        EditTreatmentsAdapter testAdapter = (EditTreatmentsAdapter) recyclerView.getAdapter();
-        if (testAdapter.getUndoOn() && testAdapter.isPendingRemoval(position)) {
+        SwipeToDeleteAdapter testAdapter = (SwipeToDeleteAdapter) recyclerView.getAdapter();
+        if (testAdapter.isUndo() && testAdapter.isPendingRemoval(position)) {
             return 0;
         }
         return super.getSwipeDirs(recyclerView, viewHolder);
@@ -53,8 +53,8 @@ public class TouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
         int swipedPosition = viewHolder.getAdapterPosition();
-        EditTreatmentsAdapter adapter = (EditTreatmentsAdapter) view.getAdapter();
-        boolean undoOn = adapter.getUndoOn();
+        SwipeToDeleteAdapter adapter = (SwipeToDeleteAdapter) view.getAdapter();
+        boolean undoOn = adapter.isUndo();
         if (undoOn) {
             adapter.pendingRemoval(swipedPosition);
         } else {

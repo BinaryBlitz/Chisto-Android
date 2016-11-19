@@ -8,7 +8,7 @@
 
     <LinearLayout
             android:id="@+id/l1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="56dp"
@@ -17,8 +17,7 @@
             android:layout_marginBottom="56dp"
             android:visibility="visible">
 
-        <FrameLayout android:layout_width="match_parent"
-                     android:layout_weight="1.0"
+        <FrameLayout android:layout_width="wrap_content"
                      android:layout_height="wrap_content">
             <com.rengwuxian.materialedittext.MaterialEditText
                     android:layout_width="match_parent"
@@ -26,8 +25,9 @@
                     android:id="@+id/county_code_field"
                     android:textColor="@color/colorAccent"
                     android:inputType="numberSigned"
-                    android:textSize="20sp"
+                    android:textSize="22sp"
                     android:lines="1"
+                    android:letterSpacing="0.04"
                     android:text="+7"
                     android:gravity="center"
                     android:focusable="false"
@@ -48,16 +48,23 @@
         </FrameLayout>
 
         <com.rengwuxian.materialedittext.MaterialEditText
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/phone"
                 android:textColor="#212121"
                 android:layout_weight="0.2"
                 android:inputType="numberSigned"
-                android:textSize="20sp"
-                android:hint="(XXX)-XXX-XX-XX"
+                android:textSize="22sp"
+                android:hint="(900) 000-00-00"
                 android:lines="1"
                 android:maxLength="15"
+                android:letterSpacing="0.04"
+                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
+                android:paddingRight="12dp"
+                android:paddingEnd="12dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 app:met_underlineColor="#212121"
                 app:met_baseColor="#212121"
                 app:met_textColor="#212121"
@@ -74,8 +81,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="56dp"
-            android:layout_marginRight="56dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
             android:layout_gravity="center"
             android:layout_marginBottom="56dp"
             android:visibility="gone">
@@ -87,7 +94,10 @@
                 android:textColor="@color/colorAccent"
                 android:inputType="numberSigned"
                 android:gravity="center"
-                android:textSize="18sp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textSize="20sp"
+                android:letterSpacing="0.04"
                 android:hint="@string/code_str"
                 app:met_underlineColor="@color/colorAccent"
                 app:met_baseColor="@color/colorAccent"
@@ -167,6 +177,7 @@
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_back"
                     android:padding="13dp"
                     android:layout_gravity="start"/>

@@ -5,10 +5,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.TextView
+import com.crashlytics.android.Crashlytics
+import com.google.gson.JsonArray
+import io.fabric.sdk.android.Fabric
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import ru.binaryblitz.Chisto.Adapters.TreatmentsAdapter
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Custom.RecyclerListView
@@ -18,18 +23,11 @@ import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
-import com.crashlytics.android.Crashlytics
-import com.google.gson.JsonArray
-import io.fabric.sdk.android.Fabric
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
-class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
+class SelectServiceActivity : BaseActivity() {
 
     private var adapter: TreatmentsAdapter? = null
-    private var layout: SwipeRefreshLayout? = null
 
     val EXTRA_COLOR = "color"
     val EXTRA_DECOR = "decor"
@@ -47,7 +45,10 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
         (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
 
-        findViewById(R.id.left_btn).setOnClickListener { finish() }
+        findViewById(R.id.left_btn).setOnClickListener {
+            OrderList.removeCurrent()
+            finish()
+        }
 
         findViewById(R.id.cont_btn).setOnClickListener {
             openActivity()
@@ -56,10 +57,6 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         initList()
 
         Handler().postDelayed({ load() }, 200)
-    }
-
-    override fun onRefresh() {
-        load()
     }
 
     private fun initList() {
@@ -71,10 +68,6 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         adapter = TreatmentsAdapter(this)
         adapter!!.setColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
         view.adapter = adapter
-
-        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout!!.setOnRefreshListener(this)
-        layout!!.setColorSchemeResources(R.color.colorAccent)
     }
 
     private fun openActivity() {
@@ -97,7 +90,6 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         ServerApi.get(this).api().getTreatments(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 LogUtil.logError(response.body().toString())
-                layout!!.isRefreshing = false
                 if (response.isSuccessful) {
                     parseAnswer(response.body())
                 } else {
@@ -106,7 +98,6 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                layout!!.isRefreshing = false
                 onInternetConnectionError()
             }
         })
@@ -115,21 +106,15 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
     private fun parseAnswer(array: JsonArray) {
         val collection = ArrayList<Treatment>()
 
-        // TODO change this
-        collection.add(Treatment(
-                1,
-                "Декор",
-                "Описание",
-                intent.getBooleanExtra(EXTRA_DECOR, false)))
-
-        for (i in 0..array.size() - 1) {
-            val obj = array.get(i).asJsonObject
-            collection.add(Treatment(
-                    obj.get("id").asInt,
-                    obj.get("name").asString,
-                    obj.get("description").asString,
-                    false))
-        }
+        (0..array.size() - 1)
+                .map { array.get(it).asJsonObject }
+                .mapTo(collection) {
+                    Treatment(
+                            AndroidUtilities.getIntFieldFromJson(it.get("id")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("name")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("description")),
+                            false)
+                }
 
         main_loop@ for (i in collection.indices) {
             for (j in 0..OrderList.getTreatments()!!.size - 1) {
@@ -141,6 +126,15 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         }
 
         adapter!!.setCollection(collection)
+        adapter!!.notifyDataSetChanged()
+
+        // TODO change this
+        adapter!!.add(Treatment(
+                1,
+                "Декор",
+                "Описание",
+                intent.getBooleanExtra(EXTRA_DECOR, false)))
+
         adapter!!.notifyDataSetChanged()
     }
 }

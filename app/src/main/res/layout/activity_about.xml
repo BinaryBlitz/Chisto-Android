@@ -24,6 +24,7 @@
             <ImageView
                     android:id="@+id/left_btn"
                     android:layout_width="56dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:layout_height="match_parent"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_back"
@@ -59,7 +60,7 @@
 
                 <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="62dp"
+                        android:layout_height="52dp"
                         android:src="@drawable/blue_logo"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="32dp"/>
@@ -179,15 +180,17 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content"
+            <Button
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:theme="@style/BrandButtonStyle"
+                    android:layout_width="wrap_content"
                       android:text="@string/rate_str"
                       android:gravity="center"
                       android:layout_gravity="center_horizontal|bottom"
                       android:textColor="#ffffff"
                       android:id="@+id/add_btn"
                       android:textSize="18sp"
-                      android:background="@drawable/button_border"
-                      android:layout_marginTop="56dp"
+                      android:layout_marginTop="24dp"
                       android:layout_height="wrap_content"
                       android:paddingBottom="12dp"
                       android:paddingTop="12dp"

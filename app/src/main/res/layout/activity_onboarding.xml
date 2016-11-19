@@ -243,14 +243,18 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/BrandButtonStyle"
             android:text="@string/start_str"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="68dp"
             android:id="@+id/start_btn"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginBottom="-8dp"
             android:textColor="#ffffff"
-            android:background="@color/colorPrimary"
-            android:textSize="22sp"
+            android:textSize="18sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
 </FrameLayout>
