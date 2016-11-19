@@ -35,7 +35,6 @@ class SelectServiceActivity : BaseActivity() {
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
