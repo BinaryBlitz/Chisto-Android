@@ -94,4 +94,5 @@
     <string name="seconds_code_str">" c"</string>
     <string name="bank_str">Банковской\nкартой</string>
     <string name="pay_str">Наличными\nкурьеру</string>
+    <string name="address_select_str">Выбор адреса</string>
 </resources>

@@ -62,16 +62,6 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     fun selectCity(latitude: Double, longitude: Double) {
         var position = 0
-<<<<<<< cda3582083ee5de1562a364274a734f8143180a8
-<<<<<<< ad9bbc70d53d6ddbbad09d01c74216518dafd2e0
-<<<<<<< 4d36b18e4df1c0c9650fc260f6e7bac1472a2dc4
-<<<<<<< 0e91ca8ef30e36c34196a4828e669564aa98d11e
-=======
-=======
-<<<<<<< 62a38094b05f212937c032c66d6673c8bb67fe1b
->>>>>>> New bug and design fixes
-<<<<<<< dfa965ec95e7bfc80c25fa751b3f82fe06fc55fc
->>>>>>> Fix swipes and design
         var min = Float.MAX_VALUE
         for (i in collection.indices) {
             val dist = distanceBetween(collection[i].city.latitude, collection[i].city.longitude, latitude, longitude)
@@ -79,45 +69,6 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
             if (dist < min) {
                 position = i
                 min = dist
-=======
-        var max = 0f
-<<<<<<< cda3582083ee5de1562a364274a734f8143180a8
-<<<<<<< ad9bbc70d53d6ddbbad09d01c74216518dafd2e0
-=======
-        var min = Float.MAX_VALUE
->>>>>>> New bug and design fixes
-        for (i in collection.indices) {
-            val dist = distanceBetween(collection[i].city.latitude, collection[i].city.longitude, latitude, longitude)
-
-            if (dist < min) {
-                position = i
-<<<<<<< 4d36b18e4df1c0c9650fc260f6e7bac1472a2dc4
-                max = dist
->>>>>>> Fix swipes and design
-=======
-                min = dist
->>>>>>> New bug and design fixes
-=======
-=======
-=======
-        var min = Float.MAX_VALUE
->>>>>>> New bug and design fixes
->>>>>>> New bug and design fixes
-        for (i in collection.indices) {
-            val dist = distanceBetween(collection[i].city.latitude, collection[i].city.longitude, latitude, longitude)
-
-            if (dist < min) {
-                position = i
-<<<<<<< 62a38094b05f212937c032c66d6673c8bb67fe1b
-                max = dist
->>>>>>> Fix swipes and design
-<<<<<<< cda3582083ee5de1562a364274a734f8143180a8
->>>>>>> Fix swipes and design
-=======
-=======
-                min = dist
->>>>>>> New bug and design fixes
->>>>>>> New bug and design fixes
             }
         }
 
