@@ -10,6 +10,7 @@ import android.widget.TextView
 import ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
 class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -29,6 +30,15 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
     fun add(treatment: Treatment) {
         collection.add(0, treatment)
+
+        main_loop@ for (i in collection.indices) {
+            for (j in 0..OrderList.getTreatments()!!.size - 1) {
+                if (collection[i].id == OrderList.getTreatments()!![j].id) {
+                    collection[i].select = true
+                    continue@main_loop
+                }
+            }
+        }
     }
 
     fun getSelected(): ArrayList<Treatment> {

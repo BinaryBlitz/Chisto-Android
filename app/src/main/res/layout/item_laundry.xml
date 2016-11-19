@@ -170,6 +170,11 @@
                       android:layout_height="wrap_content"/>
         </LinearLayout>
     </LinearLayout>
+    <View android:layout_width="match_parent"
+          android:layout_gravity="bottom"
+          android:layout_marginTop="8dp"
+          android:background="#b6b6b6"
+          android:layout_height="1px" />
 </LinearLayout>
     <FrameLayout android:layout_width="match_parent"
                  android:background="?attr/selectableItemBackground"

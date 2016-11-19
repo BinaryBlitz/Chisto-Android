@@ -27,21 +27,20 @@
     <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="160dp"
+            android:layout_marginTop="124dp"
             android:layout_height="wrap_content">
         <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical"
-                android:background="@drawable/right_border"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content">
             <ImageView
-                    android:layout_width="44dp"
+                    android:layout_width="38dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_courier"
                     android:padding="3dp"
-                    android:layout_height="44dp"/>
+                    android:layout_height="38dp"/>
             <TextView android:layout_width="wrap_content"
                       android:text="@string/courier_str"
                       android:textColor="@color/colorAccent"
@@ -50,7 +49,7 @@
                       android:layout_height="wrap_content"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_gravity="center_horizontal"
-                      android:layout_marginTop="12dp"
+                      android:layout_marginTop="4dp"
                       android:text="15.09.2016"
                       android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -58,15 +57,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1.0"
                 android:orientation="vertical"
-                android:background="@drawable/right_border"
                 android:layout_gravity="center_vertical"
                 android:layout_height="wrap_content">
             <ImageView
-                    android:layout_width="44dp"
+                    android:layout_width="38dp"
                     android:src="@drawable/ic_delivery"
                     android:padding="3dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_height="44dp"/>
+                    android:layout_height="38dp"/>
             <TextView android:layout_width="wrap_content"
                       android:text="@string/delivery_str"
                       android:textColor="@color/colorAccent"
@@ -74,7 +72,7 @@
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
             <TextView android:layout_width="wrap_content"
-                      android:layout_marginTop="12dp"
+                      android:layout_marginTop="4dp"
                       android:layout_gravity="center_horizontal"
                       android:text="11.09.2016"
                       android:layout_height="wrap_content"/>
@@ -122,14 +120,16 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="50sp"
-            android:layout_marginTop="250dp"
-            android:text="▼"/>
+            android:textSize="36sp"
+            android:textColor="#c9c9c9"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="188dp"
+            android:text="\u25B2"/>
 
     <FrameLayout
             android:layout_width="match_parent"
             android:background="#eaeaea"
-            android:layout_marginTop="270dp"
+            android:layout_marginTop="210dp"
             android:layout_marginBottom="144dp"
             android:layout_height="match_parent">
         <ScrollView

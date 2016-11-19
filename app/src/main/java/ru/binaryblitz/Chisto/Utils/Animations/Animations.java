@@ -32,6 +32,7 @@ public class Animations {
             @Override
             public void onAnimationStart() {
                 v.setVisibility(View.VISIBLE);
+                v.bringToFront();
             }
 
             @Override
