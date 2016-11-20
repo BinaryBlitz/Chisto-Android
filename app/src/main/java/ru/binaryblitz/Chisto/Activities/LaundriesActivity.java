@@ -3,12 +3,15 @@ package ru.binaryblitz.Chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
@@ -28,11 +31,14 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.Animations.Animations;
+import ru.binaryblitz.Chisto.Utils.Image;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class LaundriesActivity extends BaseActivity {
 
     private LaundriesAdapter adapter;
+    private static boolean dialogOpened = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,10 +62,17 @@ public class LaundriesActivity extends BaseActivity {
 
         initList();
 
+        findViewById(ru.binaryblitz.Chisto.R.id.main_dialog_part).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO
+            }
+        });
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                load();
+                loadLastOrder();
             }
         }, 150);
     }
@@ -130,5 +143,62 @@ public class LaundriesActivity extends BaseActivity {
 
         adapter.setCollection(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private void loadLastOrder() {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.show();
+
+        ServerApi.get(LaundriesActivity.this).api().getLaundry(1).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogOpened = true;
+                            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), LaundriesActivity.this);
+                        }
+                    });
+                } else {
+                    onInternetConnectionError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                dialog.dismiss();
+                onInternetConnectionError();
+            }
+        });
+    }
+
+    private void parseAnswer(JsonObject object) {
+        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.name_text)).setText(getString(ru.binaryblitz.Chisto.R.string.laundary_code_str) + object.get("name").getAsString());
+        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.desc_text)).setText(object.get("description").getAsString());
+        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.order_current_btn)).setText(R.string.ordering_code_str);
+
+        Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
+                object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));
+        Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
+                object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
+
+        findViewById(ru.binaryblitz.Chisto.R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (dialogOpened) {
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialogOpened = false;
+                            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog));
+                            load();
+                        }
+                    });
+                }
+            }
+        });
     }
 }
