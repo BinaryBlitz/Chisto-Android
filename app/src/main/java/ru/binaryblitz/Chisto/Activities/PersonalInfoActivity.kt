@@ -3,8 +3,9 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.widget.EditText
+import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
@@ -18,7 +19,7 @@ import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
-import ru.binaryblitz.Chisto.Utils.LogUtil
+import ru.binaryblitz.Chisto.Utils.Animations.Animations
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
@@ -36,6 +37,8 @@ class PersonalInfoActivity : BaseActivity() {
 
     private var user: User? = null
 
+    private var dialogOpened = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -43,15 +46,7 @@ class PersonalInfoActivity : BaseActivity() {
 
         initFields()
         setInfo()
-
-        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
-
-        findViewById(R.id.pay_btn).setOnClickListener {
-            if (validateFields()) {
-                setData()
-                sendToServer()
-            }
-        }
+        setOnClickListeners()
     }
 
     override fun onBackPressed() {
@@ -95,13 +90,37 @@ class PersonalInfoActivity : BaseActivity() {
         ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), toSend).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                Log.e("qwerty", response.errorBody().string())
+                if (response.isSuccessful) {
+                    Handler().post {
+                        dialogOpened = true
+                        (findViewById(R.id.order_name) as TextView).text = "№ " + response.body().get("id").asString
+                        Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
+                    }
+                } else {
+                    onInternetConnectionError()
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 dialog.dismiss()
+                onInternetConnectionError()
             }
         })
+    }
+
+    private fun setOnClickListeners() {
+        findViewById(R.id.cont_btn).setOnClickListener {
+            finishActivity()
+        }
+
+        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
+
+        findViewById(R.id.pay_btn).setOnClickListener {
+            if (validateFields()) {
+                setData()
+                sendToServer()
+            }
+        }
     }
 
     private fun initFields() {
