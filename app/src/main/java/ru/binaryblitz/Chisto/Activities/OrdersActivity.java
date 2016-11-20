@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -15,6 +14,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.binaryblitz.Chisto.Adapters.OrdersAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
@@ -26,12 +31,6 @@ import ru.binaryblitz.Chisto.Utils.Image;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 import ru.binaryblitz.Chisto.Utils.SwipeItemDecoration;
 import ru.binaryblitz.Chisto.Utils.TouchHelper;
-import com.crashlytics.android.Crashlytics;
-
-import io.fabric.sdk.android.Fabric;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OrdersActivity extends BaseActivity {
 
@@ -141,7 +140,6 @@ public class OrdersActivity extends BaseActivity {
 
             if (adapter.getItemCount() != 0) {
                 contBtn.setText(ru.binaryblitz.Chisto.R.string.cont_code_str);
-              //  contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.colorPrimary));
                 contBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -151,7 +149,6 @@ public class OrdersActivity extends BaseActivity {
             } else {
                 contBtn.setText(ru.binaryblitz.Chisto.R.string.nothing_selected_code_str);
                 contBtn.setEnabled(false);
-               // contBtn.setBackgroundColor(ContextCompat.getColor(OrdersActivity.this, ru.binaryblitz.Chisto.R.color.greyColor));
                 contBtn.setOnClickListener(null);
             }
         }

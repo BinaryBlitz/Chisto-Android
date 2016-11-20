@@ -12,11 +12,13 @@ import ru.binaryblitz.Chisto.Activities.LaundryAndOrderActivity
 import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
+import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
 class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var collection = ArrayList<Laundry>()
+    private val EXTRA_ID = "id"
 
     init {
         Image.init(context)
@@ -32,14 +34,18 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        holder.name.text = collection[position].name
-        holder.desc.text = collection[position].desc
-        holder.category.text = collection[position].type
+        val laundry = collection[position]
 
-        Image.loadPhoto(collection[position].icon, holder.icon)
+        holder.name.text = laundry.name
+        holder.desc.text = laundry.desc
+        holder.category.text = laundry.type
+
+        Image.loadPhoto(laundry.icon, holder.icon)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, LaundryAndOrderActivity::class.java)
+            OrderList.setLaundryId(laundry.id)
+            intent.putExtra(EXTRA_ID, laundry.id)
             context.startActivity(intent)
         }
     }

@@ -17,6 +17,7 @@
             <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
                     android:layout_height="48dp">
                 <ImageView
                         android:layout_width="56dp"
@@ -279,6 +280,9 @@
         </LinearLayout>
     </ScrollView>
 
+    <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -319,5 +323,6 @@
 
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
 </FrameLayout>

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class OrderList {
     private static ArrayList<Order> orders = new ArrayList<>();
-
+    private static int laundryId = 0;
     private static int currentItem = 0;
 
     public static void add(Order order) {
@@ -21,6 +21,14 @@ public class OrderList {
     public static void clear() {
         orders.clear();
         currentItem = 0;
+    }
+
+    public static void setLaundryId(int laundryId) {
+        OrderList.laundryId = laundryId;
+    }
+
+    public static int getLaundryId() {
+        return laundryId;
     }
 
     @Nullable
@@ -112,15 +120,15 @@ public class OrderList {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
 
-            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-                for (int j = 0; j < treatments.size(); j++) {
-                    if (orders.get(currentItem).getTreatments().get(i).getId() == treatments.get(j).getId()) {
-                        return;
-                    }
-                }
-            }
+//            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+//                for (int j = 0; j < treatments.size(); j++) {
+//                    if (orders.get(currentItem).getTreatments().get(i).getId() == treatments.get(j).getId()) {
+//                        return;
+//                    }
+//                }
+//            }
 
-            orders.get(currentItem).getTreatments().addAll(treatments);
+            orders.get(currentItem).setTreatments(treatments);
         }
     }
 }
