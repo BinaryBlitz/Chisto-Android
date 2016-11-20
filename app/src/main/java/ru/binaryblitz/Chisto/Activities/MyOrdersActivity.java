@@ -55,7 +55,7 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-               load();
+                load();
             }
         }, 50);
     }
@@ -80,7 +80,7 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if (response.isSuccessful())  parseAnswer(response.body());
+                if (response.isSuccessful()) parseAnswer(response.body());
                 else onInternetConnectionError();
             }
 
@@ -129,7 +129,8 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
             date = format.parse(object.get("created_at").getAsString());
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         return date;
     }
