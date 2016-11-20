@@ -93,46 +93,16 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     private void parseAnswer(JsonArray array) {
-        Log.e("qwerty", array.toString());
         ArrayList<MyOrder> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
 
-            collection.add(new MyOrder(
-                    AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
-                    AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("laundry_id")),
-                    AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("paid")),
-                    getStatusFromJson(object),
-                    getDateFromJson(object),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("house")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("street")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("flat")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("contact_number")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("notes"))
-            ));
+            collection.add(new MyOrder(object));
         }
 
         adapter.setCollection(collection);
         adapter.notifyDataSetChanged();
-    }
-
-    private MyOrder.Status getStatusFromJson(JsonObject object) {
-        return object.get("status").getAsString().equals("processing") ? MyOrder.Status.PROCESS :
-                (object.get("status").getAsString().equals("completed") ? MyOrder.Status.COMPLETED : MyOrder.Status.CANCELED);
-    }
-
-
-    private Date getDateFromJson(JsonObject object) {
-        Date date = null;
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-            format.setTimeZone(TimeZone.getTimeZone("UTC"));
-            date = format.parse(object.get("created_at").getAsString());
-        } catch (Exception ignored) {
-        }
-
-        return date;
     }
 
     @Override
