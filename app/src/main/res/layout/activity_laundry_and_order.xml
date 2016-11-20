@@ -15,6 +15,10 @@
           android:background="@drawable/card_gradient"
           android:layout_height="130dp"/>
 
+    <View android:layout_width="match_parent"
+          android:background="@drawable/card_gradient"
+          android:layout_height="110dp"/>
+
     <ImageView
             android:layout_width="56dp"
             android:background="@drawable/blue_circle"
