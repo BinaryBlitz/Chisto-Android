@@ -95,4 +95,7 @@
     <string name="my_order_code_str">Заказ №</string>
     <string name="order_questions_str">Есть вопросы по заказу?</string>
     <string name="result_order_str">Итого</string>
+    <string name="ready_code_str">Выполняется</string>
+    <string name="process_code_str">Выполнен</string>
+    <string name="canceled_code_str">Отменен</string>
 </resources>
