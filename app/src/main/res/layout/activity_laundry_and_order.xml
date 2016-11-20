@@ -9,11 +9,11 @@
             android:background="#212121"
             android:id="@+id/back_image"
             android:scaleType="centerCrop"
-            android:layout_height="110dp"/>
+            android:layout_height="130dp"/>
 
     <View android:layout_width="match_parent"
           android:background="@drawable/card_gradient"
-          android:layout_height="110dp"/>
+          android:layout_height="130dp"/>
 
     <ImageView
             android:layout_width="56dp"
@@ -21,13 +21,13 @@
             android:padding="5dp"
             android:id="@+id/logo_image"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="82dp"
+            android:layout_marginTop="102dp"
             android:layout_height="56dp"/>
 
     <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_marginTop="124dp"
+            android:layout_marginTop="144dp"
             android:layout_height="wrap_content">
         <LinearLayout
                 android:layout_width="0dp"
@@ -82,7 +82,7 @@
     <TextView android:layout_width="wrap_content"
               android:textStyle="bold"
               android:textColor="#ffffff"
-              android:layout_marginTop="18dp"
+              android:layout_marginTop="20dp"
               android:textSize="18sp"
               android:id="@+id/name_text"
               android:layout_gravity="top|center_horizontal"
@@ -91,7 +91,8 @@
     <TextView android:layout_width="wrap_content"
               android:textColor="#ffffff"
               android:layout_marginTop="46dp"
-              android:textSize="18sp"
+              android:textSize="16sp"
+              android:gravity="center"
               android:id="@+id/desc_text"
               android:layout_gravity="top|center_horizontal"
               android:layout_height="wrap_content"/>
@@ -102,14 +103,14 @@
             android:stepSize="0.5"
             android:numStars="5"
             android:id="@+id/ratingBar"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="100dp"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     <TextView
-            android:layout_marginTop="78dp"
+            android:layout_marginTop="98dp"
             android:layout_marginEnd="12dp"
             android:layout_marginRight="12dp"
             android:layout_gravity="end"
@@ -124,13 +125,13 @@
             android:textSize="36sp"
             android:textColor="#c9c9c9"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="188dp"
+            android:layout_marginTop="208dp"
             android:text="\u25B2"/>
 
     <FrameLayout
             android:layout_width="match_parent"
             android:background="#eaeaea"
-            android:layout_marginTop="210dp"
+            android:layout_marginTop="230dp"
             android:layout_marginBottom="144dp"
             android:layout_height="match_parent">
         <ScrollView
