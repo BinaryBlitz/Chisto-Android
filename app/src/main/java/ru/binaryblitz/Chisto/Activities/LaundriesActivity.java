@@ -62,7 +62,7 @@ public class LaundriesActivity extends BaseActivity {
 
         initList();
 
-        findViewById(ru.binaryblitz.Chisto.R.id.main_dialog_part).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.order_current_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO
