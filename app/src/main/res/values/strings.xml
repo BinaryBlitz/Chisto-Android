@@ -94,4 +94,5 @@
     <string name="seconds_code_str">" c"</string>
     <string name="my_order_code_str">Заказ №</string>
     <string name="order_questions_str">Есть вопросы по заказу?</string>
+    <string name="result_order_str">Итого</string>
 </resources>
