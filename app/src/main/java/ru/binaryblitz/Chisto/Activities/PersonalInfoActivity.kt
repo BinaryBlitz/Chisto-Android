@@ -1,16 +1,26 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.os.Handler
 import android.widget.EditText
+import android.widget.TextView
 import com.crashlytics.android.Crashlytics
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
+import ru.binaryblitz.Chisto.Server.ServerApi
+import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
@@ -27,6 +37,8 @@ class PersonalInfoActivity : BaseActivity() {
 
     private var user: User? = null
 
+    private var dialogOpened = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -34,15 +46,81 @@ class PersonalInfoActivity : BaseActivity() {
 
         initFields()
         setInfo()
-
-        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
-
-        // TODO save info
-        // findViewById(R.id.ok_btn).setOnClickListener { if (validateFields()) setData() }
+        setOnClickListeners()
     }
 
     override fun onBackPressed() {
         finishActivity()
+    }
+
+    private fun sendToServer() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        val obj = JsonObject()
+
+        obj.addProperty("street_name", street!!.text.toString())
+        obj.addProperty("house_number", house!!.text.toString())
+        obj.addProperty("contact_number", phone!!.text.toString())
+        obj.addProperty("apartment_number", flat!!.text.toString())
+        obj.addProperty("notes", comment!!.text.toString())
+        obj.addProperty("email", "foo@bar.com")
+
+        val array = JsonArray()
+
+        val orders = OrderList.get()
+
+        for(order in orders!!.iterator()) {
+            val treatments = order.treatments
+            for (treatment in treatments!!.iterator()) {
+                val local = JsonObject()
+
+                local.addProperty("laundry_treatment_id", treatment.id)
+                local.addProperty("quantity", order.count)
+
+                array.add(local)
+            }
+        }
+
+        obj.add("line_items_attributes", array)
+
+        val toSend = JsonObject()
+        toSend.add("order", obj)
+
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), toSend).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                if (response.isSuccessful) {
+                    Handler().post {
+                        dialogOpened = true
+                        (findViewById(R.id.order_name) as TextView).text = "№ " + response.body().get("id").asString
+                        Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
+                    }
+                } else {
+                    onInternetConnectionError()
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
+    }
+
+    private fun setOnClickListeners() {
+        findViewById(R.id.cont_btn).setOnClickListener {
+            finishActivity()
+        }
+
+        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
+
+        findViewById(R.id.pay_btn).setOnClickListener {
+            if (validateFields()) {
+                setData()
+                sendToServer()
+            }
+        }
     }
 
     private fun initFields() {
@@ -58,17 +136,20 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun setInfo() {
         user = DeviceInfoStore.getUserObject(this)
-        if (user == null) return
 
+        setTextToField(city!!, user!!.city)
+
+        if (user!!.name == null || user!!.name == "null") {
+            setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
+            return
+        }
         setTextToField(name!!, user!!.name)
         setTextToField(lastname!!, user!!.lastname)
-        setTextToField(city!!, user!!.city)
         setTextToField(flat!!, user!!.flat)
         setTextToField(phone!!, user!!.phone)
         setTextToField(house!!, user!!.house)
         setTextToField(street!!, user!!.street)
-
-        setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
+        setTextToField(phone!!, user!!.phone)
     }
 
     private fun setData() {

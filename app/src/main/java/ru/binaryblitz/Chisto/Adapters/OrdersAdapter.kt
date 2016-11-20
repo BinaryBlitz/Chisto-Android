@@ -89,8 +89,8 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
             itemsPendingRemoval.remove(item)
         }
         if (collection.contains(item)) {
-            collection.removeAt(position)
             OrderList.remove(position)
+            collection.removeAt(position)
             notifyItemRemoved(position)
         }
     }

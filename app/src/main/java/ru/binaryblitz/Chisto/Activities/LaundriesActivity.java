@@ -28,6 +28,7 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class LaundriesActivity extends BaseActivity {
 
@@ -113,6 +114,7 @@ public class LaundriesActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonArray array) {
+        LogUtil.logError(array.toString());
         ArrayList<Laundry> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {

@@ -32,8 +32,10 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        holder.name.text = collection[position].name
-        holder.desc.text = collection[position].description
+        val treatment = collection[position]
+
+        holder.name.text = treatment.name
+        holder.desc.text = treatment.description
         holder.index.text = (position + 1).toString()
     }
 
@@ -62,7 +64,6 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
             itemsPendingRemoval!!.remove(item)
         }
         if (collection.contains(item)) {
-            collection.removeAt(position)
             OrderList.removeTreatment(collection[position].id)
             notifyDataSetChanged()
         }
