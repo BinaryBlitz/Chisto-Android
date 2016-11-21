@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import ru.binaryblitz.Chisto.Activities.OrdersActivity
+import ru.binaryblitz.Chisto.Activities.MyOrderActivity
 import ru.binaryblitz.Chisto.Model.MyOrder
 import ru.binaryblitz.Chisto.R
 import java.text.SimpleDateFormat
@@ -17,6 +17,7 @@ import java.util.*
 
 class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var collection = ArrayList<MyOrder>()
+    private val EXTRA_ID = "id"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_my_order, parent, false)
@@ -52,9 +53,9 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         holder.cost.text = "3 800" + " \u20bd"
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, OrdersActivity::class.java)
+            val intent = Intent(context, MyOrderActivity::class.java)
+            intent.putExtra(EXTRA_ID, order.id)
             context.startActivity(intent)
-            context.finish()
         }
     }
 

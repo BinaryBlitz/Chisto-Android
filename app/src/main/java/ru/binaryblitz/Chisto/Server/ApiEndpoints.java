@@ -31,6 +31,9 @@ public interface ApiEndpoints {
     @GET("laundries/{id}?api_token=foobar")
     Call<JsonObject> getLaundry(@Path("id") int id);
 
+    @GET("orders/{id}?api_token=foobar")
+    Call<JsonObject> getOrder(@Path("id") int id);
+
     @GET("orders?api_token=foobar")
     Call<JsonArray> getOrders();
 
