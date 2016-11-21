@@ -26,6 +26,7 @@ import ru.binaryblitz.Chisto.Adapters.LaundriesAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.Laundry;
+import ru.binaryblitz.Chisto.Model.Treatment;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
@@ -34,6 +35,7 @@ import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.Animations.Animations;
 import ru.binaryblitz.Chisto.Utils.Image;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
+import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class LaundriesActivity extends BaseActivity {
 
@@ -132,6 +134,8 @@ public class LaundriesActivity extends BaseActivity {
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
+            if (!checkTreatments(object)) continue;
+
             collection.add(new Laundry(
                     AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
                     ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("logo_url")),
@@ -143,6 +147,29 @@ public class LaundriesActivity extends BaseActivity {
 
         adapter.setCollection(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    // TODO refactor
+    private boolean checkTreatments(JsonObject object) {
+        JsonArray treatments = object.get("laundry_treatments").getAsJsonArray();
+        if (treatments.size() == 0) return false;
+
+        ArrayList<Integer> laundryTreatments = new ArrayList<>();
+        ArrayList<Treatment> orderTreatments = OrderList.getTreatments();
+        for (int j = 0; j < treatments.size(); j++) {
+            JsonObject treatment = treatments.get(j).getAsJsonObject();
+            laundryTreatments.add(AndroidUtilities.INSTANCE.getIntFieldFromJson(treatment.get("id")));
+        }
+
+        main_loop:
+        for (int i = 0; i < orderTreatments.size(); i++) {
+            for (int j = 0; j < laundryTreatments.size(); j++) {
+                if (orderTreatments.get(i).getId() == laundryTreatments.get(j)) continue main_loop;
+                if (j == laundryTreatments.size() - 1) return false;
+            }
+        }
+
+        return true;
     }
 
     private Laundry.Type getTypeFromJson(JsonObject object) {
