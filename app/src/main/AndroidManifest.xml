@@ -29,7 +29,7 @@
                 android:value="AIzaSyC48bjEMes05K8RgTG6PrwVSKicZqXZ7WY"/>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.MapActivity"
+                android:name="ru.binaryblitz.Chisto.Activities.StartActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
@@ -40,7 +40,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.StartActivity"
+                android:name="ru.binaryblitz.Chisto.Activities.MapActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >

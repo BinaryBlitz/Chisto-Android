@@ -251,7 +251,11 @@ public class MapActivity extends BaseActivity
             user.setCity(city);
             user.setStreet(street);
 
+            LogUtil.logError(user.asString());
+
             DeviceInfoStore.saveUser(MapActivity.this, user);
+
+            LogUtil.logError(user.asString());
         } catch (IOException ignored) {}
     }
 
@@ -298,6 +302,8 @@ public class MapActivity extends BaseActivity
             }
         } catch (Exception ignored) {
         }
+
+        selected_lat_lng = new LatLng(latitude, lognitude);
 
         selected = strAdd;
         return strAdd;

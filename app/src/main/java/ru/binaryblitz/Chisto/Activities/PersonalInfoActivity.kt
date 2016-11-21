@@ -20,6 +20,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
@@ -45,8 +46,12 @@ class PersonalInfoActivity : BaseActivity() {
         setContentView(R.layout.activity_contact_info)
 
         initFields()
-        setInfo()
         setOnClickListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setInfo()
     }
 
     override fun onBackPressed() {
@@ -121,6 +126,10 @@ class PersonalInfoActivity : BaseActivity() {
                 sendToServer()
             }
         }
+
+        findViewById(R.id.address_btn).setOnClickListener {
+            startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
+        }
     }
 
     private fun initFields() {
@@ -136,20 +145,22 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun setInfo() {
         user = DeviceInfoStore.getUserObject(this)
+        LogUtil.logError(user!!.asString())
 
         setTextToField(city!!, user!!.city)
 
         if (user!!.name == null || user!!.name == "null") {
             setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
-            return
+        } else {
+            setTextToField(phone!!, user!!.phone)
         }
+
         setTextToField(name!!, user!!.name)
         setTextToField(lastname!!, user!!.lastname)
         setTextToField(flat!!, user!!.flat)
         setTextToField(phone!!, user!!.phone)
         setTextToField(house!!, user!!.house)
         setTextToField(street!!, user!!.street)
-        setTextToField(phone!!, user!!.phone)
     }
 
     private fun setData() {
