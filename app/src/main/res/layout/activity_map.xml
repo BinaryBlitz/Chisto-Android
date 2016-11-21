@@ -65,8 +65,9 @@
                      android:layout_height="56dp">
             <EditText android:layout_width="match_parent"
                       android:ellipsize="start"
+                      android:id="@+id/search_box"
                       android:gravity="center"
-                      android:hint="Найти"
+                      android:hint="@string/search_str"
                       android:textColor="#ffffff"
                       android:textColorHint="#ffffff"
                       android:layout_marginRight="8dp"

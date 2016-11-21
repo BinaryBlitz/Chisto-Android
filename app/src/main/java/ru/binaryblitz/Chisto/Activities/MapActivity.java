@@ -21,7 +21,8 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.widget.TextView;
+import android.view.View;
+import android.widget.EditText;
 
 import java.util.List;
 import java.util.Locale;
@@ -43,11 +44,21 @@ public class MapActivity extends BaseActivity
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
 
+    private EditText searchBox;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
+        searchBox = (EditText) findViewById(R.id.search_box);
+
+        initMap();
+        initGoogleApiClient();
+        setOnClickListeners();
+    }
+
+    private void initMap() {
         final SupportMapFragment mMap = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.scroll);
 
@@ -57,7 +68,9 @@ public class MapActivity extends BaseActivity
                 mMap.getMapAsync(MapActivity.this);
             }
         }, 100);
+    }
 
+    private void initGoogleApiClient() {
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -65,6 +78,23 @@ public class MapActivity extends BaseActivity
                     .addApi(LocationServices.API)
                     .build();
         }
+    }
+
+    private void setOnClickListeners() {
+        findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        findViewById(R.id.my_loc_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mGoogleApiClient.isConnected()) getLocation();
+                else mGoogleApiClient.connect();
+            }
+        });
     }
 
     @Override
@@ -120,7 +150,7 @@ public class MapActivity extends BaseActivity
         try {
             String res = getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
                     googleMap.getCameraPosition().target.longitude);
-            ((TextView) findViewById(R.id.date_text_view)).setText(res);
+            searchBox.setText(res);
         } catch (Exception ignored) {
         }
     }
@@ -190,7 +220,7 @@ public class MapActivity extends BaseActivity
                     public void run() {
                         getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
                                 googleMap.getCameraPosition().target.longitude);
-                        ((TextView) findViewById(R.id.date_text_view)).setText(selected);
+                        searchBox.setText(selected);
                     }
                 }, 50);
             }
