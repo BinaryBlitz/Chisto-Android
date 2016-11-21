@@ -106,4 +106,7 @@
     <string name="process_code_str">Выполнен</string>
     <string name="canceled_code_str">Отменен</string>
     <string name="search_str">Найти</string>
+    <string name="premium_code_str">Премиум</string>
+    <string name="fast_code_str">Быстрая</string>
+    <string name="economy_code_str">Дешевая</string>
 </resources>
