@@ -19,13 +19,12 @@
                 android:src="@drawable/premium_bg"
                 android:layout_height="72dp"/>
         <ImageView
-                android:layout_width="72dp"
+                android:layout_width="64dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="12dp"
                 android:layout_marginStart="12dp"
                 android:id="@+id/category_icon"
-                android:src="@drawable/ic_app_mini_logo"
-                android:layout_height="72dp"/>
+                android:layout_height="64dp"/>
 
         <TextView
                 android:layout_width="72dp"

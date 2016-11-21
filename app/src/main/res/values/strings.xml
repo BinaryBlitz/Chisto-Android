@@ -99,4 +99,10 @@
     <string name="wait_str">Ожидайте звонка оператора</string>
     <string name="your_order_help_str">Вы можете посмотреть информацию по заказку в профиле</string>
     <string name="notifications_help_str">Желаете ли вы получать обновления по вашему заказу?</string>
+    <string name="my_order_code_str">Заказ №</string>
+    <string name="order_questions_str">Есть вопросы по заказу?</string>
+    <string name="result_order_str">Итого</string>
+    <string name="ready_code_str">Выполняется</string>
+    <string name="process_code_str">Выполнен</string>
+    <string name="canceled_code_str">Отменен</string>
 </resources>

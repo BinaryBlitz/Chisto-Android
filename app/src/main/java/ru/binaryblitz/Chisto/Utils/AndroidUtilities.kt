@@ -63,6 +63,11 @@ object AndroidUtilities {
         else return element.asDouble
     }
 
+    fun getBooleanFieldFromJson(element: JsonElement?): Boolean {
+        if(element == null || element.isJsonNull) return false
+        else return element.asBoolean
+    }
+
     fun encodeToBase64(image: Bitmap): String {
         val baos = ByteArrayOutputStream()
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
