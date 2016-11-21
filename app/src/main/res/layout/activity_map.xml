@@ -63,7 +63,7 @@
 
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="56dp">
-            <EditText android:layout_width="match_parent"
+            <AutoCompleteTextView android:layout_width="match_parent"
                       android:ellipsize="start"
                       android:id="@+id/search_box"
                       android:gravity="center"

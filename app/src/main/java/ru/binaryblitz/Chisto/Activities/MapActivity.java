@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,8 +23,23 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Filter;
+import android.widget.Filterable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,18 +60,112 @@ public class MapActivity extends BaseActivity
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
 
-    private EditText searchBox;
+    private AutoCompleteTextView searchBox;
+
+    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
+    private static final String OUT_JSON = "/json";
+    private static final String API_KEY = "AIzaSyC48bjEMes05K8RgTG6PrwVSKicZqXZ7WY";
+
+    class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
+        private ArrayList<String> resultList;
+
+        GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
+            super(context, textViewResourceId);
+        }
+
+        @Override
+        public int getCount() {
+            return resultList.size();
+        }
+
+        @Override
+        public String getItem(int index) {
+            return resultList.get(index);
+        }
+
+        @NonNull
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults filterResults = new FilterResults();
+                    if (constraint != null) {
+                        resultList = autocomplete(constraint.toString());
+                        filterResults.values = resultList;
+                        filterResults.count = resultList == null ? 0 : resultList.size();
+                    }
+                    return filterResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    if (results != null && results.count > 0) notifyDataSetChanged();
+                    else notifyDataSetInvalidated();
+                }
+            };
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
 
-        searchBox = (EditText) findViewById(R.id.search_box);
-
+        initAutocomplete();
         initMap();
         initGoogleApiClient();
         setOnClickListeners();
+    }
+
+    private void initAutocomplete() {
+        searchBox = (AutoCompleteTextView) findViewById(R.id.search_box);
+
+        searchBox.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+        searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                
+            }
+        });
+    }
+
+    private ArrayList<String> autocomplete(String input) {
+        HttpURLConnection conn = null;
+        StringBuilder jsonResults = new StringBuilder();
+        try {
+            String sb = PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON + "?key=" + API_KEY + "&components=country:ru" +
+                    "&input=" + URLEncoder.encode(input, "utf8");
+
+            conn = (HttpURLConnection) new URL(sb).openConnection();
+            InputStreamReader in = new InputStreamReader(conn.getInputStream());
+
+            int read;
+            char[] buff = new char[1024];
+            while ((read = in.read(buff)) != -1) {
+                jsonResults.append(buff, 0, read);
+            }
+        } catch (MalformedURLException e) { return null; }
+          catch (IOException e) { return null; }
+          finally { if (conn != null) conn.disconnect(); }
+
+        return parseAnswer(jsonResults);
+    }
+
+    private ArrayList<String> parseAnswer(StringBuilder jsonResults) {
+        ArrayList<String> resultList = null;
+        try {
+            JSONObject jsonObj = new JSONObject(jsonResults.toString());
+            JSONArray prevJsonArray = jsonObj.getJSONArray("predictions");
+
+            resultList = new ArrayList<>(prevJsonArray.length());
+            for (int i = 0; i < prevJsonArray.length(); i++) {
+                resultList.add(prevJsonArray.getJSONObject(i).getString("description"));
+            }
+        } catch (JSONException ignored) {}
+
+        return resultList;
     }
 
     private void initMap() {
