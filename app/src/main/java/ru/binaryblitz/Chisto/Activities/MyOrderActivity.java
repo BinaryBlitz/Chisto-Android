@@ -22,7 +22,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.Model.MyOrder;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
@@ -69,23 +68,40 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonObject object) {
-        if (AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("status")).equals("processing")) {
-            ((ImageView) findViewById(R.id.order_icon)).setImageResource(R.drawable.process_indicator);
-            ((TextView) findViewById(R.id.status_text)).setTextColor(ContextCompat.getColor(this, R.color.processColor));
-            ((TextView) findViewById(R.id.status_text)).setText(R.string.ready_code_str);
-        } else if (AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("status")).equals("completed")) {
-            ((ImageView) findViewById(R.id.order_icon)).setImageResource(R.drawable.completed_indicator);
-            ((TextView) findViewById(R.id.status_text)).setTextColor(ContextCompat.getColor(this, R.color.completedColor));
-            ((TextView) findViewById(R.id.status_text)).setText(R.string.process_code_str);
-        } else {
-            ((ImageView) findViewById(R.id.order_icon)).setImageResource(R.drawable.canceled_indicator);
-            ((TextView) findViewById(R.id.status_text)).setTextColor(ContextCompat.getColor(this, R.color.canceledColor));
-            ((TextView) findViewById(R.id.status_text)).setText(R.string.canceled_code_str);
-        }
+        String status = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("status"));
+        processStatus(status);
 
         ((TextView) findViewById(R.id.date_text_view)).setText(getString(R.string.my_order_code_str) + AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")));
         ((TextView) findViewById(R.id.number)).setText("№ " + AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")));
         ((TextView) findViewById(R.id.date_text)).setText(getDateFromJson(object));
+    }
+
+    private void processStatus(String status) {
+        int icon;
+        int text;
+        int textColor;
+
+        switch (status) {
+            case "processing":
+                icon = R.drawable.process_indicator;
+                textColor = ContextCompat.getColor(this, R.color.processColor);
+                text = R.string.ready_code_str;
+                break;
+            case "completed":
+                icon = R.drawable.completed_indicator;
+                textColor = ContextCompat.getColor(this, R.color.completedColor);
+                text = R.string.process_code_str;
+                break;
+            default:
+                icon = R.drawable.canceled_indicator;
+                textColor = ContextCompat.getColor(this, R.color.canceledColor);
+                text = R.string.canceled_code_str;
+                break;
+        }
+
+        ((ImageView) findViewById(R.id.order_icon)).setImageResource(icon);
+        ((TextView) findViewById(R.id.status_text)).setTextColor(textColor);
+        ((TextView) findViewById(R.id.status_text)).setText(text);
     }
 
     private String getDateFromJson(JsonObject object) {
@@ -94,7 +110,8 @@ public class MyOrderActivity extends BaseActivity {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
             format.setTimeZone(TimeZone.getTimeZone("UTC"));
             date = format.parse(object.get("created_at").getAsString());
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            LogUtil.logException(e);
         }
 
         SimpleDateFormat format = new SimpleDateFormat("d MMM yyyy", Locale.getDefault());
