@@ -137,12 +137,31 @@ public class LaundriesActivity extends BaseActivity {
                     ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("logo_url")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("category"))
+                    getTypeFromJson(object)
             ));
         }
 
         adapter.setCollection(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private Laundry.Type getTypeFromJson(JsonObject object) {
+        Laundry.Type type = Laundry.Type.EMPTY;
+
+        String text = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("category"));
+        switch (text) {
+            case "premium":
+                type = Laundry.Type.PREMIUM;
+                break;
+            case "economy":
+                type = Laundry.Type.ECONOMY;
+                break;
+            case "fast":
+                type = Laundry.Type.FAST;
+                break;
+        }
+
+        return type;
     }
 
     private void loadLastOrder() {
