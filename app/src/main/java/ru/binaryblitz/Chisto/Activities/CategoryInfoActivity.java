@@ -23,6 +23,7 @@ import ru.binaryblitz.Chisto.Adapters.CategoryItemsAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.CategoryItem;
+import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
@@ -34,12 +35,12 @@ public class CategoryInfoActivity extends BaseActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
-        setContentView(ru.binaryblitz.Chisto.R.layout.activity_category_info);
+        setContentView(R.layout.activity_category_info);
 
         findViewById(ru.binaryblitz.Chisto.R.id.toolbar).setBackgroundColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
         AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra("color", Color.parseColor("#212121")));
 
-        findViewById(ru.binaryblitz.Chisto.R.id.left_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
