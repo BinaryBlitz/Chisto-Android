@@ -53,7 +53,7 @@ class ContactInfoActivity : BaseActivity() {
             }
         }
 
-        findViewById(R.id.addreess_btn).setOnClickListener {
+        findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
     }
@@ -103,17 +103,17 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun validateFields(): Boolean {
-        var res = validateField(name!!, true)
-        res = res and validateField(lastname!!, true)
-        res = res and validateField(city!!, true)
-        res = res and validateField(street!!, false)
-        res = res and validateField(house!!, false)
-        res = res and validateField(flat!!, false)
+        var result = validateField(name!!, true)
+        result = result and validateField(lastname!!, true)
+        result = result and validateField(city!!, true)
+        result = result and validateField(street!!, false)
+        result = result and validateField(house!!, false)
+        result = result and validateField(flat!!, false)
 
         // TODO make validation with libphonenumber
         //validateField(phone);
 
-        return res
+        return result
     }
 
     private fun validateField(editText: MaterialEditText, numbers: Boolean): Boolean {

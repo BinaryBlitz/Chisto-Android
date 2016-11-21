@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -134,19 +135,21 @@ public class MapActivity extends BaseActivity
                 try {
                     String address = (String) searchBox.getAdapter().getItem(i);
                     addresses = geocoder.getFromLocationName(address, 1);
-                    if (addresses.size() > 0) {
-                        double latitude= addresses.get(0).getLatitude();
-                        double longitude= addresses.get(0).getLongitude();
-
-                        selected_lat_lng = new LatLng(latitude, longitude);
-                        selected = address;
-                        moveCamera(false);
-                    }
+                    if (addresses.size() > 0) autocompleteClick(addresses, address);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void autocompleteClick(List<Address> addresses, String address) {
+        double latitude= addresses.get(0).getLatitude();
+        double longitude= addresses.get(0).getLongitude();
+
+        selected_lat_lng = new LatLng(latitude, longitude);
+        selected = address;
+        moveCamera(false);
     }
 
     private ArrayList<String> autocomplete(String input) {
@@ -199,13 +202,13 @@ public class MapActivity extends BaseActivity
     }
 
     private void initGoogleApiClient() {
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build();
-        }
+        if (mGoogleApiClient != null) return;
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     private void setOnClickListeners() {
@@ -264,19 +267,21 @@ public class MapActivity extends BaseActivity
         this.googleMap = googleMap;
 
         try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                        || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkPermission()) {
                     ActivityCompat.requestPermissions(MapActivity.this,
                             new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
-                } else {
-                    setUpMap();
-                }
             } else {
                 setUpMap();
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            LogUtil.logException(e);
         }
+    }
+
+    @SuppressLint("NewApi")
+    private boolean checkPermission() {
+        return checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
     }
 
     private void setUpMap() {
@@ -316,7 +321,9 @@ public class MapActivity extends BaseActivity
                     googleMap.getCameraPosition().target.longitude);
             searchBox.setText(res);
             searchBox.dismissDropDown();
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            LogUtil.logException(e);
+        }
     }
 
     @Override
@@ -343,7 +350,8 @@ public class MapActivity extends BaseActivity
                 } else {
                     getLocation();
                 }
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                LogUtil.logException(e);
             }
         } else {
             getLocation();
@@ -403,8 +411,7 @@ public class MapActivity extends BaseActivity
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 2: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
                 } else {
                     onLocationError();
