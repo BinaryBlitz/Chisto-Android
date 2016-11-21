@@ -2,6 +2,7 @@ package ru.binaryblitz.Chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,30 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
         holder.name.text = laundry.name
         holder.desc.text = laundry.desc
-        holder.category.text = laundry.type
+
+        holder.category.visibility = View.VISIBLE
+        holder.categoryBack.visibility = View.VISIBLE
+
+        when (laundry.type) {
+            Laundry.Type.FAST -> {
+                holder.category.text = context.getString(R.string.premium_code_str)
+                holder.categoryBack.setImageResource(R.drawable.fast_bg)
+
+            }
+            Laundry.Type.PREMIUM -> {
+                holder.category.text = context.getString(R.string.fast_code_str)
+                holder.categoryBack.setImageResource(R.drawable.premium_bg)
+
+            }
+            Laundry.Type.ECONOMY -> {
+                holder.category.text = context.getString(R.string.economy_code_str)
+                holder.categoryBack.setImageResource(R.drawable.economy_bg)
+            }
+            Laundry.Type.EMPTY -> {
+                holder.category.visibility = View.GONE
+                holder.categoryBack.visibility = View.GONE
+            }
+        }
 
         Image.loadPhoto(laundry.icon, holder.icon)
 
@@ -63,12 +87,14 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         val desc: TextView
         val category: TextView
         val icon: ImageView
+        val categoryBack: ImageView
 
         init {
             name = itemView.findViewById(R.id.name) as TextView
             desc = itemView.findViewById(R.id.description) as TextView
             category = itemView.findViewById(R.id.type_text) as TextView
             icon = itemView.findViewById(R.id.category_icon) as ImageView
+            categoryBack = itemView.findViewById(R.id.type) as ImageView
         }
     }
 }
