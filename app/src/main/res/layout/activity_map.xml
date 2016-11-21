@@ -63,11 +63,15 @@
 
         <FrameLayout android:layout_width="match_parent"
                      android:layout_height="56dp">
-            <AutoCompleteTextView android:layout_width="match_parent"
+            <AutoCompleteTextView
+                    android:layout_width="match_parent"
                       android:ellipsize="start"
                       android:id="@+id/search_box"
                       android:gravity="center"
                       android:hint="@string/search_str"
+                      android:maxLines="1"
+                      android:inputType="text"
+                      android:imeOptions="actionNext"
                       android:textColor="#ffffff"
                       android:textColorHint="#ffffff"
                       android:layout_marginRight="8dp"
@@ -86,16 +90,6 @@
               android:layout_height="match_parent"
               android:layout_marginTop="112dp"
               android:name="ru.binaryblitz.Chisto.Custom.MyMapFragment$MySupportMapFragment"/>
-
-    <ImageView
-            android:layout_height="36dp"
-            android:layout_width="36dp"
-            android:layout_marginTop="8dp"
-            android:id="@+id/guillotine_hamburger"
-            android:src="@drawable/ic_back"
-            android:padding="10dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="12dp" />
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"

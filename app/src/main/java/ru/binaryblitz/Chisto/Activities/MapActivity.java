@@ -45,8 +45,11 @@ import java.util.Locale;
 
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.MyMapFragment;
+import ru.binaryblitz.Chisto.Model.User;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class MapActivity extends BaseActivity
         implements MyMapFragment.TouchableWrapper.UpdateMapAfterUserInteraction, OnMapReadyCallback,
@@ -126,7 +129,22 @@ public class MapActivity extends BaseActivity
         searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                
+                Geocoder geocoder = new Geocoder(MapActivity.this);
+                List<Address> addresses;
+                try {
+                    String address = (String) searchBox.getAdapter().getItem(i);
+                    addresses = geocoder.getFromLocationName(address, 1);
+                    if (addresses.size() > 0) {
+                        double latitude= addresses.get(0).getLatitude();
+                        double longitude= addresses.get(0).getLongitude();
+
+                        selected_lat_lng = new LatLng(latitude, longitude);
+                        selected = address;
+                        moveCamera(false);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -205,6 +223,36 @@ public class MapActivity extends BaseActivity
                 else mGoogleApiClient.connect();
             }
         });
+
+        findViewById(R.id.add_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Geocoder geocoder;
+                geocoder = new Geocoder(MapActivity.this, Locale.getDefault());
+                saveUser(geocoder);
+
+                finish();
+            }
+        });
+    }
+
+    private void saveUser(Geocoder geocoder) {
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(selected_lat_lng.latitude, selected_lat_lng.longitude, 1);
+            String city = addresses.get(0).getLocality();
+            String street = addresses.get(0).getThoroughfare();
+            String house = addresses.get(0).getSubThoroughfare();
+
+            User user = DeviceInfoStore.getUserObject(MapActivity.this);
+            if (user == null) return;
+
+            user.setHouse(house);
+            user.setCity(city);
+            user.setStreet(street);
+
+            DeviceInfoStore.saveUser(MapActivity.this, user);
+        } catch (IOException ignored) {}
     }
 
     @Override
@@ -261,8 +309,8 @@ public class MapActivity extends BaseActivity
             String res = getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
                     googleMap.getCameraPosition().target.longitude);
             searchBox.setText(res);
-        } catch (Exception ignored) {
-        }
+            searchBox.dismissDropDown();
+        } catch (Exception ignored) {}
     }
 
     @Override
@@ -308,13 +356,13 @@ public class MapActivity extends BaseActivity
 
         if (mLastLocation != null) {
             selected_lat_lng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            moveCamera();
+            moveCamera(true);
         } else {
             onLocationError();
         }
     }
 
-    private void moveCamera() {
+    private void moveCamera(final boolean setText) {
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(selected_lat_lng)
                 .zoom(17)
@@ -328,9 +376,12 @@ public class MapActivity extends BaseActivity
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
-                                googleMap.getCameraPosition().target.longitude);
-                        searchBox.setText(selected);
+                        if (setText) {
+                            getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
+                                    googleMap.getCameraPosition().target.longitude);
+                            searchBox.setText(selected);
+                        }
+                        searchBox.dismissDropDown();
                     }
                 }, 50);
             }
