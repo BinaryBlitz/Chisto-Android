@@ -4,7 +4,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="#00ffffff"
-        android:paddingTop="8dp"
+        android:paddingTop="24dp"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -18,9 +18,10 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/user_text"
+                android:textStyle="bold"
                 android:layout_gravity="center_vertical|left"
                 android:layout_marginLeft="16dp"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="#212121" />
 
         <TextView
@@ -61,9 +62,9 @@
             android:layout_marginLeft="16dp"
             android:textSize="14sp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="24dp"
             android:layout_marginTop="8dp"
-            android:textColor="#212121"
+            android:textColor="#727272"
             android:textIsSelectable="true" />
 
     <View

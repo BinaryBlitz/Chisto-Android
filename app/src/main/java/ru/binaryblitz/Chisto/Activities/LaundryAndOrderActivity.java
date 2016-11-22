@@ -49,6 +49,15 @@ public class LaundryAndOrderActivity extends BaseActivity {
             }
         });
 
+        findViewById(R.id.reviews_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LaundryAndOrderActivity.this, ReviewsActivity.class);
+                intent.putExtra(EXTRA_ID, getIntent().getIntExtra(EXTRA_ID, 1));
+                startActivity(intent);
+            }
+        });
+
         RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
 
         Drawable progress = ratingBar.getProgressDrawable();

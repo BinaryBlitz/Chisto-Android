@@ -17,7 +17,7 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
     private var collection = ArrayList<Review>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_review, parent, false)
 
         return ViewHolder(itemView)
     }
@@ -27,7 +27,8 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
 
         holder.name.text = collection[position].userName
         holder.date.text = getDateFullString(collection[position].date)
-        holder.comment.text = collection[position].comment
+        if (collection[position].comment!!.isEmpty()) holder.comment.text = context.getString(R.string.no_comment_str)
+        else holder.comment.text = collection[position].comment
         holder.stars.rating = collection[position].rating
     }
 
