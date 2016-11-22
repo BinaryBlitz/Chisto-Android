@@ -3,6 +3,7 @@ package ru.binaryblitz.Chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import ru.binaryblitz.Chisto.Model.Category;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity {
@@ -99,7 +101,7 @@ public class SelectCategoryActivity extends BaseActivity {
                     ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
-                    ContextCompat.getColor(this, ru.binaryblitz.Chisto.R.color.greyColor)
+                    Color.parseColor(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("color")))
             ));
         }
 

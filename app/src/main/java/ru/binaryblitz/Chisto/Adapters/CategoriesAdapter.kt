@@ -51,6 +51,7 @@ class  CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<R
         holder.description.text = category.desc
 
         Image.loadPhoto(category.icon, holder.icon)
+        holder.icon.setColorFilter(category.color)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, CategoryInfoActivity::class.java)
