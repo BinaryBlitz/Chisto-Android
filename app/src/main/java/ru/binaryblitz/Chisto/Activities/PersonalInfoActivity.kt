@@ -58,10 +58,24 @@ class PersonalInfoActivity : BaseActivity() {
         finishActivity()
     }
 
-    private fun sendToServer() {
-        val dialog = ProgressDialog(this)
-        dialog.show()
+    private fun generateOrderTreatments(): JsonArray {
+        val array = JsonArray()
+        val orders = OrderList.get()
 
+        for(order in orders!!.iterator()) {
+            val treatments = order.treatments
+            for (treatment in treatments!!.iterator()) {
+                val local = JsonObject()
+                local.addProperty("laundry_treatment_id", treatment.id)
+                local.addProperty("quantity", order.count)
+                array.add(local)
+            }
+        }
+
+        return array
+    }
+
+    private fun generateJson(): JsonObject {
         val obj = JsonObject()
 
         obj.addProperty("street_name", street!!.text.toString())
@@ -71,39 +85,23 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", "foo@bar.com")
 
-        val array = JsonArray()
-
-        val orders = OrderList.get()
-
-        for(order in orders!!.iterator()) {
-            val treatments = order.treatments
-            for (treatment in treatments!!.iterator()) {
-                val local = JsonObject()
-
-                local.addProperty("laundry_treatment_id", treatment.id)
-                local.addProperty("quantity", order.count)
-
-                array.add(local)
-            }
-        }
-
-        obj.add("line_items_attributes", array)
+        obj.add("line_items_attributes", generateOrderTreatments())
 
         val toSend = JsonObject()
         toSend.add("order", obj)
 
-        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), toSend).enqueue(object : Callback<JsonObject> {
+        return toSend
+    }
+
+    private fun sendToServer(bank: Boolean) {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) {
-                    Handler().post {
-                        dialogOpened = true
-                        (findViewById(R.id.order_name) as TextView).text = "№ " + response.body().get("id").asString
-                        Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
-                    }
-                } else {
-                    onInternetConnectionError()
-                }
+                if (response.isSuccessful) parseAnswer(response.body(), bank)
+                else onInternetConnectionError()
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -111,6 +109,22 @@ class PersonalInfoActivity : BaseActivity() {
                 onInternetConnectionError()
             }
         })
+    }
+
+    private fun parseAnswer(obj: JsonObject, bank: Boolean) {
+        if (bank) {
+            val intent = Intent(this@PersonalInfoActivity, WebActivity::class.java)
+            intent.putExtra("url",
+                    obj.get("payment").asJsonObject.get("payment_url").asString
+            )
+            startActivity(intent)
+        } else {
+            Handler().post {
+                dialogOpened = true
+                (findViewById(R.id.order_name) as TextView).text = "№ " + obj.get("id").asString
+                Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
+            }
+        }
     }
 
     private fun setOnClickListeners() {
@@ -123,7 +137,14 @@ class PersonalInfoActivity : BaseActivity() {
         findViewById(R.id.pay_btn).setOnClickListener {
             if (validateFields()) {
                 setData()
-                sendToServer()
+                sendToServer(false)
+            }
+        }
+
+        findViewById(R.id.bank_btn).setOnClickListener {
+            if (validateFields()) {
+                setData()
+                sendToServer(true)
             }
         }
 
