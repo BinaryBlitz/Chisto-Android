@@ -163,6 +163,8 @@ public class LaundriesActivity extends BaseActivity {
 
         main_loop:
         for (int i = 0; i < orderTreatments.size(); i++) {
+            if (orderTreatments.get(i).getId() == 1) continue;
+
             for (int j = 0; j < laundryTreatments.size(); j++) {
                 if (orderTreatments.get(i).getId() == laundryTreatments.get(j)) continue main_loop;
                 if (j == laundryTreatments.size() - 1) return false;
