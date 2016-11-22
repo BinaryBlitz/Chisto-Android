@@ -49,12 +49,6 @@ public class LaundryAndOrderActivity extends BaseActivity {
             }
         });
 
-        RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
-
-        Drawable progress = ratingBar.getProgressDrawable();
-        DrawableCompat.setTint(progress, Color.WHITE);
-        ratingBar.setProgressDrawable(progress);
-
         load();
     }
 
