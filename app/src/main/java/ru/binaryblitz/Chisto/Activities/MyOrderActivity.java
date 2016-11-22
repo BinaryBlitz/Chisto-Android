@@ -25,6 +25,7 @@ import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.Image;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class MyOrderActivity extends BaseActivity {
@@ -36,7 +37,7 @@ public class MyOrderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_my_order);
-
+        Image.init(this);
         findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,12 +69,22 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonObject object) {
+        LogUtil.logError(object.toString());
         String status = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("status"));
         processStatus(status);
-
+        setLaundryInfo(object.get("laundry").getAsJsonObject());
         ((TextView) findViewById(R.id.date_text_view)).setText(getString(R.string.my_order_code_str) + AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")));
         ((TextView) findViewById(R.id.number)).setText("№ " + AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")));
         ((TextView) findViewById(R.id.date_text)).setText(getDateFromJson(object));
+    }
+
+    private void setLaundryInfo(JsonObject object) {
+        ((TextView) findViewById(R.id.name)).setText(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")));
+        ((TextView) findViewById(R.id.description)).setText(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")));
+        Image.loadPhoto(
+                AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("logo_url")),
+                (ImageView) findViewById(R.id.category_icon)
+        );
     }
 
     private void processStatus(String status) {
