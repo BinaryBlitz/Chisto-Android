@@ -39,6 +39,10 @@ public class WebActivity extends BaseActivity {
                 processRedirect(request.getUrl().toString());
                 return false;
             }
+
+            public void onPageFinished(WebView view, String url) {
+                processRedirect(url);
+            }
         });
     }
 
@@ -48,6 +52,10 @@ public class WebActivity extends BaseActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 processRedirect(url);
                 return false;
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                processRedirect(url);
             }
         });
     }

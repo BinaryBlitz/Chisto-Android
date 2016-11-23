@@ -115,4 +115,5 @@
     <string name="review_str1">Отзыв</string>
     <string name="review_str2">Отзыва</string>
     <string name="review_str3">Отзывов</string>
+    <string name="removal_error_str">Нужно оставить хотя бы одну услугу.</string>
 </resources>
