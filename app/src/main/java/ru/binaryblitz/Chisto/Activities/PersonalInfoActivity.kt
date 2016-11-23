@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.Snackbar
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -26,6 +27,7 @@ import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
     val EXTRA_PHONE = "phone"
+    val REQUEST_WEB = 100
 
     private var name: MaterialEditText? = null
     private var lastname: MaterialEditText? = null
@@ -58,11 +60,22 @@ class PersonalInfoActivity : BaseActivity() {
         finishActivity()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == REQUEST_WEB) {
+            if (data!!.getBooleanExtra("success", false)) {
+                showOrderDialog(orderId)
+            } else {
+                Snackbar.make(findViewById(R.id.main), getString(R.string.payment_error), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun generateOrderTreatments(): JsonArray {
         val array = JsonArray()
         val orders = OrderList.get()
 
-        for(order in orders!!.iterator()) {
+        for (order in orders!!.iterator()) {
             val treatments = order.treatments
             for (treatment in treatments!!.iterator()) {
                 val local = JsonObject()
@@ -112,18 +125,22 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject, bank: Boolean) {
-        if (bank) {
-            val intent = Intent(this@PersonalInfoActivity, WebActivity::class.java)
-            intent.putExtra("url",
-                    obj.get("payment").asJsonObject.get("payment_url").asString
-            )
-            startActivity(intent)
-        } else {
-            Handler().post {
-                dialogOpened = true
-                (findViewById(R.id.order_name) as TextView).text = "№ " + obj.get("id").asString
-                Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
-            }
+        orderId = obj.get("id").asInt
+        if (bank) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        else showOrderDialog(orderId)
+    }
+
+    private fun openWebActivity(url: String) {
+        val intent = Intent(this@PersonalInfoActivity, WebActivity::class.java)
+        intent.putExtra("url", url)
+        startActivityForResult(intent, REQUEST_WEB)
+    }
+
+    private fun showOrderDialog(id: Int) {
+        Handler().post {
+            dialogOpened = true
+            (findViewById(R.id.order_name) as TextView).text = "№ " + id.toString()
+            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
         }
     }
 
@@ -249,5 +266,9 @@ class PersonalInfoActivity : BaseActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    companion object {
+        var orderId: Int = 0
     }
 }
