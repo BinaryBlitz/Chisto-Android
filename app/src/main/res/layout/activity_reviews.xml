@@ -86,17 +86,20 @@
             android:layout_height="match_parent">
     </ru.binaryblitz.Chisto.Custom.RecyclerListView>
 
-    <RatingBar
-            style="?android:attr/ratingBarStyleSmall"
-            android:rating="3.5"
-            android:stepSize="0.5"
-            android:numStars="5"
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srb_starSize="12dp"
+            app:srb_numberOfStars="5"
+            app:srb_rating="3"
+            app:srb_stepSize="0.5"
+            app:srb_starBorderWidth="4"
             android:id="@+id/ratingBar"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="104dp"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:srb_borderColor="#ffffff"
+            app:srb_fillColor="#ffffff"/>
 
     <TextView
             android:layout_marginTop="98dp"

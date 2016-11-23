@@ -64,9 +64,10 @@
         <com.iarcuschin.simpleratingbar.SimpleRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srb_starSize="10dp"
+                app:srb_starSize="12dp"
                 app:srb_numberOfStars="5"
                 app:srb_rating="3"
+                app:srb_starBorderWidth="4"
                 app:srb_stepSize="0.5"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="32dp"
