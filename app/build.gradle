@@ -13,12 +13,12 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "24.0.3"
+    buildToolsVersion "25.0.0"
     defaultConfig {
         applicationId "ru.binaryblitz.Chisto"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 12
+        versionCode 13
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
