@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#00ffffff"
+        android:paddingTop="24dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/user_text"
+                android:textStyle="bold"
+                android:layout_gravity="center_vertical|left"
+                android:layout_marginLeft="16dp"
+                android:textSize="16sp"
+                android:textColor="#212121" />
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:id="@+id/date_text"
+                android:layout_gravity="right|center_vertical"
+                android:textSize="14sp"
+                android:layout_marginRight="16dp"
+                android:textColor="#727272"/>
+
+    </FrameLayout>
+
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srb_starSize="10dp"
+            app:srb_numberOfStars="5"
+            android:id="@+id/ratings"
+            app:srb_rating="3"
+            app:srb_stepSize="0.5"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:srb_borderColor="@color/colorPrimary"
+            app:srb_fillColor="@color/colorPrimary"
+    />
+
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/comment_text"
+            android:layout_gravity="left|top"
+            android:layout_marginLeft="16dp"
+            android:textSize="14sp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
+            android:textColor="#727272"
+            android:textIsSelectable="true" />
+
+    <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="#b6b6b6"/>
+</LinearLayout>

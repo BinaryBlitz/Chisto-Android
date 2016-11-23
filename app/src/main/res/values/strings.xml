@@ -109,4 +109,6 @@
     <string name="premium_code_str">Премиум</string>
     <string name="fast_code_str">Быстрая</string>
     <string name="economy_code_str">Дешевая</string>
+    <string name="review_str">Отзывы</string>
+    <string name="no_comment_str">Нет комментария.</string>
 </resources>
