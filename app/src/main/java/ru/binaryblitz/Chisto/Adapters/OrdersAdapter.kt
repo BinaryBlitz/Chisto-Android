@@ -23,7 +23,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
     var itemsPendingRemoval: ArrayList<Order> = ArrayList()
     var undoOn = false
-
+    val EXTRA_COLOR = "color"
     private val handler = Handler()
     var pendingRunnables: HashMap<Order, Runnable> = HashMap()
 
@@ -53,9 +53,11 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.count.text = "\u00D7" + order.count + " шт"
 
         Image.loadPhoto(order.category.icon, holder.icon)
+        holder.icon.setColorFilter(order.color)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ItemInfoActivity::class.java)
+            intent.putExtra(EXTRA_COLOR, order.color)
             context.startActivity(intent)
         }
     }

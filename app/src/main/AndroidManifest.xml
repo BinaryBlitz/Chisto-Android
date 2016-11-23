@@ -62,6 +62,18 @@
         </activity>
 
         <activity
+                android:name="ru.binaryblitz.Chisto.Activities.WebActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"
+                android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <activity
                 android:name="ru.binaryblitz.Chisto.Activities.OrdersActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
