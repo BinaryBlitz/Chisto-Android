@@ -56,9 +56,11 @@
         <ImageView
                 android:layout_width="34dp"
                 android:layout_marginLeft="12dp"
+                android:background="@drawable/blue_circle"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="24dp"
                 android:id="@+id/category_icon"
+                android:padding="5dp"
                 android:layout_height="34dp"/>
 
         <TextView android:layout_width="wrap_content"
