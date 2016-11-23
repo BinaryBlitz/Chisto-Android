@@ -43,7 +43,6 @@ public class LaundryAndOrderActivity extends BaseActivity {
             public void onClick(View view) {
                 boolean userNotLogged = DeviceInfoStore.getUserObject(LaundryAndOrderActivity.this) == null ||
                         DeviceInfoStore.getUserObject(LaundryAndOrderActivity.this).getPhone().equals("null");
-
                 if (userNotLogged) openActivity(RegistrationActivity.class);
                 else openActivity(PersonalInfoActivity.class);
             }
