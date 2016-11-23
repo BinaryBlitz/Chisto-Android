@@ -265,7 +265,6 @@ public class MapActivity extends BaseActivity
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkPermission()) {
                     ActivityCompat.requestPermissions(MapActivity.this,
@@ -289,7 +288,6 @@ public class MapActivity extends BaseActivity
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-
         googleMap.setMyLocationEnabled(false);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.setPadding(0, (int) AndroidUtilities.INSTANCE.convertDpToPixel(66f, this), 0, 0);
@@ -380,8 +378,8 @@ public class MapActivity extends BaseActivity
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(selected_lat_lng)
                 .zoom(17)
-                .bearing(90)
-                .tilt(40)
+                .bearing(0)
+                .tilt(0)
                 .build();
 
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
