@@ -159,7 +159,7 @@ public class LaundriesActivity extends BaseActivity {
         ArrayList<Treatment> orderTreatments = OrderList.getTreatments();
         for (int j = 0; j < treatments.size(); j++) {
             JsonObject treatment = treatments.get(j).getAsJsonObject();
-            laundryTreatments.add(AndroidUtilities.INSTANCE.getIntFieldFromJson(treatment.get("id")));
+            laundryTreatments.add(AndroidUtilities.INSTANCE.getIntFieldFromJson(treatment.get("treatment").getAsJsonObject().get("id")));
         }
 
         main_loop:
