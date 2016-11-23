@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
              android:orientation="vertical"
              android:layout_width="match_parent"
              android:background="#ffffff"
@@ -100,17 +100,19 @@
               android:layout_gravity="top|center_horizontal"
               android:layout_height="wrap_content"/>
 
-    <RatingBar
-            style="?android:attr/ratingBarStyleSmall"
-            android:rating="3.5"
-            android:stepSize="0.5"
-            android:numStars="5"
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srb_starSize="10dp"
+            app:srb_numberOfStars="5"
+            app:srb_rating="3"
+            app:srb_stepSize="0.5"
             android:id="@+id/ratingBar"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="104dp"
             android:layout_marginStart="12dp"
             android:layout_marginLeft="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:srb_borderColor="#ffffff"
+            app:srb_fillColor="#ffffff"/>
 
     <TextView
             android:layout_marginTop="98dp"
