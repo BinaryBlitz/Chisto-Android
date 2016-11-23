@@ -16,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -96,5 +97,23 @@ public class LaundryAndOrderActivity extends BaseActivity {
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
+
+        setCount(object.get("ratings_count").getAsInt());
+        ((SimpleRatingBar) findViewById(R.id.ratingBar)).setRating(object.get("rating").getAsFloat());
+    }
+
+    private void setCount(int count) {
+        String resStr = "";
+        if (count % 10 == 1 && count != 11) {
+            resStr += getString(R.string.review_str1);
+        } else if ((count % 10 == 2 && count != 12)
+                || (count % 10 == 3 && count != 13)
+                || (count % 10 == 4 && count != 14)) {
+            resStr += getString(R.string.review_str2);
+        } else {
+            resStr += getString(R.string.review_str3);
+        }
+
+        ((TextView) findViewById(R.id.reviews_btn)).setText(count + " " + resStr);
     }
 }

@@ -141,7 +141,8 @@ public class LaundriesActivity extends BaseActivity {
                     ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("logo_url")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
-                    getTypeFromJson(object)
+                    getTypeFromJson(object),
+                    (float) AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("rating"))
             ));
         }
 

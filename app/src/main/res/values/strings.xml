@@ -112,4 +112,7 @@
     <string name="review_str">Отзывы</string>
     <string name="no_comment_str">Нет комментария.</string>
     <string name="payment_error">Ошибка оплаты.</string>
+    <string name="review_str1">Отзыв</string>
+    <string name="review_str2">Отзыва</string>
+    <string name="review_str3">Отзывов</string>
 </resources>
