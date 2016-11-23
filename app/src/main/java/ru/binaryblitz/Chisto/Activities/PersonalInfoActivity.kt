@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.Snackbar
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -26,6 +27,7 @@ import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
     val EXTRA_PHONE = "phone"
+    val REQUEST_WEB = 100
 
     private var name: MaterialEditText? = null
     private var lastname: MaterialEditText? = null
@@ -58,10 +60,35 @@ class PersonalInfoActivity : BaseActivity() {
         finishActivity()
     }
 
-    private fun sendToServer() {
-        val dialog = ProgressDialog(this)
-        dialog.show()
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && requestCode == REQUEST_WEB) {
+            if (data!!.getBooleanExtra("success", false)) {
+                showOrderDialog(orderId)
+            } else {
+                Snackbar.make(findViewById(R.id.main), getString(R.string.payment_error), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
 
+    private fun generateOrderTreatments(): JsonArray {
+        val array = JsonArray()
+        val orders = OrderList.get()
+
+        for (order in orders!!.iterator()) {
+            val treatments = order.treatments
+            for (treatment in treatments!!.iterator()) {
+                val local = JsonObject()
+                local.addProperty("laundry_treatment_id", treatment.id)
+                local.addProperty("quantity", order.count)
+                array.add(local)
+            }
+        }
+
+        return array
+    }
+
+    private fun generateJson(): JsonObject {
         val obj = JsonObject()
 
         obj.addProperty("street_name", street!!.text.toString())
@@ -71,39 +98,23 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", "foo@bar.com")
 
-        val array = JsonArray()
-
-        val orders = OrderList.get()
-
-        for(order in orders!!.iterator()) {
-            val treatments = order.treatments
-            for (treatment in treatments!!.iterator()) {
-                val local = JsonObject()
-
-                local.addProperty("laundry_treatment_id", treatment.id)
-                local.addProperty("quantity", order.count)
-
-                array.add(local)
-            }
-        }
-
-        obj.add("line_items_attributes", array)
+        obj.add("line_items_attributes", generateOrderTreatments())
 
         val toSend = JsonObject()
         toSend.add("order", obj)
 
-        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), toSend).enqueue(object : Callback<JsonObject> {
+        return toSend
+    }
+
+    private fun sendToServer(bank: Boolean) {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) {
-                    Handler().post {
-                        dialogOpened = true
-                        (findViewById(R.id.order_name) as TextView).text = "№ " + response.body().get("id").asString
-                        Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
-                    }
-                } else {
-                    onInternetConnectionError()
-                }
+                if (response.isSuccessful) parseAnswer(response.body(), bank)
+                else onInternetConnectionError()
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -111,6 +122,26 @@ class PersonalInfoActivity : BaseActivity() {
                 onInternetConnectionError()
             }
         })
+    }
+
+    private fun parseAnswer(obj: JsonObject, bank: Boolean) {
+        orderId = obj.get("id").asInt
+        if (bank) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        else showOrderDialog(orderId)
+    }
+
+    private fun openWebActivity(url: String) {
+        val intent = Intent(this@PersonalInfoActivity, WebActivity::class.java)
+        intent.putExtra("url", url)
+        startActivityForResult(intent, REQUEST_WEB)
+    }
+
+    private fun showOrderDialog(id: Int) {
+        Handler().post {
+            dialogOpened = true
+            (findViewById(R.id.order_name) as TextView).text = "№ " + id.toString()
+            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
+        }
     }
 
     private fun setOnClickListeners() {
@@ -123,7 +154,14 @@ class PersonalInfoActivity : BaseActivity() {
         findViewById(R.id.pay_btn).setOnClickListener {
             if (validateFields()) {
                 setData()
-                sendToServer()
+                sendToServer(false)
+            }
+        }
+
+        findViewById(R.id.bank_btn).setOnClickListener {
+            if (validateFields()) {
+                setData()
+                sendToServer(true)
             }
         }
 
@@ -228,5 +266,9 @@ class PersonalInfoActivity : BaseActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    companion object {
+        var orderId: Int = 0
     }
 }
