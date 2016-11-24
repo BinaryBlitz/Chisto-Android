@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import ru.binaryblitz.Chisto.Activities.ItemInfoActivity
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.OrderList
@@ -66,6 +67,11 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
         if (collection.contains(item)) {
             OrderList.removeTreatment(collection[position].id)
             notifyDataSetChanged()
+        }
+
+        if (collection.size == 0) {
+            OrderList.addTreatment(item)
+            (context as ItemInfoActivity).onRemovalError()
         }
     }
 

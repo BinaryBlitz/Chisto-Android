@@ -243,7 +243,7 @@ class PersonalInfoActivity : BaseActivity() {
         }
 
         if (editText.text.toString().isEmpty() || count != 0) {
-            editText.error = getString(R.string.wrong_data_str)
+            editText.error = getString(R.string.wrong_data)
             return false
         }
 

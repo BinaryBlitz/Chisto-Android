@@ -5,17 +5,14 @@ import com.google.gson.JsonObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -96,5 +93,11 @@ public class LaundryAndOrderActivity extends BaseActivity {
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
+
+        int count = object.get("ratings_count").getAsInt();
+        String pluralText = getResources().getQuantityString(R.plurals.review, count, count);
+        ((TextView) findViewById(R.id.reviews_btn)).setText(pluralText);
+
+        ((SimpleRatingBar) findViewById(R.id.ratingBar)).setRating(object.get("rating").getAsFloat());
     }
 }

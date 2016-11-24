@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:background="#ffffff"
-              android:id="@+id/main_dialog_part"
-              android:layout_margin="12dp"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:background="#ffffff"
+             android:id="@+id/main_dialog_part"
+             android:elevation="6dp"
+             android:layout_margin="12dp"
              android:layout_gravity="center"
-              android:layout_height="446dp">
+             android:layout_height="476dp">
     <ImageView
-        android:layout_width="match_parent"
-        android:background="#212121"
-        android:scaleType="centerCrop"
-        android:id="@+id/back_image"
-        android:layout_height="110dp"/>
+            android:layout_width="match_parent"
+            android:background="#212121"
+            android:scaleType="centerCrop"
+            android:id="@+id/back_image"
+            android:layout_height="110dp"/>
 
     <View android:layout_width="match_parent"
           android:background="@drawable/card_gradient"
@@ -31,7 +32,7 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="42dp"
             android:layout_height="wrap_content">
         <LinearLayout
                 android:layout_width="0dp"
@@ -47,7 +48,7 @@
                     android:padding="3dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/courier_str"
+                      android:text="@string/courier"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -78,7 +79,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/delivery_str"
+                      android:text="@string/delivery"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -109,7 +110,7 @@
                     android:padding="4dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/cost_str"
+                      android:text="@string/cost"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -125,7 +126,7 @@
     </LinearLayout>
 
     <TextView android:layout_width="wrap_content"
-              android:text="@string/last_order_str"
+              android:text="@string/last_order"
               android:textColor="#ffffff"
               android:layout_marginTop="18dp"
               android:textSize="18sp"
@@ -145,6 +146,8 @@
               android:textColor="#212121"
               android:layout_marginTop="156dp"
               android:textSize="16sp"
+              android:gravity="center"
+              android:maxLines="2"
               android:id="@+id/desc_text"
               android:layout_gravity="top|center_horizontal"
               android:layout_height="wrap_content"/>
@@ -168,7 +171,7 @@
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"
-            android:text="@string/view_all_str"
+            android:text="@string/view_all"
             android:layout_width="match_parent"
             android:layout_height="68dp"
             android:layout_marginRight="-12dp"

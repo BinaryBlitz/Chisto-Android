@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/order_str"
+                    android:text="@string/order"
                     android:layout_gravity="center"
                     android:id="@+id/date_text_view"
                     android:gravity="center_vertical"
@@ -76,7 +76,7 @@
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"
-            android:text="@string/nothing_selected_str"
+            android:text="@string/nothing_selected"
             android:layout_width="match_parent"
             android:layout_height="68dp"
             android:id="@+id/textView2"

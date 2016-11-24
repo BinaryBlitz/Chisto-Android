@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -154,5 +155,11 @@ public class ReviewsActivity extends BaseActivity {
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
+        int count =  object.get("ratings_count").getAsInt();
+
+        String pluralText = getResources().getQuantityString(R.plurals.review, count, count);
+        ((TextView) findViewById(R.id.count)).setText(pluralText);
+
+        ((SimpleRatingBar) findViewById(R.id.ratingBar)).setRating(object.get("rating").getAsFloat());
     }
 }

@@ -2,13 +2,13 @@ package ru.binaryblitz.Chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
-import android.opengl.Visibility
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import ru.binaryblitz.Chisto.Activities.LaundryAndOrderActivity
 import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
@@ -43,19 +43,21 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.category.visibility = View.VISIBLE
         holder.categoryBack.visibility = View.VISIBLE
 
+        holder.ratingBar.rating = laundry.rating
+
         when (laundry.type) {
             Laundry.Type.FAST -> {
-                holder.category.text = context.getString(R.string.premium_code_str)
+                holder.category.text = context.getString(R.string.premium)
                 holder.categoryBack.setImageResource(R.drawable.fast_bg)
 
             }
             Laundry.Type.PREMIUM -> {
-                holder.category.text = context.getString(R.string.fast_code_str)
+                holder.category.text = context.getString(R.string.fast)
                 holder.categoryBack.setImageResource(R.drawable.premium_bg)
 
             }
             Laundry.Type.ECONOMY -> {
-                holder.category.text = context.getString(R.string.economy_code_str)
+                holder.category.text = context.getString(R.string.economy)
                 holder.categoryBack.setImageResource(R.drawable.economy_bg)
             }
             Laundry.Type.EMPTY -> {
@@ -88,6 +90,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         val category: TextView
         val icon: ImageView
         val categoryBack: ImageView
+        val ratingBar: SimpleRatingBar
 
         init {
             name = itemView.findViewById(R.id.name) as TextView
@@ -95,6 +98,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
             category = itemView.findViewById(R.id.type_text) as TextView
             icon = itemView.findViewById(R.id.category_icon) as ImageView
             categoryBack = itemView.findViewById(R.id.type) as ImageView
+            ratingBar = itemView.findViewById(R.id.ratingBar) as SimpleRatingBar
         }
     }
 }

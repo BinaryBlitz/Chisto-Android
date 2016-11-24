@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
              android:orientation="vertical"
              android:layout_width="match_parent"
+             android:id="@+id/main"
              android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
@@ -38,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/profile_str"
+                    android:text="@string/profile"
                     android:layout_gravity="center"
                     android:id="@+id/date_text_view"
                     android:gravity="center_vertical"
@@ -74,7 +75,7 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/contact_data_str"
+                        android:text="@string/contact_data"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -116,7 +117,7 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/my_orders_str"
+                        android:text="@string/my_orders"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -158,7 +159,7 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/about_str"
+                        android:text="@string/about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -200,7 +201,7 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/rules_str"
+                        android:text="@string/rules"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"

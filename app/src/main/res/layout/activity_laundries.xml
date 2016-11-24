@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/laundaries_str"
+                    android:text="@string/laundries"
                     android:layout_gravity="center"
                     android:id="@+id/date_text_view"
                     android:gravity="center_vertical"

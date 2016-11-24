@@ -64,10 +64,13 @@
         <com.iarcuschin.simpleratingbar.SimpleRatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srb_starSize="10dp"
+                app:srb_starSize="12dp"
                 app:srb_numberOfStars="5"
                 app:srb_rating="3"
+                app:srb_starBorderWidth="3"
                 app:srb_stepSize="0.5"
+                android:id="@+id/ratingBar"
+                app:srb_starCornerRadius="2"
                 android:layout_gravity="center_vertical"
                 android:layout_marginTop="32dp"
                 android:layout_marginStart="100dp"
@@ -95,7 +98,7 @@
                     android:padding="3dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/courier_str"
+                      android:text="@string/courier"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -126,7 +129,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/delivery_str"
+                      android:text="@string/delivery"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -157,7 +160,7 @@
                     android:padding="4dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/cost_str"
+                      android:text="@string/cost"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"

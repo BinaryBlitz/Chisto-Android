@@ -91,7 +91,7 @@ public class OrdersActivity extends BaseActivity {
             adapter.notifyDataSetChanged();
 
             if (adapter.getItemCount() != 0) {
-                contBtn.setText(ru.binaryblitz.Chisto.R.string.cont_code_str);
+                contBtn.setText(ru.binaryblitz.Chisto.R.string.cont_code);
                 contBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -100,7 +100,7 @@ public class OrdersActivity extends BaseActivity {
                     }
                 });
             } else {
-                contBtn.setText(ru.binaryblitz.Chisto.R.string.nothing_selected_code_str);
+                contBtn.setText(ru.binaryblitz.Chisto.R.string.nothing_selected_code);
                 contBtn.setEnabled(false);
                 contBtn.setOnClickListener(null);
             }

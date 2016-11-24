@@ -27,7 +27,7 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
 
         holder.name.text = collection[position].userName
         holder.date.text = getDateFullString(collection[position].date)
-        if (collection[position].comment!!.isEmpty()) holder.comment.text = context.getString(R.string.no_comment_str)
+        if (collection[position].comment!!.isEmpty()) holder.comment.text = context.getString(R.string.no_comment)
         else holder.comment.text = collection[position].comment
         holder.stars.rating = collection[position].rating
     }

@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/about_str"
+                        android:text="@string/about"
                         android:layout_gravity="center"
                         android:id="@+id/date_text_view"
                         android:gravity="center_vertical"
@@ -70,7 +70,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="32dp"/>
                 <TextView
-                        android:text="@string/contact_us_str"
+                        android:text="@string/contact_us"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -108,7 +108,7 @@
                                 android:padding="8dp"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
-                                  android:text="@string/call_us_str"
+                                  android:text="@string/call_us"
                                   android:textColor="@color/colorAccent"
                                   android:layout_marginTop="8dp"
                                   android:textSize="16sp"
@@ -129,7 +129,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
-                                  android:text="@string/email_str"
+                                  android:text="@string/email"
                                   android:textColor="@color/colorAccent"
                                   android:textSize="16sp"
                                   android:layout_marginTop="8dp"
@@ -140,7 +140,7 @@
                 </LinearLayout>
 
                 <TextView
-                        android:text="@string/about_social_str"
+                        android:text="@string/about_social"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -189,7 +189,7 @@
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:theme="@style/BrandButtonStyle"
                     android:layout_width="wrap_content"
-                      android:text="@string/rate_str"
+                      android:text="@string/rate"
                       android:gravity="center"
                       android:layout_gravity="center_horizontal|bottom"
                       android:textColor="#ffffff"
@@ -212,7 +212,7 @@
             android:layout_gravity="bottom"
             android:layout_height="56dp">
         <TextView
-                android:text="@string/about_bottom_str"
+                android:text="@string/about_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -226,7 +226,7 @@
                 android:gravity="start"/>
 
         <TextView
-                android:text="@string/about_bottom_str2"
+                android:text="@string/about_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"

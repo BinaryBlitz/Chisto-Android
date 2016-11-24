@@ -73,7 +73,7 @@ public class MyOrderActivity extends BaseActivity {
         String status = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("status"));
         processStatus(status);
         setLaundryInfo(object.get("laundry").getAsJsonObject());
-        ((TextView) findViewById(R.id.date_text_view)).setText(getString(R.string.my_order_code_str) + AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")));
+        ((TextView) findViewById(R.id.date_text_view)).setText(getString(R.string.my_order_code) + AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")));
         ((TextView) findViewById(R.id.number)).setText("№ " + AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")));
         ((TextView) findViewById(R.id.date_text)).setText(getDateFromJson(object));
     }
@@ -96,17 +96,17 @@ public class MyOrderActivity extends BaseActivity {
             case "processing":
                 icon = R.drawable.process_indicator;
                 textColor = ContextCompat.getColor(this, R.color.processColor);
-                text = R.string.ready_code_str;
+                text = R.string.ready_code;
                 break;
             case "completed":
                 icon = R.drawable.completed_indicator;
                 textColor = ContextCompat.getColor(this, R.color.completedColor);
-                text = R.string.process_code_str;
+                text = R.string.process_code;
                 break;
             default:
                 icon = R.drawable.canceled_indicator;
                 textColor = ContextCompat.getColor(this, R.color.canceledColor);
-                text = R.string.canceled_code_str;
+                text = R.string.canceled_code;
                 break;
         }
 
