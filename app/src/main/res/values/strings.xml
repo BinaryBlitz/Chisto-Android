@@ -112,9 +112,15 @@
     <string name="review_str">Отзывы</string>
     <string name="no_comment_str">Нет комментария.</string>
     <string name="payment_error">Ошибка оплаты.</string>
-    <string name="review_str1">Отзыв</string>
-    <string name="review_str2">Отзыва</string>
-    <string name="review_str3">Отзывов</string>
     <string name="removal_error_str">Нужно оставить хотя бы одну услугу.</string>
     <string name="removal_str">Необходимо оставить хотя бы одну услугу.</string>
+
+    <plurals name="review">
+        <item quantity="zero">0 Отзывов</item>
+        <item quantity="one">%1$d Отзыв</item>
+        <item quantity="two">%1$d Отзыва</item>
+        <item quantity="few">%1$d Отзыва</item>
+        <item quantity="many">%1$d Отзывов</item>
+        <item quantity="other">%1$d Отзывов</item>
+    </plurals>
 </resources>

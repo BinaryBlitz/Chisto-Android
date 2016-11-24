@@ -27,6 +27,7 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
+import ru.binaryblitz.Chisto.Utils.AppUtil;
 import ru.binaryblitz.Chisto.Utils.Image;
 
 public class LaundryAndOrderActivity extends BaseActivity {
@@ -98,22 +99,7 @@ public class LaundryAndOrderActivity extends BaseActivity {
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
 
-        setCount(object.get("ratings_count").getAsInt());
+        AppUtil.setCount(this, (TextView) findViewById(R.id.reviews_btn), object.get("ratings_count").getAsInt());
         ((SimpleRatingBar) findViewById(R.id.ratingBar)).setRating(object.get("rating").getAsFloat());
-    }
-
-    private void setCount(int count) {
-        String resStr = "";
-        if (count % 10 == 1 && count != 11) {
-            resStr += getString(R.string.review_str1);
-        } else if ((count % 10 == 2 && count != 12)
-                || (count % 10 == 3 && count != 13)
-                || (count % 10 == 4 && count != 14)) {
-            resStr += getString(R.string.review_str2);
-        } else {
-            resStr += getString(R.string.review_str3);
-        }
-
-        ((TextView) findViewById(R.id.reviews_btn)).setText(count + " " + resStr);
     }
 }

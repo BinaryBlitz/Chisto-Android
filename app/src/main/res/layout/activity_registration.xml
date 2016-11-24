@@ -95,6 +95,7 @@
                 android:inputType="numberSigned"
                 android:gravity="center"
                 android:focusable="true"
+                android:maxLength="5"
                 android:focusableInTouchMode="true"
                 android:textSize="20sp"
                 android:letterSpacing="0.04"

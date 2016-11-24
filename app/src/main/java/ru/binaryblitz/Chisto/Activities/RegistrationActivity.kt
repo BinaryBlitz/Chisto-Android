@@ -198,8 +198,8 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun checkCodeInput(): Boolean {
-        if (codeEditText!!.text.toString().isEmpty()) {
-            codeEditText!!.error = getString(R.string.empty_field_str)
+        if (codeEditText!!.text.toString().isEmpty() || codeEditText!!.text.toString().length != 5) {
+            codeEditText!!.error = getString(R.string.wrong_code_str)
             return false
         }
 

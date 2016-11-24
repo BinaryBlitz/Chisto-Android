@@ -34,6 +34,7 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.AppUtil;
 import ru.binaryblitz.Chisto.Utils.Image;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
@@ -115,21 +116,6 @@ public class ReviewsActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
-    private void setCount(int count) {
-        String resStr = "";
-        if (count % 10 == 1 && count != 11) {
-            resStr += getString(R.string.review_str1);
-        } else if ((count % 10 == 2 && count != 12)
-                || (count % 10 == 3 && count != 13)
-                || (count % 10 == 4 && count != 14)) {
-            resStr += getString(R.string.review_str2);
-        } else {
-            resStr += getString(R.string.review_str3);
-        }
-
-        ((TextView) findViewById(R.id.count)).setText(count + " " + resStr);
-    }
-
     private Date getDateFromJson(JsonObject object) {
         Date date = null;
         try {
@@ -171,7 +157,7 @@ public class ReviewsActivity extends BaseActivity {
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
 
-        setCount(object.get("ratings_count").getAsInt());
+        AppUtil.setCount(this, (TextView) findViewById(R.id.count), object.get("ratings_count").getAsInt());
         ((SimpleRatingBar) findViewById(R.id.ratingBar)).setRating(object.get("rating").getAsFloat());
     }
 }
