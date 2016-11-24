@@ -42,7 +42,7 @@ class RegistrationActivity : BaseActivity() {
     private var countyCodeEditText: MaterialEditText? = null
 
     private val myRunnable = Runnable {
-        messageForUser = getString(R.string.send_code_after_str) + (milis.toDouble() / SECOND.toDouble()).toInt() + getString(R.string.seconds_code_str)
+        messageForUser = getString(R.string.send_code_after) + (milis.toDouble() / SECOND.toDouble()).toInt() + getString(R.string.seconds_code)
         if (milis < 2 * SECOND) messageForUser = REPEAT_STR
     }
 
@@ -144,8 +144,8 @@ class RegistrationActivity : BaseActivity() {
 
     private fun resetFields() {
         codeEditText!!.setText("")
-        (findViewById(R.id.textView23) as TextView).text = getString(R.string.code_send_str)
-        (findViewById(R.id.title_text) as TextView).text = getString(R.string.type_phone_str)
+        (findViewById(R.id.textView23) as TextView).text = getString(R.string.code_send)
+        (findViewById(R.id.title_text) as TextView).text = getString(R.string.type_phone)
         messageTextView!!.visibility = View.GONE
         code = false
     }
@@ -153,7 +153,7 @@ class RegistrationActivity : BaseActivity() {
     private fun processPhoneInput() {
         val phoneText = phoneEditText!!.text.toString()
         if (phoneText.isEmpty()) {
-            phoneEditText!!.error = getString(R.string.empty_field_str)
+            phoneEditText!!.error = getString(R.string.empty_field)
             return
         }
 
@@ -199,7 +199,7 @@ class RegistrationActivity : BaseActivity() {
 
     private fun checkCodeInput(): Boolean {
         if (codeEditText!!.text.toString().isEmpty() || codeEditText!!.text.toString().length != 5) {
-            codeEditText!!.error = getString(R.string.wrong_code_str)
+            codeEditText!!.error = getString(R.string.wrong_code)
             return false
         }
 
@@ -287,10 +287,10 @@ class RegistrationActivity : BaseActivity() {
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
                         (findViewById(R.id.textView23) as TextView).text =
-                                getString(R.string.number_code_str) + " " + countyCodeEditText!!.text.toString() +
-                                        phoneEditText!!.text.toString() + getString(R.string.code_sent_str)
+                                getString(R.string.number_code) + " " + countyCodeEditText!!.text.toString() +
+                                        phoneEditText!!.text.toString() + getString(R.string.code_sent)
 
-                        (findViewById(R.id.title_text) as TextView).text = getString(R.string.code_title_str)
+                        (findViewById(R.id.title_text) as TextView).text = getString(R.string.code_title)
                     }
                 })
                 .playOn(v2)
@@ -337,7 +337,7 @@ class RegistrationActivity : BaseActivity() {
 
     private fun updateMessageText() {
         if (messageForUser == REPEAT_STR) {
-            val content = SpannableString(getString(R.string.send_again_str))
+            val content = SpannableString(getString(R.string.send_again))
             content.setSpan(UnderlineSpan(), 0, content.length, 0)
             messageTextView!!.text = content
         } else {

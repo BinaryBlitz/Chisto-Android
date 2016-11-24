@@ -8,7 +8,7 @@ import ru.binaryblitz.Chisto.R
 open class BaseActivity : AppCompatActivity() {
 
     protected fun onInternetConnectionError() {
-        Snackbar.make(findViewById(R.id.main), R.string.lost_connection_str, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(R.id.main), R.string.lost_connection, Snackbar.LENGTH_SHORT).show()
     }
 
     protected fun onLocationError() {

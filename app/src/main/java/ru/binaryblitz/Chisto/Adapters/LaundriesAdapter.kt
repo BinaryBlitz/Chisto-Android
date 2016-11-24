@@ -47,17 +47,17 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
         when (laundry.type) {
             Laundry.Type.FAST -> {
-                holder.category.text = context.getString(R.string.premium_code_str)
+                holder.category.text = context.getString(R.string.premium)
                 holder.categoryBack.setImageResource(R.drawable.fast_bg)
 
             }
             Laundry.Type.PREMIUM -> {
-                holder.category.text = context.getString(R.string.fast_code_str)
+                holder.category.text = context.getString(R.string.fast)
                 holder.categoryBack.setImageResource(R.drawable.premium_bg)
 
             }
             Laundry.Type.ECONOMY -> {
-                holder.category.text = context.getString(R.string.economy_code_str)
+                holder.category.text = context.getString(R.string.economy)
                 holder.categoryBack.setImageResource(R.drawable.economy_bg)
             }
             Laundry.Type.EMPTY -> {

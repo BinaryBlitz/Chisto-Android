@@ -30,7 +30,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
 
         val order = collection[position]
 
-        holder.name.text = context.getString(R.string.my_order_code_str) + order.id
+        holder.name.text = context.getString(R.string.my_order_code) + order.id
 
         when (order.status) {
             MyOrder.Status.COMPLETED -> {

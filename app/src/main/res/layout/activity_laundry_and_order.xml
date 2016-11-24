@@ -46,7 +46,7 @@
                     android:padding="3dp"
                     android:layout_height="38dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/courier_str"
+                      android:text="@string/courier"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -70,7 +70,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_height="38dp"/>
             <TextView android:layout_width="wrap_content"
-                      android:text="@string/delivery_str"
+                      android:text="@string/delivery"
                       android:textColor="@color/colorAccent"
                       android:textSize="16sp"
                       android:layout_gravity="center_horizontal"
@@ -150,7 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                 <TextView
-                        android:text="@string/order_help_text"
+                        android:text="@string/order_help"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#c9c9c9"
@@ -171,7 +171,7 @@
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginEnd="100dp"
-                  android:text="@string/your_order_str"
+                  android:text="@string/your_order"
                   android:layout_marginRight="100dp"
                   android:layout_marginLeft="16dp"
                   android:layout_marginStart="16dp"
@@ -198,7 +198,7 @@
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_marginEnd="100dp"
-                  android:text="@string/delivery2_str"
+                  android:text="@string/delivery"
                   android:layout_marginRight="100dp"
                   android:layout_marginLeft="16dp"
                   android:layout_marginStart="16dp"

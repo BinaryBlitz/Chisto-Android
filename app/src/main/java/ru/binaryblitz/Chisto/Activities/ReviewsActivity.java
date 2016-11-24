@@ -34,7 +34,6 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
-import ru.binaryblitz.Chisto.Utils.AppUtil;
 import ru.binaryblitz.Chisto.Utils.Image;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
@@ -156,8 +155,11 @@ public class ReviewsActivity extends BaseActivity {
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
+        int count =  object.get("ratings_count").getAsInt();
 
-        AppUtil.setCount(this, (TextView) findViewById(R.id.count), object.get("ratings_count").getAsInt());
+        String pluralText = getResources().getQuantityString(R.plurals.review, count, count);
+        ((TextView) findViewById(R.id.count)).setText(pluralText);
+
         ((SimpleRatingBar) findViewById(R.id.ratingBar)).setRating(object.get("rating").getAsFloat());
     }
 }

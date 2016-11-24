@@ -5,14 +5,10 @@ import com.google.gson.JsonObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -27,7 +23,6 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
-import ru.binaryblitz.Chisto.Utils.AppUtil;
 import ru.binaryblitz.Chisto.Utils.Image;
 
 public class LaundryAndOrderActivity extends BaseActivity {
@@ -99,7 +94,10 @@ public class LaundryAndOrderActivity extends BaseActivity {
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
 
-        AppUtil.setCount(this, (TextView) findViewById(R.id.reviews_btn), object.get("ratings_count").getAsInt());
+        int count = object.get("ratings_count").getAsInt();
+        String pluralText = getResources().getQuantityString(R.plurals.review, count, count);
+        ((TextView) findViewById(R.id.reviews_btn)).setText(pluralText);
+
         ((SimpleRatingBar) findViewById(R.id.ratingBar)).setRating(object.get("rating").getAsFloat());
     }
 }

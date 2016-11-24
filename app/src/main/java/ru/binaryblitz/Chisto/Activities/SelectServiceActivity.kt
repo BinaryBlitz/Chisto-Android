@@ -84,7 +84,7 @@ class SelectServiceActivity : BaseActivity() {
 
             finish()
         } else {
-            Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code_str, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code, Snackbar.LENGTH_SHORT).show()
         }
     }
 

@@ -58,7 +58,7 @@
                         android:textSize="18sp"
                         android:layout_marginTop="40dp"
                         android:layout_gravity="center"
-                        android:text="@string/what_need_to_do_str"
+                        android:text="@string/what_need_to_do"
                         android:maxLines="1"/>
             </FrameLayout>
             <android.support.v7.widget.Toolbar
@@ -88,7 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="@string/service_select_str"
+                            android:text="@string/service_select"
                             android:layout_gravity="center"
                             android:id="@+id/date_text_view"
                             android:textAllCaps="false"
@@ -112,7 +112,7 @@
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"
-            android:text="@string/ready_str"
+            android:text="@string/ready"
             android:layout_width="match_parent"
             android:layout_height="68dp"
             android:layout_marginRight="-12dp"

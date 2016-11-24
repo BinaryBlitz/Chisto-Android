@@ -92,9 +92,9 @@ public class LaundriesActivity extends BaseActivity {
 
     private void showDialog() {
         ArrayList<String> items = new ArrayList<>();
-        items.add(getString(R.string.cost_filter_str));
-        items.add(getString(R.string.speed_filter_str));
-        items.add(getString(R.string.rate_filter_str));
+        items.add(getString(R.string.cost_filter));
+        items.add(getString(R.string.speed_filter));
+        items.add(getString(R.string.rate_filter));
 
         new MaterialDialog.Builder(this)
                 .title(R.string.title)
@@ -235,9 +235,9 @@ public class LaundriesActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonObject object) {
-        ((TextView) findViewById(R.id.name_text)).setText(getString(R.string.laundary_code_str) + object.get("name").getAsString());
+        ((TextView) findViewById(R.id.name_text)).setText(getString(R.string.laundary_code) + object.get("name").getAsString());
         ((TextView) findViewById(R.id.desc_text)).setText(object.get("description").getAsString());
-        ((TextView) findViewById(R.id.order_current_btn)).setText(R.string.ordering_code_str);
+        ((TextView) findViewById(R.id.order_current_btn)).setText(R.string.ordering_code);
 
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));

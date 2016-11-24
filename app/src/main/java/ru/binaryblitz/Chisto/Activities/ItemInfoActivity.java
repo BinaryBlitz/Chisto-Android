@@ -59,7 +59,7 @@ public class ItemInfoActivity extends BaseActivity {
     }
 
     public void onRemovalError() {
-        Snackbar.make(findViewById(R.id.main), R.string.removal_str, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.main), R.string.removal, Snackbar.LENGTH_SHORT).show();
     }
 
     private void initRecyclerView() {
@@ -141,9 +141,9 @@ public class ItemInfoActivity extends BaseActivity {
     private void showDialog() {
         new MaterialDialog.Builder(ItemInfoActivity.this)
                 .title(R.string.app_name)
-                .content(R.string.delete_from_order_str)
-                .positiveText(R.string.yes_code_str)
-                .negativeText(R.string.no_code_str)
+                .content(R.string.delete_from_order)
+                .positiveText(R.string.yes_code)
+                .negativeText(R.string.no_code)
                 .dismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialogInterface) {

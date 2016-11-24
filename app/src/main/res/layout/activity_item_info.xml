@@ -44,7 +44,7 @@
                         android:textSize="18sp"
                         android:layout_marginTop="28dp"
                         android:layout_gravity="center"
-                        android:text="@string/what_need_to_do_str"
+                        android:text="@string/what_need_to_do"
                         android:maxLines="1"/>
             </FrameLayout>
             <android.support.v7.widget.Toolbar
@@ -80,7 +80,7 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:textSize="22sp"
-                      android:text="@string/selected_tr_str"
+                      android:text="@string/selected_tr"
                       android:textColor="#212121"
                       android:layout_marginStart="12dp"
                       android:layout_marginLeft="12dp"
@@ -113,7 +113,7 @@
             android:layout_height="130dp" xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
-                android:text="@string/count_str"
+                android:text="@string/count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -161,7 +161,7 @@
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"
-                android:text="@string/save_str"
+                android:text="@string/save"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:id="@+id/cont_btn"

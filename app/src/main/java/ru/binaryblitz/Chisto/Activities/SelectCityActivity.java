@@ -213,8 +213,8 @@ public class SelectCityActivity extends BaseActivity
         new MaterialDialog.Builder(SelectCityActivity.this)
                 .title(ru.binaryblitz.Chisto.R.string.app_name)
                 .customView(ru.binaryblitz.Chisto.R.layout.city_not_found_dialog, true)
-                .positiveText(ru.binaryblitz.Chisto.R.string.send_code_str)
-                .negativeText(ru.binaryblitz.Chisto.R.string.back_code_str)
+                .positiveText(ru.binaryblitz.Chisto.R.string.send_code)
+                .negativeText(ru.binaryblitz.Chisto.R.string.back_code)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
