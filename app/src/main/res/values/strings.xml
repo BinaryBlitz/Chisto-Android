@@ -116,11 +116,11 @@
     <string name="removal_str">Необходимо оставить хотя бы одну услугу.</string>
 
     <plurals name="review">
-        <item quantity="zero">0 Отзывов</item>
-        <item quantity="one">%1$d Отзыв</item>
-        <item quantity="two">%1$d Отзыва</item>
-        <item quantity="few">%1$d Отзыва</item>
-        <item quantity="many">%1$d Отзывов</item>
-        <item quantity="other">%1$d Отзывов</item>
+        <item quantity="zero">0 отзывов</item>
+        <item quantity="one">%1$d отзыв</item>
+        <item quantity="two">%1$d отзыва</item>
+        <item quantity="few">%1$d отзыва</item>
+        <item quantity="many">%1$d отзывов</item>
+        <item quantity="other">%1$d отзывов</item>
     </plurals>
 </resources>
