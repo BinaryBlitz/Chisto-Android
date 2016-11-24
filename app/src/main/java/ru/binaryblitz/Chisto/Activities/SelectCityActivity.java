@@ -7,7 +7,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,7 +21,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -195,7 +193,6 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void parseAnswer(JsonArray array) {
-        Log.e("qwerty", array.toString());
         ArrayList<CitiesAdapter.City> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
@@ -221,10 +218,7 @@ public class SelectCityActivity extends BaseActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent(SelectCityActivity.this, OrdersActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        dialog.dismiss();
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {

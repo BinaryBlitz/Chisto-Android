@@ -59,7 +59,7 @@ public class ItemInfoActivity extends BaseActivity {
     }
 
     public void onRemovalError() {
-        Snackbar.make(findViewById(R.id.main), R.string.removal_error_str, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(R.id.main), R.string.removal_str, Snackbar.LENGTH_SHORT).show();
     }
 
     private void initRecyclerView() {
@@ -134,6 +134,7 @@ public class ItemInfoActivity extends BaseActivity {
         intent.putExtra(EXTRA_EDIT, true);
         intent.putExtra(EXTRA_ID, order != null ? order.getCategory().getId() : 0);
         intent.putExtra(EXTRA_NAME, order != null ? order.getCategory().getName() : "");
+        intent.putExtra(EXTRA_COLOR, order != null ? order.getColor() : DEFAULT_COLOR);
         startActivity(intent);
     }
 

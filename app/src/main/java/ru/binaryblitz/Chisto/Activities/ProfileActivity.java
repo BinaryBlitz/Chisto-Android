@@ -38,14 +38,6 @@ public class ProfileActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.rules_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, ContactInfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
         findViewById(R.id.my_orders_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

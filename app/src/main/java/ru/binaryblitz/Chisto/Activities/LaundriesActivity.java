@@ -198,22 +198,32 @@ public class LaundriesActivity extends BaseActivity {
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.show();
 
-        ServerApi.get(LaundriesActivity.this).api().getLaundry(1).enqueue(new Callback<JsonObject>() {
+        ServerApi.get(LaundriesActivity.this).api().getOrders().enqueue(new Callback<JsonArray>() {
+            @Override
+            public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
+                dialog.dismiss();
+                if (response.isSuccessful()) parseAnswerForPopup(response.body());
+                else onInternetConnectionError();
+            }
+
+            @Override
+            public void onFailure(Call<JsonArray> call, Throwable t) {
+                dialog.dismiss();
+                onInternetConnectionError();
+            }
+        });
+    }
+
+    private void loadLaundry(int id) {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.show();
+
+        ServerApi.get(LaundriesActivity.this).api().getLaundry(id).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 dialog.dismiss();
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialogOpened = true;
-                            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), LaundriesActivity.this);
-                        }
-                    });
-                } else {
-                    onInternetConnectionError();
-                }
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onInternetConnectionError();
             }
 
             @Override
@@ -225,9 +235,9 @@ public class LaundriesActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonObject object) {
-        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.name_text)).setText(getString(ru.binaryblitz.Chisto.R.string.laundary_code_str) + object.get("name").getAsString());
-        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.desc_text)).setText(object.get("description").getAsString());
-        ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.order_current_btn)).setText(R.string.ordering_code_str);
+        ((TextView) findViewById(R.id.name_text)).setText(getString(R.string.laundary_code_str) + object.get("name").getAsString());
+        ((TextView) findViewById(R.id.desc_text)).setText(object.get("description").getAsString());
+        ((TextView) findViewById(R.id.order_current_btn)).setText(R.string.ordering_code_str);
 
         Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));
@@ -249,5 +259,18 @@ public class LaundriesActivity extends BaseActivity {
                 }
             }
         });
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                dialogOpened = true;
+                Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), LaundriesActivity.this);
+            }
+        });
+    }
+
+    private void parseAnswerForPopup(JsonArray array) {
+        int id = array.get(array.size() - 1).getAsJsonObject().get("laundry_id").getAsInt();
+        loadLaundry(id);
     }
 }

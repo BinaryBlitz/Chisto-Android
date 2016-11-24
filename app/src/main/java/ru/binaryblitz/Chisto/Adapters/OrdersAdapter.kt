@@ -24,6 +24,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     var itemsPendingRemoval: ArrayList<Order> = ArrayList()
     var undoOn = false
     val EXTRA_COLOR = "color"
+    val EXTRA_INDEX = "index"
     private val handler = Handler()
     var pendingRunnables: HashMap<Order, Runnable> = HashMap()
 
@@ -57,7 +58,9 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ItemInfoActivity::class.java)
+            OrderList.edit(holder.adapterPosition)
             intent.putExtra(EXTRA_COLOR, order.color)
+            intent.putExtra(EXTRA_INDEX, holder.adapterPosition)
             context.startActivity(intent)
         }
     }

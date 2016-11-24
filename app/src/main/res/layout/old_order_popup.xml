@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:background="#ffffff"
-              android:id="@+id/main_dialog_part"
-              android:layout_margin="12dp"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:background="#ffffff"
+             android:id="@+id/main_dialog_part"
+             android:elevation="6dp"
+             android:layout_margin="12dp"
              android:layout_gravity="center"
-              android:layout_height="446dp">
+             android:layout_height="476dp">
     <ImageView
-        android:layout_width="match_parent"
-        android:background="#212121"
-        android:scaleType="centerCrop"
-        android:id="@+id/back_image"
-        android:layout_height="110dp"/>
+            android:layout_width="match_parent"
+            android:background="#212121"
+            android:scaleType="centerCrop"
+            android:id="@+id/back_image"
+            android:layout_height="110dp"/>
 
     <View android:layout_width="match_parent"
           android:background="@drawable/card_gradient"
@@ -31,7 +32,7 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_gravity="center_vertical"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="42dp"
             android:layout_height="wrap_content">
         <LinearLayout
                 android:layout_width="0dp"
@@ -145,6 +146,8 @@
               android:textColor="#212121"
               android:layout_marginTop="156dp"
               android:textSize="16sp"
+              android:gravity="center"
+              android:maxLines="2"
               android:id="@+id/desc_text"
               android:layout_gravity="top|center_horizontal"
               android:layout_height="wrap_content"/>
