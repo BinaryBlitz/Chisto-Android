@@ -158,38 +158,71 @@ public class LaundriesActivity extends BaseActivity {
         adapter.notifyDataSetChanged();
     }
 
-    // TODO refactor
     private boolean checkTreatments(JsonObject object) {
         JsonArray treatments = object.get("laundry_treatments").getAsJsonArray();
         if (treatments.size() == 0) return false;
 
-        ArrayList<Integer> laundryTreatments = new ArrayList<>();
+        ArrayList<Integer> laundryTreatments = fillLaundryTreatments(treatments);
         ArrayList<Treatment> orderTreatments = OrderList.getTreatments();
+
+        return checkTreatmentsAvailability(orderTreatments, laundryTreatments);
+    }
+
+    private ArrayList<Integer> fillLaundryTreatments(JsonArray treatments) {
+        ArrayList<Integer> laundryTreatments = new ArrayList<>();
         for (int j = 0; j < treatments.size(); j++) {
             JsonObject treatment = treatments.get(j).getAsJsonObject();
             laundryTreatments.add(AndroidUtilities.INSTANCE.getIntFieldFromJson(treatment.get("treatment").getAsJsonObject().get("id")));
         }
 
-        main_loop:
+        return laundryTreatments;
+    }
+
+    private boolean checkTreatmentsAvailability(ArrayList<Treatment> orderTreatments, ArrayList<Integer> laundryTreatments) {
         for (int i = 0; i < orderTreatments.size(); i++) {
             if (orderTreatments.get(i).getId() == 1) continue;
-
-            for (int j = 0; j < laundryTreatments.size(); j++) {
-                if (orderTreatments.get(i).getId() == laundryTreatments.get(j)) continue main_loop;
-                if (j == laundryTreatments.size() - 1) return false;
-            }
+            if (!checkTreatmentAvailability(orderTreatments.get(i), laundryTreatments)) return false;
         }
 
         return true;
     }
 
-    // TODO refactor
-    public int countSums(int index) {
-        JsonArray treatments = array.get(index).getAsJsonObject().get("laundry_treatments").getAsJsonArray();
-        if (treatments.size() == 0) return 0;
+    private boolean checkTreatmentAvailability(Treatment treatment, ArrayList<Integer> laundryTreatments) {
+        for (int j = 0; j < laundryTreatments.size(); j++) {
+            if (treatment.getId() == laundryTreatments.get(j)) return true;
+            if (j == laundryTreatments.size() - 1) return false;
+        }
 
-        ArrayList<Pair<Integer, Integer>> laundryTreatments = new ArrayList<>();
+        return true;
+    }
+
+    public void countSums(int index) {
+        JsonArray treatments = array.get(index).getAsJsonObject().get("laundry_treatments").getAsJsonArray();
+        if (treatments.size() == 0) return;
+
+        ArrayList<Pair<Integer, Integer>> laundryTreatments = fillPrices(treatments);
         ArrayList<Treatment> orderTreatments = OrderList.getTreatments();
+
+        fillOrderList(orderTreatments, laundryTreatments);
+    }
+
+    private void fillOrderList(ArrayList<Treatment> orderTreatments, ArrayList<Pair<Integer, Integer>> laundryTreatments) {
+        for (int i = 0; i < orderTreatments.size(); i++) {
+            if (orderTreatments.get(i).getId() == 1) continue;
+            setPriceForTreatment(orderTreatments.get(i), laundryTreatments);
+        }
+    }
+
+    private void setPriceForTreatment(Treatment treatment, ArrayList<Pair<Integer, Integer>> laundryTreatments) {
+        for (int j = 0; j < laundryTreatments.size(); j++) {
+            if (treatment.getId() == laundryTreatments.get(j).first) {
+                OrderList.setCost(treatment.getId(), laundryTreatments.get(j).second);
+            }
+        }
+    }
+
+    private ArrayList<Pair<Integer, Integer>> fillPrices(JsonArray treatments) {
+        ArrayList<Pair<Integer, Integer>> laundryTreatments = new ArrayList<>();
         for (int j = 0; j < treatments.size(); j++) {
             JsonObject treatment = treatments.get(j).getAsJsonObject();
             laundryTreatments.add(new Pair<>(
@@ -197,17 +230,7 @@ public class LaundriesActivity extends BaseActivity {
                     AndroidUtilities.INSTANCE.getIntFieldFromJson(treatment.get("price"))));
         }
 
-        for (int i = 0; i < orderTreatments.size(); i++) {
-            if (orderTreatments.get(i).getId() == 1) continue;
-
-            for (int j = 0; j < laundryTreatments.size(); j++) {
-                if (orderTreatments.get(i).getId() == laundryTreatments.get(j).first) {
-                    OrderList.setCost(orderTreatments.get(i).getId(), laundryTreatments.get(j).second);
-                }
-            }
-        }
-
-        return 0;
+        return laundryTreatments;
     }
 
     private Laundry.Type getTypeFromJson(JsonObject object) {
