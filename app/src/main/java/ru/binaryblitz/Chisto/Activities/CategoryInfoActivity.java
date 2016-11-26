@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -30,6 +31,7 @@ import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 
 public class CategoryInfoActivity extends BaseActivity{
     private CategoryItemsAdapter adapter;
+    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +51,13 @@ public class CategoryInfoActivity extends BaseActivity{
 
         initList();
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
+                layout.setRefreshing(true);
                 load();
             }
-        }, 200);
+        });
     }
 
     private void initList() {
@@ -65,6 +68,11 @@ public class CategoryInfoActivity extends BaseActivity{
         adapter = new CategoryItemsAdapter(this);
         view.setAdapter(adapter);
 
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
         adapter.setColor(getIntent().getIntExtra("color", Color.parseColor("#212121")));
     }
 
@@ -72,15 +80,14 @@ public class CategoryInfoActivity extends BaseActivity{
         ServerApi.get(this).api().getItems(getIntent().getIntExtra("id", 0)).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                } else {
-                    onInternetConnectionError();
-                }
+                layout.setRefreshing(false);
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onInternetConnectionError();
             }
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
+                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });

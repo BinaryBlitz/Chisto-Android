@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -41,6 +42,7 @@ public class ReviewsActivity extends BaseActivity {
     private static final String EXTRA_ID = "id";
 
     private ReviewsAdapter adapter;
+    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,13 +59,14 @@ public class ReviewsActivity extends BaseActivity {
 
         initList();
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 load();
+                layout.setRefreshing(true);
                 loadReviews();
             }
-        }, 150);
+        });
     }
 
     private void initList() {
@@ -73,6 +76,11 @@ public class ReviewsActivity extends BaseActivity {
         view.setHasFixedSize(true);
         view.setEmptyView(null);
 
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
         adapter = new ReviewsAdapter(this);
         view.setAdapter(adapter);
     }
@@ -81,15 +89,14 @@ public class ReviewsActivity extends BaseActivity {
         ServerApi.get(this).api().getReviews(getIntent().getIntExtra(EXTRA_ID, 1)).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                } else {
-                    onInternetConnectionError();
-                }
+                layout.setRefreshing(false);
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onInternetConnectionError();
             }
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
+                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import ru.binaryblitz.Chisto.Utils.LogUtil;
 public class MyOrderActivity extends BaseActivity {
 
     private static final String EXTRA_ID = "id";
+    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,24 +47,32 @@ public class MyOrderActivity extends BaseActivity {
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
+                layout.setRefreshing(true);
                 load();
             }
-        }, 50);
+        });
     }
 
     private void load() {
         ServerApi.get(this).api().getOrder(getIntent().getIntExtra(EXTRA_ID, 1)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                layout.setRefreshing(false);
                 if (response.isSuccessful()) parseAnswer(response.body());
                 else onInternetConnectionError();
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
+                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });

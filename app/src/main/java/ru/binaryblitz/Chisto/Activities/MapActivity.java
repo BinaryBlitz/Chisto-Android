@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -150,6 +151,9 @@ public class MapActivity extends BaseActivity
         selected_lat_lng = new LatLng(latitude, longitude);
         selected = address;
         moveCamera(false);
+
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     private ArrayList<String> autocomplete(String input) {
@@ -168,8 +172,8 @@ public class MapActivity extends BaseActivity
                 jsonResults.append(buff, 0, read);
             }
         } catch (MalformedURLException e) { return null; }
-          catch (IOException e) { return null; }
-          finally { if (conn != null) conn.disconnect(); }
+        catch (IOException e) { return null; }
+        finally { if (conn != null) conn.disconnect(); }
 
         return parseAnswer(jsonResults);
     }
@@ -267,8 +271,8 @@ public class MapActivity extends BaseActivity
         this.googleMap = googleMap;
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkPermission()) {
-                    ActivityCompat.requestPermissions(MapActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                ActivityCompat.requestPermissions(MapActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
             } else {
                 setUpMap();
             }
