@@ -64,7 +64,7 @@
     <string name="code">Код подтверждения</string>
     <string name="send_code_after">"Отправить код повторно через "</string>
     <string name="empty_field">Поле не может быть пустым</string>
-    <string name="wrong_code">Неверный код.</string>
+    <string name="wrong_code">Неверный код</string>
     <string name="send_again">Отправить код повторно</string>
     <string name="code_send">На этот номер будет отправлен 5-значный код</string>
     <string name="number_code">На номер</string>
@@ -113,6 +113,8 @@
     <string name="payment_error">Ошибка оплаты.</string>
     <string name="removal_error">Нужно оставить хотя бы одну услугу.</string>
     <string name="removal">Необходимо оставить хотя бы одну услугу.</string>
+    <string name="wrong_phone">Неверный номер телефона</string>
+    <string name="profile_wrong_fields">Не все поля заполнены верно. Вы хотите выйти без сохранения введенных данных?</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

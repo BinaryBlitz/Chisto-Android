@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -20,8 +21,8 @@ import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
@@ -146,10 +147,12 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun setOnClickListeners() {
         findViewById(R.id.cont_btn).setOnClickListener {
-            finishActivity()
+            OrderList.clear()
+            goToOrderActivity()
         }
 
-        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
+        findViewById(R.id.left_btn).setOnClickListener {
+            finishActivity() }
 
         findViewById(R.id.pay_btn).setOnClickListener {
             if (validateFields()) {
@@ -179,11 +182,11 @@ class PersonalInfoActivity : BaseActivity() {
         flat = findViewById(R.id.flat_text) as MaterialEditText
         phone = findViewById(R.id.phone) as MaterialEditText
         comment = findViewById(R.id.comment_text) as MaterialEditText
+        phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     private fun setInfo() {
         user = DeviceInfoStore.getUserObject(this)
-        LogUtil.logError(user!!.asString())
 
         setTextToField(city!!, user!!.city)
 
@@ -228,11 +231,18 @@ class PersonalInfoActivity : BaseActivity() {
         res = res and validateField(street!!, false)
         res = res and validateField(house!!, false)
         res = res and validateField(flat!!, false)
-
-        // TODO make validation with libphonenumber
-        //validateField(phone);
+        res = res and validatePhoneField(phone!!)
 
         return res
+    }
+
+    private fun validatePhoneField(editText: MaterialEditText): Boolean {
+        if (!AndroidUtilities.validatePhone(phone!!.text.toString())) {
+            editText.error = getString(R.string.wrong_data)
+            return false
+        }
+
+        return true
     }
 
     private fun validateField(editText: MaterialEditText, numbers: Boolean): Boolean {
@@ -261,10 +271,14 @@ class PersonalInfoActivity : BaseActivity() {
         return count
     }
 
-    private fun finishActivity() {
+    private fun goToOrderActivity() {
         val intent = Intent(this@PersonalInfoActivity, OrdersActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+        finish()
+    }
+
+    private fun finishActivity() {
         finish()
     }
 
