@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:id="@+id/main">
+                                                          xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                          android:orientation="vertical"
+                                                          android:layout_width="match_parent"
+                                                          android:layout_height="match_parent"
+                                                          android:id="@+id/main">
 
     <ScrollView
             android:layout_width="match_parent"
             android:layout_marginTop="56dp"
-                android:layout_height="wrap_content">
+            android:layout_height="wrap_content">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
                       android:orientation="vertical"
                       android:layout_width="match_parent"
@@ -28,9 +28,9 @@
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
                           android:textStyle="bold"
-                          android:layout_marginEnd="100dp"
+                          android:layout_marginEnd="20dp"
                           android:text="@string/contact_info"
-                          android:layout_marginRight="100dp"
+                          android:layout_marginRight="20dp"
                           android:textSize="18sp"
                           android:textColor="@color/colorAccent"
                           android:layout_gravity="center_vertical"/>
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/phone"
                     android:textColor="@color/greyColor"
-                    android:inputType="textCapWords"
+                    android:inputType="phone"
                     android:textSize="16sp"
                     android:lines="1"
                     android:hint="@string/phone"
@@ -190,6 +190,7 @@
                         android:inputType="textCapWords"
                         android:textSize="16sp"
                         android:lines="1"
+                        android:nextFocusDown="@+id/flat_text"
                         android:hint="@string/house"
                         android:layout_marginStart="56dp"
                         android:layout_marginLeft="56dp"
@@ -246,9 +247,9 @@
                           android:layout_height="wrap_content"
                           android:id="@+id/name"
                           android:textStyle="bold"
-                          android:layout_marginEnd="100dp"
+                          android:layout_marginEnd="20dp"
                           android:text="@string/comment_title"
-                          android:layout_marginRight="100dp"
+                          android:layout_marginRight="20dp"
                           android:textSize="18sp"
                           android:textColor="@color/colorAccent"
                           android:layout_gravity="center_vertical"/>
@@ -361,46 +362,46 @@
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:contentInsetStart="0dp"
-            android:contentInsetLeft="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
-        <FrameLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/action_bar">
-
-            <ImageView
-                    android:id="@+id/left_btn"
-                    android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+            <FrameLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_back"
-                    android:padding="13dp"
-                    android:layout_gravity="start"/>
+                    android:id="@+id/action_bar">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/reg"
-                    android:layout_gravity="center"
-                    android:id="@+id/date_text_view"
-                    android:gravity="center_vertical"
-                    android:typeface="sans"
-                    android:textSize="20sp"
-                    android:textColor="#ffffff" />
+                <ImageView
+                        android:id="@+id/left_btn"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_back"
+                        android:padding="13dp"
+                        android:layout_gravity="start"/>
 
-        </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/reg"
+                        android:layout_gravity="center"
+                        android:id="@+id/date_text_view"
+                        android:gravity="center_vertical"
+                        android:typeface="sans"
+                        android:textSize="20sp"
+                        android:textColor="#ffffff" />
+
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
     <FrameLayout
             android:layout_width="match_parent"

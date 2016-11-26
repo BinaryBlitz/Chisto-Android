@@ -6,56 +6,61 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <ru.binaryblitz.Chisto.Custom.RecyclerListView
-            android:id="@+id/recyclerView"
+    <android.support.v4.widget.SwipeRefreshLayout
             android:layout_width="match_parent"
             android:layout_marginTop="56dp"
+            android:id="@+id/refresh"
             android:layout_height="match_parent">
-    </ru.binaryblitz.Chisto.Custom.RecyclerListView>
+        <ru.binaryblitz.Chisto.Custom.RecyclerListView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        </ru.binaryblitz.Chisto.Custom.RecyclerListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:contentInsetStart="0dp"
-            android:contentInsetLeft="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
-        <FrameLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/action_bar">
-
-            <ImageView
-                    android:id="@+id/left_btn"
-                    android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+            <FrameLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_back"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="13dp"
-                    android:layout_gravity="start"
-            />
+                    android:id="@+id/action_bar">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/select_part"
-                    android:layout_gravity="center"
-                    android:id="@+id/date_text_view"
-                    android:gravity="center_vertical"
-                    android:typeface="sans"
-                    android:textSize="22sp"
-                    android:textColor="#ffffff" />
+                <ImageView
+                        android:id="@+id/left_btn"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_back"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="13dp"
+                        android:layout_gravity="start"
+                />
 
-        </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/select_part"
+                        android:layout_gravity="center"
+                        android:id="@+id/date_text_view"
+                        android:gravity="center_vertical"
+                        android:typeface="sans"
+                        android:textSize="22sp"
+                        android:textColor="#ffffff" />
+
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 </FrameLayout>
