@@ -119,6 +119,7 @@ class SelectServiceActivity : BaseActivity() {
                             AndroidUtilities.getIntFieldFromJson(it.get("id")),
                             AndroidUtilities.getStringFieldFromJson(it.get("name")),
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
+                            0,
                             false)
                 }
 
@@ -130,6 +131,7 @@ class SelectServiceActivity : BaseActivity() {
                 1,
                 "Декор",
                 "Описание",
+                100,
                 intent.getBooleanExtra(EXTRA_DECOR, false)))
 
         adapter!!.notifyDataSetChanged()

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -35,7 +36,6 @@ import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.Animations.Animations;
 import ru.binaryblitz.Chisto.Utils.Image;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class LaundriesActivity extends BaseActivity {
@@ -43,6 +43,7 @@ public class LaundriesActivity extends BaseActivity {
     private LaundriesAdapter adapter;
     private static boolean dialogOpened = false;
     private SwipeRefreshLayout layout;
+    private static JsonArray array;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,6 +118,7 @@ public class LaundriesActivity extends BaseActivity {
                 .show();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void load() {
         ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this).getId()).enqueue(new Callback<JsonArray>() {
             @Override
@@ -135,6 +137,7 @@ public class LaundriesActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonArray array) {
+        LaundriesActivity.array = array;
         ArrayList<Laundry> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
@@ -178,6 +181,33 @@ public class LaundriesActivity extends BaseActivity {
         }
 
         return true;
+    }
+
+    // TODO refactor
+    public int countSums(int index) {
+        JsonArray treatments = array.get(index).getAsJsonObject().get("laundry_treatments").getAsJsonArray();
+        if (treatments.size() == 0) return 0;
+
+        ArrayList<Pair<Integer, Integer>> laundryTreatments = new ArrayList<>();
+        ArrayList<Treatment> orderTreatments = OrderList.getTreatments();
+        for (int j = 0; j < treatments.size(); j++) {
+            JsonObject treatment = treatments.get(j).getAsJsonObject();
+            laundryTreatments.add(new Pair<>(
+                    AndroidUtilities.INSTANCE.getIntFieldFromJson(treatment.get("treatment").getAsJsonObject().get("id")),
+                    AndroidUtilities.INSTANCE.getIntFieldFromJson(treatment.get("price"))));
+        }
+
+        for (int i = 0; i < orderTreatments.size(); i++) {
+            if (orderTreatments.get(i).getId() == 1) continue;
+
+            for (int j = 0; j < laundryTreatments.size(); j++) {
+                if (orderTreatments.get(i).getId() == laundryTreatments.get(j).first) {
+                    OrderList.setCost(orderTreatments.get(i).getId(), laundryTreatments.get(j).second);
+                }
+            }
+        }
+
+        return 0;
     }
 
     private Laundry.Type getTypeFromJson(JsonObject object) {

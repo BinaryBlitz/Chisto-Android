@@ -102,31 +102,50 @@ public class LaundryAndOrderActivity extends BaseActivity {
         for (int i = 0; i < orderList.size(); i++) {
             Order order = orderList.get(i);
 
-            int sum = 0;
-
-            OrderContentAdapter.Header header = new OrderContentAdapter.Header(
-                    order.getCategory().getName(),
-                    sum,
-                    order.getCount(),
-                    order.getCategory().getIcon(),
-                    order.getColor()
-            );
-
-            listToShow.add(new Pair<String, Object>("H", header));
-
-            for (int j = 0; j < order.getTreatments().size(); j++) {
-                Treatment treatment = order.getTreatments().get(j);
-                OrderContentAdapter.Basic basic = new OrderContentAdapter.Basic(
-                        treatment.getName(),
-                        0
-                );
-
-                listToShow.add(new Pair<String, Object>("B", basic));
-            }
+            addHeader(order, listToShow);
+            addBasic(order, listToShow);
         }
 
         adapter.setCollection(listToShow);
         adapter.notifyDataSetChanged();
+    }
+
+    private void addHeader(Order order, ArrayList<Pair<String, Object>> listToShow) {
+        int sum = getFillSum(order);
+
+        OrderContentAdapter.Header header = new OrderContentAdapter.Header(
+                order.getCategory().getName(),
+                sum,
+                order.getCount(),
+                order.getCategory().getIcon(),
+                order.getColor()
+        );
+
+        listToShow.add(new Pair<String, Object>("H", header));
+    }
+
+    private void addBasic(Order order, ArrayList<Pair<String, Object>> listToShow) {
+        for (int j = 0; j < order.getTreatments().size(); j++) {
+            Treatment treatment = order.getTreatments().get(j);
+            OrderContentAdapter.Basic basic = new OrderContentAdapter.Basic(
+                    treatment.getName(),
+                    treatment.getCost()
+            );
+
+            listToShow.add(new Pair<String, Object>("B", basic));
+        }
+    }
+
+    private int getFillSum(Order order) {
+        int sum = 0;
+
+        for (int i = 0; i < order.getTreatments().size(); i++) {
+            sum += order.getTreatments().get(i).getCost();
+        }
+
+        sum *= order.getCount();
+
+        return sum;
     }
 
     private void openActivity(Class<? extends Activity> activity) {

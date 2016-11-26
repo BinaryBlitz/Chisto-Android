@@ -97,6 +97,21 @@ public class OrderList {
     }
 
     @SuppressWarnings("ConstantConditions")
+    public static void setCost(int treatmentId, int cost) {
+        if (currentItem < orders.size()) {
+            if (orders.get(currentItem).getTreatments() == null) {
+                orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
+            }
+
+            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+                if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
+                    orders.get(currentItem).getTreatments().get(i).setCost(cost);
+                }
+            }
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
     public static void addTreatment(Treatment treatment) {
         if (currentItem < orders.size()) {
             if (orders.get(currentItem).getTreatments() == null) {
