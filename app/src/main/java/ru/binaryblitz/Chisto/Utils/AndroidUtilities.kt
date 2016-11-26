@@ -52,6 +52,8 @@ object AndroidUtilities {
     }
 
     fun validatePhone(phNumber: String): Boolean {
+        if (phNumber.isEmpty()) return false
+
         val phoneNumberUtil = PhoneNumberUtil.getInstance()
         val isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt("+7"))
         var phoneNumber: Phonenumber.PhoneNumber? = null

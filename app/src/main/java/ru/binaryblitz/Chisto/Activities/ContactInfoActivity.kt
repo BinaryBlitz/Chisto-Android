@@ -2,7 +2,9 @@ package ru.binaryblitz.Chisto.Activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
+import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
@@ -10,13 +12,8 @@ import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
-import java.util.regex.Pattern
-import ru.binaryblitz.Chisto.R.id.editText
-import android.telephony.PhoneNumberFormattingTextWatcher
-import com.afollestad.materialdialogs.MaterialDialog
-import ru.binaryblitz.Chisto.Model.CategoryItem
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-
+import java.util.regex.Pattern
 
 class ContactInfoActivity : BaseActivity() {
     private var name: MaterialEditText? = null
