@@ -43,6 +43,8 @@
             app:srb_numberOfStars="5"
             android:id="@+id/ratings"
             app:srb_rating="3"
+            app:srb_starCornerRadius="2"
+            app:srb_starBorderWidth="3"
             app:srb_stepSize="0.5"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="8dp"
