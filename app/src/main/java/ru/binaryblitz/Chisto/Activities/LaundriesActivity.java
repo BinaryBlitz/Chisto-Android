@@ -35,6 +35,7 @@ import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.Animations.Animations;
 import ru.binaryblitz.Chisto.Utils.Image;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class LaundriesActivity extends BaseActivity {
