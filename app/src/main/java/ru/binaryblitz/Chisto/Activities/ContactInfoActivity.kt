@@ -11,6 +11,12 @@ import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import java.util.regex.Pattern
+import ru.binaryblitz.Chisto.R.id.editText
+import android.telephony.PhoneNumberFormattingTextWatcher
+import com.afollestad.materialdialogs.MaterialDialog
+import ru.binaryblitz.Chisto.Model.CategoryItem
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities
+
 
 class ContactInfoActivity : BaseActivity() {
     private var name: MaterialEditText? = null
@@ -34,10 +40,8 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (validateFields()) {
-            setData()
-            finish()
-        }
+        if(!validateFields()) showDialog()
+        else setData()
     }
 
     override fun onResume() {
@@ -47,15 +51,28 @@ class ContactInfoActivity : BaseActivity() {
 
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener {
-            if (validateFields()) {
-                setData()
-                finish()
-            }
+            if(!validateFields()) showDialog()
+            else setData()
         }
 
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
+    }
+
+    private fun showDialog() {
+        MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content(getString(R.string.profile_wrong_fields))
+                .positiveText(R.string.yes_code)
+                .negativeText(R.string.no_code)
+                .onPositive { dialog, action ->
+                    run { finish() }
+                }
+                .onNegative { dialog, action ->
+                    run { dialog.dismiss() }
+                }
+                .show()
     }
 
     private fun initFields() {
@@ -67,6 +84,8 @@ class ContactInfoActivity : BaseActivity() {
         flat = findViewById(R.id.flat_text) as MaterialEditText
         phone = findViewById(R.id.phone) as MaterialEditText
         comment = findViewById(R.id.comment_text) as MaterialEditText
+
+        phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     private fun setInfo() {
@@ -94,6 +113,8 @@ class ContactInfoActivity : BaseActivity() {
         user!!.house = house!!.text.toString()
 
         DeviceInfoStore.saveUser(this, user)
+
+        finish()
     }
 
     private fun setTextToField(editText: EditText, text: String?) {
@@ -103,17 +124,24 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun validateFields(): Boolean {
-        var result = validateField(name!!, true)
-        result = result and validateField(lastname!!, true)
-        result = result and validateField(city!!, true)
-        result = result and validateField(street!!, false)
-        result = result and validateField(house!!, false)
-        result = result and validateField(flat!!, false)
+        var res = validateField(name!!, true)
+        res = res and validateField(lastname!!, true)
+        res = res and validateField(city!!, true)
+        res = res and validateField(street!!, false)
+        res = res and validateField(house!!, false)
+        res = res and validateField(flat!!, false)
+        res = res and validatePhoneField(phone!!)
 
-        // TODO make validation with libphonenumber
-        //validateField(phone);
+        return res
+    }
 
-        return result
+    private fun validatePhoneField(editText: MaterialEditText): Boolean {
+        if (!AndroidUtilities.validatePhone(phone!!.text.toString())) {
+            editText.error = getString(R.string.wrong_data)
+            return false
+        }
+
+        return true
     }
 
     private fun validateField(editText: MaterialEditText, numbers: Boolean): Boolean {
@@ -141,5 +169,4 @@ class ContactInfoActivity : BaseActivity() {
 
         return count
     }
-
 }

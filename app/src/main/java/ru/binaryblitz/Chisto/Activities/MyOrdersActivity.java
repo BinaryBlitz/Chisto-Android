@@ -52,12 +52,13 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
 
         initList();
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
+                layout.setRefreshing(true);
                 load();
             }
-        }, 50);
+        });
     }
 
     private void initList() {

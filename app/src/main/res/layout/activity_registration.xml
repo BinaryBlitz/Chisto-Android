@@ -8,7 +8,7 @@
 
     <LinearLayout
             android:id="@+id/l1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="56dp"
@@ -17,47 +17,17 @@
             android:layout_marginBottom="56dp"
             android:visibility="visible">
 
-        <FrameLayout android:layout_width="wrap_content"
-                     android:layout_height="wrap_content">
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/county_code_field"
-                    android:textColor="@color/colorAccent"
-                    android:inputType="numberSigned"
-                    android:textSize="22sp"
-                    android:lines="1"
-                    android:letterSpacing="0.04"
-                    android:text="+7"
-                    android:gravity="center"
-                    android:focusable="false"
-                    android:maxLength="10"
-                    app:met_underlineColor="@color/colorAccent"
-                    app:met_baseColor="@color/colorAccent"
-                    app:met_textColor="@color/colorAccent"
-                    app:met_errorColor="@color/colorAccent"
-                    app:met_floatingLabel="none"
-                    app:met_helperTextColor="@color/colorAccent"
-                    app:met_primaryColor="@color/colorAccent"
-                    android:textColorHint="@color/colorAccent"
-                    android:layout_gravity="bottom" />
-
-            <FrameLayout android:layout_width="match_parent"
-                         android:id="@+id/code_btn"
-                         android:layout_height="match_parent"/>
-        </FrameLayout>
-
         <com.rengwuxian.materialedittext.MaterialEditText
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/phone"
                 android:textColor="#212121"
-                android:layout_weight="0.2"
-                android:inputType="numberSigned"
+                android:inputType="phone"
                 android:textSize="22sp"
-                android:hint="(900) 000-00-00"
+                android:hint="+7 (900) 000-00-00"
                 android:lines="1"
-                android:maxLength="15"
+                android:gravity="center"
+                android:maxLength="16"
                 android:letterSpacing="0.04"
                 android:paddingLeft="12dp"
                 android:paddingStart="12dp"
@@ -66,13 +36,13 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 app:met_underlineColor="#212121"
-                app:met_baseColor="#212121"
-                app:met_textColor="#212121"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_textColor="@color/colorPrimary"
                 app:met_errorColor="#ffffff"
                 app:met_floatingLabel="none"
-                app:met_helperTextColor="#212121"
+                app:met_helperTextColor="#727272"
                 app:met_primaryColor="@color/colorAccent"
-                android:textColorHint="#212121" />
+                android:textColorHint="#727272" />
 
     </LinearLayout>
 
@@ -107,7 +77,7 @@
                 app:met_floatingLabel="none"
                 app:met_helperTextColor="@color/colorAccent"
                 app:met_primaryColor="@color/colorAccent"
-                android:textColorHint="@color/colorAccent"
+                android:textColorHint="@color/greyColor"
                 android:layout_gravity="bottom"
                 android:visibility="visible" />
 
@@ -146,60 +116,49 @@
             android:layout_marginLeft="44dp"
             android:gravity="center"/>
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textView37"
-            android:layout_gravity="center"
-            android:textColor="#212121"
-            android:textSize="16sp"
-            android:layout_marginTop="56dp"
-            android:visibility="visible" />
-
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:contentInsetStart="0dp"
-            android:contentInsetLeft="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
-        <FrameLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/action_bar">
-
-            <ImageView
-                    android:id="@+id/left_btn"
-                    android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+            <FrameLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_back"
-                    android:padding="13dp"
-                    android:layout_gravity="start"/>
+                    android:id="@+id/action_bar">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/reg"
-                    android:layout_gravity="center"
-                    android:id="@+id/date_text_view"
-                    android:gravity="center_vertical"
-                    android:typeface="sans"
-                    android:textSize="22sp"
-                    android:textColor="#ffffff" />
+                <ImageView
+                        android:id="@+id/left_btn"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_back"
+                        android:padding="13dp"
+                        android:layout_gravity="start"/>
 
-        </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/reg"
+                        android:layout_gravity="center"
+                        android:id="@+id/date_text_view"
+                        android:gravity="center_vertical"
+                        android:typeface="sans"
+                        android:textSize="22sp"
+                        android:textColor="#ffffff" />
+
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
     <TextView

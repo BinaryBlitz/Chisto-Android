@@ -21,6 +21,9 @@ import android.widget.EditText
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.gson.JsonElement
+import com.google.i18n.phonenumbers.NumberParseException
+import com.google.i18n.phonenumbers.PhoneNumberUtil
+import com.google.i18n.phonenumbers.Phonenumber
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -46,6 +49,19 @@ object AndroidUtilities {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
             window.statusBarColor = color
         }
+    }
+
+    fun validatePhone(phNumber: String): Boolean {
+        val phoneNumberUtil = PhoneNumberUtil.getInstance()
+        val isoCode = phoneNumberUtil.getRegionCodeForCountryCode(Integer.parseInt("+7"))
+        var phoneNumber: Phonenumber.PhoneNumber? = null
+        try {
+            phoneNumber = phoneNumberUtil.parse(phNumber, isoCode)
+        } catch (e: NumberParseException) {
+            LogUtil.logException(e)
+        }
+
+        return phoneNumberUtil.isValidNumber(phoneNumber)
     }
 
     fun getStringFieldFromJson(element: JsonElement?): String {

@@ -3,10 +3,10 @@ package ru.binaryblitz.Chisto.Activities;
 import com.google.gson.JsonObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,6 +28,7 @@ import ru.binaryblitz.Chisto.Utils.Image;
 public class LaundryAndOrderActivity extends BaseActivity {
 
     private static final String EXTRA_ID = "id";
+    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +55,18 @@ public class LaundryAndOrderActivity extends BaseActivity {
             }
         });
 
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
         load();
     }
 
@@ -63,23 +76,18 @@ public class LaundryAndOrderActivity extends BaseActivity {
     }
 
     private void load() {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.show();
-
+        layout.setRefreshing(true);
         ServerApi.get(LaundryAndOrderActivity.this).api().getLaundry(getIntent().getIntExtra(EXTRA_ID, 1)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                dialog.dismiss();
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                } else {
-                    onInternetConnectionError();
-                }
+                layout.setRefreshing(false);
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onInternetConnectionError();
             }
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                dialog.dismiss();
+                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });

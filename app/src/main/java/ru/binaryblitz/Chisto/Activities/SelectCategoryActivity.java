@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -24,6 +25,7 @@ import ru.binaryblitz.Chisto.Adapters.CategoriesAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.Category;
+import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
@@ -32,6 +34,7 @@ import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity {
     private CategoriesAdapter adapter;
+    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +52,13 @@ public class SelectCategoryActivity extends BaseActivity {
 
         initList();
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
+                layout.setRefreshing(true);
                 load();
             }
-        }, 200);
+        });
     }
 
     @Override
@@ -69,6 +73,11 @@ public class SelectCategoryActivity extends BaseActivity {
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
 
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
         adapter = new CategoriesAdapter(this);
         view.setAdapter(adapter);
     }
@@ -77,15 +86,14 @@ public class SelectCategoryActivity extends BaseActivity {
         ServerApi.get(this).api().getCategories().enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                } else {
-                    onInternetConnectionError();
-                }
+                layout.setRefreshing(false);
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onInternetConnectionError();
             }
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
+                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });

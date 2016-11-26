@@ -5,11 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.content.ContextCompat
+import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.text.Editable
-import android.text.SpannableString
-import android.text.style.UnderlineSpan
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -24,11 +21,11 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
-import ru.binaryblitz.Chisto.Utils.CodeTimer
-import ru.binaryblitz.Chisto.Utils.LogUtil
+
 
 class RegistrationActivity : BaseActivity() {
 
@@ -36,63 +33,8 @@ class RegistrationActivity : BaseActivity() {
 
     private var code = false
 
-    private var messageTextView: TextView? = null
     private var phoneEditText: MaterialEditText? = null
     private var codeEditText: MaterialEditText? = null
-    private var countyCodeEditText: MaterialEditText? = null
-
-    private val myRunnable = Runnable {
-        messageForUser = getString(R.string.send_code_after) + (milis.toDouble() / SECOND.toDouble()).toInt() + getString(R.string.seconds_code)
-        if (milis < 2 * SECOND) messageForUser = REPEAT_STR
-    }
-
-    private val watcher = object : PhoneNumberFormattingTextWatcher() {
-        private var backspacingFlag = false
-        private var editedFlag = false
-        private var cursorComplement: Int = 0
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            cursorComplement = s.length - phoneEditText!!.selectionStart
-            backspacingFlag = count > after
-        }
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        }
-
-        override fun afterTextChanged(s: Editable) {
-            val string = s.toString()
-            val phone = string.replace("[^\\d]".toRegex(), "")
-
-            if (string.length >= 15) {
-                phoneEditText!!.setTextColor(ContextCompat.getColor(this@RegistrationActivity, R.color.colorPrimary))
-            } else {
-                phoneEditText!!.setTextColor(ContextCompat.getColor(this@RegistrationActivity, R.color.greyColor))
-            }
-
-            if (!editedFlag) {
-                if (phone.length >= 8 && !backspacingFlag) {
-                    editedFlag = true
-                    val ans = "(" + phone.substring(0, 3) + ") " + phone.substring(3, 6) + "-" +
-                            phone.substring(6, 8) + "-" + phone.substring(8)
-                    this@RegistrationActivity.phoneEditText!!.setText(ans)
-                    this@RegistrationActivity.phoneEditText!!.setSelection(
-                            this@RegistrationActivity.phoneEditText!!.text.length - cursorComplement)
-                } else if (phone.length >= 3 && !backspacingFlag) {
-                    editedFlag = true
-                    val ans = "(" + phone.substring(0, 3) + ") " + phone.substring(3)
-                    this@RegistrationActivity.phoneEditText!!.setText(ans)
-                    this@RegistrationActivity.phoneEditText!!.setSelection(
-                            this@RegistrationActivity.phoneEditText!!.text.length - cursorComplement)
-                }
-            } else {
-                editedFlag = false
-            }
-        }
-    }
-
-    private fun UpdateGUI() {
-        Handler().post(myRunnable)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,15 +42,9 @@ class RegistrationActivity : BaseActivity() {
 
         setOnClickListeners()
 
-        messageTextView = findViewById(R.id.textView37) as TextView
-        messageTextView!!.visibility = View.GONE
-
-        initTimer()
-
         phoneEditText = findViewById(R.id.phone) as MaterialEditText
         codeEditText = findViewById(R.id.code_field) as MaterialEditText
-        countyCodeEditText = findViewById(R.id.county_code_field) as MaterialEditText
-        phoneEditText!!.addTextChangedListener(watcher)
+        phoneEditText!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         Handler().post {
             phoneEditText!!.requestFocus()
@@ -146,7 +82,6 @@ class RegistrationActivity : BaseActivity() {
         codeEditText!!.setText("")
         (findViewById(R.id.textView23) as TextView).text = getString(R.string.code_send)
         (findViewById(R.id.title_text) as TextView).text = getString(R.string.type_phone)
-        messageTextView!!.visibility = View.GONE
         code = false
     }
 
@@ -175,26 +110,6 @@ class RegistrationActivity : BaseActivity() {
                 resetFields()
             }
         }
-
-        findViewById(R.id.textView37).setOnClickListener(View.OnClickListener {
-            if (!AndroidUtilities.isConnected(this@RegistrationActivity)) {
-                onInternetConnectionError()
-                return@OnClickListener
-            }
-            Handler().postDelayed({
-                authRequest(false)
-                startTimer()
-            }, 50)
-        })
-
-        findViewById(R.id.left_btn).setOnClickListener {
-            if (!code)
-                super.onBackPressed()
-            else {
-                animateBackBtn()
-                resetFields()
-            }
-        }
     }
 
     private fun checkCodeInput(): Boolean {
@@ -209,15 +124,27 @@ class RegistrationActivity : BaseActivity() {
     private fun verifyRequest() {
         if (!checkCodeInput()) return
 
-        val dialog = ProgressDialog(this@RegistrationActivity)
-        dialog.show()
+        val phone = phoneEditText!!.text.toString()
+        savePhone(phone)
 
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
-        intent.putExtra(EXTRA_PHONE, countyCodeEditText!!.text.toString() + phoneEditText!!.text.toString())
+        intent.putExtra(EXTRA_PHONE, phone)
         startActivity(intent)
+        finish()
+    }
+
+    private fun savePhone(phone: String) {
+        val user = DeviceInfoStore.getUserObject(this)
+        user.phone = phone
+        DeviceInfoStore.saveUser(this, user)
     }
 
     private fun authRequest(animate: Boolean) {
+        if(!AndroidUtilities.validatePhone(phoneEditText!!.text.toString())) {
+            Snackbar.make(findViewById(R.id.main), getString(R.string.wrong_phone), Snackbar.LENGTH_SHORT).show()
+            return
+        }
+
         val dialog = ProgressDialog(this@RegistrationActivity)
         dialog.show()
 
@@ -230,7 +157,6 @@ class RegistrationActivity : BaseActivity() {
                             if (animate) {
                                 playOutAnimation(findViewById(R.id.l1), findViewById(R.id.textView2))
                             }
-                            startTimer()
                         } else {
                             onInternetConnectionError()
                         }
@@ -246,21 +172,17 @@ class RegistrationActivity : BaseActivity() {
 
     private fun parseAuthRequestAnswer(obj: JsonObject) {
         code = true
-        messageTextView!!.visibility = View.VISIBLE
         token = obj.get("token").asString
         phoneFromServer = obj.get("phone_number").asString
     }
 
     private fun processText(): String {
-        var phone = countyCodeEditText!!.text.toString()
         var phoneNext = phoneEditText!!.text.toString()
         phoneNext = phoneNext.replace("(", "")
         phoneNext = phoneNext.replace(")", "")
         phoneNext = phoneNext.replace("-", "")
         phoneNext = phoneNext.replace(" ", "")
-        phone += phoneNext
-        LogUtil.logError(phone)
-        return phone
+        return phoneNext
     }
 
     private fun playOutAnimation(v1: View, v2: View) {
@@ -287,8 +209,7 @@ class RegistrationActivity : BaseActivity() {
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
                         (findViewById(R.id.textView23) as TextView).text =
-                                getString(R.string.number_code) + " " + countyCodeEditText!!.text.toString() +
-                                        phoneEditText!!.text.toString() + getString(R.string.code_sent)
+                                getString(R.string.number_code) + " " + phoneEditText!!.text.toString() + getString(R.string.code_sent)
 
                         (findViewById(R.id.title_text) as TextView).text = getString(R.string.code_title)
                     }
@@ -296,65 +217,10 @@ class RegistrationActivity : BaseActivity() {
                 .playOn(v2)
     }
 
-    private fun startTimer() {
-        CodeTimer.reset()
-        CodeTimer.with(object : CodeTimer.OnTimer {
-            override fun onTick(millisUntilFinished: Long) {
-                milis = millisUntilFinished
-                UpdateGUI()
-            }
-
-            override fun onFinish() {
-            }
-        })
-
-        CodeTimer.start()
-    }
-
-    private fun initTimer() {
-        val timerThread = object : Thread() {
-            override fun run() {
-                try {
-                    while (!isInterrupted) {
-                        Thread.sleep(1000)
-
-                        runOnUiThread {
-                            updateMessageText()
-                            if (milis < 2000)
-                                messageTextView!!.isClickable = true
-                            else
-                                messageTextView!!.isClickable = false
-                        }
-                    }
-                } catch (ignored: InterruptedException) {
-                }
-
-            }
-        }
-
-        timerThread.start()
-    }
-
-    private fun updateMessageText() {
-        if (messageForUser == REPEAT_STR) {
-            val content = SpannableString(getString(R.string.send_again))
-            content.setSpan(UnderlineSpan(), 0, content.length, 0)
-            messageTextView!!.text = content
-        } else {
-            messageTextView!!.text = messageForUser
-        }
-    }
-
     companion object {
-
-        private val REPEAT_STR = "repeat"
         private val ANIMATION_DURATION = 700
-        private val SECOND = 1000
         private var token: String? = null
         private var phoneFromServer: String? = null
-
-        private var milis: Long = 0
-        private var messageForUser: String? = null
     }
 }
 

@@ -76,13 +76,13 @@ public class SelectCityActivity extends BaseActivity
                     .build();
         }
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 layout.setEnabled(true);
                 load();
             }
-        }, 200);
+        });
 
         setOnClickListeners();
     }
@@ -117,8 +117,7 @@ public class SelectCityActivity extends BaseActivity
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 2: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
                 } else {
                     onLocationError();

@@ -11,12 +11,12 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:id="@+id/name"/>
 
     <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_marker"

@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -41,6 +42,7 @@ public class LaundriesActivity extends BaseActivity {
 
     private LaundriesAdapter adapter;
     private static boolean dialogOpened = false;
+    private SwipeRefreshLayout layout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,12 +73,12 @@ public class LaundriesActivity extends BaseActivity {
             }
         });
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 loadLastOrder();
             }
-        }, 150);
+        });
     }
 
     private void initList() {
@@ -85,6 +87,11 @@ public class LaundriesActivity extends BaseActivity {
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
         view.setEmptyView(null);
+
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
 
         adapter = new LaundriesAdapter(this);
         view.setAdapter(adapter);
@@ -114,22 +121,20 @@ public class LaundriesActivity extends BaseActivity {
         ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this).getId()).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                } else {
-                    onInternetConnectionError();
-                }
+                layout.setRefreshing(false);
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onInternetConnectionError();
             }
 
             @Override
             public void onFailure(Call<JsonArray> call, Throwable t) {
+                layout.setRefreshing(false);
                 onInternetConnectionError();
             }
         });
     }
 
     private void parseAnswer(JsonArray array) {
-        LogUtil.logError(array.toString());
         ArrayList<Laundry> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
@@ -252,6 +257,7 @@ public class LaundriesActivity extends BaseActivity {
                         @Override
                         public void run() {
                             dialogOpened = false;
+                            layout.setRefreshing(true);
                             Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog));
                             load();
                         }

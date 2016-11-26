@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.TextView
@@ -21,13 +22,13 @@ import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
 class SelectServiceActivity : BaseActivity() {
 
     private var adapter: TreatmentsAdapter? = null
+    private var layout: SwipeRefreshLayout? = null
 
     val EXTRA_COLOR = "color"
     val EXTRA_DECOR = "decor"
@@ -45,11 +46,8 @@ class SelectServiceActivity : BaseActivity() {
         (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
 
         findViewById(R.id.left_btn).setOnClickListener {
-            if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
-                OrderList.removeCurrent()
-            }
+            if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
             finish()
-
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
@@ -58,7 +56,10 @@ class SelectServiceActivity : BaseActivity() {
 
         initList()
 
-        Handler().postDelayed({ load() }, 200)
+        Handler().post({
+            layout!!.isRefreshing = true
+            load()
+        })
     }
 
     private fun initList() {
@@ -66,6 +67,11 @@ class SelectServiceActivity : BaseActivity() {
         view.layoutManager = LinearLayoutManager(this)
         view.itemAnimator = DefaultItemAnimator()
         view.setHasFixedSize(true)
+
+        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
+        layout!!.setOnRefreshListener(null)
+        layout!!.isEnabled = false
+        layout!!.setColorSchemeResources(R.color.colorAccent)
 
         adapter = TreatmentsAdapter(this)
         adapter!!.setColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
@@ -91,15 +97,13 @@ class SelectServiceActivity : BaseActivity() {
     private fun load() {
         ServerApi.get(this).api().getTreatments(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                LogUtil.logError(response.body().toString())
-                if (response.isSuccessful) {
-                    parseAnswer(response.body())
-                } else {
-                    onInternetConnectionError()
-                }
+                layout!!.isRefreshing = false
+                if (response.isSuccessful) parseAnswer(response.body())
+                else onInternetConnectionError()
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+                layout!!.isRefreshing = false
                 onInternetConnectionError()
             }
         })
