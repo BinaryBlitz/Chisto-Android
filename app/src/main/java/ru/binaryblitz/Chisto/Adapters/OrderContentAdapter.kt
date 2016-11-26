@@ -14,11 +14,11 @@ import java.util.ArrayList
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
 
-class OrderContentAdapter(private var context: Activity?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OrderContentAdapter(private val context: Activity?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    inner class Header(val name: String, val sum: Int, val count: Int, val icon: Int)
+    class Header(val name: String, val sum: Int, val count: Int, val icon: String, val color: Int)
 
-    inner class Basic(val name: String, val sum: Int)
+    class Basic(val name: String, val sum: Int)
 
     private var collection = ArrayList<Pair<String, Any>>()
 
@@ -33,10 +33,6 @@ class OrderContentAdapter(private var context: Activity?) : RecyclerView.Adapter
 
     fun setCollection(collection: ArrayList<Pair<String, Any>>) {
         this.collection = collection
-    }
-
-    fun setContext(context: Activity) {
-        this.context = context
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -62,14 +58,16 @@ class OrderContentAdapter(private var context: Activity?) : RecyclerView.Adapter
         if (getItemViewType(position) == HEADER) {
             val holder = viewHolder as HeaderViewHolder
             val header = collection[position].second as Header
-            holder.icon.setImageResource(header.icon)
-            holder.name.text = header.name
-            holder.cost.setText(header.sum)
+            Image.loadPhoto(header.icon, holder.icon)
+            holder.icon.setColorFilter(header.color)
+            holder.name.text = header.name + " " + (header.sum / header.count).toString()+
+                    " \u20bd" + "   \u00D7" + header.count.toString()
+            holder.cost.text = header.sum.toString() + " \u20bd"
         } else if (getItemViewType(position) == BASIC) {
             val holder = viewHolder as BasicViewHolder
             val basic = collection[position].second as Basic
             holder.name.text = basic.name
-            holder.cost.setText(basic.sum)
+            holder.cost.text = basic.sum.toString() + " \u20bd"
         }
     }
 
@@ -91,7 +89,7 @@ class OrderContentAdapter(private var context: Activity?) : RecyclerView.Adapter
 
         init {
             name = itemView.findViewById(R.id.name) as TextView
-            cost = itemView.findViewById(R.id.textView) as TextView
+            cost = itemView.findViewById(R.id.cost) as TextView
             icon = itemView.findViewById(R.id.category_icon) as ImageView
         }
     }
@@ -101,8 +99,8 @@ class OrderContentAdapter(private var context: Activity?) : RecyclerView.Adapter
         val cost: TextView
 
         init {
-            name = itemView.findViewById(R.id.name_text) as TextView
-            cost = itemView.findViewById(R.id.textView) as TextView
+            name = itemView.findViewById(R.id.name) as TextView
+            cost = itemView.findViewById(R.id.cost) as TextView
         }
     }
 
