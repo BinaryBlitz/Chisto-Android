@@ -17,6 +17,7 @@ import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class AboutActivity extends BaseActivity {
 
@@ -28,6 +29,24 @@ public class AboutActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(ru.binaryblitz.Chisto.R.layout.activity_about);
 
+        setOnClickListeners();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CALL_PERMISSION: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    call();
+                } else {
+                    onCallError();
+                }
+            }
+        }
+    }
+
+    private void setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,19 +64,32 @@ public class AboutActivity extends BaseActivity {
                 }
             }
         });
+
+        findViewById(R.id.bottom).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendEmail();
+            }
+        });
+
+        findViewById(R.id.send_mail).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendEmail();
+            }
+        });
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case CALL_PERMISSION: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    call();
-                } else {
-                    onCallError();
-                }
-            }
+    private void sendEmail() {
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL, new String[]{"recipient@example.com"});
+        i.putExtra(Intent.EXTRA_SUBJECT, "subject of email");
+        i.putExtra(Intent.EXTRA_TEXT   , "body of email");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            LogUtil.logException(ex);
         }
     }
 

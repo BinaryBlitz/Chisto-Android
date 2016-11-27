@@ -120,6 +120,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1.0"
                             android:orientation="vertical"
+                            android:id="@+id/send_mail"
                             android:background="@drawable/right_border"
                             android:layout_gravity="center_vertical"
                             android:layout_height="wrap_content">
@@ -211,6 +212,7 @@
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_gravity="bottom"
+            android:id="@+id/bottom"
             android:layout_height="56dp">
         <TextView
                 android:text="@string/about_bottom"
