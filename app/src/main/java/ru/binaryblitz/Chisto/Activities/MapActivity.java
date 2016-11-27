@@ -56,7 +56,7 @@ import ru.binaryblitz.Chisto.Utils.LogUtil;
 public class MapActivity extends BaseActivity
         implements MyMapFragment.TouchableWrapper.UpdateMapAfterUserInteraction, OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
+    private static final int LOCATION_PERMISSION = 1;
     private GoogleMap googleMap;
 
     static public LatLng selected_lat_lng;
@@ -197,12 +197,12 @@ public class MapActivity extends BaseActivity
         final SupportMapFragment mMap = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.scroll);
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 mMap.getMapAsync(MapActivity.this);
             }
-        }, 100);
+        });
     }
 
     private void initGoogleApiClient() {
@@ -272,7 +272,7 @@ public class MapActivity extends BaseActivity
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkPermission()) {
                 ActivityCompat.requestPermissions(MapActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION);
             } else {
                 setUpMap();
             }
@@ -412,7 +412,7 @@ public class MapActivity extends BaseActivity
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
-            case 2: {
+            case LOCATION_PERMISSION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
                 } else {
