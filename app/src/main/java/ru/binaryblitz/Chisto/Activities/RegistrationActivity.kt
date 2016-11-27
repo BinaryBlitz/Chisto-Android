@@ -99,7 +99,7 @@ class RegistrationActivity : BaseActivity() {
 
         findViewById(R.id.button).setOnClickListener { v ->
             AndroidUtilities.hideKeyboard(v)
-            if(code) verifyRequest() else processPhoneInput()
+            if (code) verifyRequest() else processPhoneInput()
         }
 
         findViewById(R.id.left_btn).setOnClickListener {

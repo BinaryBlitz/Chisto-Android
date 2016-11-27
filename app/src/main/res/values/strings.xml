@@ -115,7 +115,6 @@
     <string name="removal">Необходимо оставить хотя бы одну услугу.</string>
     <string name="wrong_phone">Неверный номер телефона</string>
     <string name="profile_wrong_fields">Не все поля заполнены верно. Вы хотите выйти без сохранения введенных данных?</string>
-    <string name="call_error">Необходимо разрешение на звонок.</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
