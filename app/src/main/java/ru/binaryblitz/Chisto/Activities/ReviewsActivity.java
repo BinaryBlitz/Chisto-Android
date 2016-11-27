@@ -37,6 +37,7 @@ import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.Image;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
+import ru.binaryblitz.Chisto.Utils.ServerErrorHandler;
 
 public class ReviewsActivity extends BaseActivity {
     private static final String EXTRA_ID = "id";
@@ -91,7 +92,7 @@ public class ReviewsActivity extends BaseActivity {
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
                 if (response.isSuccessful()) parseAnswer(response.body());
-                else onInternetConnectionError();
+                else onServerError(response);
             }
 
             @Override

@@ -125,7 +125,7 @@ public class LaundriesActivity extends BaseActivity {
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
                 if (response.isSuccessful()) parseAnswer(response.body());
-                else onInternetConnectionError();
+                else onServerError(response);
             }
 
             @Override
@@ -261,7 +261,7 @@ public class LaundriesActivity extends BaseActivity {
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 dialog.dismiss();
                 if (response.isSuccessful()) parseAnswerForPopup(response.body());
-                else onInternetConnectionError();
+                else onServerError(response);
             }
 
             @Override

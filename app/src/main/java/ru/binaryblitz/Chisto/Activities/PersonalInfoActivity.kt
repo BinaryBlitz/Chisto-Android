@@ -115,7 +115,7 @@ class PersonalInfoActivity : BaseActivity() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
                 if (response.isSuccessful) parseAnswer(response.body(), bank)
-                else onInternetConnectionError()
+                else onServerError(response)
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
