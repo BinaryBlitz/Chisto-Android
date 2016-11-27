@@ -17,8 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServerApi {
 
     private static ServerApi api;
-
     private static ApiEndpoints apiService;
+    private static Retrofit retrofit;
 
     private void initRetrofit(final Context context) {
 
@@ -40,7 +40,7 @@ public class ServerApi {
                 })
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .client(client)
                 .baseUrl(ServerConfig.INSTANCE.getApiURL())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -58,6 +58,10 @@ public class ServerApi {
             }
         }
         return api;
+    }
+
+    public static Retrofit retrofit() {
+        return retrofit;
     }
 
     private ServerApi(Context context) {

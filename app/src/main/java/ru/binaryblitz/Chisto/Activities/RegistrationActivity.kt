@@ -158,7 +158,7 @@ class RegistrationActivity : BaseActivity() {
                                 playOutAnimation(findViewById(R.id.l1), findViewById(R.id.textView2))
                             }
                         } else {
-                            onInternetConnectionError()
+                            onServerError(response)
                         }
                     }
 

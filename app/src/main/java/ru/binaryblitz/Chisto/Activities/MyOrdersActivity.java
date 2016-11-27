@@ -82,7 +82,7 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
                 if (response.isSuccessful()) parseAnswer(response.body());
-                else onInternetConnectionError();
+                else onServerError(response);
             }
 
             @Override

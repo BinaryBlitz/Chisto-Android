@@ -162,7 +162,7 @@ public class LaundryAndOrderActivity extends BaseActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 layout.setRefreshing(false);
                 if (response.isSuccessful()) parseAnswer(response.body());
-                else onInternetConnectionError();
+                else onServerError(response);
             }
 
             @Override
