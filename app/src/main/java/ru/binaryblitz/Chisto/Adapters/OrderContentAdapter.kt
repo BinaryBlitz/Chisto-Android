@@ -55,20 +55,23 @@ class OrderContentAdapter(private val context: Activity?) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == HEADER) {
-            val holder = viewHolder as HeaderViewHolder
-            val header = collection[position].second as Header
-            Image.loadPhoto(header.icon, holder.icon)
-            holder.icon.setColorFilter(header.color)
-            holder.name.text = header.name + " " + (header.sum / header.count).toString()+
-                    " \u20bd" + "   \u00D7" + header.count.toString()
-            holder.cost.text = header.sum.toString() + " \u20bd"
-        } else if (getItemViewType(position) == BASIC) {
-            val holder = viewHolder as BasicViewHolder
-            val basic = collection[position].second as Basic
-            holder.name.text = basic.name
-            holder.cost.text = basic.sum.toString() + " \u20bd"
-        }
+        if (getItemViewType(position) == HEADER) bindHeader(position, viewHolder as HeaderViewHolder)
+        else bindBasic(position, viewHolder as BasicViewHolder)
+    }
+
+    private fun bindHeader(position: Int, holder: HeaderViewHolder) {
+        val header = collection[position].second as Header
+        Image.loadPhoto(header.icon, holder.icon)
+        holder.icon.setColorFilter(header.color)
+        holder.name.text = header.name + " " + (header.sum / header.count).toString() +
+                " \u20bd" + "   \u00D7" + header.count.toString()
+        holder.cost.text = header.sum.toString() + " \u20bd"
+    }
+
+    private fun bindBasic(position: Int, holder: BasicViewHolder) {
+        val basic = collection[position].second as Basic
+        holder.name.text = basic.name
+        holder.cost.text = basic.sum.toString() + " \u20bd"
     }
 
     override fun getItemViewType(position: Int): Int {

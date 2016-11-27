@@ -139,6 +139,8 @@ public class LaundryAndOrderActivity extends BaseActivity {
     private int getFillSum(Order order) {
         int sum = 0;
 
+        if(order.getTreatments() == null) return 0;
+
         for (int i = 0; i < order.getTreatments().size(); i++) {
             sum += order.getTreatments().get(i).getCost();
         }

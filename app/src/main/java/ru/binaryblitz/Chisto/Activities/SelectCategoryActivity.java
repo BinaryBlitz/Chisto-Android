@@ -45,8 +45,7 @@ public class SelectCategoryActivity extends BaseActivity {
         findViewById(ru.binaryblitz.Chisto.R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OrderList.removeCurrent();
-                finish();
+                finishActivity();
             }
         });
 
@@ -63,8 +62,12 @@ public class SelectCategoryActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        finishActivity();
+    }
+
+    private void finishActivity() {
         OrderList.removeCurrent();
+        finish();
     }
 
     private void initList() {
