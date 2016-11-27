@@ -98,6 +98,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1.0"
                             android:orientation="vertical"
+                            android:id="@+id/phone_call"
                             android:background="@drawable/right_border"
                             android:layout_gravity="center_vertical"
                             android:layout_height="wrap_content">
@@ -226,7 +227,7 @@
                 android:gravity="start"/>
 
         <TextView
-                android:text="@string/about_bottom"
+                android:text="@string/write_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
