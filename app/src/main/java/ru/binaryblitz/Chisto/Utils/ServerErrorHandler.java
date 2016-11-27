@@ -28,14 +28,14 @@ public class ServerErrorHandler {
 
     public static APIError parseError(Response<?> response) {
         Converter<ResponseBody, APIError> converter =
-                ServerApi.retrofit()
-                        .responseBodyConverter(APIError.class, new Annotation[0]);
+                ServerApi.retrofit().responseBodyConverter(APIError.class, new Annotation[0]);
 
         APIError error;
 
         try {
             error = converter.convert(response.errorBody());
         } catch (IOException e) {
+            LogUtil.logException(e);
             return new APIError();
         }
 

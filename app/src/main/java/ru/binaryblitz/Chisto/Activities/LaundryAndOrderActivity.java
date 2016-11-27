@@ -48,6 +48,14 @@ public class LaundryAndOrderActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_laundry_and_order);
 
+        initElements();
+        setOnClickListeners();
+
+        load();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void setOnClickListeners() {
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,14 +74,9 @@ public class LaundryAndOrderActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-
+    private void initElements() {
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         layout.setOnRefreshListener(null);
         layout.setEnabled(false);
