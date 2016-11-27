@@ -56,6 +56,14 @@ public class LaundryAndOrderActivity extends BaseActivity {
 
     @SuppressWarnings("ConstantConditions")
     private void setOnClickListeners() {
+
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
