@@ -64,7 +64,7 @@ class OrderContentAdapter(private val context: Activity?) : RecyclerView.Adapter
         Image.loadPhoto(header.icon, holder.icon)
         holder.icon.setColorFilter(header.color)
         holder.name.text = header.name + " " + (header.sum / header.count).toString() +
-                " \u20bd" + "   \u00D7" + header.count.toString()
+                " \u20bd" + "  \u00D7" + header.count.toString()
         holder.cost.text = header.sum.toString() + " \u20bd"
     }
 
