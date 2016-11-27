@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
+import ru.binaryblitz.Chisto.Activities.LaundriesActivity
 import ru.binaryblitz.Chisto.Activities.LaundryAndOrderActivity
 import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
@@ -71,6 +72,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.itemView.setOnClickListener {
             val intent = Intent(context, LaundryAndOrderActivity::class.java)
             OrderList.setLaundryId(laundry.id)
+            (context as LaundriesActivity).countSums(holder.adapterPosition)
             intent.putExtra(EXTRA_ID, laundry.id)
             context.startActivity(intent)
         }

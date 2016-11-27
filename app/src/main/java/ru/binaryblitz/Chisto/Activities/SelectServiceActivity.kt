@@ -46,8 +46,7 @@ class SelectServiceActivity : BaseActivity() {
         (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
 
         findViewById(R.id.left_btn).setOnClickListener {
-            if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
-            finish()
+            finishActivity()
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
@@ -60,6 +59,15 @@ class SelectServiceActivity : BaseActivity() {
             layout!!.isRefreshing = true
             load()
         })
+    }
+
+    override fun onBackPressed() {
+        finishActivity()
+    }
+
+    private fun finishActivity() {
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
+        finish()
     }
 
     private fun initList() {
@@ -119,6 +127,7 @@ class SelectServiceActivity : BaseActivity() {
                             AndroidUtilities.getIntFieldFromJson(it.get("id")),
                             AndroidUtilities.getStringFieldFromJson(it.get("name")),
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
+                            0,
                             false)
                 }
 
@@ -130,6 +139,7 @@ class SelectServiceActivity : BaseActivity() {
                 1,
                 "Декор",
                 "Описание",
+                100,
                 intent.getBooleanExtra(EXTRA_DECOR, false)))
 
         adapter!!.notifyDataSetChanged()

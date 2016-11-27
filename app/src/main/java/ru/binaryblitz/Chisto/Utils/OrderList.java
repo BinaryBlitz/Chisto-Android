@@ -84,33 +84,43 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void removeTreatment(int treatmentId) {
-        if (currentItem < orders.size()) {
-            if (orders.get(currentItem).getTreatments() != null) {
-                for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-                    if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
-                        orders.get(currentItem).getTreatments().remove(i);
-                        break;
-                    }
-                }
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+        ArrayList<Treatment> treatments = orders.get(currentItem).getTreatments();
+        for (int i = 0; i < treatments.size(); i++) {
+            if (treatments.get(i).getId() == treatmentId) {
+                treatments.remove(i);
+                break;
             }
         }
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void addTreatment(Treatment treatment) {
-        if (currentItem < orders.size()) {
-            if (orders.get(currentItem).getTreatments() == null) {
-                orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
-            }
+    public static void setCost(int treatmentId, int cost) {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-                if (orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) {
-                    return;
-                }
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
+                orders.get(currentItem).getTreatments().get(i).setCost(cost);
             }
-
-            orders.get(currentItem).getTreatments().add(treatment);
         }
+
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void addTreatment(Treatment treatment) {
+        if (currentItem < orders.size()) return;
+
+        if (orders.get(currentItem).getTreatments() == null) {
+            orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
+        }
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            if (orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) {
+                return;
+            }
+        }
+
+        orders.get(currentItem).getTreatments().add(treatment);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -119,14 +129,6 @@ public class OrderList {
             if (orders.get(currentItem).getTreatments() == null) {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
-
-//            for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-//                for (int j = 0; j < treatments.size(); j++) {
-//                    if (orders.get(currentItem).getTreatments().get(i).getId() == treatments.get(j).getId()) {
-//                        return;
-//                    }
-//                }
-//            }
 
             orders.get(currentItem).setTreatments(treatments);
         }

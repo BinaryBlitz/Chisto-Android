@@ -159,30 +159,33 @@
                 android:layout_marginTop="208dp"
                 android:text="\u25B2"/>
 
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:background="#eaeaea"
-                android:layout_marginTop="230dp"
-                android:layout_marginBottom="144dp"
-                android:layout_height="match_parent">
-            <ScrollView
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:background="#eaeaea"
+            android:layout_marginTop="230dp"
+            android:layout_marginBottom="144dp"
+            android:layout_height="match_parent">
+       <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+                <TextView
+                        android:text="@string/order_help"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="#c9c9c9"
+                        android:padding="12dp"
+                        android:textColor="#212121"
+                        android:textSize="14sp"
+                        android:gravity="center"/>
+
+                <ru.binaryblitz.Chisto.Custom.RecyclerListView
+                        android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    <TextView
-                            android:text="@string/order_help"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="#c9c9c9"
-                            android:padding="12dp"
-                            android:textColor="#212121"
-                            android:textSize="14sp"
-                            android:gravity="center"/>
-                </LinearLayout>
-            </ScrollView>
-        </FrameLayout>
+                        android:layout_height="match_parent">
+                </ru.binaryblitz.Chisto.Custom.RecyclerListView>
+            </LinearLayout>
+    </FrameLayout>
 
         <FrameLayout
                 android:layout_width="match_parent"
