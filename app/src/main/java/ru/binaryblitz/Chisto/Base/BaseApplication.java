@@ -23,24 +23,24 @@ public class BaseApplication extends Application {
     }
 
     @SuppressWarnings("deprecation")
-    public void setSystemLocaleLegacy(Configuration config, Locale locale){
+    public void setSystemLocaleLegacy(Configuration config, Locale locale) {
         config.locale = locale;
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    public void setSystemLocale(Configuration config, Locale locale){
+    public void setSystemLocale(Configuration config, Locale locale) {
         config.setLocale(locale);
     }
 
-    public void setLanguage(Context context, String languageCode){
+    @SuppressWarnings("deprecation")
+    public void setLanguage(Context context, String languageCode) {
         Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            setSystemLocale(config, locale);
-        }else{
-            setSystemLocaleLegacy(config, locale);
-        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) setSystemLocale(config, locale);
+        else setSystemLocaleLegacy(config, locale);
+
         context.getApplicationContext().getResources().updateConfiguration(config,
                 context.getResources().getDisplayMetrics());
     }
