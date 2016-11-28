@@ -40,6 +40,27 @@ public class MyOrderActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_my_order);
         Image.init(this);
+
+        initSwipeRefresh();
+        setOnClickListeners();
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                layout.setRefreshing(true);
+                load();
+            }
+        });
+    }
+
+    private void initSwipeRefresh() {
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
+    }
+
+    private void setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,16 +68,10 @@ public class MyOrderActivity extends BaseActivity {
             }
         });
 
-        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
-        layout.setOnRefreshListener(null);
-        layout.setEnabled(false);
-        layout.setColorSchemeResources(R.color.colorAccent);
-
-        new Handler().post(new Runnable() {
+        findViewById(R.id.phone_call).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                layout.setRefreshing(true);
-                load();
+            public void onClick(View view) {
+                AndroidUtilities.INSTANCE.call(MyOrderActivity.this, "+7 999 111-22-33");
             }
         });
     }

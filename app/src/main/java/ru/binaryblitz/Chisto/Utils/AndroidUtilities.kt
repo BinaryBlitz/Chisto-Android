@@ -2,11 +2,13 @@ package ru.binaryblitz.Chisto.Utils
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
+import android.net.Uri
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.text.Spannable
@@ -64,6 +66,12 @@ object AndroidUtilities {
         }
 
         return phoneNumberUtil.isValidNumber(phoneNumber)
+    }
+
+    fun call(context: Context, phone: String) {
+        val call = Uri.parse("tel:" + phone)
+        val intent = Intent(Intent.ACTION_DIAL, call)
+        context.startActivity(intent)
     }
 
     fun getStringFieldFromJson(element: JsonElement?): String {

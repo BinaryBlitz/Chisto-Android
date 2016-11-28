@@ -11,6 +11,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class AboutActivity extends BaseActivity {
@@ -35,7 +36,7 @@ public class AboutActivity extends BaseActivity {
         findViewById(R.id.phone_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                call();
+                AndroidUtilities.INSTANCE.call(AboutActivity.this, "+7 999 111-22-33");
             }
         });
 
@@ -65,12 +66,5 @@ public class AboutActivity extends BaseActivity {
         } catch (android.content.ActivityNotFoundException ex) {
             LogUtil.logException(ex);
         }
-    }
-
-    private void call() {
-        String number = "+7 999 111-22-33";
-        Uri call = Uri.parse("tel:" + number);
-        Intent intent = new Intent(Intent.ACTION_DIAL, call);
-        startActivity(intent);
     }
 }
