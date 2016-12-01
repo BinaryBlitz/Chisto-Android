@@ -64,6 +64,13 @@ public class AboutActivity extends BaseActivity {
             }
         });
 
+        findViewById(R.id.add_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openSocial("https://play.google.com/store/apps/details?id=ru.binaryblitz.Chisto");
+            }
+        });
+
         findViewById(R.id.facebook).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
