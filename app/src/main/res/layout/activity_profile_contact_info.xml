@@ -107,6 +107,30 @@
                     android:textColorHint="@color/greyColor"
                     android:layout_gravity="bottom" />
 
+            <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/email"
+                    android:textColor="@color/greyColor"
+                    android:inputType="textEmailAddress"
+                    android:textSize="16sp"
+                    android:lines="1"
+                    android:hint="@string/e_mail"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginStart="56dp"
+                    android:layout_marginLeft="56dp"
+                    android:layout_marginTop="12dp"
+                    app:met_underlineColor="@color/greyColor"
+                    app:met_baseColor="@color/blackColor"
+                    app:met_textColor="@color/blackColor"
+                    app:met_errorColor="@color/blackColor"
+                    app:met_floatingLabel="normal"
+                    app:met_helperTextColor="@color/greyColor"
+                    app:met_primaryColor="@color/blackColor"
+                    android:textColorHint="@color/greyColor"
+                    android:layout_gravity="bottom" />
+
             <LinearLayout
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
