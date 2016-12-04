@@ -18,7 +18,11 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -28,6 +32,7 @@ import ru.binaryblitz.Chisto.Adapters.LaundriesAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.Laundry;
+import ru.binaryblitz.Chisto.Model.Order;
 import ru.binaryblitz.Chisto.Model.Treatment;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
@@ -145,19 +150,64 @@ public class LaundriesActivity extends BaseActivity {
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
             if (!checkTreatments(object)) continue;
-
+            countSums(i);
             collection.add(new Laundry(
                     AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
                     ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("logo_url")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
                     getTypeFromJson(object),
-                    (float) AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("rating"))
+                    (float) AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("rating")),
+                    parseDate(object, "collection_date", "yyyy-MM-dd"),
+                    parseDate(object, "delivery_date", "yyyy-MM-dd"),
+                    parseDate(object, "delivery_date_opens_at", "HH:mm"),
+                    parseDate(object, "delivery_date_closes_at", "HH:mm"),
+                    0,
+                    getAllOrdersCost()
             ));
         }
 
         adapter.setCollection(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private int getFillSum(Order order) {
+        int sum = 0;
+
+        if (order.getTreatments() == null) return 0;
+
+        for (int i = 0; i < order.getTreatments().size(); i++) {
+            sum += order.getTreatments().get(i).getCost();
+        }
+
+        sum *= order.getCount();
+
+        return sum;
+    }
+
+    private int getAllOrdersCost() {
+        int cost = 0;
+
+        for (int i = 0; i < OrderList.get().size(); i++) {
+            cost += getFillSum(OrderList.get(i));
+        }
+
+        return cost;
+    }
+
+    public static Date parseDate(JsonObject object, String elementName, String pattern) {
+        if (object.isJsonNull()) return null;
+
+        Date date = null;
+        try {
+            SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.US);
+            format.setTimeZone(TimeZone.getTimeZone("UTC"));
+            date = format.parse(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get(elementName)));
+        } catch (Exception e) {
+            LogUtil.logException(e);
+        }
+
+        return date;
     }
 
     private boolean checkTreatments(JsonObject object) {
