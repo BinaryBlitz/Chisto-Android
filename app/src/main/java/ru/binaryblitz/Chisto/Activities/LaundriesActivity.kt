@@ -1,6 +1,7 @@
 package ru.binaryblitz.Chisto.Activities
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.util.Pair
@@ -54,7 +55,13 @@ class LaundriesActivity : BaseActivity() {
         findViewById(R.id.right_btn).setOnClickListener { showDialog() }
 
         findViewById(R.id.order_current_btn).setOnClickListener {
-            // TODO
+            val intent = Intent(this@LaundriesActivity, LaundryAndOrderActivity::class.java)
+            OrderList.setLaundryId(laundry!!.id)
+            countSums(laundryObject!!.get("laundry_treatments").asJsonArray)
+            intent.putExtra(EXTRA_ID, laundry!!.id)
+            intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
+            intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
+            startActivity(intent)
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
@@ -300,18 +307,18 @@ class LaundriesActivity : BaseActivity() {
             load()
             return
         }
-
-        val laundry = parseLaundry(obj)
+        laundryObject = obj
+        laundry = parseLaundry(obj)
         if (obj.get("laundry_treatments") != null && !obj.get("laundry_treatments").isJsonNull) {
             countSums(obj.get("laundry_treatments").asJsonArray)
-            setCosts(laundry)
+            setCosts(laundry!!)
         }
 
-        setTextToField(R.id.name_text, laundry.name)
-        setTextToField(R.id.desc_text, laundry.desc)
+        setTextToField(R.id.name_text, laundry!!.name)
+        setTextToField(R.id.desc_text, laundry!!.desc)
         setTextToField(R.id.order_current_btn, getString(R.string.ordering_code))
-        setTextToField(R.id.name_text, laundry.name)
-        setDates(laundry)
+        setTextToField(R.id.name_text, laundry!!.name)
+        setDates(laundry!!)
 
         Image.loadPhoto(ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(ru.binaryblitz.Chisto.R.id.back_image) as ImageView)
         Image.loadPhoto(ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(ru.binaryblitz.Chisto.R.id.logo_image) as ImageView)
@@ -362,5 +369,10 @@ class LaundriesActivity : BaseActivity() {
     companion object {
         private var dialogOpened = false
         private var array: JsonArray? = null
+        private var laundry: Laundry? = null
+        private var laundryObject: JsonObject? = null
+        private val EXTRA_ID = "id"
+        private val EXTRA_COLLECTION_DATE = "collectionDate"
+        private val EXTRA_DELIVERY_DATE = "deliveryDate"
     }
 }
