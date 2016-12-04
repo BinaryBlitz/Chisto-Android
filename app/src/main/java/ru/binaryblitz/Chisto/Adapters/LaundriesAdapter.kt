@@ -46,7 +46,6 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.ratingBar.rating = laundry.rating
 
         setDatesAndCosts(laundry, holder)
-        setCategory(laundry, holder)
 
         Image.loadPhoto(laundry.icon, holder.icon)
 
@@ -87,27 +86,6 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.cost.text = laundry.orderCost.toString() + " \u20bd"
     }
 
-    private fun setCategory(laundry: Laundry, holder: ViewHolder) {
-        when (laundry.type) {
-            Laundry.Type.FAST -> {
-                holder.category.text = context.getString(R.string.premium)
-                holder.categoryBack.setImageResource(R.drawable.fast_bg)
-            }
-            Laundry.Type.PREMIUM -> {
-                holder.category.text = context.getString(R.string.fast)
-                holder.categoryBack.setImageResource(R.drawable.premium_bg)
-            }
-            Laundry.Type.ECONOMY -> {
-                holder.category.text = context.getString(R.string.economy)
-                holder.categoryBack.setImageResource(R.drawable.economy_bg)
-            }
-            Laundry.Type.EMPTY -> {
-                holder.category.visibility = View.GONE
-                holder.categoryBack.visibility = View.GONE
-            }
-        }
-    }
-
     override fun getItemCount(): Int {
         return collection.size
     }
@@ -119,27 +97,23 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name: TextView
         val desc: TextView
-        val category: TextView
         val collectionDate: TextView
         val collectionCost: TextView
         val deliveryDate: TextView
         val deliveryBounds: TextView
         val cost: TextView
         val icon: ImageView
-        val categoryBack: ImageView
         val ratingBar: SimpleRatingBar
 
         init {
             name = itemView.findViewById(R.id.name) as TextView
             desc = itemView.findViewById(R.id.description) as TextView
-            category = itemView.findViewById(R.id.type_text) as TextView
             collectionDate = itemView.findViewById(R.id.curier_date) as TextView
             collectionCost = itemView.findViewById(R.id.curier_cost) as TextView
             deliveryDate = itemView.findViewById(R.id.delivery_date) as TextView
             deliveryBounds = itemView.findViewById(R.id.delivery_bounds) as TextView
             cost = itemView.findViewById(R.id.sum) as TextView
             icon = itemView.findViewById(R.id.category_icon) as ImageView
-            categoryBack = itemView.findViewById(R.id.type) as ImageView
             ratingBar = itemView.findViewById(R.id.ratingBar) as SimpleRatingBar
         }
     }
