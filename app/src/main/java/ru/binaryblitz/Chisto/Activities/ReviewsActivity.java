@@ -113,7 +113,7 @@ public class ReviewsActivity extends BaseActivity {
             collection.add(new Review(
                     AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
                     getDateFromJson(object),
-                    "UserName",
+                    getUserName(object.get("user").getAsJsonObject()),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("content")),
                     (float) AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("value"))
             ));
@@ -121,6 +121,12 @@ public class ReviewsActivity extends BaseActivity {
 
         adapter.setCollection(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private String getUserName(JsonObject object) {
+        String firstName = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("first_name"));
+        String lastName = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("last_name"));
+        return firstName + " " + lastName;
     }
 
     private Date getDateFromJson(JsonObject object) {
