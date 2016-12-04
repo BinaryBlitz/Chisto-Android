@@ -22,6 +22,8 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
     private var collection = ArrayList<Laundry>()
     private val EXTRA_ID = "id"
+    private val EXTRA_COLLECTION_DATE = "collectionDate"
+    private val EXTRA_DELIVERY_DATE = "deliveryDate"
 
     init {
         Image.init(context)
@@ -53,6 +55,8 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
             OrderList.setLaundryId(laundry.id)
             (context as LaundriesActivity).countSums(holder.adapterPosition)
             intent.putExtra(EXTRA_ID, laundry.id)
+            intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
+            intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
             context.startActivity(intent)
         }
     }
