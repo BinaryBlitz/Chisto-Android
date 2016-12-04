@@ -27,11 +27,8 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
-import ru.binaryblitz.Chisto.Utils.AndroidUtilities
+import ru.binaryblitz.Chisto.Utils.*
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
-import ru.binaryblitz.Chisto.Utils.Image
-import ru.binaryblitz.Chisto.Utils.LogUtil
-import ru.binaryblitz.Chisto.Utils.OrderList
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -138,24 +135,28 @@ class LaundriesActivity : BaseActivity() {
             val obj = array.get(i).asJsonObject
             if (!checkTreatments(obj)) continue
             countSums(i)
-            collection.add(Laundry(
-                    AndroidUtilities.getIntFieldFromJson(obj.get("id")),
-                    ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
-                    AndroidUtilities.getStringFieldFromJson(obj.get("name")),
-                    AndroidUtilities.getStringFieldFromJson(obj.get("description")),
-                    getTypeFromJson(obj),
-                    AndroidUtilities.getDoubleFieldFromJson(obj.get("rating")).toFloat(),
-                    parseDate(obj, "collection_date", "yyyy-MM-dd"),
-                    parseDate(obj, "delivery_date", "yyyy-MM-dd"),
-                    parseDate(obj, "delivery_date_opens_at", "HH:mm"),
-                    parseDate(obj, "delivery_date_closes_at", "HH:mm"),
-                    0,
-                    allOrdersCost
-            ))
+            collection.add(parseLaundry(obj))
         }
 
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
+    }
+
+    private fun parseLaundry(obj: JsonObject): Laundry {
+        return Laundry(
+                AndroidUtilities.getIntFieldFromJson(obj.get("id")),
+                ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
+                AndroidUtilities.getStringFieldFromJson(obj.get("name")),
+                AndroidUtilities.getStringFieldFromJson(obj.get("description")),
+                getTypeFromJson(obj),
+                AndroidUtilities.getDoubleFieldFromJson(obj.get("rating")).toFloat(),
+                parseDate(obj, "collection_date", "yyyy-MM-dd"),
+                parseDate(obj, "delivery_date", "yyyy-MM-dd"),
+                parseDate(obj, "delivery_date_opens_at", "HH:mm"),
+                parseDate(obj, "delivery_date_closes_at", "HH:mm"),
+                0,
+                allOrdersCost
+        )
     }
 
     private fun getFillSum(order: Order): Int {
@@ -205,6 +206,15 @@ class LaundriesActivity : BaseActivity() {
 
     fun countSums(index: Int) {
         val treatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
+        if (treatments.size() == 0) return
+
+        val laundryTreatments = fillPrices(treatments)
+        val orderTreatments = OrderList.getTreatments()
+
+        fillOrderList(orderTreatments, laundryTreatments)
+    }
+
+    fun countSums(treatments: JsonArray) {
         if (treatments.size() == 0) return
 
         val laundryTreatments = fillPrices(treatments)
@@ -286,15 +296,22 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         if (!checkTreatments(obj)) {
             load()
             return
         }
 
-        (findViewById(R.id.name_text) as TextView).text = getString(R.string.laundary_code) + obj.get("name").asString
-        (findViewById(R.id.desc_text) as TextView).text = obj.get("description").asString
-        (findViewById(R.id.order_current_btn) as TextView).setText(R.string.ordering_code)
+        val laundry = parseLaundry(obj)
+        if (obj.get("laundry_treatments") != null && !obj.get("laundry_treatments").isJsonNull) {
+            countSums(obj.get("laundry_treatments").asJsonArray)
+            setCosts(laundry)
+        }
+
+        setTextToField(R.id.name_text, laundry.name)
+        setTextToField(R.id.desc_text, laundry.desc)
+        setTextToField(R.id.order_current_btn, getString(R.string.ordering_code))
+        setTextToField(R.id.name_text, laundry.name)
+        setDates(laundry)
 
         Image.loadPhoto(ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(ru.binaryblitz.Chisto.R.id.back_image) as ImageView)
         Image.loadPhoto(ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(ru.binaryblitz.Chisto.R.id.logo_image) as ImageView)
@@ -303,6 +320,23 @@ class LaundriesActivity : BaseActivity() {
             dialogOpened = true
             Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundriesActivity)
         }
+    }
+
+    private fun setDates(laundry: Laundry) {
+        setTextToField(R.id.curier_date, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
+        setTextToField(R.id.delivery_date, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
+        setTextToField(R.id.delivery_bounds, getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
+                getString(R.string.end_bound_code) +
+                DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
+    }
+
+    private fun setCosts(laundry: Laundry) {
+        setTextToField(R.id.curier_cost, laundry.deliveryCost.toString() + " \u20bd")
+        setTextToField(R.id.sum, laundry.orderCost.toString() + " \u20bd")
+    }
+
+    private fun setTextToField(id: Int, text: String) {
+        (findViewById(id) as TextView).text = text
     }
 
     fun parseDate(obj: JsonObject, elementName: String, pattern: String): Date? {
