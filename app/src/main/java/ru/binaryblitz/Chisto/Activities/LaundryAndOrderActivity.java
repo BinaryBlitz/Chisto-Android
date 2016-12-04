@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatButton;
 import android.util.Pair;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -119,6 +121,14 @@ public class LaundryAndOrderActivity extends BaseActivity {
 
         adapter.setCollection(listToShow);
         adapter.notifyDataSetChanged();
+
+        setSums();
+    }
+
+    private void setSums() {
+        ((TextView) findViewById(R.id.cost)).setText(Integer.toString(getAllOrdersCost()) + " \u20bd");
+        ((Button) findViewById(R.id.cont_btn)).setText(getString(R.string.create_order_code) +
+                Integer.toString(getAllOrdersCost()) + " \u20bd");
     }
 
     private void addHeader(Order order, ArrayList<Pair<String, Object>> listToShow) {
@@ -159,6 +169,16 @@ public class LaundryAndOrderActivity extends BaseActivity {
         sum *= order.getCount();
 
         return sum;
+    }
+
+    private int getAllOrdersCost() {
+        int cost = 0;
+
+        for (int i = 0; i < OrderList.get().size(); i++) {
+            cost += getFillSum(OrderList.get(i));
+        }
+
+        return cost;
     }
 
     private void openActivity(Class<? extends Activity> activity) {
