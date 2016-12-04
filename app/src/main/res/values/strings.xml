@@ -118,7 +118,9 @@
     <string name="server_error">Ошибка сервера</string>
     <string name="e_mail">Email</string>
     <string name="send_from_about">Отправить</string>
-
+    <string name="create_order_code">"Оформить заказ: "</string>
+    <string name="from_code">"с "</string>
+    <string name="end_bound_code">" до "</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>

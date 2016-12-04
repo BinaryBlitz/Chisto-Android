@@ -59,7 +59,7 @@
                 <TextView android:layout_width="wrap_content"
                           android:layout_gravity="center_horizontal"
                           android:layout_marginTop="4dp"
-                          android:text="15.09.2016"
+                          android:id="@+id/curier_date"
                           android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout
@@ -83,7 +83,7 @@
                 <TextView android:layout_width="wrap_content"
                           android:layout_marginTop="4dp"
                           android:layout_gravity="center_horizontal"
-                          android:text="11.09.2016"
+                          android:id="@+id/delivery_date"
                           android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
@@ -207,8 +207,8 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_marginEnd="12dp"
-                      android:text="3 800 \u20bd"
                       android:layout_marginRight="12dp"
+                      android:id="@+id/cost"
                       android:textSize="18sp"
                       android:textColor="@color/colorAccent"
                       android:layout_gravity="end|center_vertical"/>
@@ -234,16 +234,16 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_marginEnd="12dp"
-                      android:text="500 \u20bd"
+                      android:text="0 \u20bd"
                       android:layout_marginRight="12dp"
                       android:textSize="18sp"
+                      android:id="@+id/delivery"
                       android:textColor="@color/colorAccent"
                       android:layout_gravity="end|center_vertical"/>
         </FrameLayout>
         <Button
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:theme="@style/BrandButtonStyle"
-                android:text="Оформить заказ: 4 300 \u20bd"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:id="@+id/cont_btn"
