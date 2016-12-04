@@ -20,6 +20,8 @@ import com.crashlytics.android.Crashlytics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -116,12 +118,29 @@ public class LaundriesActivity extends BaseActivity {
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        // TODO
+                        sort(which);
                         return true;
                     }
                 })
                 .positiveText(R.string.choose)
                 .show();
+    }
+
+    private void sort(int which) {
+        switch (which) {
+            case 0:
+                adapter.sortByCost();
+                break;
+            case 1:
+                adapter.sortBySpeed();
+                break;
+            case 2:
+                adapter.sortByRating();
+                break;
+            default:
+                adapter.sortByCost();
+                break;
+        }
     }
 
     @SuppressWarnings("ConstantConditions")

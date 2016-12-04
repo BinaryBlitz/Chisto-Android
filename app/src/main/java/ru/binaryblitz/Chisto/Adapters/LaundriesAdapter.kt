@@ -57,6 +57,21 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         }
     }
 
+    fun sortByCost() {
+        Collections.sort(collection, { first, second -> first.orderCost!!.compareTo(second.orderCost!!) })
+        notifyDataSetChanged()
+    }
+
+    fun sortBySpeed() {
+        Collections.sort(collection, { first, second -> first.deliveryDate!!.compareTo(second.deliveryDate!!) })
+        notifyDataSetChanged()
+    }
+
+    fun sortByRating() {
+        Collections.sort(collection, { first, second -> -first.rating.compareTo(second.rating) })
+        notifyDataSetChanged()
+    }
+
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
         holder.collectionCost.text = laundry.deliveryCost.toString() + " \u20bd"
         holder.collectionDate.text = getDateStringRepresentationWithoutTime(laundry.collectionDate!!)
