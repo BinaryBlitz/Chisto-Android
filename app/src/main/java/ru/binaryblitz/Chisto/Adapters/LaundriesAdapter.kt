@@ -13,9 +13,9 @@ import ru.binaryblitz.Chisto.Activities.LaundriesActivity
 import ru.binaryblitz.Chisto.Activities.LaundryAndOrderActivity
 import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.Utils.DateUtils
 import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
-import java.text.SimpleDateFormat
 import java.util.*
 
 class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -74,12 +74,12 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
         holder.collectionCost.text = laundry.deliveryCost.toString() + " \u20bd"
-        holder.collectionDate.text = getDateStringRepresentationWithoutTime(laundry.collectionDate!!)
-        holder.deliveryDate.text = getDateStringRepresentationWithoutTime(laundry.deliveryDate!!)
+        holder.collectionDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate)
+        holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
         holder.deliveryBounds.text =
-                context.getString(R.string.from_code) + getTimeStringRepresentation(laundry.deliveryDateOpensAt!!) +
+                context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
                         context.getString(R.string.end_bound_code) +
-                        getTimeStringRepresentation(laundry.deliveryDateClosesAt!!)
+                        DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
         holder.cost.text = laundry.orderCost.toString() + " \u20bd"
     }
 
@@ -102,18 +102,6 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
                 holder.categoryBack.visibility = View.GONE
             }
         }
-    }
-
-    fun getDateStringRepresentationWithoutTime(date: Date): String {
-        val format = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        format.timeZone = TimeZone.getDefault()
-        return format.format(date)
-    }
-
-    fun getTimeStringRepresentation(date: Date): String {
-        val format = SimpleDateFormat("HH:mm", Locale.getDefault())
-        format.timeZone = TimeZone.getDefault()
-        return format.format(date)
     }
 
     override fun getItemCount(): Int {
