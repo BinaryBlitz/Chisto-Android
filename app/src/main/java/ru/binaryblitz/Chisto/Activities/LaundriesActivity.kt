@@ -155,7 +155,6 @@ class LaundriesActivity : BaseActivity() {
                 ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
                 AndroidUtilities.getStringFieldFromJson(obj.get("name")),
                 AndroidUtilities.getStringFieldFromJson(obj.get("description")),
-                getTypeFromJson(obj),
                 AndroidUtilities.getDoubleFieldFromJson(obj.get("rating")).toFloat(),
                 parseDate(obj, "collection_date", "yyyy-MM-dd"),
                 parseDate(obj, "delivery_date", "yyyy-MM-dd"),
@@ -251,19 +250,6 @@ class LaundriesActivity : BaseActivity() {
                 }
 
         return laundryTreatments
-    }
-
-    private fun getTypeFromJson(`object`: JsonObject): Laundry.Type {
-        var type: Laundry.Type = Laundry.Type.EMPTY
-
-        val text = AndroidUtilities.getStringFieldFromJson(`object`.get("category"))
-        when (text) {
-            "premium" -> type = Laundry.Type.PREMIUM
-            "economy" -> type = Laundry.Type.ECONOMY
-            "fast" -> type = Laundry.Type.FAST
-        }
-
-        return type
     }
 
     private fun loadLastOrder() {

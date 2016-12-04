@@ -12,29 +12,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="110dp">
             <ImageView
-                    android:layout_width="72dp"
-                    android:layout_gravity="end"
-                    android:id="@+id/type"
-                    android:layout_marginTop="-2dp"
-                    android:layout_height="72dp"/>
-            <ImageView
                     android:layout_width="64dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
                     android:layout_marginStart="12dp"
                     android:id="@+id/category_icon"
                     android:layout_height="64dp"/>
-
-            <TextView
-                    android:layout_width="72dp"
-                    android:layout_gravity="end"
-                    android:id="@+id/type_text"
-                    android:rotation="45"
-                    android:gravity="center"
-                    android:textColor="#ffffff"
-                    android:layout_marginTop="-2dp"
-                    android:paddingBottom="26dp"
-                    android:layout_height="72dp"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:id="@+id/name"
