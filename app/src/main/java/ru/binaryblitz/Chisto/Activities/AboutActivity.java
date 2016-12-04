@@ -12,6 +12,7 @@ import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.AppConfig;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class AboutActivity extends BaseActivity {
@@ -37,21 +38,21 @@ public class AboutActivity extends BaseActivity {
         findViewById(R.id.phone_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AndroidUtilities.INSTANCE.call(AboutActivity.this, "+74957667849");
+                AndroidUtilities.INSTANCE.call(AboutActivity.this, AppConfig.phone);
             }
         });
 
         findViewById(R.id.bottom).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendEmail("info@chis.to");
+                sendEmail(AppConfig.baseEmail);
             }
         });
 
         findViewById(R.id.send_mail).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendEmail("partner@chis.to");
+                sendEmail(AppConfig.partnerEmail);
             }
         });
     }
@@ -60,28 +61,28 @@ public class AboutActivity extends BaseActivity {
         findViewById(R.id.instagram).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSocial("https://instagram.com/chistoapp");
+                openSocial(AppConfig.instagam);
             }
         });
 
         findViewById(R.id.add_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSocial("https://play.google.com/store/apps/details?id=ru.binaryblitz.Chisto");
+                openSocial(AppConfig.googlePlay);
             }
         });
 
         findViewById(R.id.facebook).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSocial("https://www.facebook.com/chistoapp");
+                openSocial(AppConfig.facebook);
             }
         });
 
         findViewById(R.id.vk).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSocial("https://vk.com/chistoapp");
+                openSocial(AppConfig.vk);
             }
         });
     }
@@ -94,11 +95,11 @@ public class AboutActivity extends BaseActivity {
     private void sendEmail(String address) {
         Intent i = new Intent(Intent.ACTION_SEND);
         i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL, new String[]{address});
+        i.putExtra(Intent.EXTRA_EMAIL, new String[] { address });
         i.putExtra(Intent.EXTRA_SUBJECT, "");
         i.putExtra(Intent.EXTRA_TEXT   , "");
         try {
-            startActivity(Intent.createChooser(i, "Отправить"));
+            startActivity(Intent.createChooser(i, getString(R.string.send_from_about)));
         } catch (android.content.ActivityNotFoundException ex) {
             LogUtil.logException(ex);
         }

@@ -116,7 +116,8 @@
     <string name="wrong_phone">Неверный номер телефона</string>
     <string name="profile_wrong_fields">Не все поля заполнены верно. Вы хотите выйти без сохранения введенных данных?</string>
     <string name="server_error">Ошибка сервера</string>
-    <string name="e_mail">E-mail</string>
+    <string name="e_mail">Email</string>
+    <string name="send_from_about">Отправить</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
