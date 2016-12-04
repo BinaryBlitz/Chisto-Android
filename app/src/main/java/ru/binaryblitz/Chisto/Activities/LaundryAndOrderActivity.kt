@@ -174,9 +174,17 @@ class LaundryAndOrderActivity : BaseActivity() {
         (findViewById(R.id.reviews_btn) as TextView).text = pluralText
 
         (findViewById(R.id.ratingBar) as SimpleRatingBar).rating = obj.get("rating").asFloat
+        setDates()
+    }
+
+    private fun setDates() {
+        (findViewById(R.id.curier_date) as TextView).text = intent.getStringExtra(EXTRA_COLLECTION_DATE)
+        (findViewById(R.id.delivery_date) as TextView).text = intent.getStringExtra(EXTRA_DELIVERY_DATE)
     }
 
     companion object {
         private val EXTRA_ID = "id"
+        private val EXTRA_COLLECTION_DATE = "collectionDate"
+        private val EXTRA_DELIVERY_DATE = "deliveryDate"
     }
 }
