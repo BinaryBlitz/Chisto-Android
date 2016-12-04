@@ -47,7 +47,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
             if (DeviceInfoStore.getUserObject(context) == null)
-                DeviceInfoStore.saveUser(context, User(1, null, null, null, collection[position].city.name, null, null, null))
+                DeviceInfoStore.saveUser(context, User(1, null, null, null, collection[position].city.name, null, null, null, null))
             context.finish()
         }
     }

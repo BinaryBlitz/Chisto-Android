@@ -13,6 +13,7 @@ import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.text.Spannable
 import android.text.SpannableString
+import android.text.TextUtils
 import android.text.style.ImageSpan
 import android.util.Base64
 import android.view.View
@@ -66,6 +67,10 @@ object AndroidUtilities {
         }
 
         return phoneNumberUtil.isValidNumber(phoneNumber)
+    }
+
+    fun validateEmail(target: CharSequence): Boolean {
+        return TextUtils.isEmpty(target) || android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
     fun call(context: Context, phone: String) {

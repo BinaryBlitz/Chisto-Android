@@ -23,6 +23,7 @@ class ContactInfoActivity : BaseActivity() {
     private var house: MaterialEditText? = null
     private var flat: MaterialEditText? = null
     private var comment: MaterialEditText? = null
+    private var email: MaterialEditText? = null
     private var phone: MaterialEditText? = null
 
     private var user: User? = null
@@ -81,13 +82,13 @@ class ContactInfoActivity : BaseActivity() {
         flat = findViewById(R.id.flat_text) as MaterialEditText
         phone = findViewById(R.id.phone) as MaterialEditText
         comment = findViewById(R.id.comment_text) as MaterialEditText
-
+        email = findViewById(R.id.email) as MaterialEditText
         phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
     }
 
     private fun setInfo() {
         user = DeviceInfoStore.getUserObject(this)
-
+        setTextToField(email!!, user!!.email)
         setTextToField(city!!, user!!.city)
         setTextToField(name!!, user!!.name)
         setTextToField(lastname!!, user!!.lastname)
@@ -99,7 +100,7 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setData() {
-        if (user == null) user = User(1, null, null, null, null, null, null, null)
+        if (user == null) user = User(1, null, null, null, null, null, null, null, null)
 
         user!!.name = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
@@ -108,6 +109,7 @@ class ContactInfoActivity : BaseActivity() {
         user!!.phone = phone!!.text.toString()
         user!!.street = street!!.text.toString()
         user!!.house = house!!.text.toString()
+        user!!.email = email!!.text.toString()
 
         DeviceInfoStore.saveUser(this, user)
 
@@ -128,12 +130,22 @@ class ContactInfoActivity : BaseActivity() {
         res = res and validateField(house!!, false)
         res = res and validateField(flat!!, false)
         res = res and validatePhoneField(phone!!)
+        res = res and validateEmailField(email!!)
 
         return res
     }
 
+    private fun validateEmailField(editText: MaterialEditText): Boolean {
+        if (!AndroidUtilities.validateEmail(editText.text.toString())) {
+            editText.error = getString(R.string.wrong_data)
+            return false
+        }
+
+        return true
+    }
+
     private fun validatePhoneField(editText: MaterialEditText): Boolean {
-        if (!AndroidUtilities.validatePhone(phone!!.text.toString())) {
+        if (!AndroidUtilities.validatePhone(editText.text.toString())) {
             editText.error = getString(R.string.wrong_data)
             return false
         }

@@ -53,5 +53,14 @@ public class ProfileActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.rules_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, WebActivity.class);
+                intent.putExtra("url", "https://docs.google.com/viewer?url=" + "https://chis.to/legal/terms-of-service.pdf");
+                startActivity(intent);
+            }
+        });
     }
 }

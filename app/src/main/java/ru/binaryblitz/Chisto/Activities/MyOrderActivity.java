@@ -71,7 +71,7 @@ public class MyOrderActivity extends BaseActivity {
         findViewById(R.id.phone_call).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AndroidUtilities.INSTANCE.call(MyOrderActivity.this, "+7 999 111-22-33");
+                AndroidUtilities.INSTANCE.call(MyOrderActivity.this, "+74957667849");
             }
         });
     }

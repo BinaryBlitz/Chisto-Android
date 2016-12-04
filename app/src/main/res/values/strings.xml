@@ -36,7 +36,7 @@
     <string name="about_bottom">Вы представитель химчистки?</string>
     <string name="write_bottom">Напишите нам для сотрудничества</string>
     <string name="profile">Профиль</string>
-    <string name="rules">Правила пользования</string>
+    <string name="rules">Пользовательское соглашение</string>
     <string name="my_orders">Мои заказы</string>
     <string name="contact_data">Контактные данные</string>
     <string name="cost">Стоимость</string>
@@ -116,6 +116,8 @@
     <string name="wrong_phone">Неверный номер телефона</string>
     <string name="profile_wrong_fields">Не все поля заполнены верно. Вы хотите выйти без сохранения введенных данных?</string>
     <string name="server_error">Ошибка сервера</string>
+    <string name="e_mail">Email</string>
+    <string name="send_from_about">Отправить</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
