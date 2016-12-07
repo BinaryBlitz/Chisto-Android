@@ -123,6 +123,8 @@ public class ItemInfoActivity extends BaseActivity {
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (adapter.getItemCount() == 0) return;
+
                 OrderList.changeCount(Integer.parseInt(count.getText().toString()));
                 finish();
             }

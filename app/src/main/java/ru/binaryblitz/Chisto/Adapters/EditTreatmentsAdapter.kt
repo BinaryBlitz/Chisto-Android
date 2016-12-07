@@ -26,7 +26,6 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_treatment_info, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -71,6 +70,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
         if (collection.size == 0) {
             OrderList.addTreatment(item)
+            notifyDataSetChanged()
             (context as ItemInfoActivity).onRemovalError()
         }
     }
