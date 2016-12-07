@@ -70,7 +70,7 @@ object AndroidUtilities {
     }
 
     fun validateEmail(target: CharSequence): Boolean {
-        return TextUtils.isEmpty(target) || android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
     fun call(context: Context, phone: String) {

@@ -143,6 +143,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
+        intent.putExtra(EXTRA_PRICE, allOrdersCost);
         startActivity(intent)
     }
 
@@ -184,6 +185,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     companion object {
         private val EXTRA_ID = "id"
+        private val EXTRA_PRICE = "price"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
     }
