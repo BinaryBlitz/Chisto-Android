@@ -44,7 +44,11 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     }
 
     fun setCollection(collection: ArrayList<Treatment>) {
-        this.collection = ArrayList(collection)
+        this.collection = collection
+    }
+
+    fun getCollection(): ArrayList<Treatment> {
+        return collection
     }
 
     override fun pendingRemoval(position: Int) {
@@ -64,6 +68,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
             itemsPendingRemoval!!.remove(item)
         }
         if (collection.contains(item)) {
+            collection.remove(item)
             notifyDataSetChanged()
         }
 

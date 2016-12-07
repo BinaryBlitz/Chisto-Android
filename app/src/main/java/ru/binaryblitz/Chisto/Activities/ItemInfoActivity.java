@@ -53,7 +53,7 @@ public class ItemInfoActivity extends BaseActivity {
         initRecyclerView();
 
         final Order order = OrderList.get(getIntent().getIntExtra(EXTRA_INDEX, 0));
-
+        OrderList.copyToBuffer(OrderList.getTreatments());
         setInfo(order);
         setOnClickListeners(order);
     }
@@ -124,7 +124,7 @@ public class ItemInfoActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (adapter.getItemCount() == 0) return;
-
+                OrderList.saveTreatments(adapter.getCollection());
                 OrderList.changeCount(Integer.parseInt(count.getText().toString()));
                 finish();
             }
@@ -173,7 +173,7 @@ public class ItemInfoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (OrderList.getTreatments() != null) {
-            adapter.setCollection(OrderList.getTreatments());
+            adapter.setCollection(OrderList.getBufferTreatments());
             adapter.notifyDataSetChanged();
         }
     }

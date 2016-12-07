@@ -10,6 +10,7 @@ import java.util.ArrayList;
 @SuppressWarnings("unused")
 public class OrderList {
     private static ArrayList<Order> orders = new ArrayList<>();
+    private static ArrayList<Treatment> bufferTreatments = new ArrayList<>();
     private static int laundryId = 0;
     private static int currentItem = 0;
 
@@ -52,6 +53,17 @@ public class OrderList {
         } else {
             return new ArrayList<>();
         }
+    }
+
+    public static void copyToBuffer(ArrayList<Treatment> treatments) {
+        bufferTreatments.clear();
+
+        for(Treatment treatment: treatments) bufferTreatments.add(treatment.copy());
+    }
+
+    public static ArrayList<Treatment> getBufferTreatments() {
+        if (currentItem < orders.size()) return bufferTreatments;
+        else return new ArrayList<>();
     }
 
     public static void remove(int i) {
@@ -129,8 +141,28 @@ public class OrderList {
             if (orders.get(currentItem).getTreatments() == null) {
                 orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
             }
-
             orders.get(currentItem).setTreatments(treatments);
+        }
+    }
+
+    public static void saveTreatments(ArrayList<Treatment> treatments) {
+        if (currentItem >= orders.size()) return;
+        addTreatments(copyFromBuffer());
+        bufferTreatments.clear();
+    }
+
+    private static ArrayList<Treatment> copyFromBuffer() {
+        ArrayList<Treatment> res = new ArrayList<>();
+        for(Treatment treatment: bufferTreatments) res.add(treatment.copy());
+
+        return res;
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void addTreatmentsForEditing(ArrayList<Treatment> treatments) {
+        if (currentItem < orders.size()) {
+            if (bufferTreatments == null) bufferTreatments = new ArrayList<>();
+            bufferTreatments = treatments;
         }
     }
 }
