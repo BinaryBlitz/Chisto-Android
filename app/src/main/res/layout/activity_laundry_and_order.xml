@@ -234,9 +234,9 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:layout_marginEnd="12dp"
-                      android:text="0 \u20bd"
+                      android:text="@string/free"
                       android:layout_marginRight="12dp"
-                      android:textSize="18sp"
+                      android:textSize="16sp"
                       android:id="@+id/delivery"
                       android:textColor="@color/colorAccent"
                       android:layout_gravity="end|center_vertical"/>
