@@ -121,6 +121,7 @@
     <string name="create_order_code">"Оформить заказ: "</string>
     <string name="from_code">"с "</string>
     <string name="end_bound_code">" до "</string>
+    <string name="empty_reviews">У химчистки пока слишком мало оценок, чтобы сформировать ее рейтинг</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>

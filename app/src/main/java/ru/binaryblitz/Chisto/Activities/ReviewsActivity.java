@@ -75,7 +75,7 @@ public class ReviewsActivity extends BaseActivity {
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
-        view.setEmptyView(null);
+        view.setEmptyView(findViewById(R.id.empty));
 
         layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         layout.setOnRefreshListener(null);
