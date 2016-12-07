@@ -76,14 +76,17 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
-        holder.collectionCost.text = laundry.deliveryCost.toString() + " \u20bd"
+        holder.collectionCost.text = getPeriod(laundry)
         holder.collectionDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate)
         holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
-        holder.deliveryBounds.text =
-                context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
-                        context.getString(R.string.end_bound_code) +
-                        DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
+        holder.deliveryBounds.text = getPeriod(laundry)
         holder.cost.text = laundry.orderCost.toString() + " \u20bd"
+    }
+
+    private fun getPeriod(laundry: Laundry): String {
+        return context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
+                context.getString(R.string.end_bound_code) +
+                DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
     }
 
     override fun getItemCount(): Int {

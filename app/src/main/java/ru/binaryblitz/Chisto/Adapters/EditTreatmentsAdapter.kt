@@ -44,7 +44,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     }
 
     fun setCollection(collection: ArrayList<Treatment>) {
-        this.collection = collection
+        this.collection = ArrayList(collection)
     }
 
     override fun pendingRemoval(position: Int) {
@@ -64,12 +64,11 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
             itemsPendingRemoval!!.remove(item)
         }
         if (collection.contains(item)) {
-            OrderList.removeTreatment(collection[position].id)
             notifyDataSetChanged()
         }
 
         if (collection.size == 0) {
-            OrderList.addTreatment(item)
+            collection.add(item)
             notifyDataSetChanged()
             (context as ItemInfoActivity).onRemovalError()
         }
