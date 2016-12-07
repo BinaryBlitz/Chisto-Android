@@ -71,8 +71,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
 
     private fun showDialog(item: CategoryItem) {
         MaterialDialog.Builder(context)
-                .title(R.string.app_name)
-                .content(R.string.decor_question)
+                .title(R.string.decor_question)
+                .content(context.getString(R.string.decor_help))
                 .positiveText(R.string.yes_code)
                 .negativeText(R.string.no_code)
                 .onPositive { dialog, action ->

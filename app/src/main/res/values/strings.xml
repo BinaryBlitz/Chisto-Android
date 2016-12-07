@@ -123,6 +123,9 @@
     <string name="end_bound_code">" до "</string>
     <string name="empty_reviews">У химчистки пока слишком мало оценок, чтобы сформировать ее рейтинг</string>
     <string name="free">Бесплатно</string>
+    <string name="decor_help">К декоративной отделке относятся стразы, бисер, пайетки, сложные кружевные композиции и прочие украшения одежды, нуждающиеся в особом уходе и внимании со стороны
+        химчистки?
+    </string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
