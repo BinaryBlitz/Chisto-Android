@@ -204,6 +204,8 @@ class SelectServiceActivity : BaseActivity() {
                             false)
                 }
 
+        sort(collection)
+
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
 
@@ -216,5 +218,9 @@ class SelectServiceActivity : BaseActivity() {
                 intent.getBooleanExtra(EXTRA_DECORATION, false)))
 
         adapter!!.notifyDataSetChanged()
+    }
+
+    private fun sort(collection: ArrayList<Treatment>) {
+        Collections.sort(collection) { treatment, t1 -> treatment.name.compareTo(t1.name) }
     }
 }

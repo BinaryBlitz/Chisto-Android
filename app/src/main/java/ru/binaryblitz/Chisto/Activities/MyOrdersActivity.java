@@ -16,6 +16,8 @@ import com.crashlytics.android.Crashlytics;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -102,8 +104,19 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
             collection.add(new MyOrder(object));
         }
 
+        sort(collection);
+
         adapter.setCollection(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private void sort(ArrayList<MyOrder> collection) {
+        Collections.sort(collection, new Comparator<MyOrder>() {
+            @Override
+            public int compare(MyOrder myOrder, MyOrder t1) {
+                return -myOrder.getCreateAt().compareTo(t1.getCreateAt());
+            }
+        });
     }
 
     @Override
