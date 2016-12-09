@@ -21,7 +21,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -40,6 +42,7 @@ import ru.binaryblitz.Chisto.Adapters.CitiesAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.City;
+import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
@@ -52,6 +55,9 @@ public class SelectCityActivity extends BaseActivity
 
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
+
+    private EditText phone;
+    private EditText city;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +73,7 @@ public class SelectCityActivity extends BaseActivity
         });
 
         initList();
+
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -85,6 +92,14 @@ public class SelectCityActivity extends BaseActivity
         });
 
         setOnClickListeners();
+    }
+
+    private void initDialog(MaterialDialog dialog) {
+        View view = dialog.getCustomView();
+        if (view == null) return;
+        phone = (EditText) view.findViewById(R.id.editText);
+        city = (EditText) view.findViewById(R.id.editText2);
+        phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
 
     @Override
@@ -206,7 +221,7 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void showDialog() {
-        new MaterialDialog.Builder(SelectCityActivity.this)
+        MaterialDialog dialog = new MaterialDialog.Builder(SelectCityActivity.this)
                 .title(ru.binaryblitz.Chisto.R.string.app_name)
                 .customView(ru.binaryblitz.Chisto.R.layout.city_not_found_dialog, true)
                 .positiveText(ru.binaryblitz.Chisto.R.string.send_code)
@@ -214,10 +229,44 @@ public class SelectCityActivity extends BaseActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
+                        if (checkDialogInput()) dialog.dismiss();
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+
+        initDialog(dialog);
+    }
+
+    private boolean checkDialogInput() {
+        String errorMessage = "";
+        boolean res = true;
+        if (!AndroidUtilities.INSTANCE.validatePhone(phone.getText().toString())) {
+            errorMessage += "Неверно введен номер телефона\n";
+            res = false;
+        }
+
+        if (city.getText().toString().isEmpty()) {
+            errorMessage += "Неверно введен город\n";
+            res = false;
+        }
+
+        if (!res) showErrorDialog(errorMessage);
+
+        return res;
+    }
+
+    private void showErrorDialog(String error) {
+        new MaterialDialog.Builder(SelectCityActivity.this)
+                .title(R.string.app_name)
+                .content(error)
+                .positiveText(R.string.ok_code)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         dialog.dismiss();
