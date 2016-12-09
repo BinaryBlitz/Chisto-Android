@@ -61,6 +61,13 @@
                           android:layout_marginTop="4dp"
                           android:id="@+id/curier_date"
                           android:layout_height="wrap_content"/>
+
+                <TextView android:layout_width="wrap_content"
+                          android:layout_marginTop="4dp"
+                          android:textSize="12sp"
+                          android:id="@+id/delivery_bounds"
+                          android:layout_gravity="center_horizontal"
+                          android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout
                     android:layout_width="0dp"
@@ -84,6 +91,13 @@
                           android:layout_marginTop="4dp"
                           android:layout_gravity="center_horizontal"
                           android:id="@+id/delivery_date"
+                          android:layout_height="wrap_content"/>
+
+                <TextView android:layout_width="wrap_content"
+                          android:layout_marginTop="4dp"
+                          android:textSize="12sp"
+                          android:id="@+id/delivery_bounds2"
+                          android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
@@ -156,13 +170,13 @@
                 android:textSize="36sp"
                 android:textColor="#c9c9c9"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="208dp"
+                android:layout_marginTop="228dp"
                 android:text="\u25B2"/>
 
     <FrameLayout
             android:layout_width="match_parent"
             android:background="#eaeaea"
-            android:layout_marginTop="230dp"
+            android:layout_marginTop="250dp"
             android:layout_marginBottom="144dp"
             android:layout_height="match_parent">
        <LinearLayout
