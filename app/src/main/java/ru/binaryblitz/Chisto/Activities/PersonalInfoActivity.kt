@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -77,12 +78,11 @@ class PersonalInfoActivity : BaseActivity() {
         val array = JsonArray()
         val orders = OrderList.get()
 
-        for (order in orders!!.iterator()) {
-            val treatments = order.treatments
-            for (treatment in treatments!!.iterator()) {
+        for ((category, treatments, count) in orders!!.iterator()) {
+            for ((id) in treatments!!.iterator()) {
                 val local = JsonObject()
-                local.addProperty("laundry_treatment_id", treatment.id)
-                local.addProperty("quantity", order.count)
+                local.addProperty("laundry_treatment_id", id)
+                local.addProperty("quantity", count)
                 array.add(local)
             }
         }
@@ -185,6 +185,8 @@ class PersonalInfoActivity : BaseActivity() {
         comment = findViewById(R.id.comment_text) as MaterialEditText
         email = findViewById(R.id.email) as MaterialEditText
         phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        (findViewById(R.id.price) as TextView).text = intent.getIntExtra(EXTRA_PRICE, 0).toString() + " \u20bd"
     }
 
     private fun setInfo() {
@@ -294,6 +296,7 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     companion object {
+        private val EXTRA_PRICE = "price"
         var orderId: Int = 0
     }
 }

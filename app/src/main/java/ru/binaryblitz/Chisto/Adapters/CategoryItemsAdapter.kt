@@ -23,7 +23,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     private var categories: ArrayList<CategoryItem>? = null
     private var color: Int = Color.parseColor("#212121")
 
-    val EXTRA_DECOR = "decor"
+    val EXTRA_DECORATION = "decoration"
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
     val EXTRA_COLOR = "color"
@@ -71,8 +71,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
 
     private fun showDialog(item: CategoryItem) {
         MaterialDialog.Builder(context)
-                .title(R.string.app_name)
-                .content(R.string.decor_question)
+                .title(R.string.decoration_question)
+                .content(context.getString(R.string.decoration_help))
                 .positiveText(R.string.yes_code)
                 .negativeText(R.string.no_code)
                 .onPositive { dialog, action ->
@@ -86,7 +86,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
 
     private fun openActivity(item: CategoryItem, decor: Boolean) {
         val intent = Intent(context, SelectServiceActivity::class.java)
-        intent.putExtra(EXTRA_DECOR, decor)
+        intent.putExtra(EXTRA_DECORATION, decor)
         intent.putExtra(EXTRA_ID, item.id)
         intent.putExtra(EXTRA_NAME, item.name)
         intent.putExtra(EXTRA_COLOR, color)

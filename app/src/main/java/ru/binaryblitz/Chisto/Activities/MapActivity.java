@@ -144,6 +144,7 @@ public class MapActivity extends BaseActivity
         });
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void autocompleteClick(List<Address> addresses, String address) {
         double latitude= addresses.get(0).getLatitude();
         double longitude= addresses.get(0).getLongitude();
@@ -247,7 +248,6 @@ public class MapActivity extends BaseActivity
         List<Address> addresses;
         try {
             addresses = geocoder.getFromLocation(selected_lat_lng.latitude, selected_lat_lng.longitude, 1);
-            String city = addresses.get(0).getLocality();
             String street = addresses.get(0).getThoroughfare();
             String house = addresses.get(0).getSubThoroughfare();
 
@@ -255,15 +255,12 @@ public class MapActivity extends BaseActivity
             if (user == null) return;
 
             user.setHouse(house);
-            user.setCity(city);
             user.setStreet(street);
 
-            LogUtil.logError(user.asString());
-
             DeviceInfoStore.saveUser(MapActivity.this, user);
-
-            LogUtil.logError(user.asString());
-        } catch (IOException ignored) {}
+        } catch (IOException e) {
+            LogUtil.logException(e);
+        }
     }
 
     @Override

@@ -24,6 +24,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private val EXTRA_ID = "id"
     private val EXTRA_COLLECTION_DATE = "collectionDate"
     private val EXTRA_DELIVERY_DATE = "deliveryDate"
+    private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
 
     init {
         Image.init(context)
@@ -56,6 +57,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
             intent.putExtra(EXTRA_ID, laundry.id)
             intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
             intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
+            intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry))
             context.startActivity(intent)
         }
     }
@@ -76,14 +78,17 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
-        holder.collectionCost.text = laundry.deliveryCost.toString() + " \u20bd"
+        holder.collectionCost.text = getPeriod(laundry)
         holder.collectionDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate)
         holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
-        holder.deliveryBounds.text =
-                context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
-                        context.getString(R.string.end_bound_code) +
-                        DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
+        holder.deliveryBounds.text = getPeriod(laundry)
         holder.cost.text = laundry.orderCost.toString() + " \u20bd"
+    }
+
+    private fun getPeriod(laundry: Laundry): String {
+        return context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
+                context.getString(R.string.end_bound_code) +
+                DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
     }
 
     override fun getItemCount(): Int {

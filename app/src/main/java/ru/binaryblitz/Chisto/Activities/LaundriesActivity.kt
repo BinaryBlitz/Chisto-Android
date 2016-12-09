@@ -192,7 +192,7 @@ class LaundriesActivity : BaseActivity() {
     private fun fillLaundryTreatments(treatments: JsonArray): ArrayList<Int> {
         val laundryTreatments = (0..treatments.size() - 1)
                 .map { treatments.get(it).asJsonObject }
-                .mapTo(ArrayList<Int>()) { AndroidUtilities.getIntFieldFromJson(it.get("treatment").asJsonObject.get("id")) }
+                .mapTo(ArrayList<Int>()) { AndroidUtilities.getIntFieldFromJson(it.get("id")) }
 
         return laundryTreatments
     }
@@ -245,7 +245,7 @@ class LaundriesActivity : BaseActivity() {
         val laundryTreatments = (0..treatments.size() - 1)
                 .map { treatments.get(it).asJsonObject }
                 .mapTo(ArrayList<Pair<Int, Int>>()) {
-                    Pair(AndroidUtilities.getIntFieldFromJson(it.get("treatment").asJsonObject.get("id")),
+                    Pair(AndroidUtilities.getIntFieldFromJson(it.get("id")),
                             AndroidUtilities.getIntFieldFromJson(it.get("price")))
                 }
 
