@@ -28,6 +28,7 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class CategoryInfoActivity extends BaseActivity{
     private CategoryItemsAdapter adapter;
@@ -94,6 +95,7 @@ public class CategoryInfoActivity extends BaseActivity{
     }
 
     private void parseAnswer(JsonArray array) {
+        LogUtil.logError(array.toString());
         ArrayList<CategoryItem> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
@@ -102,7 +104,8 @@ public class CategoryInfoActivity extends BaseActivity{
                     AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
                     ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description"))
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
+                    AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("use_area"))
             ));
         }
 
