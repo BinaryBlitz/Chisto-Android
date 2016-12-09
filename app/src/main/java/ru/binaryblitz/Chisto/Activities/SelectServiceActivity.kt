@@ -31,7 +31,7 @@ class SelectServiceActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
 
     val EXTRA_COLOR = "color"
-    val EXTRA_DECOR = "decor"
+    val EXTRA_DECORATION = "decoration"
     val EXTRA_EDIT = "edit"
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
@@ -88,12 +88,14 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun openActivity() {
         if (adapter!!.getSelected().size != 0) {
-            OrderList.addTreatments(adapter!!.getSelected())
             OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
             if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+                OrderList.addTreatments(adapter!!.getSelected())
                 val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+            } else {
+                OrderList.addTreatmentsForEditing(adapter!!.getSelected())
             }
 
             finish()
@@ -140,7 +142,7 @@ class SelectServiceActivity : BaseActivity() {
                 "Декор",
                 "Описание",
                 100,
-                intent.getBooleanExtra(EXTRA_DECOR, false)))
+                intent.getBooleanExtra(EXTRA_DECORATION, false)))
 
         adapter!!.notifyDataSetChanged()
     }

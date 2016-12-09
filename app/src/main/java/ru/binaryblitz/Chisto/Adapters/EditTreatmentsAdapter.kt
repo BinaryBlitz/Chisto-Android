@@ -26,7 +26,6 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_treatment_info, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -48,6 +47,10 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
         this.collection = collection
     }
 
+    fun getCollection(): ArrayList<Treatment> {
+        return collection
+    }
+
     override fun pendingRemoval(position: Int) {
         val item = collection[position]
         if (!itemsPendingRemoval!!.contains(item)) {
@@ -65,12 +68,13 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
             itemsPendingRemoval!!.remove(item)
         }
         if (collection.contains(item)) {
-            OrderList.removeTreatment(collection[position].id)
+            collection.remove(item)
             notifyDataSetChanged()
         }
 
         if (collection.size == 0) {
-            OrderList.addTreatment(item)
+            collection.add(item)
+            notifyDataSetChanged()
             (context as ItemInfoActivity).onRemovalError()
         }
     }

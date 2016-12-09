@@ -46,9 +46,7 @@ class RegistrationActivity : BaseActivity() {
         codeEditText = findViewById(R.id.code_field) as MaterialEditText
         phoneEditText!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        Handler().post {
-            phoneEditText!!.requestFocus()
-        }
+        Handler().post { phoneEditText!!.requestFocus() }
     }
 
     override fun onBackPressed() {
@@ -129,6 +127,7 @@ class RegistrationActivity : BaseActivity() {
 
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
         intent.putExtra(EXTRA_PHONE, phone)
+        intent.putExtra(EXTRA_PRICE, intent.getIntExtra(EXTRA_PRICE, 0))
         startActivity(intent)
         finish()
     }
@@ -220,6 +219,7 @@ class RegistrationActivity : BaseActivity() {
     companion object {
         private val ANIMATION_DURATION = 700
         private var token: String? = null
+        private val EXTRA_PRICE = "price"
         private var phoneFromServer: String? = null
     }
 }

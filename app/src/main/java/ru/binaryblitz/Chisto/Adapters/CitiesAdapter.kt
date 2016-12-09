@@ -30,8 +30,8 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
-
-        holder.name.text = collection[position].city.name
+        val city = collection[position].city
+        holder.name.text = city.name
 
         if (collection[position].selected) {
             holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -43,11 +43,11 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, OrdersActivity::class.java)
-            DeviceInfoStore.saveCity(context, collection[position].city)
+            DeviceInfoStore.saveCity(context, city)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
             if (DeviceInfoStore.getUserObject(context) == null)
-                DeviceInfoStore.saveUser(context, User(1, null, null, null, collection[position].city.name, null, null, null, null))
+                DeviceInfoStore.saveUser(context, User(1, "null", "null", "null", city.name, "null", "null", "null", "null"))
             context.finish()
         }
     }

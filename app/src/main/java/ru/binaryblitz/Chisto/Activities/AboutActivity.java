@@ -61,7 +61,7 @@ public class AboutActivity extends BaseActivity {
         findViewById(R.id.instagram).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openSocial(AppConfig.instagam);
+                openSocial(AppConfig.instagram);
             }
         });
 

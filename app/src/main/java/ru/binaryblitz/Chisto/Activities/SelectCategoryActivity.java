@@ -106,16 +106,22 @@ public class SelectCategoryActivity extends BaseActivity {
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
-            collection.add(new Category(
-                    AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
-                    ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
-                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
-                    Color.parseColor(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("color")))
-            ));
+            boolean featured = AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"));
+            if (featured) collection.add(0, parseCategory(object));
+            else collection.add(parseCategory(object));
         }
 
         adapter.setCategories(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private Category parseCategory(JsonObject object) {
+        return new Category(
+                AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
+                ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
+                AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
+                Color.parseColor(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("color")))
+        );
     }
 }
