@@ -144,7 +144,7 @@ class LaundriesActivity : BaseActivity() {
             countSums(i)
             collection.add(parseLaundry(obj))
         }
-
+        adapter!!.sortByRating()
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
     }

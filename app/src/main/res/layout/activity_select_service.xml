@@ -3,7 +3,7 @@
         android:id="@+id/refresh"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/main"
@@ -17,98 +17,86 @@
                 android:layout_height="220dp"
                 android:background="@color/colorPrimary"
                 android:fitsSystemWindows="true">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/collapsing_toolbar"
+            <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="164dp"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                    android:fitsSystemWindows="true"
-                    android:minHeight="112dip"
-                    app:expandedTitleMarginStart="48dp"
-                    app:expandedTitleMarginBottom="50dp"
-                    app:expandedTitleMarginEnd="64dp">
+                    android:layout_height="56dp"
+                    android:contentInsetStart="0dp"
+                    android:contentInsetLeft="0dp"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin"
+                    android:minHeight="?attr/actionBarSize">
                 <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fitsSystemWindows="true"
-                        android:layout_marginTop="56dp"
-                        app:layout_collapseMode="parallax"
-                        android:id="@+id/third">
+                        android:layout_height="match_parent">
+                    <ImageView
+                            android:id="@+id/left_btn"
+                            android:layout_width="56dp"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerInside"
+                            android:layout_gravity="start"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_back"
+                            android:padding="13dp" />
 
                     <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:id="@+id/main_title"
-                            android:textColor="#ffffff"
-                            android:textSize="28sp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginEnd="12dp"
-                            android:layout_marginStart="12dp"
-                            android:layout_marginLeft="12dp"
-                            app:layout_collapseMode="pin"
-                            android:textStyle="bold"
-                            android:maxLines="1"
+                            android:layout_height="match_parent"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="@string/service_select"
                             android:layout_gravity="center"
-                    />
-
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:id="@+id/textView12"
-                            app:layout_collapseMode="parallax"
-                            android:textColor="#ffffff"
-                            android:textSize="18sp"
-                            android:layout_marginTop="40dp"
-                            android:layout_gravity="center"
-                            android:text="@string/what_need_to_do"
-                            android:maxLines="1"/>
+                            android:id="@+id/date_text_view"
+                            android:textAllCaps="false"
+                            android:gravity="center_vertical"
+                            android:typeface="sans"
+                            android:textSize="20sp"
+                            android:textColor="#ffffff" />
                 </FrameLayout>
-                <android.support.v7.widget.Toolbar
-                        android:id="@+id/toolbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:contentInsetStart="0dp"
-                        android:contentInsetLeft="0dp"
-                        app:contentInsetLeft="0dp"
-                        app:contentInsetStart="0dp"
-                        app:layout_collapseMode="pin"
-                        android:minHeight="?attr/actionBarSize">
-                    <FrameLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-                        <ImageView
-                                android:id="@+id/left_btn"
-                                android:layout_width="56dp"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerInside"
-                                android:layout_gravity="start"
-                                android:background="?attr/selectableItemBackgroundBorderless"
-                                android:src="@drawable/ic_back"
-                                android:padding="13dp" />
+            </android.support.v7.widget.Toolbar>
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="parallax"
+                    android:id="@+id/third">
 
-                        <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:textAppearance="?android:attr/textAppearanceLarge"
-                                android:text="@string/service_select"
-                                android:layout_gravity="center"
-                                android:id="@+id/date_text_view"
-                                android:textAllCaps="false"
-                                android:gravity="center_vertical"
-                                android:typeface="sans"
-                                android:textSize="20sp"
-                                android:textColor="#ffffff" />
-                    </FrameLayout>
-                </android.support.v7.widget.Toolbar>
-            </android.support.design.widget.CollapsingToolbarLayout>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/main_title"
+                        android:textColor="#ffffff"
+                        android:textSize="28sp"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginLeft="12dp"
+                        app:layout_collapseMode="pin"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:layout_gravity="center"
+                />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/textView12"
+                        app:layout_collapseMode="parallax"
+                        android:textColor="#ffffff"
+                        android:textSize="18sp"
+                        android:layout_marginTop="40dp"
+                        android:layout_gravity="center"
+                        android:text="@string/what_need_to_do"
+                        android:maxLines="1"/>
+            </FrameLayout>
         </android.support.design.widget.AppBarLayout>
 
         <ru.binaryblitz.Chisto.Custom.RecyclerListView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
+                android:layout_marginTop="220dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 android:layout_marginBottom="56dp"
                 android:layout_height="match_parent">
@@ -128,5 +116,16 @@
                 android:textSize="18sp"
                 android:layout_gravity="bottom"
                 android:gravity="center"/>
-    </android.support.design.widget.CoordinatorLayout>
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:background="#99000000"
+                android:id="@+id/dialog"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+            <include layout="@layout/dialog_size" />
+
+        </FrameLayout>
+    </FrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

@@ -27,6 +27,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
     val EXTRA_COLOR = "color"
+    val EXTRA_USE_AREA = "userArea"
 
     init {
         Image.init(context)
@@ -90,6 +91,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         intent.putExtra(EXTRA_ID, item.id)
         intent.putExtra(EXTRA_NAME, item.name)
         intent.putExtra(EXTRA_COLOR, color)
+        intent.putExtra(EXTRA_USE_AREA, item.userArea)
         OrderList.add(Order(item, null, 1, color))
         context.startActivity(intent)
     }

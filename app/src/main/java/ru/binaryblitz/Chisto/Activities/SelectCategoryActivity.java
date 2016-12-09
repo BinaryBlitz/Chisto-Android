@@ -15,6 +15,8 @@ import android.view.View;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -28,7 +30,6 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity {
@@ -109,7 +110,11 @@ public class SelectCategoryActivity extends BaseActivity {
             boolean featured = AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"));
             if (featured) collection.add(0, parseCategory(object));
             else collection.add(parseCategory(object));
+
+            collection.add(parseCategory(object));
         }
+
+        sort(collection);
 
         adapter.setCategories(collection);
         adapter.notifyDataSetChanged();
@@ -121,7 +126,19 @@ public class SelectCategoryActivity extends BaseActivity {
                 ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
                 AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
                 AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
-                Color.parseColor(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("color")))
+                Color.parseColor(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("color"))),
+                AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"))
         );
+    }
+
+    private void sort(ArrayList<Category> collection) {
+        Collections.sort(collection, new Comparator<Category>() {
+            @Override
+            public int compare(Category category, Category t1) {
+                if (category.getFeatured() && !t1.getFeatured()) return -1;
+                else if (!category.getFeatured() && t1.getFeatured()) return 1;
+                else return category.getName().compareTo(t1.getName());
+            }
+        });
     }
 }

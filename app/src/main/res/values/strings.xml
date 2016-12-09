@@ -126,6 +126,13 @@
     <string name="decoration_help">К декоративной отделке относятся стразы, бисер, пайетки, сложные кружевные композиции и прочие украшения одежды, нуждающиеся в особом уходе и внимании со стороны
         химчистки?
     </string>
+    <string name="ok_code">OK</string>
+    <string name="city_not_found_helper">Оставьте контактные данные и мы оповестим вас, когда сервис станет доступен в вашем городе</string>
+    <string name="select_size">Укажите размеры сторон вещи в сантиметрах</string>
+    <string name="square">Площадь</string>
+    <string name="width">Ширина, см</string>
+    <string name="length">Длина, см</string>
+    <string name="cancel">Отмена</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>

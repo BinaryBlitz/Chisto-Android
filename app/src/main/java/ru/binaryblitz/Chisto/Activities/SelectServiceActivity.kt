@@ -8,6 +8,9 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonArray
@@ -22,6 +25,8 @@ import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
+import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
@@ -35,24 +40,20 @@ class SelectServiceActivity : BaseActivity() {
     val EXTRA_EDIT = "edit"
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
+    val EXTRA_USE_AREA = "userArea"
+
+    private var width: Int = 0
+    private var length: Int = 0
+    private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_select_service)
 
-        findViewById(R.id.appbar).setBackgroundColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
-        AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
-        (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
-
-        findViewById(R.id.left_btn).setOnClickListener {
-            finishActivity()
-        }
-
-        findViewById(R.id.cont_btn).setOnClickListener {
-            openActivity()
-        }
-
+        initElements()
+        setOnClickListeners()
+        initSizeDialog()
         initList()
 
         Handler().post({
@@ -61,8 +62,78 @@ class SelectServiceActivity : BaseActivity() {
         })
     }
 
+    private fun initElements() {
+        findViewById(R.id.appbar).setBackgroundColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+        AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+        (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
+    }
+
+    private fun setOnClickListeners() {
+        findViewById(R.id.left_btn).setOnClickListener {
+            finishActivity()
+        }
+
+        findViewById(R.id.cont_btn).setOnClickListener {
+            if (intent.getBooleanExtra(EXTRA_USE_AREA, false)) showSizeDialog()
+            else openActivity()
+        }
+
+        findViewById(R.id.size_ok_btn).setOnClickListener {
+            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+            openActivity()
+        }
+
+        findViewById(R.id.cancel_btn).setOnClickListener {
+            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+        }
+    }
+
     override fun onBackPressed() {
         finishActivity()
+    }
+
+    private fun initSizeDialog() {
+        val lengthEditText = findViewById(R.id.length_text) as EditText
+        val widthEditText = findViewById(R.id.width_text) as EditText
+        val square = findViewById(R.id.square_text) as TextView
+
+        lengthEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun afterTextChanged(editable: Editable) {
+                recomputeSquare(false, editable, square)
+            }
+        })
+
+        widthEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun afterTextChanged(editable: Editable) {
+                recomputeSquare(true, editable, square)
+            }
+        })
+    }
+
+    private fun showSizeDialog() {
+        Handler().post {
+            dialogOpened = true
+            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@SelectServiceActivity)
+        }
+    }
+
+    private fun recomputeSquare(width: Boolean, editable: Editable, square: TextView) {
+        try {
+            if (editable.isNotEmpty() && editable.toString() != "0") {
+                if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
+                square.text = java.lang.Double.toString((length * this.width).toDouble() / 1000.0) + " см"
+            }
+        } catch (e: Exception) {
+            LogUtil.logException(e)
+        }
     }
 
     private fun finishActivity() {
@@ -133,6 +204,8 @@ class SelectServiceActivity : BaseActivity() {
                             false)
                 }
 
+        sort(collection)
+
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
 
@@ -145,5 +218,9 @@ class SelectServiceActivity : BaseActivity() {
                 intent.getBooleanExtra(EXTRA_DECORATION, false)))
 
         adapter!!.notifyDataSetChanged()
+    }
+
+    private fun sort(collection: ArrayList<Treatment>) {
+        Collections.sort(collection) { treatment, t1 -> treatment.name.compareTo(t1.name) }
     }
 }
