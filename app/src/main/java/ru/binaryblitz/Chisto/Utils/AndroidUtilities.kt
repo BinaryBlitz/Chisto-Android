@@ -80,22 +80,22 @@ object AndroidUtilities {
     }
 
     fun getStringFieldFromJson(element: JsonElement?): String {
-        if(element == null || element.isJsonNull) return ""
+        if (element == null || element.isJsonNull) return ""
         else return element.asString
     }
 
     fun getIntFieldFromJson(element: JsonElement?): Int {
-        if(element == null || element.isJsonNull) return 0
+        if (element == null || element.isJsonNull) return 0
         else return element.asInt
     }
 
     fun getDoubleFieldFromJson(element: JsonElement?): Double {
-        if(element == null || element.isJsonNull) return 0.0
+        if (element == null || element.isJsonNull) return 0.0
         else return element.asDouble
     }
 
     fun getBooleanFieldFromJson(element: JsonElement?): Boolean {
-        if(element == null || element.isJsonNull) return false
+        if (element == null || element.isJsonNull) return false
         else return element.asBoolean
     }
 
@@ -179,10 +179,9 @@ object AndroidUtilities {
         }
 
         if (view is ViewGroup) {
-            for (i in 0..view.childCount - 1) {
-                val innerView = view.getChildAt(i)
-                setupUIForAutoKeyBoardHide(innerView)
-            }
+            (0..view.childCount - 1)
+                    .map { view.getChildAt(it) }
+                    .forEach { setupUIForAutoKeyBoardHide(it) }
         }
     }
 
