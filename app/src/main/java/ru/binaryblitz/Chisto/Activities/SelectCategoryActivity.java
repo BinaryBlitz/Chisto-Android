@@ -110,8 +110,6 @@ public class SelectCategoryActivity extends BaseActivity {
             boolean featured = AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"));
             if (featured) collection.add(0, parseCategory(object));
             else collection.add(parseCategory(object));
-
-            collection.add(parseCategory(object));
         }
 
         sort(collection);
