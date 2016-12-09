@@ -106,7 +106,8 @@ public class SelectCategoryActivity extends BaseActivity {
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
-            if (AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"))) collection.add(0, parseCategory(object));
+            boolean featured = AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"));
+            if (featured) collection.add(0, parseCategory(object));
             else collection.add(parseCategory(object));
         }
 

@@ -31,7 +31,7 @@ class SelectServiceActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
 
     val EXTRA_COLOR = "color"
-    val EXTRA_DECOR = "decor"
+    val EXTRA_DECORATION = "decoration"
     val EXTRA_EDIT = "edit"
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
@@ -142,7 +142,7 @@ class SelectServiceActivity : BaseActivity() {
                 "Декор",
                 "Описание",
                 100,
-                intent.getBooleanExtra(EXTRA_DECOR, false)))
+                intent.getBooleanExtra(EXTRA_DECORATION, false)))
 
         adapter!!.notifyDataSetChanged()
     }

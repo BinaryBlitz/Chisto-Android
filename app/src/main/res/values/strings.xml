@@ -49,7 +49,7 @@
     <string name="cont_code">Продолжить</string>
     <string name="send_code">ОТПРАВИТЬ</string>
     <string name="back_code">НАЗАД</string>
-    <string name="decor_question">Eсть ли у вещи декоративная отделка?</string>
+    <string name="decoration_question">Eсть ли у вещи декоративная отделка?</string>
     <string name="laundries">Химчистки</string>
     <string name="title">Фильтр</string>
     <string name="choose">Выбрать</string>
@@ -123,7 +123,7 @@
     <string name="end_bound_code">" до "</string>
     <string name="empty_reviews">У химчистки пока слишком мало оценок, чтобы сформировать ее рейтинг</string>
     <string name="free">Бесплатно</string>
-    <string name="decor_help">К декоративной отделке относятся стразы, бисер, пайетки, сложные кружевные композиции и прочие украшения одежды, нуждающиеся в особом уходе и внимании со стороны
+    <string name="decoration_help">К декоративной отделке относятся стразы, бисер, пайетки, сложные кружевные композиции и прочие украшения одежды, нуждающиеся в особом уходе и внимании со стороны
         химчистки?
     </string>
     <plurals name="review">
