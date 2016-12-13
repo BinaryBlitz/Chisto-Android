@@ -32,6 +32,7 @@ import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.ColorsList;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity {
@@ -105,6 +106,7 @@ public class SelectCategoryActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonArray array) {
+        LogUtil.logError(array.toString());
         ArrayList<Category> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {

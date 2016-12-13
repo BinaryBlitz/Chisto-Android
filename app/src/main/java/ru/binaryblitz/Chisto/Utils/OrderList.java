@@ -13,6 +13,15 @@ public class OrderList {
     private static ArrayList<Treatment> bufferTreatments = new ArrayList<>();
     private static int laundryId = 0;
     private static int currentItem = 0;
+    private static double decorationMultiplier = 1.0;
+
+    public static double getDecorationMultiplier() {
+        return decorationMultiplier;
+    }
+
+    public static void setDecorationMultiplier(double decorationMultiplier) {
+        OrderList.decorationMultiplier = decorationMultiplier;
+    }
 
     public static void add(Order order) {
         orders.add(order);

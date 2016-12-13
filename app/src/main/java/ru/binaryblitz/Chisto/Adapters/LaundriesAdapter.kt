@@ -53,6 +53,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.itemView.setOnClickListener {
             val intent = Intent(context, LaundryAndOrderActivity::class.java)
             OrderList.setLaundryId(laundry.id)
+            OrderList.setDecorationMultiplier(laundry.decorationMultiplier!!)
             (context as LaundriesActivity).countSums(laundry.index!!)
             intent.putExtra(EXTRA_ID, laundry.id)
             intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
