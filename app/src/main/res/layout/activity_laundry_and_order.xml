@@ -170,13 +170,13 @@
                 android:textSize="36sp"
                 android:textColor="#c9c9c9"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="228dp"
+                android:layout_marginTop="232dp"
                 android:text="\u25B2"/>
 
     <FrameLayout
             android:layout_width="match_parent"
             android:background="#eaeaea"
-            android:layout_marginTop="250dp"
+            android:layout_marginTop="258dp"
             android:layout_marginBottom="144dp"
             android:layout_height="match_parent">
        <LinearLayout
