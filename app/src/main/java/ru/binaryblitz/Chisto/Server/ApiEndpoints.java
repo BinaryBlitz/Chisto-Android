@@ -41,12 +41,10 @@ public interface ApiEndpoints {
     Call<JsonArray> getOrders();
 
     @PATCH("verification_token")
-    Call<JsonObject> verifyPhoneNumber(@Query("id") String id,
-                                       @Query("code") String code,
-                                       @Query("phone_number") String number);
+    Call<JsonObject> verifyPhoneNumber(@Body JsonObject token);
 
     @POST("verification_token")
-    Call<JsonObject> authWithPhoneNumber(@Query("phone_number") String number);
+    Call<JsonObject> authWithPhoneNumber(@Body JsonObject number);
 
     @POST("laundries/{id}/orders?api_token=foobar")
     Call<JsonObject> sendOrder(@Path("id") int id, @Body JsonObject object);

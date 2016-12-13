@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.TextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
@@ -26,7 +29,6 @@ import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
 
-
 class RegistrationActivity : BaseActivity() {
 
     val EXTRA_PHONE = "phone"
@@ -35,16 +37,14 @@ class RegistrationActivity : BaseActivity() {
 
     private var phoneEditText: MaterialEditText? = null
     private var codeEditText: MaterialEditText? = null
+    private var continueButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
+        initElements()
         setOnClickListeners()
-
-        phoneEditText = findViewById(R.id.phone) as MaterialEditText
-        codeEditText = findViewById(R.id.code_field) as MaterialEditText
-        phoneEditText!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         Handler().post { phoneEditText!!.requestFocus() }
     }
@@ -56,6 +56,25 @@ class RegistrationActivity : BaseActivity() {
             animateBackBtn()
             resetFields()
         }
+    }
+
+    private fun initElements() {
+        continueButton = findViewById(R.id.button) as Button
+        phoneEditText = findViewById(R.id.phone) as MaterialEditText
+        codeEditText = findViewById(R.id.code_field) as MaterialEditText
+        phoneEditText!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        codeEditText!!.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (p0!!.length == 5) verifyRequest()
+            }
+        })
     }
 
     private fun animateBackBtn() {
@@ -78,6 +97,7 @@ class RegistrationActivity : BaseActivity() {
 
     private fun resetFields() {
         codeEditText!!.setText("")
+        continueButton!!.visibility = View.VISIBLE
         (findViewById(R.id.textView23) as TextView).text = getString(R.string.code_send)
         (findViewById(R.id.title_text) as TextView).text = getString(R.string.type_phone)
         code = false
@@ -94,10 +114,9 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-
-        findViewById(R.id.button).setOnClickListener { v ->
+        continueButton!!.setOnClickListener { v ->
             AndroidUtilities.hideKeyboard(v)
-            if (code) verifyRequest() else processPhoneInput()
+            processPhoneInput()
         }
 
         findViewById(R.id.left_btn).setOnClickListener {
@@ -121,15 +140,65 @@ class RegistrationActivity : BaseActivity() {
 
     private fun verifyRequest() {
         if (!checkCodeInput()) return
+        executeVerifyRequest()
+    }
 
+    private fun saveInfo(obj: JsonObject) {
         val phone = phoneEditText!!.text.toString()
         savePhone(phone)
+        saveToken(obj)
+        finishActivity(phone)
+    }
 
+    private fun saveToken(obj: JsonObject) {
+        val token = obj.get("api_token")
+        if (!token.isJsonNull) DeviceInfoStore.saveToken(this, token.asString)
+    }
+
+    private fun finishActivity(phone: String) {
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
         intent.putExtra(EXTRA_PHONE, phone)
         intent.putExtra(EXTRA_PRICE, intent.getIntExtra(EXTRA_PRICE, 0))
         startActivity(intent)
         finish()
+    }
+
+    private fun executeVerifyRequest() {
+        val dialog = ProgressDialog(this@RegistrationActivity)
+        dialog.show()
+
+        ServerApi.get(this@RegistrationActivity).api().verifyPhoneNumber(generateVerifyJson()).enqueue(
+                object : Callback<JsonObject> {
+                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                        dialog.dismiss()
+                        if (!response.isSuccessful) showCodeError()
+                        else parseVerifyAnswer(response.body())
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        dialog.dismiss()
+                        onInternetConnectionError()
+                    }
+                })
+    }
+
+    private fun generateVerifyJson(): JsonObject {
+        val obj = JsonObject()
+        obj.addProperty("token", token)
+        obj.addProperty("code", codeEditText!!.text.toString())
+
+        val toSend = JsonObject()
+        toSend.add("verification_token", obj)
+
+        return toSend
+    }
+
+    private fun showCodeError() {
+        Snackbar.make(findViewById(R.id.main), R.string.wrong_code, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun parseVerifyAnswer(obj: JsonObject) {
+        saveInfo(obj)
     }
 
     private fun savePhone(phone: String) {
@@ -173,15 +242,23 @@ class RegistrationActivity : BaseActivity() {
         code = true
         token = obj.get("token").asString
         phoneFromServer = obj.get("phone_number").asString
+        continueButton!!.visibility = View.GONE
     }
 
-    private fun processText(): String {
+    private fun processText(): JsonObject {
         var phoneNext = phoneEditText!!.text.toString()
         phoneNext = phoneNext.replace("(", "")
         phoneNext = phoneNext.replace(")", "")
         phoneNext = phoneNext.replace("-", "")
         phoneNext = phoneNext.replace(" ", "")
-        return phoneNext
+
+        val obj = JsonObject()
+        obj.addProperty("phone_number", phoneNext)
+
+        val toSend = JsonObject()
+        toSend.add("verification_token", obj)
+
+        return toSend
     }
 
     private fun playOutAnimation(v1: View, v2: View) {
