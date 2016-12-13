@@ -31,7 +31,6 @@ import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
-
     private var adapter: OrderContentAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +101,11 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun setSums() {
         (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
+
+        val deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
+        if (deliveryCost != 0) {
+            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + " \u20bd"
+        }
         (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
                 Integer.toString(allOrdersCost) + " \u20bd"
     }
@@ -190,6 +194,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     companion object {
         private val EXTRA_ID = "id"
         private val EXTRA_PRICE = "price"
+        private val EXTRA_DELIVERY_COST = "deliveryCost"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
         private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
