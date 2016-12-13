@@ -134,7 +134,6 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswer(array: JsonArray) {
-        LogUtil.logError(array.toString())
         LaundriesActivity.array = array
         val collection = ArrayList<Laundry>()
 
@@ -253,10 +252,15 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun loadLastOrder() {
+        if (DeviceInfoStore.getToken(this) == "null") {
+            load()
+            return
+        }
+
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this@LaundriesActivity).api().orders.enqueue(object : Callback<JsonArray> {
+        ServerApi.get(this@LaundriesActivity).api().getOrders(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 dialog.dismiss()
                 if (response.isSuccessful) parseAnswerForPopup(response.body())

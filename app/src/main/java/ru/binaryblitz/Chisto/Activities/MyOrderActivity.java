@@ -24,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.Image;
@@ -77,7 +78,7 @@ public class MyOrderActivity extends BaseActivity {
     }
 
     private void load() {
-        ServerApi.get(this).api().getOrder(getIntent().getIntExtra(EXTRA_ID, 1)).enqueue(new Callback<JsonObject>() {
+        ServerApi.get(this).api().getOrder(getIntent().getIntExtra(EXTRA_ID, 1), DeviceInfoStore.getToken(this)).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 layout.setRefreshing(false);

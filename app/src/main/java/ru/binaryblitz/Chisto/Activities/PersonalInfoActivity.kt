@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -19,6 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
+import ru.binaryblitz.Chisto.Push.RegistrationIntentService
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
@@ -113,7 +113,8 @@ class PersonalInfoActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson()).enqueue(object : Callback<JsonObject> {
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson(), DeviceInfoStore.getToken(this))
+                .enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
                 if (response.isSuccessful) parseAnswer(response.body(), bank)
@@ -157,21 +158,24 @@ class PersonalInfoActivity : BaseActivity() {
             finishActivity() }
 
         findViewById(R.id.pay_btn).setOnClickListener {
-            if (validateFields()) {
-                setData()
-                sendToServer(false)
-            }
+            process(false)
         }
 
         findViewById(R.id.bank_btn).setOnClickListener {
-            if (validateFields()) {
-                setData()
-                sendToServer(true)
-            }
+            process(true)
         }
 
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
+        }
+    }
+
+    private fun process(bank: Boolean) {
+        if (validateFields()) {
+            setData()
+            val auth = DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null"
+            if (auth) createUser(bank)
+            else updateUser(bank)
         }
     }
 
@@ -239,18 +243,41 @@ class PersonalInfoActivity : BaseActivity() {
         return toSend
     }
 
-    private fun parseUserAnswer(obj: JsonObject) {
+    private fun parseUserAnswer(bank: Boolean, obj: JsonObject) {
         LogUtil.logError(obj.toString())
+        DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
+        if (AndroidUtilities.checkPlayServices(this)) {
+            val intent = Intent(this@PersonalInfoActivity, RegistrationIntentService::class.java)
+            startService(intent)
+        }
+        sendToServer(bank)
     }
 
-    private fun createUser() {
+    private fun updateUser(bank: Boolean) {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().updateUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                sendToServer(bank)
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
+    }
+
+    private fun createUser(bank: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
         ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseUserAnswer(response.body())
+                if (response.isSuccessful) parseUserAnswer(bank, response.body())
                 else onServerError(response)
             }
 
