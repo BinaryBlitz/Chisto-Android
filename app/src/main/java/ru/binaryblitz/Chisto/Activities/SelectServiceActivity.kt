@@ -129,7 +129,7 @@ class SelectServiceActivity : BaseActivity() {
         try {
             if (editable.isNotEmpty() && editable.toString() != "0") {
                 if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
-                square.text = java.lang.Double.toString((length * this.width).toDouble() / 1000.0) + " см"
+                square.text = java.lang.Double.toString((length * this.width).toDouble() / 1000.0) + " м²"
             }
         } catch (e: Exception) {
             LogUtil.logException(e)
