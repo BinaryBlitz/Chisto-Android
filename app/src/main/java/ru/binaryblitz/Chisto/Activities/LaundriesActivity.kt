@@ -141,14 +141,14 @@ class LaundriesActivity : BaseActivity() {
             val obj = array.get(i).asJsonObject
             if (!checkTreatments(obj)) continue
             countSums(i)
-            collection.add(parseLaundry(obj))
+            collection.add(parseLaundry(i, obj))
         }
         adapter!!.sortByRating()
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
     }
 
-    private fun parseLaundry(obj: JsonObject): Laundry {
+    private fun parseLaundry(index: Int, obj: JsonObject): Laundry {
         return Laundry(
                 AndroidUtilities.getIntFieldFromJson(obj.get("id")),
                 ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
@@ -160,7 +160,8 @@ class LaundriesActivity : BaseActivity() {
                 parseDate(obj, "delivery_date_opens_at", "HH:mm"),
                 parseDate(obj, "delivery_date_closes_at", "HH:mm"),
                 0,
-                allOrdersCost
+                allOrdersCost,
+                index
         )
     }
 
@@ -298,7 +299,7 @@ class LaundriesActivity : BaseActivity() {
             return
         }
         laundryObject = obj
-        laundry = parseLaundry(obj)
+        laundry = parseLaundry(0, obj)
         if (obj.get("laundry_treatments") != null && !obj.get("laundry_treatments").isJsonNull) {
             countSums(obj.get("laundry_treatments").asJsonArray)
             setCosts(laundry!!)
