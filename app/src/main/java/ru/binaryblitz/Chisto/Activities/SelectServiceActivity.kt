@@ -209,12 +209,11 @@ class SelectServiceActivity : BaseActivity() {
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
 
-        // TODO change this
         adapter!!.add(Treatment(
-                1,
-                "Декор",
-                "Описание",
-                100,
+                -1,
+                getString(R.string.decoration),
+                getString(R.string.decoration_help),
+                0,
                 intent.getBooleanExtra(EXTRA_DECORATION, false)))
 
         adapter!!.notifyDataSetChanged()

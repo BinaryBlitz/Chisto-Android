@@ -155,6 +155,17 @@ class LaundriesActivity : BaseActivity() {
         return allOrdersCost >= minimum
     }
 
+    private fun getDecorationMultipliers(array: JsonArray): ArrayList<android.support.v4.util.Pair<Int, Double>> {
+        val multipliers = ArrayList<android.support.v4.util.Pair<Int, Double>>()
+        for (i in 0..array.size() - 1) {
+            val obj = array.get(i).asJsonObject
+            multipliers.add(Pair(AndroidUtilities.getIntFieldFromJson(obj.get("item_id")),
+                    AndroidUtilities.getDoubleFieldFromJson(obj.get("decoration_multiplier"))))
+        }
+
+        return multipliers
+    }
+
     private fun parseLaundry(index: Int, obj: JsonObject): Laundry {
         return Laundry(
                 AndroidUtilities.getIntFieldFromJson(obj.get("id")),
@@ -169,7 +180,7 @@ class LaundriesActivity : BaseActivity() {
                 0,
                 allOrdersCost,
                 index,
-                1.0,
+                getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee")),
                 AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
         )
@@ -208,7 +219,7 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun checkTreatmentsAvailability(orderTreatments: ArrayList<Treatment>, laundryTreatments: ArrayList<Int>): Boolean {
-        return orderTreatments.indices.none { orderTreatments[it].id != 1 && !checkTreatmentAvailability(orderTreatments[it], laundryTreatments) }
+        return orderTreatments.indices.none { orderTreatments[it].id != -1 && !checkTreatmentAvailability(orderTreatments[it], laundryTreatments) }
     }
 
     private fun checkTreatmentAvailability(treatment: Treatment, laundryTreatments: ArrayList<Int>): Boolean {
@@ -241,7 +252,7 @@ class LaundriesActivity : BaseActivity() {
 
     private fun fillOrderList(orderTreatments: ArrayList<Treatment>, laundryTreatments: ArrayList<Pair<Int, Int>>) {
         orderTreatments.indices
-                .filter { orderTreatments[it].id != 1 }
+                .filter { orderTreatments[it].id != -1 }
                 .forEach { setPriceForTreatment(orderTreatments[it], laundryTreatments) }
     }
 
