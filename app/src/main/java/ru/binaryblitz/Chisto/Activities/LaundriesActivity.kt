@@ -134,18 +134,24 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswer(array: JsonArray) {
+        LogUtil.logError(array.toString())
         LaundriesActivity.array = array
         val collection = ArrayList<Laundry>()
 
         for (i in 0..array.size() - 1) {
             val obj = array.get(i).asJsonObject
-            if (!checkTreatments(obj)) continue
+            if (!checkTreatments(obj) || !checkMinimumCost(obj)) continue
             countSums(i)
             collection.add(parseLaundry(i, obj))
         }
         adapter!!.sortByRating()
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
+    }
+
+    private fun checkMinimumCost(obj: JsonObject): Boolean {
+        val minimum = AndroidUtilities.getIntFieldFromJson(obj.get("minimum_order_price"))
+        return allOrdersCost < minimum
     }
 
     private fun parseLaundry(index: Int, obj: JsonObject): Laundry {
@@ -161,7 +167,10 @@ class LaundriesActivity : BaseActivity() {
                 parseDate(obj, "delivery_date_closes_at", "HH:mm"),
                 0,
                 allOrdersCost,
-                index
+                index,
+                1.0,
+                AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee")),
+                AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
         )
     }
 

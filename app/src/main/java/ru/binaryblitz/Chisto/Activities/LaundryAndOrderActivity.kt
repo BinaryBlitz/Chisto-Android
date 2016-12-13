@@ -132,6 +132,8 @@ class LaundryAndOrderActivity : BaseActivity() {
         var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].cost }
         sum *= order.count
 
+        if (order.decoration) sum = (sum.toDouble() * OrderList.getDecorationMultiplier()).toInt()
+
         return sum
     }
 
