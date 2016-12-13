@@ -1,17 +1,23 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
+import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
+import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import java.util.regex.Pattern
 
@@ -113,7 +119,38 @@ class ContactInfoActivity : BaseActivity() {
 
         DeviceInfoStore.saveUser(this, user)
 
-        finish()
+        updateUser()
+    }
+
+    private fun generateUserJson(): JsonObject {
+        val obj = JsonObject()
+        obj.addProperty("first_name", name!!.text.toString())
+        obj.addProperty("last_name", lastname!!.text.toString())
+        obj.addProperty("phone_number", phone!!.text.toString())
+        obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
+        obj.addProperty("email", email!!.text.toString())
+
+        val toSend = JsonObject()
+        toSend.add("user", obj)
+
+        return toSend
+    }
+
+    private fun updateUser() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                finish()
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                finish()
+            }
+        })
     }
 
     private fun setTextToField(editText: EditText, text: String?) {

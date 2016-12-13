@@ -32,6 +32,7 @@ import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.Review;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
@@ -87,7 +88,7 @@ public class ReviewsActivity extends BaseActivity {
     }
 
     private void loadReviews() {
-        ServerApi.get(this).api().getReviews(getIntent().getIntExtra(EXTRA_ID, 1)).enqueue(new Callback<JsonArray>() {
+        ServerApi.get(this).api().getReviews(getIntent().getIntExtra(EXTRA_ID, 1), DeviceInfoStore.getToken(this)).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);

@@ -19,7 +19,7 @@ public interface ApiEndpoints {
     @GET("categories")
     Call<JsonArray> getCategories();
 
-    @GET("cities/{id}/laundries?api_token=foobar")
+    @GET("cities/{id}/laundries")
     Call<JsonArray> getLaundries(@Path("id") int id);
 
     @GET("categories/{id}/items")
@@ -31,23 +31,27 @@ public interface ApiEndpoints {
     @GET("laundries/{id}?api_token=foobar")
     Call<JsonObject> getLaundry(@Path("id") int id);
 
-    @GET("laundries/{id}/ratings?api_token=foobar")
-    Call<JsonArray> getReviews(@Path("id") int id);
+    @GET("laundries/{id}/ratings")
+    Call<JsonArray> getReviews(@Path("id") int id, @Query("api_token") String token);
 
-    @GET("orders/{id}?api_token=foobar")
-    Call<JsonObject> getOrder(@Path("id") int id);
+    @GET("orders/{id}")
+    Call<JsonObject> getOrder(@Path("id") int id, @Query("api_token") String token);
 
-    @GET("orders?api_token=foobar")
-    Call<JsonArray> getOrders();
+    @GET("orders")
+    Call<JsonArray> getOrders(@Query("api_token") String token);
 
     @PATCH("verification_token")
-    Call<JsonObject> verifyPhoneNumber(@Query("id") String id,
-                                       @Query("code") String code,
-                                       @Query("phone_number") String number);
+    Call<JsonObject> verifyPhoneNumber(@Body JsonObject token);
 
     @POST("verification_token")
-    Call<JsonObject> authWithPhoneNumber(@Query("phone_number") String number);
+    Call<JsonObject> authWithPhoneNumber(@Body JsonObject number);
 
-    @POST("laundries/{id}/orders?api_token=foobar")
-    Call<JsonObject> sendOrder(@Path("id") int id, @Body JsonObject object);
+    @POST("user")
+    Call<JsonObject> createUser(@Body JsonObject number);
+
+    @PATCH("user")
+    Call<JsonObject> updateUser(@Body JsonObject number, @Query("api_token") String token);
+
+    @POST("laundries/{id}/orders")
+    Call<JsonObject> sendOrder(@Path("id") int id, @Body JsonObject object, @Query("api_token") String token);
 }

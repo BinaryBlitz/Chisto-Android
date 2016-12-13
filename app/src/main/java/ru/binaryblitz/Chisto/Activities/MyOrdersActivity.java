@@ -31,6 +31,7 @@ import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.Model.MyOrder;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 
@@ -79,7 +80,7 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     private void load() {
-        ServerApi.get(this).api().getOrders().enqueue(new Callback<JsonArray>() {
+        ServerApi.get(this).api().getOrders(DeviceInfoStore.getToken(this)).enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);

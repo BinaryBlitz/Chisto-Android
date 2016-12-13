@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -19,11 +18,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
+import ru.binaryblitz.Chisto.Push.RegistrationIntentService
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
@@ -108,14 +109,15 @@ class PersonalInfoActivity : BaseActivity() {
         return toSend
     }
 
-    private fun sendToServer(bank: Boolean) {
+    private fun sendToServer(payWithCreditCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson()).enqueue(object : Callback<JsonObject> {
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson(), DeviceInfoStore.getToken(this))
+                .enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseAnswer(response.body(), bank)
+                if (response.isSuccessful) parseAnswer(response.body(), payWithCreditCard)
                 else onServerError(response)
             }
 
@@ -126,9 +128,9 @@ class PersonalInfoActivity : BaseActivity() {
         })
     }
 
-    private fun parseAnswer(obj: JsonObject, bank: Boolean) {
+    private fun parseAnswer(obj: JsonObject, payWithCreditCard: Boolean) {
         orderId = obj.get("id").asInt
-        if (bank) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        if (payWithCreditCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
         else showOrderDialog(orderId)
     }
 
@@ -156,21 +158,24 @@ class PersonalInfoActivity : BaseActivity() {
             finishActivity() }
 
         findViewById(R.id.pay_btn).setOnClickListener {
-            if (validateFields()) {
-                setData()
-                sendToServer(false)
-            }
+            process(false)
         }
 
-        findViewById(R.id.bank_btn).setOnClickListener {
-            if (validateFields()) {
-                setData()
-                sendToServer(true)
-            }
+        findViewById(R.id.credit_card_btn).setOnClickListener {
+            process(true)
         }
 
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
+        }
+    }
+
+    private fun process(payWithCreditCard: Boolean) {
+        if (validateFields()) {
+            setData()
+            val auth = DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null"
+            if (auth) createUser(payWithCreditCard)
+            else updateUser(payWithCreditCard)
         }
     }
 
@@ -221,6 +226,68 @@ class PersonalInfoActivity : BaseActivity() {
         user!!.email = email!!.text.toString()
 
         DeviceInfoStore.saveUser(this, user)
+    }
+
+    private fun generateUserJson(): JsonObject {
+        val obj = JsonObject()
+        obj.addProperty("first_name", name!!.text.toString())
+        obj.addProperty("last_name", lastname!!.text.toString())
+        obj.addProperty("phone_number", phone!!.text.toString())
+        obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
+        obj.addProperty("email", email!!.text.toString())
+        if (DeviceInfoStore.getToken(this) == "null") {
+            obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
+        }
+
+        val toSend = JsonObject()
+        toSend.add("user", obj)
+
+        return toSend
+    }
+
+    private fun parseUserAnswer(payWithCreditCard: Boolean, obj: JsonObject) {
+        LogUtil.logError(obj.toString())
+        DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
+        if (AndroidUtilities.checkPlayServices(this)) {
+            val intent = Intent(this@PersonalInfoActivity, RegistrationIntentService::class.java)
+            startService(intent)
+        }
+        sendToServer(payWithCreditCard)
+    }
+
+    private fun updateUser(payWithCreditCard: Boolean) {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                sendToServer(payWithCreditCard)
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
+    }
+
+    private fun createUser(payWithCreditCard: Boolean) {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                if (response.isSuccessful) parseUserAnswer(payWithCreditCard, response.body())
+                else onServerError(response)
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
     }
 
     private fun setTextToField(editText: EditText, text: String?) {
@@ -297,6 +364,7 @@ class PersonalInfoActivity : BaseActivity() {
 
     companion object {
         private val EXTRA_PRICE = "price"
+        private val EXTRA_TOKEN = "token"
         var orderId: Int = 0
     }
 }
