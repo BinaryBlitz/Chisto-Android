@@ -359,7 +359,7 @@
                     android:gravity="center"/>
 
             <FrameLayout android:layout_width="match_parent"
-                         android:id="@+id/bank_btn"
+                         android:id="@+id/credit_card_btn"
                          android:background="?attr/selectableItemBackground"
                          android:layout_height="match_parent">
             </FrameLayout>

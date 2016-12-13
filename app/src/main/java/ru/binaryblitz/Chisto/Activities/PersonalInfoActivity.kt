@@ -109,7 +109,7 @@ class PersonalInfoActivity : BaseActivity() {
         return toSend
     }
 
-    private fun sendToServer(bank: Boolean) {
+    private fun sendToServer(payWithCreditCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
@@ -117,7 +117,7 @@ class PersonalInfoActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseAnswer(response.body(), bank)
+                if (response.isSuccessful) parseAnswer(response.body(), payWithCreditCard)
                 else onServerError(response)
             }
 
@@ -128,9 +128,9 @@ class PersonalInfoActivity : BaseActivity() {
         })
     }
 
-    private fun parseAnswer(obj: JsonObject, bank: Boolean) {
+    private fun parseAnswer(obj: JsonObject, payWithCreditCard: Boolean) {
         orderId = obj.get("id").asInt
-        if (bank) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        if (payWithCreditCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
         else showOrderDialog(orderId)
     }
 
@@ -161,7 +161,7 @@ class PersonalInfoActivity : BaseActivity() {
             process(false)
         }
 
-        findViewById(R.id.bank_btn).setOnClickListener {
+        findViewById(R.id.credit_card_btn).setOnClickListener {
             process(true)
         }
 
@@ -170,12 +170,12 @@ class PersonalInfoActivity : BaseActivity() {
         }
     }
 
-    private fun process(bank: Boolean) {
+    private fun process(payWithCreditCard: Boolean) {
         if (validateFields()) {
             setData()
             val auth = DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null"
-            if (auth) createUser(bank)
-            else updateUser(bank)
+            if (auth) createUser(payWithCreditCard)
+            else updateUser(payWithCreditCard)
         }
     }
 
@@ -245,24 +245,24 @@ class PersonalInfoActivity : BaseActivity() {
         return toSend
     }
 
-    private fun parseUserAnswer(bank: Boolean, obj: JsonObject) {
+    private fun parseUserAnswer(payWithCreditCard: Boolean, obj: JsonObject) {
         LogUtil.logError(obj.toString())
         DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
         if (AndroidUtilities.checkPlayServices(this)) {
             val intent = Intent(this@PersonalInfoActivity, RegistrationIntentService::class.java)
             startService(intent)
         }
-        sendToServer(bank)
+        sendToServer(payWithCreditCard)
     }
 
-    private fun updateUser(bank: Boolean) {
+    private fun updateUser(payWithCreditCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                sendToServer(bank)
+                sendToServer(payWithCreditCard)
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -272,14 +272,14 @@ class PersonalInfoActivity : BaseActivity() {
         })
     }
 
-    private fun createUser(bank: Boolean) {
+    private fun createUser(payWithCreditCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
         ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseUserAnswer(bank, response.body())
+                if (response.isSuccessful) parseUserAnswer(payWithCreditCard, response.body())
                 else onServerError(response)
             }
 
