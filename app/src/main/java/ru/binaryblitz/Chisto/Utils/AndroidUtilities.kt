@@ -99,13 +99,6 @@ object AndroidUtilities {
         else return element.asBoolean
     }
 
-    fun encodeToBase64(image: Bitmap): String {
-        val baos = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val b = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
-    }
-
     fun checkPlayServices(context: Activity): Boolean {
         val apiAvailability = GoogleApiAvailability.getInstance()
         val resultCode = apiAvailability.isGooglePlayServicesAvailable(context)
@@ -120,31 +113,6 @@ object AndroidUtilities {
         return true
     }
 
-    fun drawableToBitmap(drawable: Drawable?): Bitmap? {
-        if (drawable == null)
-            return null
-        else if (drawable is BitmapDrawable) {
-            return drawable.bitmap
-        }
-
-        val intrinsicWidth = drawable.intrinsicWidth
-        val intrinsicHeight = drawable.intrinsicHeight
-
-        if (!(intrinsicWidth > 0 && intrinsicHeight > 0))
-            return null
-
-        try {
-            val bitmap = Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, canvas.width, canvas.height)
-            drawable.draw(canvas)
-            return bitmap
-        } catch (e: OutOfMemoryError) {
-            return null
-        }
-
-    }
-
     fun convertDpToPixel(dp: Float, context: Context): Float {
         val resources = context.resources
         val metrics = resources.displayMetrics
@@ -156,42 +124,5 @@ object AndroidUtilities {
         val activeNetwork = cm.activeNetworkInfo
 
         return activeNetwork != null && activeNetwork.isConnectedOrConnecting
-    }
-
-    fun getTabTitleFromDrawable(context: Context, resId: Int): CharSequence {
-
-        val image = ContextCompat.getDrawable(context, resId)
-
-        image.setBounds(0, 0, convertDpToPixel(24f, context).toInt(), convertDpToPixel(24f, context).toInt())
-        val sb = SpannableString("  ")
-        val imageSpan = ImageSpan(image, ImageSpan.ALIGN_BOTTOM)
-        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-        return sb
-    }
-
-    fun setupUIForAutoKeyBoardHide(view: View) {
-        if (view !is EditText) {
-            view.setOnTouchListener { v, event ->
-                hideKeyboard(v)
-                false
-            }
-        }
-
-        if (view is ViewGroup) {
-            (0..view.childCount - 1)
-                    .map { view.getChildAt(it) }
-                    .forEach { setupUIForAutoKeyBoardHide(it) }
-        }
-    }
-
-    fun deleteDirectoryTree(fileOrDirectory: File) {
-        if (fileOrDirectory.isDirectory) {
-            for (child in fileOrDirectory.listFiles()) {
-                deleteDirectoryTree(child)
-            }
-        }
-
-        fileOrDirectory.delete()
     }
 }

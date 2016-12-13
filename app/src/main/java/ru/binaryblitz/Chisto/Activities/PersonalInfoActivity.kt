@@ -24,6 +24,7 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.regex.Pattern
 
@@ -223,6 +224,43 @@ class PersonalInfoActivity : BaseActivity() {
         DeviceInfoStore.saveUser(this, user)
     }
 
+    private fun generateUserJson(): JsonObject {
+        val obj = JsonObject()
+        obj.addProperty("first_name", name!!.text.toString())
+        obj.addProperty("last_name", lastname!!.text.toString())
+        obj.addProperty("phone_number", phone!!.text.toString())
+        obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
+        obj.addProperty("email", email!!.text.toString())
+        obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
+
+        val toSend = JsonObject()
+        toSend.add("user", obj)
+
+        return toSend
+    }
+
+    private fun parseUserAnswer(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
+    }
+
+    private fun createUser() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                if (response.isSuccessful) parseUserAnswer(response.body())
+                else onServerError(response)
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
+    }
+
     private fun setTextToField(editText: EditText, text: String?) {
         if (text != null && !text.isEmpty() && text != "null") {
             editText.setText(text)
@@ -297,6 +335,7 @@ class PersonalInfoActivity : BaseActivity() {
 
     companion object {
         private val EXTRA_PRICE = "price"
+        private val EXTRA_TOKEN = "token"
         var orderId: Int = 0
     }
 }

@@ -46,6 +46,12 @@ public interface ApiEndpoints {
     @POST("verification_token")
     Call<JsonObject> authWithPhoneNumber(@Body JsonObject number);
 
+    @POST("user")
+    Call<JsonObject> createUser(@Body JsonObject number);
+
+    @PATCH("user")
+    Call<JsonObject> updateUser(@Body JsonObject number);
+
     @POST("laundries/{id}/orders?api_token=foobar")
     Call<JsonObject> sendOrder(@Path("id") int id, @Body JsonObject object);
 }
