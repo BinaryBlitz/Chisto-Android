@@ -235,7 +235,9 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("phone_number", phone!!.text.toString())
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
         obj.addProperty("email", email!!.text.toString())
-        obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
+        if (DeviceInfoStore.getToken(this) == "null") {
+            obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
+        }
 
         val toSend = JsonObject()
         toSend.add("user", obj)
@@ -257,7 +259,7 @@ class PersonalInfoActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this).api().updateUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
+        ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
                 sendToServer(bank)

@@ -50,7 +50,7 @@ public interface ApiEndpoints {
     Call<JsonObject> createUser(@Body JsonObject number);
 
     @PATCH("user")
-    Call<JsonObject> updateUser(@Body JsonObject number);
+    Call<JsonObject> updateUser(@Body JsonObject number, @Query("api_token") String token);
 
     @POST("laundries/{id}/orders")
     Call<JsonObject> sendOrder(@Path("id") int id, @Body JsonObject object, @Query("api_token") String token);

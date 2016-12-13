@@ -20,6 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
@@ -63,7 +64,7 @@ public class RegistrationIntentService extends IntentService {
             LogUtil.logException(e);
         }
 
-        ServerApi.get(getApplicationContext()).api().updateUser(user).enqueue(new Callback<JsonObject>() {
+        ServerApi.get(getApplicationContext()).api().updateUser(user, DeviceInfoStore.getToken(getApplicationContext())).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
             }
