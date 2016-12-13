@@ -33,6 +33,10 @@ class MyOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
 
+    private var cost: Int = 0
+    private var deliveryCost: Int = 0
+    private var deliveryBound: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -127,6 +131,7 @@ class MyOrderActivity : BaseActivity() {
                 false)
 
         val treatments = ArrayList<Treatment>()
+        treatments.add(getTreatments(obj.get("laundry_treatment").asJsonObject))
 
         val order = Order(
                 category,
@@ -135,12 +140,26 @@ class MyOrderActivity : BaseActivity() {
                 ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))),
                 false)
 
+        cost += treatments[0].cost * order.count
+
         return order
     }
 
+    private fun getTreatments(obj: JsonObject): Treatment {
+        return Treatment(AndroidUtilities.getIntFieldFromJson(obj.get("treatment").asJsonObject.get("id")),
+                AndroidUtilities.getStringFieldFromJson(obj.get("treatment").asJsonObject.get("name")),
+                "",
+                AndroidUtilities.getIntFieldFromJson(obj.get("price")),
+                false)
+    }
+
     private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
-        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
+        (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + " \u20bd"
+        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + " \u20bd"
+
+        if (cost < deliveryBound) {
+            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + " \u20bd"
+        }
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
@@ -172,12 +191,6 @@ class MyOrderActivity : BaseActivity() {
         return sum
     }
 
-    private val allOrdersCost: Int
-        get() {
-            val cost = (0..OrderList.get()!!.size - 1).sumBy { getFillSum(OrderList.get(it)!!) }
-            return cost
-        }
-
     private fun setLaundryInfo(obj: JsonObject) {
         (findViewById(R.id.name) as TextView).text = AndroidUtilities.getStringFieldFromJson(obj.get("name"))
         (findViewById(R.id.description) as TextView).text = AndroidUtilities.getStringFieldFromJson(obj.get("description"))
@@ -185,6 +198,9 @@ class MyOrderActivity : BaseActivity() {
                 AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
                 findViewById(R.id.category_icon) as ImageView
         )
+
+        deliveryBound = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
+        deliveryCost = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
     }
 
     private fun processStatus(status: String) {

@@ -40,12 +40,8 @@ public class ColorsList {
     }
 
     public static Integer findColor(int id) {
-        LogUtil.logError(id);
         for (int i = 0; i < colors.size(); i++) {
-            if (colors.get(i).first == id) {
-                LogUtil.logError(colors.get(i).second);
-                return colors.get(i).second;
-            }
+            if (colors.get(i).first == id) return colors.get(i).second;
         }
         return 0;
     }
