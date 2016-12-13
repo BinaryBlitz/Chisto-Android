@@ -1,6 +1,7 @@
 package ru.binaryblitz.Chisto.Utils;
 
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 
 import ru.binaryblitz.Chisto.Model.Order;
 import ru.binaryblitz.Chisto.Model.Treatment;
@@ -13,14 +14,14 @@ public class OrderList {
     private static ArrayList<Treatment> bufferTreatments = new ArrayList<>();
     private static int laundryId = 0;
     private static int currentItem = 0;
-    private static double decorationMultiplier = 1.0;
+    private static ArrayList<Pair<Integer, Double>> decorationMultipliers = new ArrayList<>();
 
-    public static double getDecorationMultiplier() {
-        return decorationMultiplier;
+    public static ArrayList<Pair<Integer, Double>> getDecorationMultiplier() {
+        return decorationMultipliers;
     }
 
-    public static void setDecorationMultiplier(double decorationMultiplier) {
-        OrderList.decorationMultiplier = decorationMultiplier;
+    public static void setDecorationMultiplier(ArrayList<Pair<Integer, Double>> decorationMultipliers) {
+        OrderList.decorationMultipliers = decorationMultipliers;
     }
 
     public static void add(Order order) {
@@ -121,10 +122,34 @@ public class OrderList {
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
             if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
-                orders.get(currentItem).getTreatments().get(i).setCost(cost);
+                orders.get(currentItem).getTreatments().get(i).setCost((int) ((double) cost * findMultiplier()));
+            }
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private static boolean isDecoration() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return false;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            if (orders.get(currentItem).getTreatments().get(i).getId() == -1) {
+                return true;
             }
         }
 
+        return false;
+    }
+
+    private static double findMultiplier() {
+        if (!isDecoration()) return 1.0;
+
+        int id = orders.get(currentItem).getCategory().getId();
+
+        for (int i = 0; i < decorationMultipliers.size(); i++) {
+            if (decorationMultipliers.get(i).first == id) return decorationMultipliers.get(i).second;
+        }
+
+        return 1.0;
     }
 
     @SuppressWarnings("ConstantConditions")
