@@ -25,6 +25,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private val EXTRA_COLLECTION_DATE = "collectionDate"
     private val EXTRA_DELIVERY_DATE = "deliveryDate"
     private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
+    private val EXTRA_DELIVERY_COST = "deliveryCost"
 
     init {
         Image.init(context)
@@ -58,6 +59,9 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
             intent.putExtra(EXTRA_ID, laundry.id)
             intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
             intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
+            if (laundry.orderCost!! < laundry.freeDeliveryBound!!) {
+                intent.putExtra(EXTRA_DELIVERY_COST, laundry.deliveryFee!!)
+            }
             intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry))
             context.startActivity(intent)
         }

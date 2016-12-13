@@ -140,8 +140,9 @@ class LaundriesActivity : BaseActivity() {
 
         for (i in 0..array.size() - 1) {
             val obj = array.get(i).asJsonObject
-            if (!checkTreatments(obj) || !checkMinimumCost(obj)) continue
+            if (!checkTreatments(obj)) continue
             countSums(i)
+            if (!checkMinimumCost(obj)) continue
             collection.add(parseLaundry(i, obj))
         }
         adapter!!.sortByRating()
@@ -151,7 +152,7 @@ class LaundriesActivity : BaseActivity() {
 
     private fun checkMinimumCost(obj: JsonObject): Boolean {
         val minimum = AndroidUtilities.getIntFieldFromJson(obj.get("minimum_order_price"))
-        return allOrdersCost < minimum
+        return allOrdersCost >= minimum
     }
 
     private fun parseLaundry(index: Int, obj: JsonObject): Laundry {

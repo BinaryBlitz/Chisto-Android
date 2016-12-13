@@ -132,7 +132,8 @@ class MyOrderActivity : BaseActivity() {
                 category,
                 treatments,
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
-                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))))
+                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))),
+                false)
 
         return order
     }
