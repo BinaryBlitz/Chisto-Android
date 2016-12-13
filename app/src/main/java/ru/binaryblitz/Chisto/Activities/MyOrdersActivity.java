@@ -34,6 +34,7 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
@@ -97,6 +98,7 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
     }
 
     private void parseAnswer(JsonArray array) {
+        LogUtil.logError(array.toString());
         ArrayList<MyOrder> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
