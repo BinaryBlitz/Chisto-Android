@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.ColorsList;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity {
@@ -113,9 +115,19 @@ public class SelectCategoryActivity extends BaseActivity {
         }
 
         sort(collection);
+        save(collection);
 
         adapter.setCategories(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private void save(ArrayList<Category> collection) {
+        for (int i = 0; i < collection.size(); i++) {
+            Category category = collection.get(i);
+            ColorsList.add(new Pair<>(category.getId(), category.getColor()));
+        }
+
+        ColorsList.saveColors(this);
     }
 
     private Category parseCategory(JsonObject object) {

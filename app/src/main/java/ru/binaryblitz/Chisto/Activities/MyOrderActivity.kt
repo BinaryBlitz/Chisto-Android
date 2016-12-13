@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Pair
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -98,14 +97,16 @@ class MyOrderActivity : BaseActivity() {
                 AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         (findViewById(R.id.number) as TextView).text = "№ " + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         (findViewById(R.id.date_text) as TextView).text = getDateFromJson(obj)
+
+        createOrderListView(obj.get("line_items").asJsonArray)
     }
 
     private fun createOrderListView(array: JsonArray) {
-        val orderList = OrderList.get()
+        ColorsList.load(this)
         val listToShow = ArrayList<Pair<String, Any>>()
 
-        for (i in orderList!!.indices) {
-            val order = orderList[i]
+        for (obj in array) {
+            val order = getOrderFromJson(obj.asJsonObject)
             addHeader(order, listToShow)
             addBasic(order, listToShow)
         }
@@ -129,17 +130,16 @@ class MyOrderActivity : BaseActivity() {
 
         val order = Order(
                 category,
-                null,
+                treatments,
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
-                0)
+                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))))
 
         return order
     }
 
     private fun setSums() {
         (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
-        (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
-                Integer.toString(allOrdersCost) + " \u20bd"
+        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
