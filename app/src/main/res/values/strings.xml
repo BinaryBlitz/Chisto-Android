@@ -133,6 +133,7 @@
     <string name="width">Ширина, см</string>
     <string name="length">Длина, см</string>
     <string name="cancel">Отмена</string>
+    <string name="empty_orders">Вы еще ничего не заказывали</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
