@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonArray
 import io.fabric.sdk.android.Fabric
@@ -29,6 +30,7 @@ import ru.binaryblitz.Chisto.Utils.Animations.Animations
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
+
 
 class SelectServiceActivity : BaseActivity() {
 
@@ -79,6 +81,10 @@ class SelectServiceActivity : BaseActivity() {
         }
 
         findViewById(R.id.size_ok_btn).setOnClickListener {
+            if (!checkSizes()) {
+                showErrorDialog()
+                return@setOnClickListener
+            }
             Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
             openActivity()
         }
@@ -86,6 +92,19 @@ class SelectServiceActivity : BaseActivity() {
         findViewById(R.id.cancel_btn).setOnClickListener {
             Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
         }
+    }
+
+    private fun checkSizes(): Boolean {
+        return width > 0 && length > 0
+    }
+
+    private fun showErrorDialog() {
+        MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content(getString(R.string.wrong_width_or_length_code))
+                .positiveText(R.string.ok_code)
+                .onPositive { dialog, which -> dialog.dismiss() }
+                .show()
     }
 
     override fun onBackPressed() {

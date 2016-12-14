@@ -121,7 +121,7 @@
     <string name="create_order_code">"Оформить заказ: "</string>
     <string name="from_code">"с "</string>
     <string name="end_bound_code">" до "</string>
-    <string name="empty_reviews">У химчистки пока слишком мало оценок, чтобы сформировать ее рейтинг</string>
+    <string name="empty_reviews">Нет отзывов</string>
     <string name="free">Бесплатно</string>
     <string name="decoration_help">К декоративной отделке относятся стразы, бисер, пайетки, сложные кружевные композиции и прочие украшения одежды, нуждающиеся в особом уходе и внимании со стороны
         химчистки
@@ -135,6 +135,9 @@
     <string name="cancel">Отмена</string>
     <string name="empty_orders">Вы еще ничего не заказывали</string>
     <string name="decoration">Декор</string>
+    <string name="wrong_phone_code">Неверно введен номер телефона</string>
+    <string name="wrong_city_code">Неверно введен город</string>
+    <string name="wrong_width_or_length_code">Неверно указана длина или ширина</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>

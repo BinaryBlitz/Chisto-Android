@@ -28,6 +28,7 @@ import android.widget.EditText;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -56,8 +57,8 @@ public class SelectCityActivity extends BaseActivity
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
 
-    private EditText phone;
-    private EditText city;
+    private MaterialEditText phone;
+    private MaterialEditText city;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,8 +98,8 @@ public class SelectCityActivity extends BaseActivity
     private void initDialog(MaterialDialog dialog) {
         View view = dialog.getCustomView();
         if (view == null) return;
-        phone = (EditText) view.findViewById(R.id.editText);
-        city = (EditText) view.findViewById(R.id.editText2);
+        phone = (MaterialEditText) view.findViewById(R.id.editText);
+        city = (MaterialEditText) view.findViewById(R.id.editText2);
         phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
 
@@ -226,10 +227,11 @@ public class SelectCityActivity extends BaseActivity
                 .customView(ru.binaryblitz.Chisto.R.layout.city_not_found_dialog, true)
                 .positiveText(ru.binaryblitz.Chisto.R.string.send_code)
                 .negativeText(ru.binaryblitz.Chisto.R.string.back_code)
+                .autoDismiss(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (checkDialogInput()) dialog.dismiss();
+                        checkDialogInput();
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -244,35 +246,18 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private boolean checkDialogInput() {
-        String errorMessage = "";
         boolean res = true;
         if (!AndroidUtilities.INSTANCE.validatePhone(phone.getText().toString())) {
-            errorMessage += "Неверно введен номер телефона\n";
+            phone.setError(getString(R.string.wrong_phone_code));
             res = false;
         }
 
         if (city.getText().toString().isEmpty()) {
-            errorMessage += "Неверно введен город\n";
+            city.setError(getString(R.string.wrong_city_code));
             res = false;
         }
 
-        if (!res) showErrorDialog(errorMessage);
-
         return res;
-    }
-
-    private void showErrorDialog(String error) {
-        new MaterialDialog.Builder(SelectCityActivity.this)
-                .title(R.string.app_name)
-                .content(error)
-                .positiveText(R.string.ok_code)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        dialog.dismiss();
-                    }
-                })
-                .show();
     }
 
     private void load(double latitude, double longitude) {
