@@ -64,6 +64,7 @@ object AndroidUtilities {
             phoneNumber = phoneNumberUtil.parse(phNumber, isoCode)
         } catch (e: NumberParseException) {
             LogUtil.logException(e)
+            return false
         }
 
         return phoneNumberUtil.isValidNumber(phoneNumber)

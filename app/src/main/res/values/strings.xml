@@ -135,6 +135,8 @@
     <string name="cancel">Отмена</string>
     <string name="empty_orders">Вы еще ничего не заказывали</string>
     <string name="decoration">Декор</string>
+    <string name="wrong_phone_code">Неверно введен номер телефона</string>
+    <string name="wrong_city_code">Неверно введен город</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
