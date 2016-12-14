@@ -81,7 +81,10 @@ class SelectServiceActivity : BaseActivity() {
         }
 
         findViewById(R.id.size_ok_btn).setOnClickListener {
-            if (!checkSizes()) return@setOnClickListener
+            if (!checkSizes()) {
+                showErrorDialog()
+                return@setOnClickListener
+            }
             Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
             openActivity()
         }
@@ -92,26 +95,13 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun checkSizes(): Boolean {
-        var error = ""
-        var correctSize = true
-        if (width == 0) {
-            correctSize = false
-            error += "Неверно указана ширина\n"
-        }
-        if (length == 0) {
-            correctSize = false
-            error += "Неверно указана длина\n"
-        }
-
-        if (!correctSize) showErrorDialog(error)
-
-        return correctSize
+        return width > 0 && length > 0
     }
 
-    private fun showErrorDialog(error: String) {
+    private fun showErrorDialog() {
         MaterialDialog.Builder(this)
                 .title(R.string.app_name)
-                .content(error)
+                .content(getString(R.string.wrong_width_or_length_code))
                 .positiveText(R.string.ok_code)
                 .onPositive { dialog, which -> dialog.dismiss() }
                 .show()
