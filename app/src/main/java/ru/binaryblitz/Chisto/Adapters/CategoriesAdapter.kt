@@ -14,7 +14,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
 import java.util.*
 
-class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class  CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categories: ArrayList<Category>? = null
 
@@ -51,6 +51,7 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         holder.description.text = category.desc
 
         Image.loadPhoto(category.icon, holder.icon)
+        holder.icon.setColorFilter(category.color)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, CategoryInfoActivity::class.java)

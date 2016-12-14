@@ -4,9 +4,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,16 +21,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import ru.binaryblitz.Chisto.Adapters.CitiesAdapter;
-import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.Custom.RecyclerListView;
-import ru.binaryblitz.Chisto.Server.ServerApi;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 import com.crashlytics.android.Crashlytics;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,6 +39,14 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.binaryblitz.Chisto.Adapters.CitiesAdapter;
+import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.Custom.RecyclerListView;
+import ru.binaryblitz.Chisto.Model.City;
+import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SelectCityActivity extends BaseActivity
         implements SwipeRefreshLayout.OnRefreshListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -50,6 +56,9 @@ public class SelectCityActivity extends BaseActivity
 
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
+
+    private MaterialEditText phone;
+    private MaterialEditText city;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +75,7 @@ public class SelectCityActivity extends BaseActivity
 
         initList();
 
+
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -74,15 +84,23 @@ public class SelectCityActivity extends BaseActivity
                     .build();
         }
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
                 layout.setEnabled(true);
                 load();
             }
-        }, 200);
+        });
 
         setOnClickListeners();
+    }
+
+    private void initDialog(MaterialDialog dialog) {
+        View view = dialog.getCustomView();
+        if (view == null) return;
+        phone = (MaterialEditText) view.findViewById(R.id.editText);
+        city = (MaterialEditText) view.findViewById(R.id.editText2);
+        phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
     }
 
     @Override
@@ -115,8 +133,7 @@ public class SelectCityActivity extends BaseActivity
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
             case 2: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
                 } else {
                     onLocationError();
@@ -175,11 +192,8 @@ public class SelectCityActivity extends BaseActivity
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                } else {
-                    onInternetConnectionError();
-                }
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onServerError(response);
             }
 
             @Override
@@ -194,7 +208,13 @@ public class SelectCityActivity extends BaseActivity
         ArrayList<CitiesAdapter.City> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
-            collection.add(new CitiesAdapter.City(array.get(i).getAsJsonObject().get("name").getAsString(), false));
+            JsonObject object = array.get(i).getAsJsonObject();
+            City city = new City(object.get("id").getAsInt(),
+                    AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                    AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("latitude")),
+                    AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("longitude")));
+
+            collection.add(new CitiesAdapter.City(city, false));
         }
 
         adapter.setCollection(collection);
@@ -202,18 +222,16 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void showDialog() {
-        new MaterialDialog.Builder(SelectCityActivity.this)
+        MaterialDialog dialog = new MaterialDialog.Builder(SelectCityActivity.this)
                 .title(ru.binaryblitz.Chisto.R.string.app_name)
                 .customView(ru.binaryblitz.Chisto.R.layout.city_not_found_dialog, true)
-                .positiveText(ru.binaryblitz.Chisto.R.string.send_code_str)
-                .negativeText(ru.binaryblitz.Chisto.R.string.back_code_str)
+                .positiveText(ru.binaryblitz.Chisto.R.string.send_code)
+                .negativeText(ru.binaryblitz.Chisto.R.string.back_code)
+                .autoDismiss(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Intent intent = new Intent(SelectCityActivity.this, OrdersActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
+                        checkDialogInput();
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -223,6 +241,23 @@ public class SelectCityActivity extends BaseActivity
                     }
                 })
                 .show();
+
+        initDialog(dialog);
+    }
+
+    private boolean checkDialogInput() {
+        boolean res = true;
+        if (!AndroidUtilities.INSTANCE.validatePhone(phone.getText().toString())) {
+            phone.setError(getString(R.string.wrong_phone_code));
+            res = false;
+        }
+
+        if (city.getText().toString().isEmpty()) {
+            city.setError(getString(R.string.wrong_city_code));
+            res = false;
+        }
+
+        return res;
     }
 
     private void load(double latitude, double longitude) {
@@ -234,7 +269,7 @@ public class SelectCityActivity extends BaseActivity
                 if (adapter.getItemCount() == 0) {
                     cityError();
                 } else {
-                    adapter.selectCity(addresses.get(0).getLocality());
+                    adapter.selectCity(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
                 }
             } else {
                 onLocationError();

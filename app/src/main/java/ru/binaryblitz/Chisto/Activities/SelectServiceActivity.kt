@@ -8,7 +8,17 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.crashlytics.android.Crashlytics
+import com.google.gson.JsonArray
+import io.fabric.sdk.android.Fabric
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import ru.binaryblitz.Chisto.Adapters.TreatmentsAdapter
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Custom.RecyclerListView
@@ -16,50 +26,138 @@ import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
+import ru.binaryblitz.Chisto.Utils.Animations.Animations
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
-import com.crashlytics.android.Crashlytics
-import com.google.gson.JsonArray
-import io.fabric.sdk.android.Fabric
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
-class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
+
+class SelectServiceActivity : BaseActivity() {
 
     private var adapter: TreatmentsAdapter? = null
     private var layout: SwipeRefreshLayout? = null
 
     val EXTRA_COLOR = "color"
-    val EXTRA_DECOR = "decor"
+    val EXTRA_DECORATION = "decoration"
     val EXTRA_EDIT = "edit"
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
+    val EXTRA_USE_AREA = "userArea"
 
+    private var width: Int = 0
+    private var length: Int = 0
+    private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_select_service)
 
+        initElements()
+        setOnClickListeners()
+        initSizeDialog()
+        initList()
+
+        Handler().post({
+            layout!!.isRefreshing = true
+            load()
+        })
+    }
+
+    private fun initElements() {
         findViewById(R.id.appbar).setBackgroundColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
         AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
         (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
+    }
 
-        findViewById(R.id.left_btn).setOnClickListener { finish() }
+    private fun setOnClickListeners() {
+        findViewById(R.id.left_btn).setOnClickListener {
+            finishActivity()
+        }
 
         findViewById(R.id.cont_btn).setOnClickListener {
+            if (intent.getBooleanExtra(EXTRA_USE_AREA, false)) showSizeDialog()
+            else openActivity()
+        }
+
+        findViewById(R.id.size_ok_btn).setOnClickListener {
+            if (!checkSizes()) {
+                showErrorDialog()
+                return@setOnClickListener
+            }
+            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
             openActivity()
         }
 
-        initList()
-
-        Handler().postDelayed({ load() }, 200)
+        findViewById(R.id.cancel_btn).setOnClickListener {
+            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+        }
     }
 
-    override fun onRefresh() {
-        load()
+    private fun checkSizes(): Boolean {
+        return width > 0 && length > 0
+    }
+
+    private fun showErrorDialog() {
+        MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content(getString(R.string.wrong_width_or_length_code))
+                .positiveText(R.string.ok_code)
+                .onPositive { dialog, which -> dialog.dismiss() }
+                .show()
+    }
+
+    override fun onBackPressed() {
+        finishActivity()
+    }
+
+    private fun initSizeDialog() {
+        val lengthEditText = findViewById(R.id.length_text) as EditText
+        val widthEditText = findViewById(R.id.width_text) as EditText
+        val square = findViewById(R.id.square_text) as TextView
+
+        lengthEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun afterTextChanged(editable: Editable) {
+                recomputeSquare(false, editable, square)
+            }
+        })
+
+        widthEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+
+            override fun afterTextChanged(editable: Editable) {
+                recomputeSquare(true, editable, square)
+            }
+        })
+    }
+
+    private fun showSizeDialog() {
+        Handler().post {
+            dialogOpened = true
+            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@SelectServiceActivity)
+        }
+    }
+
+    private fun recomputeSquare(width: Boolean, editable: Editable, square: TextView) {
+        try {
+            if (editable.isNotEmpty() && editable.toString() != "0") {
+                if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
+                square.text = java.lang.Double.toString((length * this.width).toDouble() / 1000.0) + " м²"
+            }
+        } catch (e: Exception) {
+            LogUtil.logException(e)
+        }
+    }
+
+    private fun finishActivity() {
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
+        finish()
     }
 
     private fun initList() {
@@ -68,41 +166,40 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
         view.itemAnimator = DefaultItemAnimator()
         view.setHasFixedSize(true)
 
+        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
+        layout!!.setOnRefreshListener(null)
+        layout!!.isEnabled = false
+        layout!!.setColorSchemeResources(R.color.colorAccent)
+
         adapter = TreatmentsAdapter(this)
         adapter!!.setColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
         view.adapter = adapter
-
-        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout!!.setOnRefreshListener(this)
-        layout!!.setColorSchemeResources(R.color.colorAccent)
     }
 
     private fun openActivity() {
         if (adapter!!.getSelected().size != 0) {
-            OrderList.addTreatments(adapter!!.getSelected())
             OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
             if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+                OrderList.addTreatments(adapter!!.getSelected())
                 val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
+            } else {
+                OrderList.addTreatmentsForEditing(adapter!!.getSelected())
             }
 
             finish()
         } else {
-            Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code_str, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code, Snackbar.LENGTH_SHORT).show()
         }
     }
 
     private fun load() {
         ServerApi.get(this).api().getTreatments(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                LogUtil.logError(response.body().toString())
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) {
-                    parseAnswer(response.body())
-                } else {
-                    onInternetConnectionError()
-                }
+                if (response.isSuccessful) parseAnswer(response.body())
+                else onInternetConnectionError()
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
@@ -115,32 +212,33 @@ class SelectServiceActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListen
     private fun parseAnswer(array: JsonArray) {
         val collection = ArrayList<Treatment>()
 
-        // TODO change this
-        collection.add(Treatment(
-                1,
-                "Декор",
-                "Описание",
-                intent.getBooleanExtra(EXTRA_DECOR, false)))
-
-        for (i in 0..array.size() - 1) {
-            val obj = array.get(i).asJsonObject
-            collection.add(Treatment(
-                    obj.get("id").asInt,
-                    obj.get("name").asString,
-                    obj.get("description").asString,
-                    false))
-        }
-
-        main_loop@ for (i in collection.indices) {
-            for (j in 0..OrderList.getTreatments()!!.size - 1) {
-                if (collection[i].id == OrderList.getTreatments()!![j].id) {
-                    collection[i].select = true
-                    continue@main_loop
+        (0..array.size() - 1)
+                .map { array.get(it).asJsonObject }
+                .mapTo(collection) {
+                    Treatment(
+                            AndroidUtilities.getIntFieldFromJson(it.get("id")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("name")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("description")),
+                            0,
+                            false)
                 }
-            }
-        }
+
+        sort(collection)
 
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
+
+        adapter!!.add(Treatment(
+                -1,
+                getString(R.string.decoration),
+                getString(R.string.decoration_help),
+                0,
+                intent.getBooleanExtra(EXTRA_DECORATION, false)))
+
+        adapter!!.notifyDataSetChanged()
+    }
+
+    private fun sort(collection: ArrayList<Treatment>) {
+        Collections.sort(collection) { treatment, t1 -> treatment.name.compareTo(t1.name) }
     }
 }

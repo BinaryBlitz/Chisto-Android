@@ -5,45 +5,51 @@
              android:background="#ffffff"
              android:id="@+id/main"
              android:layout_height="match_parent">
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+
+    <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:contentInsetStart="0dp"
-            android:contentInsetLeft="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
-        <FrameLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/action_bar">
-
-            <ImageView
-                    android:id="@+id/left_btn"
-                    android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+            <FrameLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_back"
-                    android:padding="13dp"
-                    android:layout_gravity="start"/>
+                    android:id="@+id/action_bar">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/about_str"
-                    android:layout_gravity="center"
-                    android:id="@+id/date_text_view"
-                    android:gravity="center_vertical"
-                    android:typeface="sans"
-                    android:textSize="22sp"
-                    android:textColor="#ffffff" />
+                <ImageView
+                        android:id="@+id/left_btn"
+                        android:layout_width="56dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_back"
+                        android:padding="13dp"
+                        android:layout_gravity="start"/>
 
-        </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/about"
+                        android:layout_gravity="center"
+                        android:id="@+id/date_text_view"
+                        android:gravity="center_vertical"
+                        android:typeface="sans"
+                        android:textSize="22sp"
+                        android:textColor="#ffffff" />
+
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
     <ScrollView
             android:layout_width="match_parent"
             android:layout_marginTop="56dp"
@@ -59,12 +65,12 @@
 
                 <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="62dp"
+                        android:layout_height="52dp"
                         android:src="@drawable/blue_logo"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="32dp"/>
                 <TextView
-                        android:text="@string/contact_us_str"
+                        android:text="@string/contact_us"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -92,6 +98,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1.0"
                             android:orientation="vertical"
+                            android:id="@+id/phone_call"
                             android:background="@drawable/right_border"
                             android:layout_gravity="center_vertical"
                             android:layout_height="wrap_content">
@@ -102,7 +109,7 @@
                                 android:padding="8dp"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
-                                  android:text="@string/call_us_str"
+                                  android:text="@string/call_us"
                                   android:textColor="@color/colorAccent"
                                   android:layout_marginTop="8dp"
                                   android:textSize="16sp"
@@ -113,6 +120,7 @@
                             android:layout_width="0dp"
                             android:layout_weight="1.0"
                             android:orientation="vertical"
+                            android:id="@+id/send_mail"
                             android:background="@drawable/right_border"
                             android:layout_gravity="center_vertical"
                             android:layout_height="wrap_content">
@@ -123,7 +131,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
-                                  android:text="@string/email_str"
+                                  android:text="@string/email"
                                   android:textColor="@color/colorAccent"
                                   android:textSize="16sp"
                                   android:layout_marginTop="8dp"
@@ -134,7 +142,7 @@
                 </LinearLayout>
 
                 <TextView
-                        android:text="@string/about_social_str"
+                        android:text="@string/about_social"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -158,6 +166,7 @@
                             android:layout_gravity="center"
                             android:layout_marginRight="88dp"
                             android:layout_marginEnd="88dp"
+                            android:id="@+id/instagram"
                             android:padding="4dp"
                             android:layout_height="56dp"/>
 
@@ -165,6 +174,7 @@
                             android:layout_width="56dp"
                             android:src="@drawable/ic_facebook"
                             android:padding="4dp"
+                            android:id="@+id/facebook"
                             android:layout_gravity="center"
                             android:layout_height="56dp"/>
 
@@ -172,6 +182,7 @@
                             android:layout_width="56dp"
                             android:src="@drawable/ic_vk"
                             android:padding="4dp"
+                            android:id="@+id/vk"
                             android:layout_marginStart="88dp"
                             android:layout_marginLeft="88dp"
                             android:layout_gravity="center"
@@ -179,22 +190,24 @@
                 </FrameLayout>
             </LinearLayout>
 
-            <TextView android:layout_width="wrap_content"
-                      android:text="@string/rate_str"
-                      android:gravity="center"
-                      android:layout_gravity="center_horizontal|bottom"
-                      android:textColor="#ffffff"
-                      android:id="@+id/add_btn"
-                      android:textSize="18sp"
-                      android:background="@drawable/button_border"
-                      android:layout_marginTop="56dp"
-                      android:layout_height="wrap_content"
-                      android:paddingBottom="12dp"
-                      android:paddingTop="12dp"
-                      android:paddingEnd="22dp"
-                      android:paddingLeft="22dp"
-                      android:paddingRight="22dp"
-                      android:paddingStart="22dp"/>
+            <Button
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:theme="@style/BrandButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:text="@string/rate"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:textColor="#ffffff"
+                    android:id="@+id/add_btn"
+                    android:textSize="18sp"
+                    android:layout_marginTop="24dp"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="12dp"
+                    android:paddingTop="12dp"
+                    android:paddingEnd="22dp"
+                    android:paddingLeft="22dp"
+                    android:paddingRight="22dp"
+                    android:paddingStart="22dp"/>
 
         </LinearLayout>
     </ScrollView>
@@ -202,9 +215,10 @@
     <FrameLayout
             android:layout_width="match_parent"
             android:layout_gravity="bottom"
+            android:id="@+id/bottom"
             android:layout_height="56dp">
         <TextView
-                android:text="@string/about_bottom_str"
+                android:text="@string/about_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -218,7 +232,7 @@
                 android:gravity="start"/>
 
         <TextView
-                android:text="@string/about_bottom_str2"
+                android:text="@string/write_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"

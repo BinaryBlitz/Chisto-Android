@@ -7,16 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import ru.binaryblitz.Chisto.Activities.ItemInfoActivity
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.OrderList
+import ru.binaryblitz.Chisto.Utils.SwipeToDeleteAdapter
 import java.util.*
 
-class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SwipeToDeleteAdapter {
 
     private var collection = ArrayList<Treatment>()
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
-    var itemsPendingRemoval: ArrayList<Treatment>? = null
+    var itemsPendingRemoval: ArrayList<Treatment>? = ArrayList()
     var undoOn: Boolean = false
 
     private val handler = Handler()
@@ -24,15 +26,16 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_treatment_info, parent, false)
-
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        holder.name.text = collection[position].name
-        holder.desc.text = collection[position].description
+        val treatment = collection[position]
+
+        holder.name.text = treatment.name
+        holder.desc.text = treatment.description
         holder.index.text = (position + 1).toString()
     }
 
@@ -44,7 +47,11 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
         this.collection = collection
     }
 
-    fun pendingRemoval(position: Int) {
+    fun getCollection(): ArrayList<Treatment> {
+        return collection
+    }
+
+    override fun pendingRemoval(position: Int) {
         val item = collection[position]
         if (!itemsPendingRemoval!!.contains(item)) {
             itemsPendingRemoval!!.add(item)
@@ -55,19 +62,28 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
         }
     }
 
-    fun remove(position: Int) {
+    override fun remove(position: Int) {
         val item = collection[position]
         if (itemsPendingRemoval!!.contains(item)) {
             itemsPendingRemoval!!.remove(item)
         }
         if (collection.contains(item)) {
-            collection.removeAt(position)
-            OrderList.removeTreatment(collection[position].id)
+            collection.remove(item)
             notifyDataSetChanged()
+        }
+
+        if (collection.size == 0) {
+            collection.add(item)
+            notifyDataSetChanged()
+            (context as ItemInfoActivity).onRemovalError()
         }
     }
 
-    fun isPendingRemoval(position: Int): Boolean {
+    override fun isUndo(): Boolean {
+        return undoOn
+    }
+
+    override fun isPendingRemoval(position: Int): Boolean {
         val item = collection[position]
         return itemsPendingRemoval!!.contains(item)
     }

@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.R;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.R;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -38,14 +38,6 @@ public class ProfileActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.rules_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(ProfileActivity.this, ContactInfoActivity.class);
-//                startActivity(intent);
-            }
-        });
-
         findViewById(R.id.my_orders_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +50,15 @@ public class ProfileActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProfileActivity.this, AboutActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.rules_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, WebActivity.class);
+                intent.putExtra("url", "https://docs.google.com/viewer?url=" + "https://chis.to/legal/terms-of-service.pdf");
                 startActivity(intent);
             }
         });

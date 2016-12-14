@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:id="@+id/refresh"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+                 android:orientation="vertical"
+                 android:layout_width="match_parent"
+                 android:background="#eaeaea"
+                 android:id="@+id/main"
+                 android:layout_height="match_parent">
+        <ImageView
+                android:layout_width="match_parent"
+                android:background="#212121"
+                android:id="@+id/back_image"
+                android:scaleType="centerCrop"
+                android:layout_height="130dp"/>
+        <View android:layout_width="match_parent"
+              android:background="@drawable/card_gradient"
+              android:layout_height="130dp"/>
+
+        <View android:layout_width="match_parent"
+              android:background="@drawable/card_gradient"
+              android:layout_height="130dp"/>
+
+        <ImageView
+                android:layout_width="56dp"
+                android:background="@drawable/blue_circle"
+                android:padding="5dp"
+                android:id="@+id/logo_image"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="102dp"
+                android:layout_height="56dp"/>
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="#00ffffff"
+                android:minHeight="?attr/actionBarSize">
+            <FrameLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/action_bar">
+
+                <ImageView
+                        android:id="@+id/left_btn"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_back"
+                        android:padding="13dp"
+                        android:layout_gravity="start"
+                />
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/review"
+                        android:layout_gravity="center"
+                        android:id="@+id/date_text_view"
+                        android:gravity="center_vertical"
+                        android:typeface="sans"
+                        android:textSize="16sp"
+                        android:textColor="#ffffff" />
+
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
+
+        <TextView android:layout_width="wrap_content"
+                  android:textStyle="bold"
+                  android:textColor="#ffffff"
+                  android:layout_marginTop="56dp"
+                  android:textSize="18sp"
+                  android:id="@+id/name_text"
+                  android:layout_gravity="top|center_horizontal"
+                  android:layout_height="wrap_content"/>
+
+        <TextView android:layout_width="wrap_content"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="56dp"
+                  android:textSize="18sp"
+                  android:id="@+id/empty"
+                  android:gravity="center"
+                  android:text="@string/empty_reviews"
+                  android:layout_height="wrap_content"/>
+
+        <ru.binaryblitz.Chisto.Custom.RecyclerListView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_marginTop="172dp"
+                android:layout_height="match_parent">
+        </ru.binaryblitz.Chisto.Custom.RecyclerListView>
+
+        <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srb_starSize="12dp"
+                app:srb_numberOfStars="5"
+                app:srb_rating="3"
+                app:srb_stepSize="0.5"
+                app:srb_starBorderWidth="3"
+                app:srb_starCornerRadius="2"
+                android:id="@+id/ratingBar"
+                android:layout_marginTop="104dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginLeft="12dp"
+                app:srb_borderColor="#ffffff"
+                app:srb_fillColor="#ffffff"/>
+
+        <TextView
+                android:layout_marginTop="98dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_gravity="end"
+                android:textColor="#ffffff"
+                android:id="@+id/count"
+                android:text="Отзывы"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

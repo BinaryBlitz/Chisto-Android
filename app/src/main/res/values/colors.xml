@@ -5,4 +5,8 @@
     <color name="colorAccent">#4bc2f7</color>
     <color name="greyColor">#727272</color>
     <color name="blackColor">#212121</color>
+
+    <color name="processColor">#4bc2f7</color>
+    <color name="completedColor">#6ce19d</color>
+    <color name="canceledColor">#ed4a63</color>
 </resources>

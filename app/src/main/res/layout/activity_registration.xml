@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:id="@+id/main">
+
+    <LinearLayout
+            android:id="@+id/l1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="56dp"
+            android:visibility="visible">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phone"
+                android:textColor="#212121"
+                android:inputType="phone"
+                android:textSize="22sp"
+                android:hint="+7 (900) 000-00-00"
+                android:lines="1"
+                android:gravity="center"
+                android:maxLength="16"
+                android:letterSpacing="0.04"
+                android:paddingLeft="12dp"
+                android:paddingStart="12dp"
+                android:paddingRight="12dp"
+                android:paddingEnd="12dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                app:met_underlineColor="#212121"
+                app:met_baseColor="@color/colorPrimary"
+                app:met_textColor="@color/colorPrimary"
+                app:met_errorColor="#ffffff"
+                app:met_floatingLabel="none"
+                app:met_helperTextColor="#727272"
+                app:met_primaryColor="@color/colorAccent"
+                android:textColorHint="#727272" />
+
+    </LinearLayout>
+
+    <FrameLayout
+            android:id="@+id/l2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="56dp"
+            android:visibility="gone">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/code_field"
+                android:textColor="@color/colorAccent"
+                android:inputType="numberSigned"
+                android:gravity="center"
+                android:focusable="true"
+                android:maxLength="5"
+                android:focusableInTouchMode="true"
+                android:textSize="20sp"
+                android:letterSpacing="0.04"
+                android:hint="@string/code"
+                app:met_underlineColor="@color/colorAccent"
+                app:met_baseColor="@color/colorAccent"
+                app:met_textColor="@color/colorAccent"
+                app:met_errorColor="@color/colorAccent"
+                app:met_floatingLabel="none"
+                app:met_helperTextColor="@color/colorAccent"
+                app:met_primaryColor="@color/colorAccent"
+                android:textColorHint="@color/greyColor"
+                android:layout_gravity="bottom"
+                android:visibility="visible" />
+
+    </FrameLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView23"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:textSize="18sp"
+            android:text="@string/code_send"
+            android:textColor="#212121"
+            android:layout_marginRight="44dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginLeft="44dp"
+            android:gravity="center"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/title_text"
+            android:layout_gravity="center"
+            android:visibility="visible"
+            android:textSize="26sp"
+            android:text="@string/type_phone"
+            android:textColor="#212121"
+            android:layout_marginRight="44dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginBottom="132dp"
+            android:layout_marginLeft="44dp"
+            android:gravity="center"/>
+
+    <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+            <FrameLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/action_bar">
+
+                <ImageView
+                        android:id="@+id/left_btn"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_back"
+                        android:padding="13dp"
+                        android:layout_gravity="start"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/reg"
+                        android:layout_gravity="center"
+                        android:id="@+id/date_text_view"
+                        android:gravity="center_vertical"
+                        android:typeface="sans"
+                        android:textSize="22sp"
+                        android:textColor="#ffffff" />
+
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/textView2"
+            android:layout_gravity="center"
+            android:textColor="#727272"
+            android:textSize="16sp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginTop="44dp"
+            android:gravity="center" />
+
+    <android.support.v7.widget.AppCompatButton
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send"
+            android:id="@+id/button"
+            android:layout_gravity="center"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginTop="112dp" />
+
+</FrameLayout>

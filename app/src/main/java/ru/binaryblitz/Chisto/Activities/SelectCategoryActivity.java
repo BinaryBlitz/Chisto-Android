@@ -3,33 +3,39 @@ package ru.binaryblitz.Chisto.Activities;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import ru.binaryblitz.Chisto.Adapters.CategoriesAdapter;
-import ru.binaryblitz.Chisto.Base.BaseActivity;
-import ru.binaryblitz.Chisto.Custom.RecyclerListView;
-import ru.binaryblitz.Chisto.Model.Category;
-import ru.binaryblitz.Chisto.Server.ServerApi;
-import ru.binaryblitz.Chisto.Server.ServerConfig;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
-import ru.binaryblitz.Chisto.Utils.OrderList;
 import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import ru.binaryblitz.Chisto.Adapters.CategoriesAdapter;
+import ru.binaryblitz.Chisto.Base.BaseActivity;
+import ru.binaryblitz.Chisto.Custom.RecyclerListView;
+import ru.binaryblitz.Chisto.Model.Category;
+import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.ServerApi;
+import ru.binaryblitz.Chisto.Server.ServerConfig;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.ColorsList;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
+import ru.binaryblitz.Chisto.Utils.OrderList;
 
-public class SelectCategoryActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class SelectCategoryActivity extends BaseActivity {
     private CategoriesAdapter adapter;
     private SwipeRefreshLayout layout;
 
@@ -42,30 +48,29 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
         findViewById(ru.binaryblitz.Chisto.R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OrderList.removeCurrent();
-                finish();
+                finishActivity();
             }
         });
 
         initList();
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().post(new Runnable() {
             @Override
             public void run() {
+                layout.setRefreshing(true);
                 load();
             }
-        }, 200);
+        });
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        OrderList.removeCurrent();
+        finishActivity();
     }
 
-    @Override
-    public void onRefresh() {
-        load();
+    private void finishActivity() {
+        OrderList.removeCurrent();
+        finish();
     }
 
     private void initList() {
@@ -74,25 +79,22 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
 
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        layout.setOnRefreshListener(null);
+        layout.setEnabled(false);
+        layout.setColorSchemeResources(R.color.colorAccent);
+
         adapter = new CategoriesAdapter(this);
         view.setAdapter(adapter);
-
-        layout = (SwipeRefreshLayout) findViewById(ru.binaryblitz.Chisto.R.id.refresh);
-        layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(ru.binaryblitz.Chisto.R.color.colorAccent);
     }
 
     private void load() {
         ServerApi.get(this).api().getCategories().enqueue(new Callback<JsonArray>() {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
-                LogUtil.logError(response.body().toString());
                 layout.setRefreshing(false);
-                if (response.isSuccessful()) {
-                    parseAnswer(response.body());
-                } else {
-                    onInternetConnectionError();
-                }
+                if (response.isSuccessful()) parseAnswer(response.body());
+                else onServerError(response);
             }
 
             @Override
@@ -104,20 +106,51 @@ public class SelectCategoryActivity extends BaseActivity implements SwipeRefresh
     }
 
     private void parseAnswer(JsonArray array) {
+        LogUtil.logError(array.toString());
         ArrayList<Category> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
-            collection.add(new Category(
-                    object.get("id").getAsInt(),
-                    object.get("name").getAsString(),
-                    object.get("description").getAsString(),
-                    ServerConfig.INSTANCE.getImageUrl() + object.get("icon").getAsString(),
-                    ContextCompat.getColor(this, ru.binaryblitz.Chisto.R.color.greyColor)
-            ));
+            boolean featured = AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"));
+            if (featured) collection.add(0, parseCategory(object));
+            else collection.add(parseCategory(object));
         }
+
+        sort(collection);
+        save(collection);
 
         adapter.setCategories(collection);
         adapter.notifyDataSetChanged();
+    }
+
+    private void save(ArrayList<Category> collection) {
+        for (int i = 0; i < collection.size(); i++) {
+            Category category = collection.get(i);
+            ColorsList.add(new Pair<>(category.getId(), category.getColor()));
+        }
+
+        ColorsList.saveColors(this);
+    }
+
+    private Category parseCategory(JsonObject object) {
+        return new Category(
+                AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
+                ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
+                AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
+                AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
+                Color.parseColor(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("color"))),
+                AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"))
+        );
+    }
+
+    private void sort(ArrayList<Category> collection) {
+        Collections.sort(collection, new Comparator<Category>() {
+            @Override
+            public int compare(Category category, Category t1) {
+                if (category.getFeatured() && !t1.getFeatured()) return -1;
+                else if (!category.getFeatured() && t1.getFeatured()) return 1;
+                else return category.getName().compareTo(t1.getName());
+            }
+        });
     }
 }

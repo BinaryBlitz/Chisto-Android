@@ -15,15 +15,16 @@ import ru.binaryblitz.Chisto.Model.Order
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
+import ru.binaryblitz.Chisto.Utils.SwipeToDeleteAdapter
 import java.util.*
 
-class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SwipeToDeleteAdapter {
     private var collection = ArrayList<Order>()
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
     var itemsPendingRemoval: ArrayList<Order> = ArrayList()
     var undoOn = false
-
+    val EXTRA_COLOR = "color"
+    val EXTRA_INDEX = "index"
     private val handler = Handler()
     var pendingRunnables: HashMap<Order, Runnable> = HashMap()
 
@@ -53,9 +54,13 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.count.text = "\u00D7" + order.count + " шт"
 
         Image.loadPhoto(order.category.icon, holder.icon)
+        holder.icon.setColorFilter(order.color)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ItemInfoActivity::class.java)
+            OrderList.edit(holder.adapterPosition)
+            intent.putExtra(EXTRA_COLOR, order.color)
+            intent.putExtra(EXTRA_INDEX, holder.adapterPosition)
             context.startActivity(intent)
         }
     }
@@ -68,7 +73,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         this.collection = collection
     }
 
-    fun pendingRemoval(position: Int) {
+    override fun pendingRemoval(position: Int) {
         val item = collection[position]
         if (!itemsPendingRemoval.contains(item)) {
             itemsPendingRemoval.add(item)
@@ -79,19 +84,22 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         }
     }
 
-    fun remove(position: Int) {
+    override fun isUndo(): Boolean {
+        return undoOn
+    }
+
+    override fun remove(position: Int) {
         val item = collection[position]
         if (itemsPendingRemoval.contains(item)) {
             itemsPendingRemoval.remove(item)
         }
         if (collection.contains(item)) {
-            collection.removeAt(position)
             OrderList.remove(position)
             notifyItemRemoved(position)
         }
     }
 
-    fun isPendingRemoval(position: Int): Boolean {
+    override fun isPendingRemoval(position: Int): Boolean {
         val item = collection[position]
         return itemsPendingRemoval.contains(item)
     }

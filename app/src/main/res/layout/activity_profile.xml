@@ -2,48 +2,54 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
              android:orientation="vertical"
              android:layout_width="match_parent"
+             android:id="@+id/main"
              android:layout_height="match_parent">
 
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:contentInsetStart="0dp"
-            android:contentInsetLeft="0dp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp"
-            android:background="@color/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
-        <FrameLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/action_bar">
-
-            <ImageView
-                    android:id="@+id/back_btn"
-                    android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentInsetStart="0dp"
+                android:contentInsetLeft="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetStart="0dp"
+                android:background="@color/colorPrimary"
+                android:minHeight="?attr/actionBarSize">
+            <FrameLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_back"
-                    android:padding="13dp"
-                    android:layout_gravity="start"
-            />
+                    android:id="@+id/action_bar">
 
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/profile_str"
-                    android:layout_gravity="center"
-                    android:id="@+id/date_text_view"
-                    android:gravity="center_vertical"
-                    android:typeface="sans"
-                    android:textSize="22sp"
-                    android:textColor="#ffffff" />
+                <ImageView
+                        android:id="@+id/back_btn"
+                        android:layout_width="56dp"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:src="@drawable/ic_back"
+                        android:padding="13dp"
+                        android:layout_gravity="start"
+                />
 
-        </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="@string/profile"
+                        android:layout_gravity="center"
+                        android:id="@+id/date_text_view"
+                        android:gravity="center_vertical"
+                        android:typeface="sans"
+                        android:textSize="22sp"
+                        android:textColor="#ffffff" />
+
+            </FrameLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
             android:layout_width="match_parent"
@@ -69,7 +75,7 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/contact_data_str"
+                        android:text="@string/contact_data"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -87,6 +93,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -105,7 +117,7 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/my_orders_str"
+                        android:text="@string/my_orders"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -123,6 +135,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -141,7 +159,7 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/about_str"
+                        android:text="@string/about"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
@@ -159,6 +177,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
 
             <FrameLayout
@@ -177,16 +201,17 @@
                         android:layout_height="56dp"/>
 
                 <TextView
-                        android:text="@string/rules_str"
+                        android:text="@string/rules"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="16dp"
                         android:layout_marginLeft="60dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginStart="60dp"
+                        android:maxLines="1"
                         android:layout_gravity="center_vertical"
                         android:textColor="#212121"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:gravity="start"/>
 
                 <ImageView
@@ -195,6 +220,12 @@
                         android:padding="16dp"
                         android:layout_gravity="center_vertical|end"
                         android:layout_height="56dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:background="?attr/selectableItemBackground"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
             </FrameLayout>
         </LinearLayout>
     </ScrollView>

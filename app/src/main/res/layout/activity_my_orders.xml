@@ -1,7 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:orientation="vertical"
+             android:id="@+id/main"
+             android:layout_width="match_parent"
+             android:background="#ffffff"
+             android:layout_height="match_parent">
 
-</LinearLayout>
+    <TextView android:layout_width="wrap_content"
+              android:layout_gravity="center"
+              android:layout_marginTop="56dp"
+              android:textSize="18sp"
+              android:id="@+id/empty"
+              android:gravity="center"
+              android:text="@string/empty_orders"
+              android:layout_height="wrap_content"/>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp">
+        <ru.binaryblitz.Chisto.Custom.RecyclerListView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        </ru.binaryblitz.Chisto.Custom.RecyclerListView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize">
+        <FrameLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/action_bar">
+
+            <ImageView
+                    android:id="@+id/left_btn"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_back"
+                    android:padding="13dp"
+                    android:layout_gravity="start"
+            />
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/my_orders"
+                    android:layout_gravity="center"
+                    android:id="@+id/date_text_view"
+                    android:gravity="center_vertical"
+                    android:typeface="sans"
+                    android:textSize="22sp"
+                    android:textColor="#ffffff" />
+
+        </FrameLayout>
+    </android.support.v7.widget.Toolbar>
+</FrameLayout>

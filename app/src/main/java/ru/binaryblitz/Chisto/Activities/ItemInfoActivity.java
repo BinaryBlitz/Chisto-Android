@@ -1,10 +1,12 @@
 package ru.binaryblitz.Chisto.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -51,16 +53,19 @@ public class ItemInfoActivity extends BaseActivity {
         initRecyclerView();
 
         final Order order = OrderList.get(getIntent().getIntExtra(EXTRA_INDEX, 0));
-
+        OrderList.copyToBuffer(OrderList.getTreatments());
         setInfo(order);
         setOnClickListeners(order);
+    }
+
+    public void onRemovalError() {
+        Snackbar.make(findViewById(R.id.main), R.string.removal, Snackbar.LENGTH_SHORT).show();
     }
 
     private void initRecyclerView() {
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
-        view.setHasFixedSize(true);
         view.setEmptyView(null);
 
         adapter = new EditTreatmentsAdapter(this);
@@ -109,6 +114,7 @@ public class ItemInfoActivity extends BaseActivity {
             public void onClick(View view) {
                 if (Integer.parseInt(count.getText().toString()) == 1) {
                     showDialog();
+                    return;
                 }
                 count.setText(Integer.toString(Integer.parseInt(count.getText().toString()) - 1));
             }
@@ -117,6 +123,8 @@ public class ItemInfoActivity extends BaseActivity {
         findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (adapter.getItemCount() == 0) return;
+                OrderList.saveTreatments(adapter.getCollection());
                 OrderList.changeCount(Integer.parseInt(count.getText().toString()));
                 finish();
             }
@@ -128,20 +136,33 @@ public class ItemInfoActivity extends BaseActivity {
         intent.putExtra(EXTRA_EDIT, true);
         intent.putExtra(EXTRA_ID, order != null ? order.getCategory().getId() : 0);
         intent.putExtra(EXTRA_NAME, order != null ? order.getCategory().getName() : "");
+        intent.putExtra(EXTRA_COLOR, order != null ? order.getColor() : DEFAULT_COLOR);
         startActivity(intent);
     }
 
     private void showDialog() {
         new MaterialDialog.Builder(ItemInfoActivity.this)
                 .title(R.string.app_name)
-                .content(R.string.delete_from_order_str)
-                .positiveText(R.string.yes_code_str)
-                .negativeText(R.string.no_code_str)
+                .content(R.string.delete_from_order)
+                .positiveText(R.string.yes_code)
+                .negativeText(R.string.no_code)
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        count.setText(Integer.toString(1));
+                    }
+                })
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         OrderList.removeCurrent();
                         finish();
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        count.setText(Integer.toString(1));
                     }
                 })
                 .show();
@@ -152,7 +173,7 @@ public class ItemInfoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (OrderList.getTreatments() != null) {
-            adapter.setCollection(OrderList.getTreatments());
+            adapter.setCollection(OrderList.getBufferTreatments());
             adapter.notifyDataSetChanged();
         }
     }

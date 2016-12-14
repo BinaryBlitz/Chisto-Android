@@ -23,9 +23,11 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     private var categories: ArrayList<CategoryItem>? = null
     private var color: Int = Color.parseColor("#212121")
 
-    val EXTRA_DECOR = "decor"
+    val EXTRA_DECORATION = "decoration"
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
+    val EXTRA_COLOR = "color"
+    val EXTRA_USE_AREA = "userArea"
 
     init {
         Image.init(context)
@@ -61,6 +63,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.description.text = item.desc
 
         Image.loadPhoto(item.icon, holder.icon)
+        holder.icon.setColorFilter(color)
 
         holder.itemView.setOnClickListener {
             showDialog(item)
@@ -69,31 +72,28 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
 
     private fun showDialog(item: CategoryItem) {
         MaterialDialog.Builder(context)
-                .title(R.string.app_name)
-                .content(R.string.decor_question_str)
-                .positiveText(R.string.yes_code_str)
-                .negativeText(R.string.no_code_str)
+                .title(R.string.decoration_question)
+                .content(context.getString(R.string.decoration_help))
+                .positiveText(R.string.yes_code)
+                .negativeText(R.string.no_code)
                 .onPositive { dialog, action ->
-                    run {
-                        val intent = Intent(context, SelectServiceActivity::class.java)
-                        intent.putExtra(EXTRA_DECOR, true)
-                        intent.putExtra(EXTRA_ID, item.id)
-                        intent.putExtra(EXTRA_NAME, item.name)
-                        OrderList.add(Order(item, null, 1, color))
-                        context.startActivity(intent)
-                    }
+                    run { openActivity(item, true) }
                 }
                 .onNegative { dialog, action ->
-                    run {
-                        val intent = Intent(context, SelectServiceActivity::class.java)
-                        intent.putExtra(EXTRA_DECOR, false)
-                        intent.putExtra(EXTRA_ID, item.id)
-                        intent.putExtra(EXTRA_NAME, item.name)
-                        OrderList.add(Order(item, null, 1, color))
-                        context.startActivity(intent)
-                    }
+                    run { openActivity(item, false) }
                 }
                 .show()
+    }
+
+    private fun openActivity(item: CategoryItem, decor: Boolean) {
+        val intent = Intent(context, SelectServiceActivity::class.java)
+        intent.putExtra(EXTRA_DECORATION, decor)
+        intent.putExtra(EXTRA_ID, item.id)
+        intent.putExtra(EXTRA_NAME, item.name)
+        intent.putExtra(EXTRA_COLOR, color)
+        intent.putExtra(EXTRA_USE_AREA, item.userArea)
+        OrderList.add(Order(item, null, 1, color, decor))
+        context.startActivity(intent)
     }
 
     override fun getItemCount(): Int {
