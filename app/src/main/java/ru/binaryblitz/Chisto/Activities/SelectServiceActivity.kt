@@ -93,19 +93,19 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun checkSizes(): Boolean {
         var error = ""
-        var res = true
+        var correctSize = true
         if (width == 0) {
-            res = false
+            correctSize = false
             error += "Неверно указана ширина\n"
         }
         if (length == 0) {
-            res = false
+            correctSize = false
             error += "Неверно указана длина\n"
         }
 
-        if (!res) showErrorDialog(error)
+        if (!correctSize) showErrorDialog(error)
 
-        return res
+        return correctSize
     }
 
     private fun showErrorDialog(error: String) {
