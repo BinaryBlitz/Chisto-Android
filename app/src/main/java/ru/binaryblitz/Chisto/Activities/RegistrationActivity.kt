@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -28,13 +29,14 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
+import ru.binaryblitz.Chisto.Utils.LogUtil
 
 class RegistrationActivity : BaseActivity() {
 
     val EXTRA_PHONE = "phone"
 
     private var code = false
-
+    private var cost = 0
     private var phoneEditText: MaterialEditText? = null
     private var codeEditText: MaterialEditText? = null
     private var continueButton: Button? = null
@@ -45,6 +47,9 @@ class RegistrationActivity : BaseActivity() {
 
         initElements()
         setOnClickListeners()
+
+        cost = intent.getIntExtra(EXTRA_PRICE, 0)
+        LogUtil.logError(cost)
 
         Handler().post { phoneEditText!!.requestFocus() }
     }
@@ -158,7 +163,7 @@ class RegistrationActivity : BaseActivity() {
     private fun finishActivity(phone: String) {
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
         intent.putExtra(EXTRA_PHONE, phone)
-        intent.putExtra(EXTRA_PRICE, intent.getIntExtra(EXTRA_PRICE, 0))
+        intent.putExtra(EXTRA_PRICE, cost)
         intent.putExtra(EXTRA_TOKEN, token)
         startActivity(intent)
         finish()
