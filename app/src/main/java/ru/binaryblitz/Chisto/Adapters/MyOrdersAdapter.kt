@@ -47,10 +47,8 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
             }
         }
 
-        holder.desc.text = getDateStringRepresentation(order.createAt!!)
-
-        // TODO add cost from server
-        holder.cost.text = "3 800" + " \u20bd"
+        holder.desc.text = getDateStringRepresentation(order.createAt)
+        holder.cost.text = order.cost.toString() + " \u20bd"
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MyOrderActivity::class.java)

@@ -16,6 +16,7 @@ class MyOrder {
     val flat: String
     val phone: String
     val note: String
+    val cost: Int
 
     constructor(obj: JsonObject) {
         id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
@@ -28,6 +29,7 @@ class MyOrder {
         flat = AndroidUtilities.getStringFieldFromJson(obj.get("flat"))
         phone = AndroidUtilities.getStringFieldFromJson(obj.get("contact_number"))
         note = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
+        cost = AndroidUtilities.getIntFieldFromJson(obj.get("total_price"))
     }
 
     private fun getStatusFromJson(obj: JsonObject): MyOrder.Status {
