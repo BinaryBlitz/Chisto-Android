@@ -281,7 +281,6 @@ class LaundriesActivity : BaseActivity() {
 
         val dialog = ProgressDialog(this)
         dialog.show()
-
         ServerApi.get(this@LaundriesActivity).api().getOrders(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 dialog.dismiss()
@@ -374,6 +373,10 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswerForPopup(array: JsonArray) {
+        if (array.size() == 0) {
+            load()
+            return
+        }
         val id = array.get(array.size() - 1).asJsonObject.get("laundry_id").asInt
         loadLaundry(id)
     }
