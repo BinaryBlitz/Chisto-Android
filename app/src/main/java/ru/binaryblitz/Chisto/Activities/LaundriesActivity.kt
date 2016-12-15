@@ -177,7 +177,6 @@ class LaundriesActivity : BaseActivity() {
                 parseDate(obj, "delivery_date", "yyyy-MM-dd"),
                 parseDate(obj, "delivery_date_opens_at", "HH:mm"),
                 parseDate(obj, "delivery_date_closes_at", "HH:mm"),
-                0,
                 allOrdersCost,
                 index,
                 getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
@@ -308,15 +307,15 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         if (!checkTreatments(obj)) return
 
         laundryObject = obj
-        laundry = parseLaundry(0, obj)
+
         if (obj.get("laundry_treatments") != null && !obj.get("laundry_treatments").isJsonNull) {
             countSums(obj.get("laundry_treatments").asJsonArray)
-            setCosts(laundry!!)
         }
+        laundry = parseLaundry(0, obj)
+        setCosts(laundry!!)
 
         setTextToField(R.id.desc_text, laundry!!.desc)
         setTextToField(R.id.order_current_btn, getString(R.string.ordering_code))
@@ -344,7 +343,12 @@ class LaundriesActivity : BaseActivity() {
         setTextToField(R.id.curier_cost_dialog, getString(R.string.from_code) +
                 DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
                 getString(R.string.end_bound_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
-        setTextToField(R.id.sum_dialog, laundry.orderCost.toString() + " \u20bd")
+        setTextToField(R.id.sum_dialog, (laundry.orderCost!! + getDeliveryFee(laundry)).toString() + " \u20bd")
+    }
+
+    private fun getDeliveryFee(laundry: Laundry): Int {
+        if (laundry.orderCost!! >= laundry.freeDeliveryBound!!) return 0
+        else return laundry.deliveryFee!!
     }
 
     private fun setTextToField(id: Int, text: String) {

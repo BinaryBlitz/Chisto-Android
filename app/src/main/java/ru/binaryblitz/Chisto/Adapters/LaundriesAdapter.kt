@@ -87,7 +87,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.collectionDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate)
         holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
         holder.deliveryBounds.text = getPeriod(laundry)
-        holder.cost.text = laundry.orderCost.toString() + " \u20bd"
+        holder.cost.text = (laundry.orderCost!! + laundry.deliveryFee!!).toString() + " \u20bd"
     }
 
     private fun getPeriod(laundry: Laundry): String {

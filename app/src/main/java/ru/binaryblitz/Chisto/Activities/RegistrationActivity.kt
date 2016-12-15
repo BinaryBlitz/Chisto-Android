@@ -165,8 +165,6 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun executeVerifyRequest() {
-        val phone = phoneEditText!!.text.toString()
-        finishActivity(phone)
         val dialog = ProgressDialog(this@RegistrationActivity)
         dialog.show()
 

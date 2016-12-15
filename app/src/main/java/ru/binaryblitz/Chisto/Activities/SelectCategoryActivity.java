@@ -112,7 +112,6 @@ public class SelectCategoryActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonArray array) {
-        LogUtil.logError(array.toString());
         ArrayList<Category> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {

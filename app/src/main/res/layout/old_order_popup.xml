@@ -56,7 +56,6 @@
                       android:layout_gravity="center_horizontal"
                       android:layout_marginTop="12dp"
                       android:id="@+id/curier_date_dialog"
-                      android:textColor="#212121"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"

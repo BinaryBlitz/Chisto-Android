@@ -107,7 +107,7 @@ class LaundryAndOrderActivity : BaseActivity() {
             (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + " \u20bd"
         }
         (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
-                Integer.toString(allOrdersCost) + " \u20bd"
+                Integer.toString(allOrdersCost + deliveryCost) + " \u20bd"
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
