@@ -55,13 +55,7 @@ class LaundriesActivity : BaseActivity() {
         findViewById(R.id.right_btn).setOnClickListener { showDialog() }
 
         findViewById(R.id.order_current_btn).setOnClickListener {
-            val intent = Intent(this@LaundriesActivity, LaundryAndOrderActivity::class.java)
-            OrderList.setLaundryId(laundry!!.id)
-            countSums(laundryObject!!.get("laundry_treatments").asJsonArray)
-            intent.putExtra(EXTRA_ID, laundry!!.id)
-            intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
-            intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
-            startActivity(intent)
+            clickCurrentBtn()
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
@@ -72,6 +66,26 @@ class LaundriesActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun clickCurrentBtn() {
+        val intent = Intent(this@LaundriesActivity, LaundryAndOrderActivity::class.java)
+        OrderList.setLaundryId(laundry!!.id)
+        countSums(laundryObject!!.get("laundry_treatments").asJsonArray)
+        intent.putExtra(EXTRA_ID, laundry!!.id)
+        intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
+        intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
+        if (laundry!!.orderCost!! < laundry!!.freeDeliveryBound!!) {
+            intent.putExtra(EXTRA_DELIVERY_COST, laundry!!.deliveryFee!!)
+        }
+        intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry!!))
+        startActivity(intent)
+    }
+
+    private fun getPeriod(laundry: Laundry): String {
+        return getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
+                getString(R.string.end_bound_code) +
+                DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
     }
 
     private fun initList() {
@@ -334,9 +348,7 @@ class LaundriesActivity : BaseActivity() {
     private fun setDates(laundry: Laundry) {
         setTextToField(R.id.curier_date_dialog, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
         setTextToField(R.id.delivery_date_dialog, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
-        setTextToField(R.id.delivery_bounds_dialog, getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
-                getString(R.string.end_bound_code) +
-                DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
+        setTextToField(R.id.delivery_bounds_dialog, getPeriod(laundry))
     }
 
     private fun setCosts(laundry: Laundry) {
@@ -382,6 +394,8 @@ class LaundriesActivity : BaseActivity() {
         private var laundry: Laundry? = null
         private var laundryObject: JsonObject? = null
         private val EXTRA_ID = "id"
+        private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
+        private val EXTRA_DELIVERY_COST = "deliveryCost"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
     }

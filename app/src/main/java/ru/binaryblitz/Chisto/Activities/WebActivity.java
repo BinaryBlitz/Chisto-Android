@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class WebActivity extends BaseActivity {
 

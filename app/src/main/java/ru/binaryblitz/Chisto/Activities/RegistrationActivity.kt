@@ -9,7 +9,6 @@ import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -29,7 +28,6 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
-import ru.binaryblitz.Chisto.Utils.LogUtil
 
 class RegistrationActivity : BaseActivity() {
 
@@ -49,7 +47,6 @@ class RegistrationActivity : BaseActivity() {
         setOnClickListeners()
 
         cost = intent.getIntExtra(EXTRA_PRICE, 0)
-        LogUtil.logError(cost)
 
         Handler().post { phoneEditText!!.requestFocus() }
     }
