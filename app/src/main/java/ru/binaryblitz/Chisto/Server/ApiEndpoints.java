@@ -13,6 +13,7 @@ import retrofit2.http.Query;
 
 public interface ApiEndpoints {
 
+
     @GET("cities")
     Call<JsonArray> getCitiesList();
 
