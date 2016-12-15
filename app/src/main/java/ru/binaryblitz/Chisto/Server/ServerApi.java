@@ -29,10 +29,11 @@ public class ServerApi {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request request = chain.request();
+                        Request.Builder builder = request.newBuilder().header("Accept", "application/json");
                         if (AndroidUtilities.INSTANCE.isConnected(context)) {
-                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                            request = builder.header("Cache-Control", "public, max-age=" + 60).build();
                         } else {
-                            request = request.newBuilder().header("Cache-Control",
+                            request = builder.header("Cache-Control",
                                     "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
                         }
                         return chain.proceed(request);
