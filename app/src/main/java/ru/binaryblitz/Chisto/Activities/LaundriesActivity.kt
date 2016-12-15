@@ -46,7 +46,7 @@ class LaundriesActivity : BaseActivity() {
         setOnClickListeners()
         initList()
 
-        Handler().post { loadLastOrder() }
+        Handler().post { load() }
     }
 
     private fun setOnClickListeners() {
@@ -148,6 +148,8 @@ class LaundriesActivity : BaseActivity() {
         adapter!!.sortByRating()
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
+
+        loadLastOrder()
     }
 
     private fun checkMinimumCost(obj: JsonObject): Boolean {
@@ -274,10 +276,7 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun loadLastOrder() {
-        if (DeviceInfoStore.getToken(this) == "null") {
-            load()
-            return
-        }
+        if (DeviceInfoStore.getToken(this) == "null") return
 
         val dialog = ProgressDialog(this)
         dialog.show()
@@ -299,25 +298,20 @@ class LaundriesActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this@LaundriesActivity).api().getLaundry(id).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                dialog.dismiss()
-                if (response.isSuccessful) parseAnswer(response.body())
-                else onInternetConnectionError()
+        for (i in 0..array!!.size() - 1) {
+            if (id == AndroidUtilities.getIntFieldFromJson(array!!.get(i).asJsonObject.get("id"))) {
+                parseAnswer(array!!.get(i).asJsonObject)
+                break
             }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                dialog.dismiss()
-                onInternetConnectionError()
-            }
-        })
+            if (i == array!!.size() - 1) dialog.dismiss()
+        }
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        if (!checkTreatments(obj)) {
-            load()
-            return
-        }
+        LogUtil.logError(obj.toString())
+        if (!checkTreatments(obj)) return
+
         laundryObject = obj
         laundry = parseLaundry(0, obj)
         if (obj.get("laundry_treatments") != null && !obj.get("laundry_treatments").isJsonNull) {
@@ -331,12 +325,12 @@ class LaundriesActivity : BaseActivity() {
         setTextToField(R.id.name_text, laundry!!.name)
         setDates(laundry!!)
 
-        Image.loadPhoto(ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(ru.binaryblitz.Chisto.R.id.back_image) as ImageView)
-        Image.loadPhoto(ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(ru.binaryblitz.Chisto.R.id.logo_image) as ImageView)
+        Image.loadPhoto(ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(R.id.back_image) as ImageView)
+        Image.loadPhoto(ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(R.id.logo_image) as ImageView)
 
         Handler().post {
             dialogOpened = true
-            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundriesActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@LaundriesActivity)
         }
     }
 
@@ -373,10 +367,7 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswerForPopup(array: JsonArray) {
-        if (array.size() == 0) {
-            load()
-            return
-        }
+        if (array.size() == 0) return
         val id = array.get(array.size() - 1).asJsonObject.get("laundry_id").asInt
         loadLaundry(id)
     }
