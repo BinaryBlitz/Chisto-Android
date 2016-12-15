@@ -232,7 +232,7 @@ class PersonalInfoActivity : BaseActivity() {
         val obj = JsonObject()
         obj.addProperty("first_name", name!!.text.toString())
         obj.addProperty("last_name", lastname!!.text.toString())
-        obj.addProperty("phone_number", phone!!.text.toString())
+        obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
         obj.addProperty("email", email!!.text.toString())
         if (DeviceInfoStore.getToken(this) == "null") {
