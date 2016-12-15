@@ -32,6 +32,7 @@ import java.util.*
 class LaundryAndOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
+    private var deliveryCost = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +103,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     private fun setSums() {
         (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
 
-        val deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
+        deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
         if (deliveryCost != 0) {
             (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + " \u20bd"
         }
@@ -148,7 +149,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
-        intent.putExtra(EXTRA_PRICE, allOrdersCost);
+        intent.putExtra(EXTRA_PRICE, allOrdersCost + deliveryCost)
         startActivity(intent)
     }
 
