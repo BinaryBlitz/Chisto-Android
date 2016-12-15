@@ -138,6 +138,7 @@
     <string name="wrong_phone_code">Неверно введен номер телефона</string>
     <string name="wrong_city_code">Неверно введен город</string>
     <string name="wrong_width_or_length_code">Неверно указана длина или ширина</string>
+    <string name="splitter_code">" и еще "</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
@@ -145,5 +146,14 @@
         <item quantity="few">%1$d отзыва</item>
         <item quantity="many">%1$d отзывов</item>
         <item quantity="other">%1$d отзывов</item>
+    </plurals>
+
+    <plurals name="items">
+        <item quantity="zero">0 вещей</item>
+        <item quantity="one">%1$d вещь</item>
+        <item quantity="two">%1$d вещи</item>
+        <item quantity="few">%1$d вещи</item>
+        <item quantity="many">%1$d вещей</item>
+        <item quantity="other">%1$d вещей</item>
     </plurals>
 </resources>
