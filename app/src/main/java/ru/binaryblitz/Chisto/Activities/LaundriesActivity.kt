@@ -68,9 +68,7 @@ class LaundriesActivity : BaseActivity() {
             if (dialogOpened) {
                 Handler().post {
                     dialogOpened = false
-                    layout!!.isRefreshing = true
                     Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
-                    load()
                 }
             }
         }
@@ -300,6 +298,7 @@ class LaundriesActivity : BaseActivity() {
 
         for (i in 0..array!!.size() - 1) {
             if (id == AndroidUtilities.getIntFieldFromJson(array!!.get(i).asJsonObject.get("id"))) {
+                dialog.dismiss()
                 parseAnswer(array!!.get(i).asJsonObject)
                 break
             }
@@ -319,7 +318,6 @@ class LaundriesActivity : BaseActivity() {
             setCosts(laundry!!)
         }
 
-        setTextToField(R.id.name_text, laundry!!.name)
         setTextToField(R.id.desc_text, laundry!!.desc)
         setTextToField(R.id.order_current_btn, getString(R.string.ordering_code))
         setTextToField(R.id.name_text, laundry!!.name)
@@ -335,16 +333,18 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun setDates(laundry: Laundry) {
-        setTextToField(R.id.curier_date, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
-        setTextToField(R.id.delivery_date, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
-        setTextToField(R.id.delivery_bounds, getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
+        setTextToField(R.id.curier_date_dialog, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
+        setTextToField(R.id.delivery_date_dialog, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
+        setTextToField(R.id.delivery_bounds_dialog, getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
                 getString(R.string.end_bound_code) +
                 DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
     }
 
     private fun setCosts(laundry: Laundry) {
-        setTextToField(R.id.curier_cost, laundry.deliveryCost.toString() + " \u20bd")
-        setTextToField(R.id.sum, laundry.orderCost.toString() + " \u20bd")
+        setTextToField(R.id.curier_cost_dialog, getString(R.string.from_code) +
+                DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
+                getString(R.string.end_bound_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
+        setTextToField(R.id.sum_dialog, laundry.orderCost.toString() + " \u20bd")
     }
 
     private fun setTextToField(id: Int, text: String) {

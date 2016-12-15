@@ -55,12 +55,13 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_gravity="center_horizontal"
                       android:layout_marginTop="12dp"
-                      android:id="@+id/curier_date"
+                      android:id="@+id/curier_date_dialog"
+                      android:textColor="#212121"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="4dp"
-                      android:id="@+id/curier_cost"
+                      android:id="@+id/curier_cost_dialog"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -85,14 +86,14 @@
                       android:layout_height="wrap_content"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="12dp"
-                      android:id="@+id/delivery_date"
+                      android:id="@+id/delivery_date_dialog"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="4dp"
                       android:textSize="12sp"
-                      android:id="@+id/delivery_bounds"
+                      android:id="@+id/delivery_bounds_dialog"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -117,7 +118,7 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="18dp"
                       android:textSize="18sp"
-                      android:id="@+id/sum"
+                      android:id="@+id/sum_dialog"
                       android:textColor="#388E3C"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
