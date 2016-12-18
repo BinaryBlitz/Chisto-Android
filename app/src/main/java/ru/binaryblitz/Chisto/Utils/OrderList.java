@@ -122,7 +122,29 @@ public class OrderList {
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
             if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
-                orders.get(currentItem).getTreatments().get(i).setCost((int) ((double) cost * findMultiplier()));
+                int decorationCost = orders.get(currentItem).getDecorationCost();
+                orders.get(currentItem).setDecorationCost(decorationCost + ((int) ((double) cost * findMultiplier()) - cost));
+                orders.get(currentItem).getTreatments().get(i).setCost(cost);
+            }
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void resetDecorationCosts() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            orders.get(currentItem).setDecorationCost(0);
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void setDecorationCost() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            if (orders.get(currentItem).getTreatments().get(i).getId() == -1) {
+                orders.get(currentItem).getTreatments().get(i).setCost(orders.get(currentItem).getDecorationCost());
             }
         }
     }
@@ -132,9 +154,7 @@ public class OrderList {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return false;
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == -1) {
-                return true;
-            }
+            if (orders.get(currentItem).getTreatments().get(i).getId() == -1) return true;
         }
 
         return false;

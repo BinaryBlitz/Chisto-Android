@@ -178,7 +178,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun openActivity() {
         val isTreatmentsSelected = adapter!!.getSelected().size != 0 &&
-                !(adapter!!.getSelected().size == 1 && adapter!!.getSelected().get(0).id == -1)
+                !(adapter!!.getSelected().size == 1 && adapter!!.getSelected()[0].id == -1)
         if (isTreatmentsSelected) {
             OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
             if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {

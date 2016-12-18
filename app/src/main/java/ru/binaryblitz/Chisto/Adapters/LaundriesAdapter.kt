@@ -51,20 +51,23 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
         Image.loadPhoto(laundry.icon, holder.icon)
 
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, LaundryAndOrderActivity::class.java)
-            OrderList.setLaundryId(laundry.id)
-            OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
-            (context as LaundriesActivity).countSums(laundry.index!!)
-            intent.putExtra(EXTRA_ID, laundry.id)
-            intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
-            intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
-            if (laundry.orderCost!! < laundry.freeDeliveryBound!!) {
-                intent.putExtra(EXTRA_DELIVERY_COST, laundry.deliveryFee!!)
-            }
-            intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry))
-            context.startActivity(intent)
+        holder.itemView.setOnClickListener { selectLaundry(laundry) }
+    }
+
+    private fun selectLaundry(laundry: Laundry) {
+        val intent = Intent(context, LaundryAndOrderActivity::class.java)
+        OrderList.setLaundryId(laundry.id)
+        OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
+        OrderList.resetDecorationCosts()
+        (context as LaundriesActivity).countSums(laundry.index!!)
+        intent.putExtra(EXTRA_ID, laundry.id)
+        intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
+        intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
+        if (laundry.orderCost!! < laundry.freeDeliveryBound!!) {
+            intent.putExtra(EXTRA_DELIVERY_COST, laundry.deliveryFee!!)
         }
+        intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry))
+        context.startActivity(intent)
     }
 
     fun sortByCost() {
@@ -87,7 +90,11 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.collectionDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate)
         holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
         holder.deliveryBounds.text = getPeriod(laundry)
-        holder.cost.text = (laundry.orderCost!! + laundry.deliveryFee!!).toString() + " \u20bd"
+        if (laundry.orderCost!! >= laundry.freeDeliveryBound!!) {
+            holder.cost.text = laundry.orderCost!!.toString() + " \u20bd"
+        } else {
+            holder.cost.text = (laundry.orderCost!! + laundry.deliveryFee!!).toString() + " \u20bd"
+        }
     }
 
     private fun getPeriod(laundry: Laundry): String {

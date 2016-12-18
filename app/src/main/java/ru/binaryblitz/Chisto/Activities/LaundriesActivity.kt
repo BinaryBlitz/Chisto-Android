@@ -152,16 +152,26 @@ class LaundriesActivity : BaseActivity() {
 
         for (i in 0..array.size() - 1) {
             val obj = array.get(i).asJsonObject
-            if (!checkTreatments(obj)) continue
-            countSums(i)
-            if (!checkMinimumCost(obj)) continue
-            collection.add(parseLaundry(i, obj))
+            processOrderForLaundry(i, obj, collection)
         }
         adapter!!.sortByRating()
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
 
         loadLastOrder()
+    }
+
+    private fun processOrderForLaundry(i: Int, obj: JsonObject, collection: ArrayList<Laundry>) {
+        val laundry = parseLaundry(i, obj)
+        if (!checkTreatments(obj)) return
+        OrderList.resetDecorationCosts()
+        OrderList.setLaundryId(laundry.id)
+        OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
+        countSums(i)
+        OrderList.setDecorationCost()
+        laundry.orderCost = allOrdersCost
+        if (!checkMinimumCost(obj)) return
+        collection.add(laundry)
     }
 
     private fun checkMinimumCost(obj: JsonObject): Boolean {

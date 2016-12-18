@@ -86,6 +86,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun createOrderListView() {
+        OrderList.setDecorationCost()
         val orderList = OrderList.get()
         val listToShow = ArrayList<Pair<String, Any>>()
 
@@ -127,8 +128,8 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun addBasic(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
+
         (0..order.treatments!!.size - 1)
-                .filter { order.treatments!![it].id != -1 }
                 .map { order.treatments!![it] }
                 .map { OrderContentAdapter.Basic(it.name, it.cost) }
                 .mapTo(listToShow) { Pair<String, Any>("B", it) }
