@@ -139,6 +139,15 @@ public class OrderList {
     }
 
     @SuppressWarnings("ConstantConditions")
+    public static void setSize(int size) {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            orders.get(currentItem).setSize(size);
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
     public static void setDecorationCost() {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 

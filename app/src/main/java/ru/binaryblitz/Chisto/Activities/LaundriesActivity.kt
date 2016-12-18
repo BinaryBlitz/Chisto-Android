@@ -54,9 +54,7 @@ class LaundriesActivity : BaseActivity() {
 
         findViewById(R.id.right_btn).setOnClickListener { showDialog() }
 
-        findViewById(R.id.order_current_btn).setOnClickListener {
-            clickCurrentBtn()
-        }
+        findViewById(R.id.order_current_btn).setOnClickListener { clickCurrentBtn() }
 
         findViewById(R.id.cont_btn).setOnClickListener {
             if (dialogOpened) {

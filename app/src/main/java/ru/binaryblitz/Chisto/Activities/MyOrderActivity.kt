@@ -138,7 +138,7 @@ class MyOrderActivity : BaseActivity() {
                 treatments,
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
                 ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))),
-                false, 0)
+                false, 0, null)
 
         cost += treatments[0].cost * order.count
 
