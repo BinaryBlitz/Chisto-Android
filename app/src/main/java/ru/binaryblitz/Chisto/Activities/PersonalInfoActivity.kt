@@ -17,6 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
+import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.Push.RegistrationIntentService
 import ru.binaryblitz.Chisto.R
@@ -24,8 +25,10 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
+import java.util.*
 import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
@@ -79,16 +82,23 @@ class PersonalInfoActivity : BaseActivity() {
         val array = JsonArray()
         val orders = OrderList.get()
 
-        for ((category, treatments, count) in orders!!.iterator()) {
-            for ((id) in treatments!!.iterator()) {
+        for ((category, treatments, count, color, decoration, decorationCost, size) in orders!!) {
+            val isDecoration = checkDecoration(treatments!!)
+            for ((id, treatmentName, description, cost, select, laundryTreatmentId) in treatments) {
+                if (id == AppConfig.decorationId) continue
                 val local = JsonObject()
-                local.addProperty("laundry_treatment_id", id)
-                local.addProperty("quantity", count)
+                local.addProperty("laundry_treatment_id", laundryTreatmentId)
+                local.addProperty("quantity", size ?: count)
+                local.addProperty("has_decoration", isDecoration)
                 array.add(local)
             }
         }
 
         return array
+    }
+
+    private fun checkDecoration(treatments: ArrayList<Treatment>): Boolean {
+        return treatments.any { it.id == AppConfig.decorationId }
     }
 
     private fun generateJson(): JsonObject {
@@ -106,6 +116,8 @@ class PersonalInfoActivity : BaseActivity() {
         val toSend = JsonObject()
         toSend.add("order", obj)
 
+        LogUtil.logError(toSend.toString())
+
         return toSend
     }
 
@@ -113,7 +125,7 @@ class PersonalInfoActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson(), DeviceInfoStore.getToken(this))
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundry().id, generateJson(), DeviceInfoStore.getToken(this))
                 .enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
@@ -235,12 +247,14 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
         obj.addProperty("email", email!!.text.toString())
-        if (DeviceInfoStore.getToken(this) == "null") {
+        if (DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null") {
             obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
         }
 
         val toSend = JsonObject()
         toSend.add("user", obj)
+
+        LogUtil.logError(toSend.toString())
 
         return toSend
     }
@@ -256,19 +270,12 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun updateUser(payWithCreditCard: Boolean) {
-        val dialog = ProgressDialog(this)
-        dialog.show()
+        sendToServer(payWithCreditCard)
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                dialog.dismiss()
-                sendToServer(payWithCreditCard)
-            }
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) { }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                dialog.dismiss()
-                onInternetConnectionError()
-            }
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) { }
         })
     }
 

@@ -138,7 +138,7 @@ class MyOrderActivity : BaseActivity() {
                 treatments,
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
                 ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))),
-                false)
+                false, 0, null)
 
         cost += treatments[0].cost * order.count
 
@@ -150,17 +150,17 @@ class MyOrderActivity : BaseActivity() {
                 AndroidUtilities.getStringFieldFromJson(obj.get("treatment").asJsonObject.get("name")),
                 "",
                 AndroidUtilities.getIntFieldFromJson(obj.get("price")),
-                false)
+                false, 0)
     }
 
     private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + " \u20bd"
+        (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.money)
 
         if (cost < deliveryBound) {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + " \u20bd"
-            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + " \u20bd"
+            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.money)
+            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.money)
         } else {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + " \u20bd"
+            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.money)
             (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
         }
     }
