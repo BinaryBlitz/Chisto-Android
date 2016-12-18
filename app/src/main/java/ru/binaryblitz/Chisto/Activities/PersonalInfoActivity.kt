@@ -83,10 +83,10 @@ class PersonalInfoActivity : BaseActivity() {
 
         for ((category, treatments, count, color, decoration, decorationCost, size) in orders!!) {
             val isDecoration = checkDecoration(treatments!!)
-            for ((id) in treatments.iterator()) {
+            for ((id, name1, description, cost, select, laundryTreatmentId) in treatments) {
                 if (id == -1) continue
                 val local = JsonObject()
-                local.addProperty("laundry_treatment_id", id)
+                local.addProperty("laundry_treatment_id", laundryTreatmentId)
                 local.addProperty("quantity", size ?: count)
                 local.addProperty("has_decoration", isDecoration)
                 array.add(local)
@@ -124,7 +124,7 @@ class PersonalInfoActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson(), DeviceInfoStore.getToken(this))
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundry().id, generateJson(), DeviceInfoStore.getToken(this))
                 .enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()

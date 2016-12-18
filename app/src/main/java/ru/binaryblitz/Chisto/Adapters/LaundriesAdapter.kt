@@ -56,10 +56,11 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
     private fun selectLaundry(laundry: Laundry) {
         val intent = Intent(context, LaundryAndOrderActivity::class.java)
-        OrderList.setLaundryId(laundry.id)
+        OrderList.setLaundry(laundry)
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
         OrderList.resetDecorationCosts()
         (context as LaundriesActivity).countSums(laundry.index!!)
+        context.setLaundryTreatmentsIds(laundry.index)
         intent.putExtra(EXTRA_ID, laundry.id)
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
         intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))

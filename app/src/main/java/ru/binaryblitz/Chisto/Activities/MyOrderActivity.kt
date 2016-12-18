@@ -150,7 +150,7 @@ class MyOrderActivity : BaseActivity() {
                 AndroidUtilities.getStringFieldFromJson(obj.get("treatment").asJsonObject.get("name")),
                 "",
                 AndroidUtilities.getIntFieldFromJson(obj.get("price")),
-                false)
+                false, 0)
     }
 
     private fun setSums() {

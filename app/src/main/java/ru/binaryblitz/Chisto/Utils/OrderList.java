@@ -3,6 +3,7 @@ package ru.binaryblitz.Chisto.Utils;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import ru.binaryblitz.Chisto.Model.Laundry;
 import ru.binaryblitz.Chisto.Model.Order;
 import ru.binaryblitz.Chisto.Model.Treatment;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class OrderList {
     private static ArrayList<Order> orders = new ArrayList<>();
     private static ArrayList<Treatment> bufferTreatments = new ArrayList<>();
-    private static int laundryId = 0;
+    private static Laundry laundry;
     private static int currentItem = 0;
     private static ArrayList<Pair<Integer, Double>> decorationMultipliers = new ArrayList<>();
 
@@ -34,12 +35,12 @@ public class OrderList {
         currentItem = 0;
     }
 
-    public static void setLaundryId(int laundryId) {
-        OrderList.laundryId = laundryId;
+    public static void setLaundry(Laundry laundry) {
+        OrderList.laundry = laundry;
     }
 
-    public static int getLaundryId() {
-        return laundryId;
+    public static Laundry getLaundry() {
+        return laundry;
     }
 
     @Nullable

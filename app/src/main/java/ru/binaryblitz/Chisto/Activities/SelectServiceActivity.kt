@@ -221,8 +221,7 @@ class SelectServiceActivity : BaseActivity() {
                             AndroidUtilities.getIntFieldFromJson(it.get("id")),
                             AndroidUtilities.getStringFieldFromJson(it.get("name")),
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
-                            0,
-                            false)
+                            0, false, 0)
                 }
 
         sort(collection)
@@ -235,7 +234,7 @@ class SelectServiceActivity : BaseActivity() {
                 getString(R.string.decoration),
                 getString(R.string.decoration_help),
                 0,
-                intent.getBooleanExtra(EXTRA_DECORATION, false)))
+                intent.getBooleanExtra(EXTRA_DECORATION, false), -1))
 
         adapter!!.notifyDataSetChanged()
     }

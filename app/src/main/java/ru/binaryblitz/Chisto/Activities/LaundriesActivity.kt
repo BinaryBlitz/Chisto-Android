@@ -68,7 +68,7 @@ class LaundriesActivity : BaseActivity() {
 
     private fun clickCurrentBtn() {
         val intent = Intent(this@LaundriesActivity, LaundryAndOrderActivity::class.java)
-        OrderList.setLaundryId(laundry!!.id)
+        OrderList.setLaundry(laundry!!)
         countSums(laundryObject!!.get("laundry_treatments").asJsonArray)
         intent.putExtra(EXTRA_ID, laundry!!.id)
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
@@ -143,6 +143,24 @@ class LaundriesActivity : BaseActivity() {
         })
     }
 
+    fun setLaundryTreatmentsIds(index: Int) {
+        val treatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
+        if (treatments.size() == 0) return
+        val orderTreatments = OrderList.getTreatments()
+        for (treatment in orderTreatments) {
+            treatment.laundryTreatmentId = findId(treatment.id, treatments)
+        }
+    }
+
+    private fun findId(id: Int, array: JsonArray): Int {
+        (0..array.size() - 1)
+                .map { array.get(it).asJsonObject }
+                .filter { AndroidUtilities.getIntFieldFromJson(it.get("treatment_id")) == id }
+                .forEach { return AndroidUtilities.getIntFieldFromJson(it.get("id")) }
+
+        return 0
+    }
+
     private fun parseAnswer(array: JsonArray) {
         LogUtil.logError(array.toString())
         LaundriesActivity.array = array
@@ -163,7 +181,7 @@ class LaundriesActivity : BaseActivity() {
         val laundry = parseLaundry(i, obj)
         if (!checkTreatments(obj)) return
         OrderList.resetDecorationCosts()
-        OrderList.setLaundryId(laundry.id)
+        OrderList.setLaundry(laundry)
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
         countSums(i)
         OrderList.setDecorationCost()
@@ -333,10 +351,18 @@ class LaundriesActivity : BaseActivity() {
 
         laundryObject = obj
 
+        laundry = parseLaundry(0, obj)
+        OrderList.resetDecorationCosts()
+        OrderList.setLaundry(laundry!!)
+        OrderList.setDecorationMultiplier(laundry!!.decorationMultipliers!!)
+
         if (obj.get("laundry_treatments") != null && !obj.get("laundry_treatments").isJsonNull) {
             countSums(obj.get("laundry_treatments").asJsonArray)
         }
-        laundry = parseLaundry(0, obj)
+
+        OrderList.setDecorationCost()
+        laundry!!.orderCost = allOrdersCost
+
         setCosts(laundry!!)
 
         setTextToField(R.id.desc_text, laundry!!.desc)
