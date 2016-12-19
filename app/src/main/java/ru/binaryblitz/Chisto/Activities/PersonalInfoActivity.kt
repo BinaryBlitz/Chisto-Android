@@ -25,6 +25,7 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
@@ -83,8 +84,8 @@ class PersonalInfoActivity : BaseActivity() {
 
         for ((category, treatments, count, color, decoration, decorationCost, size) in orders!!) {
             val isDecoration = checkDecoration(treatments!!)
-            for ((id, name1, description, cost, select, laundryTreatmentId) in treatments) {
-                if (id == -1) continue
+            for ((id, treatmentName, description, cost, select, laundryTreatmentId) in treatments) {
+                if (id == AppConfig.decorationId) continue
                 val local = JsonObject()
                 local.addProperty("laundry_treatment_id", laundryTreatmentId)
                 local.addProperty("quantity", size ?: count)
@@ -97,7 +98,7 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun checkDecoration(treatments: ArrayList<Treatment>): Boolean {
-        return treatments.any { it.id == -1 }
+        return treatments.any { it.id == AppConfig.decorationId }
     }
 
     private fun generateJson(): JsonObject {

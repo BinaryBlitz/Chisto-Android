@@ -74,7 +74,7 @@ class LaundriesActivity : BaseActivity() {
         intent.putExtra(EXTRA_ID, laundry!!.id)
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
         intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
-        if (laundry!!.orderCost!! < laundry!!.freeDeliveryBound!!) {
+        if (laundry!!.orderPrice!! < laundry!!.freeDeliveryFrom!!) {
             intent.putExtra(EXTRA_DELIVERY_COST, laundry!!.deliveryFee!!)
         }
         intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry!!))
@@ -112,7 +112,7 @@ class LaundriesActivity : BaseActivity() {
         MaterialDialog.Builder(this)
                 .title(R.string.title)
                 .items(items)
-                .itemsCallbackSingleChoice(-1) { dialog, view, which, text ->
+                .itemsCallbackSingleChoice(AppConfig.decorationId) { dialog, view, which, text ->
                     sort(which)
                     true
                 }
@@ -186,14 +186,14 @@ class LaundriesActivity : BaseActivity() {
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
         countSums(i)
         OrderList.setDecorationCost()
-        laundry.orderCost = allOrdersCost
+        laundry.orderPrice = allOrdersCost
         if (!checkMinimumCost(laundry, obj)) return
         collection.add(laundry)
     }
 
     private fun checkMinimumCost(laundry: Laundry, obj: JsonObject): Boolean {
         val minimum = AndroidUtilities.getIntFieldFromJson(obj.get("minimum_order_price"))
-        return laundry.orderCost!! >= minimum
+        return laundry.orderPrice!! >= minimum
     }
 
     private fun getDecorationMultipliers(array: JsonArray): ArrayList<android.support.v4.util.Pair<Int, Double>> {
@@ -259,7 +259,7 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun checkTreatmentsAvailability(orderTreatments: ArrayList<Treatment>, laundryTreatments: ArrayList<Int>): Boolean {
-        return orderTreatments.indices.none { orderTreatments[it].id != -1 && !checkTreatmentAvailability(orderTreatments[it], laundryTreatments) }
+        return orderTreatments.indices.none { orderTreatments[it].id != AppConfig.decorationId && !checkTreatmentAvailability(orderTreatments[it], laundryTreatments) }
     }
 
     private fun checkTreatmentAvailability(treatment: Treatment, laundryTreatments: ArrayList<Int>): Boolean {
@@ -292,7 +292,7 @@ class LaundriesActivity : BaseActivity() {
 
     private fun fillOrderList(orderTreatments: ArrayList<Treatment>, laundryTreatments: ArrayList<Pair<Int, Int>>) {
         orderTreatments.indices
-                .filter { orderTreatments[it].id != -1 }
+                .filter { orderTreatments[it].id != AppConfig.decorationId }
                 .forEach { setPriceForTreatment(orderTreatments[it], laundryTreatments) }
     }
 
@@ -362,7 +362,7 @@ class LaundriesActivity : BaseActivity() {
         }
 
         OrderList.setDecorationCost()
-        laundry!!.orderCost = allOrdersCost
+        laundry!!.orderPrice = allOrdersCost
 
         setCosts(laundry!!)
 
@@ -390,11 +390,11 @@ class LaundriesActivity : BaseActivity() {
         setTextToField(R.id.curier_cost_dialog, getString(R.string.from_code) +
                 DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
                 getString(R.string.end_bound_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
-        setTextToField(R.id.sum_dialog, (laundry.orderCost!! + getDeliveryFee(laundry)).toString() + " \u20bd")
+        setTextToField(R.id.sum_dialog, (laundry.orderPrice!! + getDeliveryFee(laundry)).toString() + " \u20bd")
     }
 
     private fun getDeliveryFee(laundry: Laundry): Int {
-        if (laundry.orderCost!! >= laundry.freeDeliveryBound!!) return 0
+        if (laundry.orderPrice!! >= laundry.freeDeliveryFrom!!) return 0
         else return laundry.deliveryFee!!
     }
 
