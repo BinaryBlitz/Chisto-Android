@@ -180,7 +180,6 @@ class LaundriesActivity : BaseActivity() {
 
     private fun processOrderForLaundry(i: Int, obj: JsonObject, collection: ArrayList<Laundry>) {
         val laundry = parseLaundry(i, obj)
-        LogUtil.logError(i.toString() + "    " + checkTreatments(obj))
         if (!checkTreatments(obj)) return
         OrderList.resetDecorationCosts()
         OrderList.setLaundry(laundry)
@@ -188,14 +187,13 @@ class LaundriesActivity : BaseActivity() {
         countSums(i)
         OrderList.setDecorationCost()
         laundry.orderCost = allOrdersCost
-        LogUtil.logError(i.toString() + "    " + checkMinimumCost(obj))
-        if (!checkMinimumCost(obj)) return
+        if (!checkMinimumCost(laundry, obj)) return
         collection.add(laundry)
     }
 
-    private fun checkMinimumCost(obj: JsonObject): Boolean {
+    private fun checkMinimumCost(laundry: Laundry, obj: JsonObject): Boolean {
         val minimum = AndroidUtilities.getIntFieldFromJson(obj.get("minimum_order_price"))
-        return allOrdersCost >= minimum
+        return laundry.orderCost!! >= minimum
     }
 
     private fun getDecorationMultipliers(array: JsonArray): ArrayList<android.support.v4.util.Pair<Int, Double>> {
