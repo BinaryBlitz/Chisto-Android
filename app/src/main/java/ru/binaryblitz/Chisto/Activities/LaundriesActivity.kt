@@ -70,6 +70,7 @@ class LaundriesActivity : BaseActivity() {
         val intent = Intent(this@LaundriesActivity, LaundryAndOrderActivity::class.java)
         OrderList.setLaundry(laundry!!)
         countSums(laundryObject!!.get("laundry_treatments").asJsonArray)
+        setLaundryTreatmentsIds(laundry!!.index!!)
         intent.putExtra(EXTRA_ID, laundry!!.id)
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
         intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
@@ -179,6 +180,7 @@ class LaundriesActivity : BaseActivity() {
 
     private fun processOrderForLaundry(i: Int, obj: JsonObject, collection: ArrayList<Laundry>) {
         val laundry = parseLaundry(i, obj)
+        LogUtil.logError(i.toString() + "    " + checkTreatments(obj))
         if (!checkTreatments(obj)) return
         OrderList.resetDecorationCosts()
         OrderList.setLaundry(laundry)
@@ -186,6 +188,7 @@ class LaundriesActivity : BaseActivity() {
         countSums(i)
         OrderList.setDecorationCost()
         laundry.orderCost = allOrdersCost
+        LogUtil.logError(i.toString() + "    " + checkMinimumCost(obj))
         if (!checkMinimumCost(obj)) return
         collection.add(laundry)
     }
@@ -338,7 +341,7 @@ class LaundriesActivity : BaseActivity() {
         for (i in 0..array!!.size() - 1) {
             if (id == AndroidUtilities.getIntFieldFromJson(array!!.get(i).asJsonObject.get("id"))) {
                 dialog.dismiss()
-                parseAnswer(array!!.get(i).asJsonObject)
+                parseAnswer(i, array!!.get(i).asJsonObject)
                 break
             }
 
@@ -346,12 +349,12 @@ class LaundriesActivity : BaseActivity() {
         }
     }
 
-    private fun parseAnswer(obj: JsonObject) {
+    private fun parseAnswer(index: Int, obj: JsonObject) {
         if (!checkTreatments(obj)) return
 
         laundryObject = obj
 
-        laundry = parseLaundry(0, obj)
+        laundry = parseLaundry(index, obj)
         OrderList.resetDecorationCosts()
         OrderList.setLaundry(laundry!!)
         OrderList.setDecorationMultiplier(laundry!!.decorationMultipliers!!)
