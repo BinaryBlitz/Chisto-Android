@@ -56,7 +56,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:10.0.1'
     compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.google.android.gms:play-services-location:10.0.1'
-
+    compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.iarcuschin:simpleratingbar:0.1.3'
 

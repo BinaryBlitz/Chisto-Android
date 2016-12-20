@@ -11,7 +11,9 @@
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="110dp">
-            <ImageView
+            <com.github.siyamed.shapeimageview.CircularImageView
+                    app:siBorderWidth="2dp"
+                    app:siBorderColor="#ffffff"
                     android:layout_width="64dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="12dp"
