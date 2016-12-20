@@ -29,7 +29,7 @@ import ru.binaryblitz.Chisto.Utils.Animations.Animations
 class OrdersActivity : BaseActivity() {
 
     private var adapter: OrdersAdapter? = null
-    private var contBtn: TextView? = null
+    private var continueBtn: TextView? = null
     private var laundryId: Int = 0
     private var dialogOpened = false
 
@@ -38,7 +38,7 @@ class OrdersActivity : BaseActivity() {
         Fabric.with(this, Crashlytics())
         setContentView(ru.binaryblitz.Chisto.R.layout.activity_orders)
 
-        contBtn = findViewById(ru.binaryblitz.Chisto.R.id.textView2) as TextView
+        continueBtn = findViewById(ru.binaryblitz.Chisto.R.id.textView2) as TextView
         initRecyclerView()
         setOnClickListeners()
 
@@ -57,8 +57,6 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
-
         val order = obj.get("order")
         if (order == null || obj.get("order").isJsonNull) return
 
@@ -158,21 +156,26 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun update() {
-        if (OrderList.get() != null) {
-            adapter!!.setCollection(OrderList.get()!!)
-            adapter!!.notifyDataSetChanged()
+        if (OrderList.get() == null) return
 
-            if (adapter!!.itemCount != 0) {
-                contBtn!!.setText(R.string.cont_code)
-                contBtn!!.setOnClickListener {
-                    val intent = Intent(this@OrdersActivity, LaundriesActivity::class.java)
-                    startActivity(intent)
-                }
-            } else {
-                contBtn!!.setText(R.string.nothing_selected_code)
-                contBtn!!.isEnabled = false
-                contBtn!!.setOnClickListener(null)
-            }
+        adapter!!.setCollection(OrderList.get()!!)
+        adapter!!.notifyDataSetChanged()
+
+        if (adapter!!.itemCount != 0) setContinueButtonEnabled()
+        else setContinueButtonDisabled()
+    }
+
+    private fun setContinueButtonEnabled() {
+        continueBtn!!.setText(R.string.cont_code)
+        continueBtn!!.setOnClickListener {
+            val intent = Intent(this@OrdersActivity, LaundriesActivity::class.java)
+            startActivity(intent)
         }
+    }
+
+    private fun setContinueButtonDisabled() {
+        continueBtn!!.setText(R.string.nothing_selected_code)
+        continueBtn!!.isEnabled = false
+        continueBtn!!.setOnClickListener(null)
     }
 }
