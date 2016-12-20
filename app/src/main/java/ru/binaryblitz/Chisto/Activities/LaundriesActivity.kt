@@ -347,6 +347,8 @@ class LaundriesActivity : BaseActivity() {
 
         setCosts(laundry!!)
 
+        if (!checkMinimumCost(laundry!!, obj)) return
+
         setTextToField(R.id.desc_text, laundry!!.desc)
         setTextToField(R.id.order_current_btn, getString(R.string.ordering_code))
         setTextToField(R.id.name_text, laundry!!.name)
