@@ -31,7 +31,19 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         val order = collection[position]
 
         holder.name.text = context.getString(R.string.my_order_code) + order.id
+        setIconAndColor(order, holder)
 
+        holder.desc.text = getDateStringRepresentation(order.createAt)
+        holder.cost.text = order.cost.toString() + context.getString(R.string.ruble_sign)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, MyOrderActivity::class.java)
+            intent.putExtra(EXTRA_ID, order.id)
+            context.startActivity(intent)
+        }
+    }
+
+    private fun setIconAndColor(order: MyOrder, holder: ViewHolder) {
         when (order.status) {
             MyOrder.Status.COMPLETED -> {
                 holder.marker.setImageResource(R.drawable.completed_indicator)
@@ -41,19 +53,22 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
                 holder.marker.setImageResource(R.drawable.canceled_indicator)
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.canceledColor))
             }
+            MyOrder.Status.CONFIRMED -> {
+                holder.marker.setImageResource(R.drawable.confirmed_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.confirmedColor))
+            }
+            MyOrder.Status.DISPATCHED -> {
+                holder.marker.setImageResource(R.drawable.dispatched_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.dispatchedColor))
+            }
+            MyOrder.Status.CLEANING -> {
+                holder.marker.setImageResource(R.drawable.cleaning_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.cleaningColor))
+            }
             else -> {
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.processColor))
                 holder.marker.setImageResource(R.drawable.process_indicator)
             }
-        }
-
-        holder.desc.text = getDateStringRepresentation(order.createAt)
-        holder.cost.text = order.cost.toString() + context.getString(R.string.ruble_sign)
-
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, MyOrderActivity::class.java)
-            intent.putExtra(EXTRA_ID, order.id)
-            context.startActivity(intent)
         }
     }
 
