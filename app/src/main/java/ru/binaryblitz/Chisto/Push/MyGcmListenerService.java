@@ -26,7 +26,7 @@ public class MyGcmListenerService extends FirebaseMessagingService {
     }
 
     private void processPush(RemoteMessage remoteMessage) {
-        String body = remoteMessage.getNotification() == null ?
+        String body = remoteMessage.getNotification() == null || remoteMessage.getNotification().getBody() == null ?
                 getString(R.string.default_notification_text) : remoteMessage.getNotification().getBody();
         int id = 0;
         try {
@@ -44,7 +44,7 @@ public class MyGcmListenerService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_address)
                 .setContentTitle(getString(R.string.status_changed))
