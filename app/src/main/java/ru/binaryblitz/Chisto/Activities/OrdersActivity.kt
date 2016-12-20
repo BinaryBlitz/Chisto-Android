@@ -7,9 +7,12 @@ import android.os.Handler
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
+import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonObject
+import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import io.fabric.sdk.android.Fabric
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,7 +31,7 @@ class OrdersActivity : BaseActivity() {
 
     private var adapter: OrdersAdapter? = null
     private var contBtn: TextView? = null
-
+    private var laundryId: Int = 0
     private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +74,43 @@ class OrdersActivity : BaseActivity() {
 
         val review = order.asJsonObject.get("rating") ?: return
 
+        laundryId = AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("laundry").asJsonObject.get("id"))
         if (review.isJsonNull) showReviewDialog(AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("id")))
+    }
+
+    private fun sendReview() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+        ServerApi.get(this).api().sendReview(laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue( object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                if (response.isSuccessful) parseReviewResponse()
+                else onServerError(response)
+            }
+
+            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                onInternetConnectionError()
+            }
+        })
+    }
+
+    private fun generateJson(): JsonObject {
+        val obj = JsonObject()
+
+        obj.addProperty("value", (findViewById(R.id.ratingBar) as SimpleRatingBar).rating)
+        obj.addProperty("content", (findViewById(R.id.review_text) as EditText).text.toString())
+
+        val toSend = JsonObject()
+        toSend.add("rating", obj)
+
+        return toSend
+    }
+
+    private fun parseReviewResponse() {
+
     }
 
     private fun showReviewDialog(id: Int) {
@@ -112,6 +151,10 @@ class OrdersActivity : BaseActivity() {
         findViewById(R.id.add_btn).setOnClickListener {
             val intent = Intent(this@OrdersActivity, SelectCategoryActivity::class.java)
             startActivity(intent)
+        }
+
+        findViewById(R.id.cont_btn).setOnClickListener {
+            sendReview()
         }
     }
 
