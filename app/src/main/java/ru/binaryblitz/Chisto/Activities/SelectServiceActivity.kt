@@ -152,7 +152,7 @@ class SelectServiceActivity : BaseActivity() {
             try {
                 if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
                 square.text = java.lang.Double.toString((length * this.width).toDouble() / squareCentimetersInSquareMeters) +
-                        getString(R.string.metr_squared)
+                        getString(R.string.square_meter_symbol)
             } catch (e: Exception) {
                 LogUtil.logException(e)
             }

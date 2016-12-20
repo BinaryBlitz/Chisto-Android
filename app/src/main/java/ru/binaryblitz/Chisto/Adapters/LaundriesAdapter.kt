@@ -92,9 +92,9 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
         holder.deliveryBounds.text = getPeriod(laundry)
         if (laundry.orderPrice!! >= laundry.freeDeliveryFrom!!) {
-            holder.cost.text = laundry.orderPrice!!.toString() + context.getString(R.string.money)
+            holder.cost.text = laundry.orderPrice!!.toString() + context.getString(R.string.ruble_sign)
         } else {
-            holder.cost.text = (laundry.orderPrice!! + laundry.deliveryFee!!).toString() + context.getString(R.string.money)
+            holder.cost.text = (laundry.orderPrice!! + laundry.deliveryFee!!).toString() + context.getString(R.string.ruble_sign)
         }
     }
 

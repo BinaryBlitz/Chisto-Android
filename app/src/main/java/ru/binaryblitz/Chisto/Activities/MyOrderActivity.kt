@@ -154,13 +154,13 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.money)
+        (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
 
         if (cost < deliveryBound) {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.money)
-            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.money)
+            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.ruble_sign)
+            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
         } else {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.money)
+            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
             (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
         }
     }
