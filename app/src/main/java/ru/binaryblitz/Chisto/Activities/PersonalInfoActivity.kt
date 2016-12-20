@@ -89,7 +89,6 @@ class PersonalInfoActivity : BaseActivity() {
         user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         user.name = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
         user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
-        user.phone = AndroidUtilities.getStringFieldFromJson(obj.get("contact_number"))
         user.street = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
         user.flat = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
         user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))

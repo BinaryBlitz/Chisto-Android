@@ -435,6 +435,7 @@
             android:background="#99000000"
             android:id="@+id/dialog"
             android:visibility="gone"
+            android:clickable="true"
             android:layout_height="match_parent">
 
         <include layout="@layout/popup_your_order" />
