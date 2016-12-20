@@ -40,7 +40,7 @@ public class ServerErrorHandler {
             setDefault(error);
         }
 
-        if (error.message.isEmpty()) setDefault(error);
+        if (error.message == null || error.message.isEmpty()) setDefault(error);
 
         return error;
     }

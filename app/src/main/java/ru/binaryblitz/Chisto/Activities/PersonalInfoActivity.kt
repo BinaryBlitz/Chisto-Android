@@ -9,6 +9,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
@@ -19,7 +20,7 @@ import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.Model.User
-import ru.binaryblitz.Chisto.Push.RegistrationIntentService
+import ru.binaryblitz.Chisto.Push.MyInstanceIDListenerService
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
@@ -57,7 +58,6 @@ class PersonalInfoActivity : BaseActivity() {
         initFields()
         setOnClickListeners()
 
-        LogUtil.logError(isUserExistOnServer().toString())
         if (isUserExistOnServer()) Handler().post { getUser() }
     }
 
@@ -294,6 +294,8 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
         obj.addProperty("email", email!!.text.toString())
+        obj.addProperty("device_token", FirebaseInstanceId.getInstance().token)
+        obj.addProperty("platform", "android")
         if (DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null") {
             obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
         }
@@ -310,7 +312,7 @@ class PersonalInfoActivity : BaseActivity() {
         LogUtil.logError(obj.toString())
         DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
         if (AndroidUtilities.checkPlayServices(this)) {
-            val intent = Intent(this@PersonalInfoActivity, RegistrationIntentService::class.java)
+            val intent = Intent(this@PersonalInfoActivity, MyInstanceIDListenerService::class.java)
             startService(intent)
         }
         sendToServer(payWithCreditCard)
@@ -320,7 +322,12 @@ class PersonalInfoActivity : BaseActivity() {
         sendToServer(payWithCreditCard)
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) { }
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if (AndroidUtilities.checkPlayServices(this@PersonalInfoActivity)) {
+                    val intent = Intent(this@PersonalInfoActivity, MyInstanceIDListenerService::class.java)
+                    startService(intent)
+                }
+            }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) { }
         })

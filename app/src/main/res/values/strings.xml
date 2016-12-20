@@ -144,6 +144,8 @@
     <string name="review_help">Мы надеемся, что вы остались довольны. Оставьте пожалуйста отзыв, чтобы помочь другим пользователям</string>
     <string name="your_review">Ваш отзыв</string>
     <string name="completed">" исполнен!"</string>
+    <string name="status_changed">Статус заказа изменен</string>
+    <string name="default_notification_text">Просмотрите информацию о заказе</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
