@@ -143,6 +143,7 @@
     <string name="ruble_sign">₽</string>
     <string name="review_help">Мы надеемся, что Вы остались довольны. Оставьте пожалуйста отзыв, чтобы помочь другим пользователям</string>
     <string name="your_review">Ваш отзыв</string>
+    <string name="completed">" исполнен!"</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
