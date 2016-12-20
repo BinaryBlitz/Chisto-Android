@@ -48,7 +48,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         }
 
         holder.desc.text = getDateStringRepresentation(order.createAt)
-        holder.cost.text = order.cost.toString() + " \u20bd"
+        holder.cost.text = order.cost.toString() + context.getString(R.string.money)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MyOrderActivity::class.java)
