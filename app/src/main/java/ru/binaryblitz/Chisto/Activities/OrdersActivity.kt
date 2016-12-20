@@ -75,7 +75,7 @@ class OrdersActivity : BaseActivity() {
     private fun sendReview() {
         val dialog = ProgressDialog(this)
         dialog.show()
-        ServerApi.get(this).api().sendReview(laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue( object : Callback<JsonObject> {
+        ServerApi.get(this).api().sendReview(laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
                 Animations.animateRevealHide(findViewById(R.id.dialog))
