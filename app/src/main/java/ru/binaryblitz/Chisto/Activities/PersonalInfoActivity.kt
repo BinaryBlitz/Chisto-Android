@@ -56,6 +56,48 @@ class PersonalInfoActivity : BaseActivity() {
 
         initFields()
         setOnClickListeners()
+
+        LogUtil.logError(isUserExistOnServer().toString())
+        if (isUserExistOnServer()) Handler().post { getUser() }
+    }
+
+    private fun isUserExistOnServer(): Boolean {
+        return DeviceInfoStore.getToken(this) != "null" && DeviceInfoStore.getUserObject(this).name == "null"
+    }
+
+    private fun getUser() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this))
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                        dialog.dismiss()
+                        if (response.isSuccessful) parseUserResponse(response.body())
+                        else onServerError(response)
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        dialog.dismiss()
+                        onInternetConnectionError()
+                    }
+                })
+    }
+
+    private fun parseUserResponse(obj: JsonObject) {
+        val user = DeviceInfoStore.getUserObject(this)
+        user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        user.name = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
+        user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
+        user.phone = AndroidUtilities.getStringFieldFromJson(obj.get("contact_number"))
+        user.street = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
+        user.flat = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
+        user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
+        user.house = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
+        user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
+        if (user.notes!!.isEmpty()) user.notes = "null"
+        DeviceInfoStore.saveUser(this, user)
+        setInfo()
     }
 
     override fun onResume() {
@@ -223,10 +265,11 @@ class PersonalInfoActivity : BaseActivity() {
         setTextToField(phone!!, user!!.phone)
         setTextToField(house!!, user!!.house)
         setTextToField(street!!, user!!.street)
+        setTextToField(comment!!, user!!.notes)
     }
 
     private fun setData() {
-        if (user == null) user = User(1, null, null, null, null, null, null, null, null)
+        if (user == null) user = User(1, null, null, null, null, null, null, null, null, null)
 
         user!!.name = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
@@ -236,6 +279,7 @@ class PersonalInfoActivity : BaseActivity() {
         user!!.street = street!!.text.toString()
         user!!.house = house!!.text.toString()
         user!!.email = email!!.text.toString()
+        user!!.notes = comment!!.text.toString()
 
         DeviceInfoStore.saveUser(this, user)
     }
@@ -244,6 +288,10 @@ class PersonalInfoActivity : BaseActivity() {
         val obj = JsonObject()
         obj.addProperty("first_name", name!!.text.toString())
         obj.addProperty("last_name", lastname!!.text.toString())
+        obj.addProperty("apartment_number", flat!!.text.toString())
+        obj.addProperty("house_number", house!!.text.toString())
+        obj.addProperty("street_name", street!!.text.toString())
+        obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
         obj.addProperty("email", email!!.text.toString())

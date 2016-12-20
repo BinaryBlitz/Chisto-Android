@@ -56,6 +56,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
         val order = obj.get("order")
         if (order == null || obj.get("order").isJsonNull) return
 
