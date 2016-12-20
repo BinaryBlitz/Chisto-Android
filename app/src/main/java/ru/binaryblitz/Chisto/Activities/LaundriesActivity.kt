@@ -175,7 +175,7 @@ class LaundriesActivity : BaseActivity() {
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
 
-        loadLastOrder()
+        loadLaundry()
     }
 
     private fun processOrderForLaundry(i: Int, obj: JsonObject, collection: ArrayList<Laundry>) {
@@ -313,31 +313,12 @@ class LaundriesActivity : BaseActivity() {
         return laundryTreatments
     }
 
-    private fun loadLastOrder() {
-        if (DeviceInfoStore.getToken(this) == "null") return
-
-        val dialog = ProgressDialog(this)
-        dialog.show()
-        ServerApi.get(this@LaundriesActivity).api().getOrders(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonArray> {
-            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                dialog.dismiss()
-                if (response.isSuccessful) parseAnswerForPopup(response.body())
-                else onServerError(response)
-            }
-
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                dialog.dismiss()
-                onInternetConnectionError()
-            }
-        })
-    }
-
-    private fun loadLaundry(id: Int) {
+    private fun loadLaundry() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
         for (i in 0..array!!.size() - 1) {
-            if (id == AndroidUtilities.getIntFieldFromJson(array!!.get(i).asJsonObject.get("id"))) {
+            if (OrdersActivity.laundryId == AndroidUtilities.getIntFieldFromJson(array!!.get(i).asJsonObject.get("id"))) {
                 dialog.dismiss()
                 parseAnswer(i, array!!.get(i).asJsonObject)
                 break
@@ -415,12 +396,6 @@ class LaundriesActivity : BaseActivity() {
         }
 
         return date
-    }
-
-    private fun parseAnswerForPopup(array: JsonArray) {
-        if (array.size() == 0) return
-        val id = array.get(array.size() - 1).asJsonObject.get("laundry_id").asInt
-        loadLaundry(id)
     }
 
     companion object {
