@@ -160,6 +160,19 @@ public class OrderList {
     }
 
     @SuppressWarnings("ConstantConditions")
+    public static void pullDecorationToEndOfTreatmentsList() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                Treatment treatment = orders.get(currentItem).getTreatments().get(i);
+                orders.get(currentItem).getTreatments().remove(i);
+                orders.get(currentItem).getTreatments().add(treatment);
+            }
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
     private static boolean isDecoration() {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return false;
 
