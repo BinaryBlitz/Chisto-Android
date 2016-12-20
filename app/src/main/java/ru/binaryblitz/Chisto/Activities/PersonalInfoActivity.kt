@@ -106,7 +106,7 @@ class PersonalInfoActivity : BaseActivity() {
 
         obj.addProperty("street_name", street!!.text.toString())
         obj.addProperty("house_number", house!!.text.toString())
-        obj.addProperty("contact_number", phone!!.text.toString())
+        obj.addProperty("contact_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("apartment_number", flat!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", "foo@bar.com")
