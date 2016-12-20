@@ -62,14 +62,14 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
         Image.loadPhoto(header.icon, holder.icon)
         holder.icon.setColorFilter(header.color)
         holder.name.text = header.name + " " + (header.sum / header.count).toString() +
-                context.getString(R.string.money) + "  \u00D7" + header.count.toString()
-        holder.cost.text = header.sum.toString() + context.getString(R.string.money)
+                context.getString(R.string.ruble_sign) + "  \u00D7" + header.count.toString()
+        holder.cost.text = header.sum.toString() + context.getString(R.string.ruble_sign)
     }
 
     private fun bindBasic(position: Int, holder: BasicViewHolder) {
         val basic = collection[position].second as Basic
         holder.name.text = basic.name
-        holder.cost.text = basic.sum.toString() + context.getString(R.string.money)
+        holder.cost.text = basic.sum.toString() + context.getString(R.string.ruble_sign)
     }
 
     override fun getItemViewType(position: Int): Int {
