@@ -50,6 +50,9 @@ public interface ApiEndpoints {
     @POST("user")
     Call<JsonObject> createUser(@Body JsonObject number);
 
+    @GET("user")
+    Call<JsonObject> getUser(@Query("api_token") String token);
+
     @PATCH("user")
     Call<JsonObject> updateUser(@Body JsonObject number, @Query("api_token") String token);
 

@@ -1,7 +1,11 @@
 package ru.binaryblitz.Chisto.Activities;
 
+import com.google.gson.JsonObject;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,10 +19,15 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ru.binaryblitz.Chisto.Adapters.OrdersAdapter;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.Custom.RecyclerListView;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
+import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 import ru.binaryblitz.Chisto.Utils.SwipeItemDecoration;
@@ -38,6 +47,29 @@ public class OrdersActivity extends BaseActivity {
         contBtn = (TextView) findViewById(ru.binaryblitz.Chisto.R.id.textView2);
         initRecyclerView();
         setOnClickListeners();
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                getUser();
+            }
+        });
+    }
+
+    private void getUser() {
+        ProgressDialog dialog = new ProgressDialog(this);
+        dialog.show();
+
+        ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                LogUtil.logError(response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+            }
+        });
     }
 
     private void initRecyclerView() {
