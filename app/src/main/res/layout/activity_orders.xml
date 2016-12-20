@@ -87,4 +87,15 @@
             android:textSize="18sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:background="#99000000"
+            android:id="@+id/dialog"
+            android:visibility="visible"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/dialog_review" />
+
+    </FrameLayout>
 </FrameLayout>
