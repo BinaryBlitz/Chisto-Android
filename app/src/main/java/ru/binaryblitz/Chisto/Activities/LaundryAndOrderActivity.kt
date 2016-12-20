@@ -26,7 +26,6 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
 import ru.binaryblitz.Chisto.Utils.Image
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
@@ -86,6 +85,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun createOrderListView() {
+        OrderList.setDecorationCost()
         val orderList = OrderList.get()
         val listToShow = ArrayList<Pair<String, Any>>()
 
@@ -102,14 +102,14 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
+        (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + getString(R.string.money)
 
         deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
         if (deliveryCost != 0) {
-            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + " \u20bd"
+            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.money)
         }
         (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
-                Integer.toString(allOrdersCost + deliveryCost) + " \u20bd"
+                Integer.toString(allOrdersCost + deliveryCost) + getString(R.string.money)
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
@@ -127,8 +127,8 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun addBasic(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
+
         (0..order.treatments!!.size - 1)
-                .filter { order.treatments!![it].id != -1 }
                 .map { order.treatments!![it] }
                 .map { OrderContentAdapter.Basic(it.name, it.cost) }
                 .mapTo(listToShow) { Pair<String, Any>("B", it) }
