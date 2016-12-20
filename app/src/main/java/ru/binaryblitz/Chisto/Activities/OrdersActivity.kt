@@ -7,7 +7,6 @@ import android.os.Handler
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -47,17 +46,12 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun getUser() {
-        val dialog = ProgressDialog(this)
-        dialog.show()
-
         ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                dialog.dismiss()
                 if (response.isSuccessful) parseAnswer(response.body())
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                dialog.dismiss()
             }
         })
     }
