@@ -146,6 +146,9 @@
     <string name="completed">" исполнен!"</string>
     <string name="status_changed">Статус заказа изменен</string>
     <string name="default_notification_text">Просмотрите информацию о заказе</string>
+    <string name="cleaning_code">В чистке</string>
+    <string name="dispatched_code">Вещи едут к вам</string>
+    <string name="confirmed_code">Согласован забор вещей</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>

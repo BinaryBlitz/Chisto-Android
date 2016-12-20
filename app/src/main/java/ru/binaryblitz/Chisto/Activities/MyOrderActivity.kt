@@ -222,6 +222,21 @@ class MyOrderActivity : BaseActivity() {
                 textColor = ContextCompat.getColor(this, R.color.completedColor)
                 text = R.string.process_code
             }
+            "cleaning" -> {
+                icon = R.drawable.cleaning_indicator
+                textColor = ContextCompat.getColor(this, R.color.cleaningColor)
+                text = R.string.cleaning_code
+            }
+            "dispatched" -> {
+                icon = R.drawable.dispatched_indicator
+                textColor = ContextCompat.getColor(this, R.color.dispatchedColor)
+                text = R.string.dispatched_code
+            }
+            "confirmed" -> {
+                icon = R.drawable.confirmed_indicator
+                textColor = ContextCompat.getColor(this, R.color.confirmedColor)
+                text = R.string.confirmed_code
+            }
             else -> {
                 icon = R.drawable.canceled_indicator
                 textColor = ContextCompat.getColor(this, R.color.canceledColor)
