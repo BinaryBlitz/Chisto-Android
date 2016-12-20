@@ -9,4 +9,7 @@
     <color name="processColor">#4bc2f7</color>
     <color name="completedColor">#6ce19d</color>
     <color name="canceledColor">#ed4a63</color>
+    <color name="confirmedColor">#f9c232</color>
+    <color name="dispatchedColor">#60dfea</color>
+    <color name="cleaningColor">#4ac2f8</color>
 </resources>
