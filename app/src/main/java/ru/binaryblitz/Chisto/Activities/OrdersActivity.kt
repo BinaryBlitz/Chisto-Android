@@ -30,7 +30,6 @@ class OrdersActivity : BaseActivity() {
 
     private var adapter: OrdersAdapter? = null
     private var continueBtn: TextView? = null
-    private var laundryId: Int = 0
     private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +56,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
         val order = obj.get("order")
         if (order == null || obj.get("order").isJsonNull) return
 
@@ -177,5 +177,9 @@ class OrdersActivity : BaseActivity() {
         continueBtn!!.setText(R.string.nothing_selected_code)
         continueBtn!!.isEnabled = false
         continueBtn!!.setOnClickListener(null)
+    }
+
+    companion object {
+        var laundryId: Int = 0
     }
 }

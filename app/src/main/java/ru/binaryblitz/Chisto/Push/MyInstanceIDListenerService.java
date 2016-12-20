@@ -1,14 +1,16 @@
 package ru.binaryblitz.Chisto.Push;
 
-import com.google.android.gms.iid.InstanceIDListenerService;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.FirebaseInstanceIdService;
 
-import android.content.Intent;
+import android.util.Log;
 
-public class MyInstanceIDListenerService extends InstanceIDListenerService {
+import ru.binaryblitz.Chisto.Utils.AppConfig;
 
+public class MyInstanceIDListenerService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
-        Intent intent = new Intent(this, RegistrationIntentService.class);
-        startService(intent);
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(AppConfig.LogTag, "Refreshed token: " + refreshedToken);
     }
 }

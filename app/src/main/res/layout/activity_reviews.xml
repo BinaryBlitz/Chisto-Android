@@ -24,7 +24,9 @@
               android:background="@drawable/card_gradient"
               android:layout_height="130dp"/>
 
-        <ImageView
+        <com.github.siyamed.shapeimageview.CircularImageView
+                app:siBorderWidth="2dp"
+                app:siBorderColor="#ffffff"
                 android:layout_width="56dp"
                 android:background="@drawable/blue_circle"
                 android:padding="5dp"

@@ -103,10 +103,11 @@ class ContactInfoActivity : BaseActivity() {
         setTextToField(house!!, user!!.house)
         setTextToField(street!!, user!!.street)
         setTextToField(phone!!, user!!.phone)
+        setTextToField(comment!!, user!!.notes)
     }
 
     private fun setData() {
-        if (user == null) user = User(1, null, null, null, null, null, null, null, null)
+        if (user == null) user = User(1, null, null, null, null, null, null, null, null, null)
 
         user!!.name = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
@@ -116,7 +117,7 @@ class ContactInfoActivity : BaseActivity() {
         user!!.street = street!!.text.toString()
         user!!.house = house!!.text.toString()
         user!!.email = email!!.text.toString()
-
+        user!!.notes = comment!!.text.toString()
         DeviceInfoStore.saveUser(this, user)
 
         updateUser()

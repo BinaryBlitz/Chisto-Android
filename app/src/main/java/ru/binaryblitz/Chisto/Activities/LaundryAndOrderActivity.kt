@@ -127,7 +127,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun addBasic(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
-
+        OrderList.pullDecorationToEndOfTreatmentsList()
         (0..order.treatments!!.size - 1)
                 .map { order.treatments!![it] }
                 .map { OrderContentAdapter.Basic(it.name, it.cost) }

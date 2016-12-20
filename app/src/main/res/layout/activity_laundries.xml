@@ -80,6 +80,7 @@
             android:background="#99000000"
             android:id="@+id/dialog"
             android:elevation="8dp"
+            android:clickable="true"
             android:visibility="gone"
             android:layout_height="match_parent">
 
