@@ -139,8 +139,8 @@
     <string name="wrong_city_code">Неверно введен город</string>
     <string name="wrong_width_or_length_code">Неверно указана длина или ширина</string>
     <string name="splitter_code">" и еще "</string>
-    <string name="metr_squared">м²</string>
-    <string name="money">₽</string>
+    <string name="square_meter_symbol">м²</string>
+    <string name="ruble_sign">₽</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
