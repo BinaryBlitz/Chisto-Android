@@ -103,7 +103,7 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setData() {
-        if (user == null) user = User(1, "null", "null", "null", "null", "null", "null", "null", "null", "null")
+        if (user == null) user = User.createDefault()
 
         user!!.name = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()

@@ -14,5 +14,9 @@ class User(var id: Int, var name: String?, var lastname: String?, var phone: Str
             return User(Integer.parseInt(strings[0]), strings[1], strings[2],
                     strings[3], strings[4], strings[5], strings[6], strings[7], strings[8], strings[9])
         }
+
+        fun createDefault(): User {
+            return User(1, "null", "null", "null", "null", "null", "null", "null", "null", "null")
+        }
     }
 }
