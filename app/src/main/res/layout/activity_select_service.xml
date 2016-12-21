@@ -122,6 +122,7 @@
                 android:background="#99000000"
                 android:id="@+id/dialog"
                 android:clickable="true"
+                android:elevation="8dp"
                 android:visibility="gone"
                 android:layout_height="match_parent">
 
