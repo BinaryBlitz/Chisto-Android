@@ -435,6 +435,7 @@
             android:background="#99000000"
             android:id="@+id/dialog"
             android:visibility="gone"
+            android:elevation="8dp"
             android:clickable="true"
             android:layout_height="match_parent">
 
