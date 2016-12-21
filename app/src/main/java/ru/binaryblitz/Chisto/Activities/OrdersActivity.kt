@@ -76,7 +76,6 @@ class OrdersActivity : BaseActivity() {
         ServerApi.get(this).api().sendReview(laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                LogUtil.logError(response.errorBody().string())
                 Animations.animateRevealHide(findViewById(R.id.dialog))
                 if (response.isSuccessful) parseReviewResponse()
                 else onServerError(response)
