@@ -50,7 +50,7 @@ class LaundryAndOrderActivity : BaseActivity() {
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            val userNotLogged = DeviceInfoStore.getUserObject(this@LaundryAndOrderActivity) == null || DeviceInfoStore.getUserObject(this@LaundryAndOrderActivity)!!.phone == "null"
+            val userNotLogged = DeviceInfoStore.getToken(this@LaundryAndOrderActivity) == "null"
             if (userNotLogged) openActivity(RegistrationActivity::class.java)
             else openActivity(PersonalInfoActivity::class.java)
         }

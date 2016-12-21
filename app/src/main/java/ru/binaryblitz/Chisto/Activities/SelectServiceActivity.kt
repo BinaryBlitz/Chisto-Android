@@ -92,6 +92,10 @@ class SelectServiceActivity : BaseActivity() {
             openActivity()
         }
 
+        findViewById(R.id.dialog).setOnClickListener {
+            Animations.animateRevealHide(findViewById(R.id.dialog))
+        }
+
         findViewById(R.id.cancel_btn).setOnClickListener {
             Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
         }
@@ -151,7 +155,7 @@ class SelectServiceActivity : BaseActivity() {
         if (editable.isNotEmpty() && editable.toString() != "0") {
             try {
                 if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
-                square.text = java.lang.Double.toString((length * this.width).toDouble() / squareCentimetersInSquareMeters) +
+                square.text = java.lang.Double.toString(Math.ceil((length * this.width).toDouble() / squareCentimetersInSquareMeters)) +
                         getString(R.string.square_meter_symbol)
             } catch (e: Exception) {
                 LogUtil.logException(e)

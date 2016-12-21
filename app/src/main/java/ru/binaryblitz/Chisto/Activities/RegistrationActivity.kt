@@ -206,7 +206,7 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun savePhone(phone: String) {
-        val user = DeviceInfoStore.getUserObject(this)
+        val user = DeviceInfoStore.getUserObject(this) ?: return
         user.phone = phone
         DeviceInfoStore.saveUser(this, user)
     }
