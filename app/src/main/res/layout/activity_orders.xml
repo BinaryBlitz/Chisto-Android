@@ -94,7 +94,7 @@
             android:elevation="8dp"
             android:clickable="true"
             android:id="@+id/dialog"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_height="match_parent">
 
         <include layout="@layout/dialog_review" />

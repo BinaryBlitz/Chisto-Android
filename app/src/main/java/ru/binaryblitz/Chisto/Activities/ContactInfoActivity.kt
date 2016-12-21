@@ -70,12 +70,8 @@ class ContactInfoActivity : BaseActivity() {
                 .content(getString(R.string.profile_wrong_fields))
                 .positiveText(R.string.yes_code)
                 .negativeText(R.string.no_code)
-                .onPositive { dialog, action ->
-                    run { finish() }
-                }
-                .onNegative { dialog, action ->
-                    run { dialog.dismiss() }
-                }
+                .onPositive { dialog, action -> run { finish() } }
+                .onNegative { dialog, action -> run { dialog.dismiss() } }
                 .show()
     }
 
@@ -93,7 +89,7 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setInfo() {
-        user = DeviceInfoStore.getUserObject(this)
+        user = DeviceInfoStore.getUserObject(this) ?: return
         setTextToField(email!!, user!!.email)
         setTextToField(city!!, user!!.city)
         setTextToField(name!!, user!!.name)
