@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.widget.EditText
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonObject
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
@@ -56,7 +57,6 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         val order = obj.get("order")
         if (order == null || obj.get("order").isJsonNull) return
 
@@ -89,6 +89,20 @@ class OrdersActivity : BaseActivity() {
         })
     }
 
+    private fun showErrorDialog() {
+        MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content(getString(R.string.wrong_review_code))
+                .positiveText(R.string.ok_code)
+                .onPositive { dialog, which -> dialog.dismiss() }
+                .show()
+    }
+
+    private fun checkReview(): Boolean {
+        return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0 &&
+        !(findViewById(R.id.review_text) as EditText).text.toString().isEmpty()
+    }
+
     private fun generateJson(): JsonObject {
         val obj = JsonObject()
 
@@ -102,7 +116,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseReviewResponse() {
-
+        Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     private fun showReviewDialog(id: Int) {
@@ -146,7 +160,12 @@ class OrdersActivity : BaseActivity() {
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            sendReview()
+            if (!checkReview()) showErrorDialog()
+            else sendReview()
+        }
+
+        findViewById(R.id.dialog).setOnClickListener {
+            Animations.animateRevealHide(findViewById(R.id.dialog))
         }
     }
 
