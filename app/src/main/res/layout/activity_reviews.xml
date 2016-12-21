@@ -29,7 +29,7 @@
                 app:siBorderColor="#ffffff"
                 android:layout_width="56dp"
                 android:background="@drawable/blue_circle"
-                android:padding="5dp"
+                android:scaleType="centerCrop"
                 android:id="@+id/logo_image"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="102dp"
