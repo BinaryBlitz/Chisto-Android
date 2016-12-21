@@ -103,7 +103,7 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setData() {
-        if (user == null) user = User(1, null, null, null, null, null, null, null, null, null)
+        if (user == null) user = User(1, "null", "null", "null", "null", "null", "null", "null", "null", "null")
 
         user!!.name = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
@@ -114,6 +114,7 @@ class ContactInfoActivity : BaseActivity() {
         user!!.house = house!!.text.toString()
         user!!.email = email!!.text.toString()
         user!!.notes = comment!!.text.toString()
+        if (user!!.notes!!.isEmpty()) user!!.notes = "null"
         DeviceInfoStore.saveUser(this, user)
 
         updateUser()

@@ -207,16 +207,11 @@ class PersonalInfoActivity : BaseActivity() {
             goToOrderActivity()
         }
 
-        findViewById(R.id.left_btn).setOnClickListener {
-            finishActivity() }
+        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
 
-        findViewById(R.id.pay_btn).setOnClickListener {
-            process(false)
-        }
+        findViewById(R.id.pay_btn).setOnClickListener { process(false) }
 
-        findViewById(R.id.credit_card_btn).setOnClickListener {
-            process(true)
-        }
+        findViewById(R.id.credit_card_btn).setOnClickListener { process(true) }
 
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
@@ -254,6 +249,11 @@ class PersonalInfoActivity : BaseActivity() {
     private fun setInfo() {
         user = DeviceInfoStore.getUserObject(this)
 
+        if (user == null) {
+            setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
+            return
+        }
+
         setTextToField(city!!, user!!.city)
 
         if (user!!.name == null || user!!.name == "null") {
@@ -272,7 +272,7 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun setData() {
-        if (user == null) user = User(1, null, null, null, null, null, null, null, null, null)
+        if (user == null) user = User(1, "null", "null", "null", "null", "null", "null", "null", "null", "null")
 
         user!!.name = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
@@ -307,8 +307,6 @@ class PersonalInfoActivity : BaseActivity() {
         val toSend = JsonObject()
         toSend.add("user", obj)
 
-        LogUtil.logError(toSend.toString())
-
         return toSend
     }
 
@@ -327,10 +325,6 @@ class PersonalInfoActivity : BaseActivity() {
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                if (AndroidUtilities.checkPlayServices(this@PersonalInfoActivity)) {
-                    val intent = Intent(this@PersonalInfoActivity, MyInstanceIDListenerService::class.java)
-                    startService(intent)
-                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) { }
