@@ -92,6 +92,10 @@ class SelectServiceActivity : BaseActivity() {
             openActivity()
         }
 
+        findViewById(R.id.dialog).setOnClickListener {
+            Animations.animateRevealHide(findViewById(R.id.dialog))
+        }
+
         findViewById(R.id.cancel_btn).setOnClickListener {
             Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
         }

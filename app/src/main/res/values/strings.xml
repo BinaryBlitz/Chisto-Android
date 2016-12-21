@@ -149,6 +149,7 @@
     <string name="cleaning_code">В чистке</string>
     <string name="dispatched_code">Вещи едут к вам</string>
     <string name="confirmed_code">Согласован забор вещей</string>
+    <string name="wrong_review_code">Отзыв не может быть пустым</string>
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>

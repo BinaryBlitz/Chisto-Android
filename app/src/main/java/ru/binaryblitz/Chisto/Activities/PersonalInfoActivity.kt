@@ -221,6 +221,10 @@ class PersonalInfoActivity : BaseActivity() {
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
         }
+
+        findViewById(R.id.dialog).setOnClickListener {
+            Animations.animateRevealHide(findViewById(R.id.dialog))
+        }
     }
 
     private fun process(payWithCreditCard: Boolean) {
