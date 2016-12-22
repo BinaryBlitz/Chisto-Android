@@ -28,6 +28,7 @@
                 android:lines="1"
                 android:gravity="center"
                 android:maxLength="16"
+                android:digits="1234567890+"
                 android:letterSpacing="0.04"
                 android:paddingLeft="12dp"
                 android:paddingStart="12dp"
