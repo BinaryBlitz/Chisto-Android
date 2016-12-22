@@ -62,7 +62,7 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun isUserExistOnServer(): Boolean {
-        return DeviceInfoStore.getToken(this) != "null" && DeviceInfoStore.getUserObject(this).name == "null"
+        return DeviceInfoStore.getToken(this) != "null" && DeviceInfoStore.getUserObject(this).firstName == "null"
     }
 
     private fun getUser() {
@@ -87,12 +87,12 @@ class PersonalInfoActivity : BaseActivity() {
     private fun parseUserResponse(obj: JsonObject) {
         val user = DeviceInfoStore.getUserObject(this)
         user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        user.name = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
+        user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
         user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
-        user.street = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
-        user.flat = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
+        user.streetName = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
+        user.apartmentNumber = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
         user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
-        user.house = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
+        user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
         user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
         if (user.notes!!.isEmpty()) user.notes = "null"
         DeviceInfoStore.saveUser(this, user)
@@ -256,31 +256,31 @@ class PersonalInfoActivity : BaseActivity() {
 
         setTextToField(city!!, user!!.city)
 
-        if (user!!.name == null || user!!.name == "null") {
+        if (user!!.firstName == null || user!!.firstName == "null") {
             setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
         } else {
             setTextToField(phone!!, user!!.phone)
         }
         setTextToField(email!!, user!!.email)
-        setTextToField(name!!, user!!.name)
+        setTextToField(name!!, user!!.firstName)
         setTextToField(lastname!!, user!!.lastname)
-        setTextToField(flat!!, user!!.flat)
+        setTextToField(flat!!, user!!.apartmentNumber)
         setTextToField(phone!!, user!!.phone)
-        setTextToField(house!!, user!!.house)
-        setTextToField(street!!, user!!.street)
+        setTextToField(house!!, user!!.houseNumber)
+        setTextToField(street!!, user!!.streetName)
         setTextToField(comment!!, user!!.notes)
     }
 
     private fun setData() {
         if (user == null) user = User.createDefault()
 
-        user!!.name = name!!.text.toString()
+        user!!.firstName = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
         user!!.city = city!!.text.toString()
-        user!!.flat = flat!!.text.toString()
+        user!!.apartmentNumber = flat!!.text.toString()
         user!!.phone = phone!!.text.toString()
-        user!!.street = street!!.text.toString()
-        user!!.house = house!!.text.toString()
+        user!!.streetName = street!!.text.toString()
+        user!!.houseNumber = house!!.text.toString()
         user!!.email = email!!.text.toString()
         user!!.notes = comment!!.text.toString()
 
@@ -324,8 +324,7 @@ class PersonalInfoActivity : BaseActivity() {
         sendToServer(payWithCreditCard)
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-            }
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) { }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) { }
         })

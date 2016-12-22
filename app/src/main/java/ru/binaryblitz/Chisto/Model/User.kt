@@ -1,11 +1,11 @@
 package ru.binaryblitz.Chisto.Model
 
-class User(var id: Int, var name: String?, var lastname: String?, var phone: String?,
-           var city: String?, var street: String?, var house: String?, var flat: String?, var email: String?, var notes: String?) {
+class User(var id: Int, var firstName: String?, var lastname: String?, var phone: String?,
+           var city: String?, var streetName: String?, var houseNumber: String?, var apartmentNumber: String?, var email: String?, var notes: String?) {
 
     fun asString(): String {
-        return Integer.toString(id) + "entity" + name + "entity" + lastname + "entity" + phone +
-                "entity" + city + "entity" + street + "entity" + house + "entity" + flat + "entity" + email + "entity" + notes
+        return Integer.toString(id) + "entity" + firstName + "entity" + lastname + "entity" + phone +
+                "entity" + city + "entity" + streetName + "entity" + houseNumber + "entity" + apartmentNumber + "entity" + email + "entity" + notes
     }
 
     companion object {

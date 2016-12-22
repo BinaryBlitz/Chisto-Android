@@ -254,8 +254,8 @@ public class MapActivity extends BaseActivity
             User user = DeviceInfoStore.getUserObject(MapActivity.this);
             if (user == null) return;
 
-            user.setHouse(house);
-            user.setStreet(street);
+            user.setHouseNumber(house);
+            user.setStreetName(street);
 
             DeviceInfoStore.saveUser(MapActivity.this, user);
         } catch (IOException e) {

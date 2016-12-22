@@ -92,12 +92,12 @@ class ContactInfoActivity : BaseActivity() {
         user = DeviceInfoStore.getUserObject(this) ?: return
         setTextToField(email!!, user!!.email)
         setTextToField(city!!, user!!.city)
-        setTextToField(name!!, user!!.name)
+        setTextToField(name!!, user!!.firstName)
         setTextToField(lastname!!, user!!.lastname)
-        setTextToField(flat!!, user!!.flat)
+        setTextToField(flat!!, user!!.apartmentNumber)
         setTextToField(phone!!, user!!.phone)
-        setTextToField(house!!, user!!.house)
-        setTextToField(street!!, user!!.street)
+        setTextToField(house!!, user!!.houseNumber)
+        setTextToField(street!!, user!!.streetName)
         setTextToField(phone!!, user!!.phone)
         setTextToField(comment!!, user!!.notes)
     }
@@ -105,13 +105,13 @@ class ContactInfoActivity : BaseActivity() {
     private fun setData() {
         if (user == null) user = User.createDefault()
 
-        user!!.name = name!!.text.toString()
+        user!!.firstName = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
         user!!.city = city!!.text.toString()
-        user!!.flat = flat!!.text.toString()
+        user!!.apartmentNumber = flat!!.text.toString()
         user!!.phone = phone!!.text.toString()
-        user!!.street = street!!.text.toString()
-        user!!.house = house!!.text.toString()
+        user!!.streetName = street!!.text.toString()
+        user!!.houseNumber = house!!.text.toString()
         user!!.email = email!!.text.toString()
         user!!.notes = comment!!.text.toString()
         if (user!!.notes!!.isEmpty()) user!!.notes = "null"

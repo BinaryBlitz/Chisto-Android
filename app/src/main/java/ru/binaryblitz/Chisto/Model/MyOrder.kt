@@ -11,12 +11,7 @@ class MyOrder(obj: JsonObject) {
     val isPaid: Boolean
     val status: MyOrder.Status
     val createAt: Date
-    val house: String
-    val street: String
-    val flat: String
-    val phone: String
-    val note: String
-    val cost: Int
+    val price: Int
 
     private fun getStatusFromJson(obj: JsonObject): MyOrder.Status {
         val status = obj.get("status").asString
@@ -58,11 +53,6 @@ class MyOrder(obj: JsonObject) {
         isPaid = AndroidUtilities.getBooleanFieldFromJson(obj.get("paid"))
         status = getStatusFromJson(obj)
         createAt = getDateFromJson(obj)!!
-        house = AndroidUtilities.getStringFieldFromJson(obj.get("house"))
-        street = AndroidUtilities.getStringFieldFromJson(obj.get("street"))
-        flat = AndroidUtilities.getStringFieldFromJson(obj.get("flat"))
-        phone = AndroidUtilities.getStringFieldFromJson(obj.get("contact_number"))
-        note = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
-        cost = AndroidUtilities.getIntFieldFromJson(obj.get("total_price"))
+        price = AndroidUtilities.getIntFieldFromJson(obj.get("total_price"))
     }
 }
