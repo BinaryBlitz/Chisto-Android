@@ -199,7 +199,7 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun showNothingSelectedError() {
-        Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(findViewById(R.id.main), R.string.nothing_selected, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun addTreatments() {

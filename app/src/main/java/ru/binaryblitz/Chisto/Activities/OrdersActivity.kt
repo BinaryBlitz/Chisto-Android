@@ -185,7 +185,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun setContinueButtonEnabled() {
-        continueBtn!!.setText(R.string.cont_code)
+        continueBtn!!.setText(R.string.continue_btn)
         continueBtn!!.setOnClickListener {
             val intent = Intent(this@OrdersActivity, LaundriesActivity::class.java)
             startActivity(intent)
@@ -193,7 +193,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun setContinueButtonDisabled() {
-        continueBtn!!.setText(R.string.nothing_selected_code)
+        continueBtn!!.setText(R.string.nothing_selected)
         continueBtn!!.isEnabled = false
         continueBtn!!.setOnClickListener(null)
     }
