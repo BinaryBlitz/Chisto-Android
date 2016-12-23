@@ -46,28 +46,28 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
     private fun setIconAndColor(order: MyOrder, holder: ViewHolder) {
         when (order.status) {
             MyOrder.Status.COMPLETED -> {
-                holder.marker.setImageResource(R.drawable.completed_indicator)
+                holder.marker.setImageResource(R.drawable.ic_completed_indicator)
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.completedColor))
             }
             MyOrder.Status.CANCELED -> {
-                holder.marker.setImageResource(R.drawable.canceled_indicator)
+                holder.marker.setImageResource(R.drawable.ic_canceled_indicator)
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.canceledColor))
             }
             MyOrder.Status.CONFIRMED -> {
-                holder.marker.setImageResource(R.drawable.confirmed_indicator)
+                holder.marker.setImageResource(R.drawable.ic_confirmed_indicator)
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.confirmedColor))
             }
             MyOrder.Status.DISPATCHED -> {
-                holder.marker.setImageResource(R.drawable.dispatched_indicator)
+                holder.marker.setImageResource(R.drawable.ic_dispatched_indicator)
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.dispatchedColor))
             }
             MyOrder.Status.CLEANING -> {
-                holder.marker.setImageResource(R.drawable.cleaning_indicator)
+                holder.marker.setImageResource(R.drawable.ic_cleaning_indicator)
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.cleaningColor))
             }
             else -> {
                 holder.cost.setTextColor(ContextCompat.getColor(context, R.color.processColor))
-                holder.marker.setImageResource(R.drawable.process_indicator)
+                holder.marker.setImageResource(R.drawable.ic_process_indicator)
             }
         }
     }

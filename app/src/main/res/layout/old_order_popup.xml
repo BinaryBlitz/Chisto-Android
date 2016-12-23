@@ -44,7 +44,6 @@
                     android:layout_width="44dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_courier"
-                    android:padding="3dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
                       android:text="@string/courier"
@@ -74,7 +73,6 @@
             <ImageView
                     android:layout_width="44dp"
                     android:src="@drawable/ic_delivery"
-                    android:padding="3dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
@@ -106,7 +104,7 @@
                     android:layout_width="44dp"
                     android:layout_gravity="center_horizontal|top"
                     android:src="@drawable/ic_cost"
-                    android:padding="4dp"
+                    android:padding="2dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
                       android:text="@string/cost"
