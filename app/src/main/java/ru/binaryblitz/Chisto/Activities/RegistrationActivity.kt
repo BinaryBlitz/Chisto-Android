@@ -28,7 +28,6 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
-import ru.binaryblitz.Chisto.Utils.LogUtil
 
 class RegistrationActivity : BaseActivity() {
 

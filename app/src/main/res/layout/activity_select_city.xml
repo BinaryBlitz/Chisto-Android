@@ -55,7 +55,7 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerInside"
                         android:src="@drawable/ic_near_me"
-                        android:padding="13dp"
+                        android:padding="11dp"
                         android:layout_gravity="end"
                 />
 

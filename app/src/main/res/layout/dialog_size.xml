@@ -112,7 +112,7 @@
         <Button
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:theme="@style/BrandButtonStyle"
-                android:text="@string/cont"
+                android:text="@string/continue_btn"
                 android:layout_width="match_parent"
                 android:layout_height="68dp"
                 android:layout_weight="1.0"

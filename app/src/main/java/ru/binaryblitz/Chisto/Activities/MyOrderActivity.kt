@@ -213,32 +213,32 @@ class MyOrderActivity : BaseActivity() {
 
         when (status) {
             "processing" -> {
-                icon = R.drawable.process_indicator
+                icon = R.drawable.ic_process_indicator
                 textColor = ContextCompat.getColor(this, R.color.processColor)
                 text = R.string.ready_code
             }
             "completed" -> {
-                icon = R.drawable.completed_indicator
+                icon = R.drawable.ic_completed_indicator
                 textColor = ContextCompat.getColor(this, R.color.completedColor)
                 text = R.string.process_code
             }
             "cleaning" -> {
-                icon = R.drawable.cleaning_indicator
+                icon = R.drawable.ic_cleaning_indicator
                 textColor = ContextCompat.getColor(this, R.color.cleaningColor)
                 text = R.string.cleaning_code
             }
             "dispatched" -> {
-                icon = R.drawable.dispatched_indicator
+                icon = R.drawable.ic_dispatched_indicator
                 textColor = ContextCompat.getColor(this, R.color.dispatchedColor)
                 text = R.string.dispatched_code
             }
             "confirmed" -> {
-                icon = R.drawable.confirmed_indicator
+                icon = R.drawable.ic_confirmed_indicator
                 textColor = ContextCompat.getColor(this, R.color.confirmedColor)
                 text = R.string.confirmed_code
             }
             else -> {
-                icon = R.drawable.canceled_indicator
+                icon = R.drawable.ic_canceled_indicator
                 textColor = ContextCompat.getColor(this, R.color.canceledColor)
                 text = R.string.canceled_code
             }

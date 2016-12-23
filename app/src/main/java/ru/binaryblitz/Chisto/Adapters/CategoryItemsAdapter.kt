@@ -60,7 +60,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         val item = categories!![position]
 
         holder.name.text = item.name
-        holder.description.text = item.desc
+        holder.description.text = item.description
 
         Image.loadPhoto(item.icon, holder.icon)
         holder.icon.setColorFilter(color)

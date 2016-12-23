@@ -106,7 +106,7 @@
                                 android:layout_width="56dp"
                                 android:layout_gravity="center_horizontal"
                                 android:src="@drawable/ic_phone"
-                                android:padding="8dp"
+                                android:padding="5dp"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
                                   android:text="@string/call_us"
@@ -127,7 +127,7 @@
                         <ImageView
                                 android:layout_width="56dp"
                                 android:src="@drawable/ic_email"
-                                android:padding="8dp"
+                                android:padding="5dp"
                                 android:layout_gravity="center_horizontal"
                                 android:layout_height="56dp"/>
                         <TextView android:layout_width="wrap_content"
@@ -161,32 +161,29 @@
                         android:layout_height="wrap_content">
 
                     <ImageView
-                            android:layout_width="56dp"
+                            android:layout_width="64dp"
                             android:src="@drawable/ic_instagram"
                             android:layout_gravity="center"
                             android:layout_marginRight="88dp"
                             android:layout_marginEnd="88dp"
                             android:id="@+id/instagram"
-                            android:padding="4dp"
-                            android:layout_height="56dp"/>
+                            android:layout_height="64dp"/>
 
                     <ImageView
-                            android:layout_width="56dp"
+                            android:layout_width="64dp"
                             android:src="@drawable/ic_facebook"
-                            android:padding="4dp"
                             android:id="@+id/facebook"
                             android:layout_gravity="center"
-                            android:layout_height="56dp"/>
+                            android:layout_height="64dp"/>
 
                     <ImageView
-                            android:layout_width="56dp"
+                            android:layout_width="64dp"
                             android:src="@drawable/ic_vk"
-                            android:padding="4dp"
                             android:id="@+id/vk"
                             android:layout_marginStart="88dp"
                             android:layout_marginLeft="88dp"
                             android:layout_gravity="center"
-                            android:layout_height="56dp"/>
+                            android:layout_height="64dp"/>
                 </FrameLayout>
             </LinearLayout>
 
@@ -200,7 +197,7 @@
                     android:textColor="#ffffff"
                     android:id="@+id/add_btn"
                     android:textSize="18sp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="20dp"
                     android:layout_height="wrap_content"
                     android:paddingBottom="12dp"
                     android:paddingTop="12dp"

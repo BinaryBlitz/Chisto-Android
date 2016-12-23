@@ -123,8 +123,8 @@ public class OrderList {
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
             if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
-                int decorationCost = orders.get(currentItem).getDecorationCost();
-                orders.get(currentItem).setDecorationCost(decorationCost + ((int) ((double) cost * findMultiplier()) - cost));
+                int decorationCost = orders.get(currentItem).getDecorationPrice();
+                orders.get(currentItem).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier()) - cost));
                 orders.get(currentItem).getTreatments().get(i).setCost(cost);
             }
         }
@@ -135,7 +135,7 @@ public class OrderList {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            orders.get(currentItem).setDecorationCost(0);
+            orders.get(currentItem).setDecorationPrice(0);
         }
     }
 
@@ -154,7 +154,7 @@ public class OrderList {
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
             if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) {
-                orders.get(currentItem).getTreatments().get(i).setCost(orders.get(currentItem).getDecorationCost());
+                orders.get(currentItem).getTreatments().get(i).setCost(orders.get(currentItem).getDecorationPrice());
             }
         }
     }
