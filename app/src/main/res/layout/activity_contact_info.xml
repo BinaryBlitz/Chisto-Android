@@ -23,7 +23,7 @@
                         android:layout_width="56dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_user_grey"
-                        android:padding="14dp"
+                        android:padding="10dp"
                         android:layout_height="56dp"/>
 
                 <TextView android:layout_width="wrap_content"
@@ -139,7 +139,7 @@
                         android:layout_width="56dp"
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_address"
-                        android:padding="14dp"
+                        android:padding="10dp"
                         android:layout_height="56dp"/>
 
                 <TextView android:layout_width="wrap_content"
@@ -265,7 +265,7 @@
                         android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_comment_grey"
                         android:id="@+id/category_icon"
-                        android:padding="14dp"
+                        android:padding="10dp"
                         android:layout_height="56dp"/>
 
                 <TextView android:layout_width="wrap_content"
@@ -317,7 +317,7 @@
                 android:layout_width="56dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_cost"
-                android:padding="14dp"
+                android:padding="10dp"
                 android:layout_height="56dp"/>
 
         <TextView android:layout_width="wrap_content"
@@ -435,6 +435,8 @@
             android:background="#99000000"
             android:id="@+id/dialog"
             android:visibility="gone"
+            android:elevation="8dp"
+            android:clickable="true"
             android:layout_height="match_parent">
 
         <include layout="@layout/popup_your_order" />

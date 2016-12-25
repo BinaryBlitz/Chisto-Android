@@ -70,12 +70,8 @@ class ContactInfoActivity : BaseActivity() {
                 .content(getString(R.string.profile_wrong_fields))
                 .positiveText(R.string.yes_code)
                 .negativeText(R.string.no_code)
-                .onPositive { dialog, action ->
-                    run { finish() }
-                }
-                .onNegative { dialog, action ->
-                    run { dialog.dismiss() }
-                }
+                .onPositive { dialog, action -> run { finish() } }
+                .onNegative { dialog, action -> run { dialog.dismiss() } }
                 .show()
     }
 
@@ -93,30 +89,32 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setInfo() {
-        user = DeviceInfoStore.getUserObject(this)
+        user = DeviceInfoStore.getUserObject(this) ?: return
         setTextToField(email!!, user!!.email)
         setTextToField(city!!, user!!.city)
-        setTextToField(name!!, user!!.name)
+        setTextToField(name!!, user!!.firstName)
         setTextToField(lastname!!, user!!.lastname)
-        setTextToField(flat!!, user!!.flat)
+        setTextToField(flat!!, user!!.apartmentNumber)
         setTextToField(phone!!, user!!.phone)
-        setTextToField(house!!, user!!.house)
-        setTextToField(street!!, user!!.street)
+        setTextToField(house!!, user!!.houseNumber)
+        setTextToField(street!!, user!!.streetName)
         setTextToField(phone!!, user!!.phone)
+        setTextToField(comment!!, user!!.notes)
     }
 
     private fun setData() {
-        if (user == null) user = User(1, null, null, null, null, null, null, null, null)
+        if (user == null) user = User.createDefault()
 
-        user!!.name = name!!.text.toString()
+        user!!.firstName = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
         user!!.city = city!!.text.toString()
-        user!!.flat = flat!!.text.toString()
+        user!!.apartmentNumber = flat!!.text.toString()
         user!!.phone = phone!!.text.toString()
-        user!!.street = street!!.text.toString()
-        user!!.house = house!!.text.toString()
+        user!!.streetName = street!!.text.toString()
+        user!!.houseNumber = house!!.text.toString()
         user!!.email = email!!.text.toString()
-
+        user!!.notes = comment!!.text.toString()
+        if (user!!.notes!!.isEmpty()) user!!.notes = "null"
         DeviceInfoStore.saveUser(this, user)
 
         updateUser()
@@ -126,7 +124,7 @@ class ContactInfoActivity : BaseActivity() {
         val obj = JsonObject()
         obj.addProperty("first_name", name!!.text.toString())
         obj.addProperty("last_name", lastname!!.text.toString())
-        obj.addProperty("phone_number", phone!!.text.toString())
+        obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
         obj.addProperty("email", email!!.text.toString())
 

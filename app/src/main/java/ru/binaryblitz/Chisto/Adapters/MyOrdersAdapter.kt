@@ -31,31 +31,44 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         val order = collection[position]
 
         holder.name.text = context.getString(R.string.my_order_code) + order.id
+        setIconAndColor(order, holder)
 
-        when (order.status) {
-            MyOrder.Status.COMPLETED -> {
-                holder.marker.setImageResource(R.drawable.completed_indicator)
-                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.completedColor))
-            }
-            MyOrder.Status.CANCELED -> {
-                holder.marker.setImageResource(R.drawable.canceled_indicator)
-                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.canceledColor))
-            }
-            else -> {
-                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.processColor))
-                holder.marker.setImageResource(R.drawable.process_indicator)
-            }
-        }
-
-        holder.desc.text = getDateStringRepresentation(order.createAt!!)
-
-        // TODO add cost from server
-        holder.cost.text = "3 800" + " \u20bd"
+        holder.desc.text = getDateStringRepresentation(order.createAt)
+        holder.cost.text = order.price.toString() + context.getString(R.string.ruble_sign)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MyOrderActivity::class.java)
             intent.putExtra(EXTRA_ID, order.id)
             context.startActivity(intent)
+        }
+    }
+
+    private fun setIconAndColor(order: MyOrder, holder: ViewHolder) {
+        when (order.status) {
+            MyOrder.Status.COMPLETED -> {
+                holder.marker.setImageResource(R.drawable.ic_completed_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.completedColor))
+            }
+            MyOrder.Status.CANCELED -> {
+                holder.marker.setImageResource(R.drawable.ic_canceled_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.canceledColor))
+            }
+            MyOrder.Status.CONFIRMED -> {
+                holder.marker.setImageResource(R.drawable.ic_confirmed_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.confirmedColor))
+            }
+            MyOrder.Status.DISPATCHED -> {
+                holder.marker.setImageResource(R.drawable.ic_dispatched_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.dispatchedColor))
+            }
+            MyOrder.Status.CLEANING -> {
+                holder.marker.setImageResource(R.drawable.ic_cleaning_indicator)
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.cleaningColor))
+            }
+            else -> {
+                holder.cost.setTextColor(ContextCompat.getColor(context, R.color.processColor))
+                holder.marker.setImageResource(R.drawable.ic_process_indicator)
+            }
         }
     }
 

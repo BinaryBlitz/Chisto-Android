@@ -32,6 +32,7 @@ import java.util.*
 class LaundryAndOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
+    private var deliveryCost = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +50,7 @@ class LaundryAndOrderActivity : BaseActivity() {
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            val userNotLogged = DeviceInfoStore.getUserObject(this@LaundryAndOrderActivity) == null || DeviceInfoStore.getUserObject(this@LaundryAndOrderActivity)!!.phone == "null"
+            val userNotLogged = DeviceInfoStore.getToken(this@LaundryAndOrderActivity) == "null"
             if (userNotLogged) openActivity(RegistrationActivity::class.java)
             else openActivity(PersonalInfoActivity::class.java)
         }
@@ -84,6 +85,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun createOrderListView() {
+        OrderList.setDecorationCost()
         val orderList = OrderList.get()
         val listToShow = ArrayList<Pair<String, Any>>()
 
@@ -100,14 +102,14 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + " \u20bd"
+        (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + getString(R.string.ruble_sign)
 
-        val deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
+        deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
         if (deliveryCost != 0) {
-            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + " \u20bd"
+            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
         }
         (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
-                Integer.toString(allOrdersCost) + " \u20bd"
+                Integer.toString(allOrdersCost + deliveryCost) + getString(R.string.ruble_sign)
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
@@ -125,8 +127,8 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun addBasic(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
+        OrderList.pullDecorationToEndOfTreatmentsList()
         (0..order.treatments!!.size - 1)
-                .filter { order.treatments!![it].id != -1 }
                 .map { order.treatments!![it] }
                 .map { OrderContentAdapter.Basic(it.name, it.cost) }
                 .mapTo(listToShow) { Pair<String, Any>("B", it) }
@@ -148,7 +150,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
-        intent.putExtra(EXTRA_PRICE, allOrdersCost);
+        intent.putExtra(EXTRA_PRICE, allOrdersCost + deliveryCost)
         startActivity(intent)
     }
 

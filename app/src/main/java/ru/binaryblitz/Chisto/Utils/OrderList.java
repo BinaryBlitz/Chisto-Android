@@ -3,6 +3,7 @@ package ru.binaryblitz.Chisto.Utils;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import ru.binaryblitz.Chisto.Model.Laundry;
 import ru.binaryblitz.Chisto.Model.Order;
 import ru.binaryblitz.Chisto.Model.Treatment;
 
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class OrderList {
     private static ArrayList<Order> orders = new ArrayList<>();
     private static ArrayList<Treatment> bufferTreatments = new ArrayList<>();
-    private static int laundryId = 0;
+    private static Laundry laundry;
     private static int currentItem = 0;
     private static ArrayList<Pair<Integer, Double>> decorationMultipliers = new ArrayList<>();
 
@@ -34,12 +35,12 @@ public class OrderList {
         currentItem = 0;
     }
 
-    public static void setLaundryId(int laundryId) {
-        OrderList.laundryId = laundryId;
+    public static void setLaundry(Laundry laundry) {
+        OrderList.laundry = laundry;
     }
 
-    public static int getLaundryId() {
-        return laundryId;
+    public static Laundry getLaundry() {
+        return laundry;
     }
 
     @Nullable
@@ -122,7 +123,51 @@ public class OrderList {
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
             if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
-                orders.get(currentItem).getTreatments().get(i).setCost((int) ((double) cost * findMultiplier()));
+                int decorationCost = orders.get(currentItem).getDecorationPrice();
+                orders.get(currentItem).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier()) - cost));
+                orders.get(currentItem).getTreatments().get(i).setCost(cost);
+            }
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void resetDecorationCosts() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            orders.get(currentItem).setDecorationPrice(0);
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void setSize(int size) {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            orders.get(currentItem).setSize(size);
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void setDecorationCost() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                orders.get(currentItem).getTreatments().get(i).setCost(orders.get(currentItem).getDecorationPrice());
+            }
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    public static void pullDecorationToEndOfTreatmentsList() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
+            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                Treatment treatment = orders.get(currentItem).getTreatments().get(i);
+                orders.get(currentItem).getTreatments().remove(i);
+                orders.get(currentItem).getTreatments().add(treatment);
             }
         }
     }
@@ -132,9 +177,7 @@ public class OrderList {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return false;
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == -1) {
-                return true;
-            }
+            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) return true;
         }
 
         return false;

@@ -1,79 +1,109 @@
 <resources>
     <string name="app_name">Chisto</string>
+
     <string name="lost_connection">Потеряно соединение с интернетом.</string>
+    <string name="nothing_selected">Ничего не выбрано</string>
+    <string name="empty_field">Поле не может быть пустым</string>
+    <string name="wrong_code">Неверный код</string>
+    <string name="wrong_data">Неверные данные</string>
+    <string name="no_comment">Нет комментария.</string>
+    <string name="payment_error">Ошибка оплаты.</string>
+    <string name="removal_error">Нужно оставить хотя бы одну услугу.</string>
+    <string name="removal">Необходимо оставить хотя бы одну услугу.</string>
+    <string name="wrong_phone">Неверный номер телефона</string>
+    <string name="profile_wrong_fields">Не все поля заполнены верно. Вы хотите выйти без сохранения введенных данных?</string>
+    <string name="server_error">Ошибка сервера</string>
+    <string name="wrong_phone_code">Неверно введен номер телефона</string>
+    <string name="wrong_city_code">Неверно введен город</string>
+    <string name="wrong_width_or_length_code">Неверно указана длина или ширина</string>
+    <string name="wrong_review_code">Отзыв не может быть пустым</string>
+
+    <string name="start">Начать</string>
+    <string name="simple">Все очень просто:</string>
+    <string name="chisto">С Chisto Вам больше не нужно\nтратить время на походы\nв химчистку</string>
     <string name="board1">Добавьте в список вещи, которые хотите сдать в чистку</string>
     <string name="board2">Ознакомтесь с ценой и сроками выполнения вашего заказа</string>
     <string name="board3">Выберите подходящего Вам исполнителя</string>
     <string name="board4">Оплатите заказ удобным для Вас способом</string>
     <string name="board5">Ожидайте звонка. Оператор позвонит Вам и согласует время забора и доставки вещей.</string>
+
     <string name="city_select">Выбор города</string>
     <string name="location_error">Невозможно получить текущее местоположение.</string>
     <string name="city_error">Вашего города нет в списке.</string>
+    <string name="city_not_found">Не нашли свой город?</string>
+
     <string name="order">Заказ</string>
     <string name="item_help">С какой вещью\nВам требуется помочь?</string>
+
     <string name="add">Добавить</string>
     <string name="continue_btn">Продолжить</string>
-    <string name="select_part">Выбор вещи</string>
-    <string name="city_not_found">Не нашли свой город?</string>
-    <string name="start">Начать</string>
-    <string name="simple">Все очень просто:</string>
-    <string name="chisto">С Chisto Вам больше не нужно\nтратить время на походы\nв химчистку</string>
     <string name="ready">Готово</string>
-    <string name="nothing_selected">Ничего не выбрано</string>
+    <string name="save">Сохранить</string>
+    <string name="yes_code">ДА</string>
+    <string name="no_code">НЕТ</string>
+    <string name="send_code">ОТПРАВИТЬ</string>
+    <string name="back_code">НАЗАД</string>
+    <string name="search">Найти</string>
+    <string name="free">Бесплатно</string>
+    <string name="ok_code">OK</string>
+    <string name="cancel">Отмена</string>
+
+    <string name="select_part">Выбор вещи</string>
+
     <string name="service_select">Выбор услуг</string>
     <string name="what_need_to_do">Что нужно сделать с вещью?</string>
-    <string name="cont">Продолжить</string>
-    <string name="nothing_selected_code">Ничего не выбрано</string>
-    <string name="save">Сохранить</string>
+
     <string name="selected_tr">Выбранные услуги</string>
     <string name="count">Количество таких вещей</string>
+
     <string name="last_order">В прошлый раз Вы заказывали</string>
     <string name="view_all">Посмотреть все предложения</string>
+
     <string name="contact_us">Как с нами связаться?</string>
     <string name="about">О приложении</string>
     <string name="about_social">Мы в социальных сетях</string>
     <string name="rate">Оставить отзыв</string>
     <string name="about_bottom">Вы представитель химчистки?</string>
     <string name="write_bottom">Напишите нам для сотрудничества</string>
+
     <string name="profile">Профиль</string>
     <string name="rules">Пользовательское соглашение</string>
     <string name="my_orders">Мои заказы</string>
     <string name="contact_data">Контактные данные</string>
-    <string name="cost">Стоимость</string>
-    <string name="courier">Курьер</string>
     <string name="call_us">Позвонить нам</string>
     <string name="email">Написать письмо</string>
+
+    <string name="cost">Стоимость</string>
+    <string name="courier">Курьер</string>
+
     <string name="delete_from_order">Вы хотите удалить эту вещь из заказа?</string>
-    <string name="yes_code">ДА</string>
-    <string name="no_code">НЕТ</string>
-    <string name="cont_code">Продолжить</string>
-    <string name="send_code">ОТПРАВИТЬ</string>
-    <string name="back_code">НАЗАД</string>
     <string name="decoration_question">Eсть ли у вещи декоративная отделка?</string>
+
     <string name="laundries">Химчистки</string>
     <string name="title">Фильтр</string>
     <string name="choose">Выбрать</string>
     <string name="cost_filter">По цене</string>
     <string name="speed_filter">По скорости</string>
     <string name="rate_filter">По рейтингу</string>
-    <string name="laundary_code">"В химчистке "</string>
+    <string name="laundry_code">"В химчистке "</string>
     <string name="order_code">"Заказать в "</string>
+
     <string name="reg">Регистрация</string>
     <string name="sign_in">Регистрация</string>
     <string name="send">Отправить</string>
     <string name="code">Код подтверждения</string>
     <string name="send_code_after">"Отправить код повторно через "</string>
-    <string name="empty_field">Поле не может быть пустым</string>
-    <string name="wrong_code">Неверный код</string>
     <string name="send_again">Отправить код повторно</string>
     <string name="code_send">На этот номер будет отправлен 5-значный код</string>
     <string name="number_code">На номер</string>
     <string name="code_sent">" был отправлен код"</string>
     <string name="type_phone">Введите номер вашего телефона</string>
     <string name="code_title">Введите код</string>
+
     <string name="delivery">Доставка</string>
     <string name="your_order">Ваш заказ</string>
     <string name="order_help">Указаны ближайшие даты. Точное время Вы сможете согласовать с сотрудником химчистки</string>
+
     <string name="name">Имя</string>
     <string name="lastname">Фамилия</string>
     <string name="phone">Телефон</string>
@@ -82,62 +112,79 @@
     <string name="house">Дом</string>
     <string name="flat">Квартира</string>
     <string name="comment">Комментарий к заказу</string>
+    <string name="e_mail">Email</string>
+
     <string name="contact_info">Контактная информация</string>
     <string name="delivery_address">Адрес доставки</string>
     <string name="comment_title">Комментарий к заказу</string>
     <string name="personal_info">Персональная информация</string>
+
     <string name="cost_reg">Стоимость заказа</string>
-    <string name="wrong_data">Неверные данные</string>
     <string name="ordering_code">Заказать</string>
     <string name="contact_profile">Контактные данные</string>
+
     <string name="seconds_code">" c"</string>
     <string name="bank">Банковской\nкартой</string>
     <string name="pay">Наличными\nкурьеру</string>
+
     <string name="address_select">Выбор адреса</string>
     <string name="success_order">Заказ успешно оформлен</string>
+
     <string name="wait">Ожидайте звонка оператора</string>
     <string name="your_order_help">Вы можете посмотреть информацию по заказку в профиле</string>
     <string name="notifications_help">Желаете ли вы получать обновления по вашему заказу?</string>
+
     <string name="my_order_code">Заказ №</string>
     <string name="order_questions">Есть вопросы по заказу?</string>
+
     <string name="result_order">Итого</string>
+
     <string name="ready_code">Выполняется</string>
     <string name="process_code">Выполнен</string>
     <string name="canceled_code">Отменен</string>
-    <string name="search">Найти</string>
+    <string name="cleaning_code">В чистке</string>
+    <string name="dispatched_code">Вещи едут к вам</string>
+    <string name="confirmed_code">Согласован забор вещей</string>
+
     <string name="premium">Премиум</string>
     <string name="fast">Быстрая</string>
     <string name="economy">Дешевая</string>
+
     <string name="review">Отзывы</string>
-    <string name="no_comment">Нет комментария.</string>
-    <string name="payment_error">Ошибка оплаты.</string>
-    <string name="removal_error">Нужно оставить хотя бы одну услугу.</string>
-    <string name="removal">Необходимо оставить хотя бы одну услугу.</string>
-    <string name="wrong_phone">Неверный номер телефона</string>
-    <string name="profile_wrong_fields">Не все поля заполнены верно. Вы хотите выйти без сохранения введенных данных?</string>
-    <string name="server_error">Ошибка сервера</string>
-    <string name="e_mail">Email</string>
+
     <string name="send_from_about">Отправить</string>
+
     <string name="create_order_code">"Оформить заказ: "</string>
+
     <string name="from_code">"с "</string>
     <string name="end_bound_code">" до "</string>
+
+    <string name="empty_orders">Вы еще ничего не заказывали</string>
     <string name="empty_reviews">Нет отзывов</string>
-    <string name="free">Бесплатно</string>
     <string name="decoration_help">К декоративной отделке относятся стразы, бисер, пайетки, сложные кружевные композиции и прочие украшения одежды, нуждающиеся в особом уходе и внимании со стороны
-        химчистки
-    </string>
-    <string name="ok_code">OK</string>
+        химчистки</string>
     <string name="city_not_found_helper">Оставьте контактные данные и мы оповестим вас, когда сервис станет доступен в вашем городе</string>
+
     <string name="select_size">Укажите размеры сторон вещи в сантиметрах</string>
     <string name="square">Площадь</string>
     <string name="width">Ширина, см</string>
     <string name="length">Длина, см</string>
-    <string name="cancel">Отмена</string>
-    <string name="empty_orders">Вы еще ничего не заказывали</string>
+
+
     <string name="decoration">Декор</string>
-    <string name="wrong_phone_code">Неверно введен номер телефона</string>
-    <string name="wrong_city_code">Неверно введен город</string>
-    <string name="wrong_width_or_length_code">Неверно указана длина или ширина</string>
+
+    <string name="splitter_code">" и еще "</string>
+    <string name="square_meter_symbol">" м²"</string>
+
+    <string name="ruble_sign">" ₽"</string>
+
+    <string name="review_help">Мы надеемся, что вы остались довольны. Оставьте пожалуйста отзыв, чтобы помочь другим пользователям</string>
+    <string name="your_review">Ваш отзыв</string>
+    <string name="completed">" исполнен!"</string>
+
+    <string name="status_changed">Статус заказа изменен</string>
+    <string name="default_notification_text">Просмотрите информацию о заказе</string>
+
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>
@@ -145,5 +192,14 @@
         <item quantity="few">%1$d отзыва</item>
         <item quantity="many">%1$d отзывов</item>
         <item quantity="other">%1$d отзывов</item>
+    </plurals>
+
+    <plurals name="items">
+        <item quantity="zero">0 вещей</item>
+        <item quantity="one">%1$d вещь</item>
+        <item quantity="two">%1$d вещи</item>
+        <item quantity="few">%1$d вещи</item>
+        <item quantity="many">%1$d вещей</item>
+        <item quantity="other">%1$d вещей</item>
     </plurals>
 </resources>

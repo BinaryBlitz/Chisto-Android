@@ -60,7 +60,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         val item = categories!![position]
 
         holder.name.text = item.name
-        holder.description.text = item.desc
+        holder.description.text = item.description
 
         Image.loadPhoto(item.icon, holder.icon)
         holder.icon.setColorFilter(color)
@@ -92,7 +92,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         intent.putExtra(EXTRA_NAME, item.name)
         intent.putExtra(EXTRA_COLOR, color)
         intent.putExtra(EXTRA_USE_AREA, item.userArea)
-        OrderList.add(Order(item, null, 1, color, decor))
+        OrderList.add(Order(item, null, 1, color, decor, 0, null))
         context.startActivity(intent)
     }
 

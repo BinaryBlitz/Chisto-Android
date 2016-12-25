@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
              android:orientation="vertical"
              android:id="@+id/main"
              android:layout_width="match_parent"
@@ -87,4 +87,17 @@
             android:textSize="18sp"
             android:layout_gravity="bottom"
             android:gravity="center"/>
-</FrameLayout>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:background="#99000000"
+            android:elevation="8dp"
+            android:clickable="true"
+            android:id="@+id/dialog"
+            android:visibility="gone"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/dialog_review" />
+
+    </FrameLayout>
+</ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout>

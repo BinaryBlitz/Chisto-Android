@@ -14,7 +14,7 @@ import java.util.ArrayList
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
 
-class OrderContentAdapter(private val context: Activity?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class Header(val name: String, val sum: Int, val count: Int, val icon: String, val color: Int)
 
@@ -22,9 +22,7 @@ class OrderContentAdapter(private val context: Activity?) : RecyclerView.Adapter
 
     private var collection = ArrayList<Pair<String, Any>>()
 
-    init {
-        Image.init(context)
-    }
+    init { Image.init(context) }
 
     fun clear() {
         collection.clear()
@@ -64,21 +62,19 @@ class OrderContentAdapter(private val context: Activity?) : RecyclerView.Adapter
         Image.loadPhoto(header.icon, holder.icon)
         holder.icon.setColorFilter(header.color)
         holder.name.text = header.name + " " + (header.sum / header.count).toString() +
-                " \u20bd" + "  \u00D7" + header.count.toString()
-        holder.cost.text = header.sum.toString() + " \u20bd"
+                context.getString(R.string.ruble_sign) + "  \u00D7" + header.count.toString()
+        holder.cost.text = header.sum.toString() + context.getString(R.string.ruble_sign)
     }
 
     private fun bindBasic(position: Int, holder: BasicViewHolder) {
         val basic = collection[position].second as Basic
         holder.name.text = basic.name
-        holder.cost.text = basic.sum.toString() + " \u20bd"
+        holder.cost.text = basic.sum.toString() + context.getString(R.string.ruble_sign)
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (collection[position].first == "H")
-            return HEADER
-        else
-            return BASIC
+        if (collection[position].first == "H") return HEADER
+        else return BASIC
     }
 
     override fun getItemCount(): Int {
@@ -108,7 +104,6 @@ class OrderContentAdapter(private val context: Activity?) : RecyclerView.Adapter
     }
 
     companion object {
-
         private val HEADER = 1
         private val BASIC = 2
     }

@@ -11,6 +11,10 @@ import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
@@ -18,6 +22,8 @@ import com.crashlytics.android.Crashlytics;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -32,7 +38,6 @@ import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.Utils.ColorsList;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 import ru.binaryblitz.Chisto.Utils.OrderList;
 
 public class SelectCategoryActivity extends BaseActivity {
@@ -106,7 +111,6 @@ public class SelectCategoryActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonArray array) {
-        LogUtil.logError(array.toString());
         ArrayList<Category> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
@@ -137,10 +141,41 @@ public class SelectCategoryActivity extends BaseActivity {
                 AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
                 ServerConfig.INSTANCE.getImageUrl() + AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("icon_url")),
                 AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("name")),
-                AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("description")),
+                generateDesсription(object),
                 Color.parseColor(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("color"))),
                 AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"))
         );
+    }
+
+    private Spannable generateDesсription(JsonObject object) {
+        int itemsCount = AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("items_count"));
+        String description;
+        Set<String> preview = new HashSet<>();
+        JsonArray array = object.get("items_preview").getAsJsonArray();
+
+        description = generateStartOfDescription(array, preview);
+        return generateEndOfDescription(itemsCount, description.length(), description, preview);
+    }
+
+    private String generateStartOfDescription(JsonArray array, Set<String> preview) {
+        for (int i = 0; i < array.size(); i++) {
+            String item = array.get(i).getAsString();
+            item = item.trim();
+            preview.add(item.split(" или ")[0]);
+        }
+        return TextUtils.join(" \u2022 ", preview);
+    }
+
+    private Spannable generateEndOfDescription(int itemsCount, int start, String description, Set<String> preview) {
+        if (itemsCount > preview.size()) {
+            String pluralText = getResources().getQuantityString(R.plurals.items,
+                    itemsCount - preview.size(), itemsCount - preview.size());
+            description += getString(R.string.splitter_code) + pluralText;
+        }
+
+        Spannable span = new SpannableString(description);
+        span.setSpan(new ForegroundColorSpan(Color.parseColor("#b6b6b6")), start, description.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return span;
     }
 
     private void sort(ArrayList<Category> collection) {

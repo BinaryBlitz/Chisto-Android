@@ -74,6 +74,16 @@ object AndroidUtilities {
         return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
+    fun processText(phone: EditText): String {
+        var text = phone.text.toString()
+        text = text.replace("(", "")
+        text = text.replace(")", "")
+        text = text.replace("-", "")
+        text = text.replace(" ", "")
+
+        return text
+    }
+
     fun call(context: Context, phone: String) {
         val call = Uri.parse("tel:" + phone)
         val intent = Intent(Intent.ACTION_DIAL, call)

@@ -82,7 +82,7 @@ public class ItemInfoActivity extends BaseActivity {
 
         if (order != null) {
             ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
-            ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDesc());
+            ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDescription());
             ((TextView) findViewById(R.id.textView)).setText(Integer.toString(order.getCount()));
         }
     }

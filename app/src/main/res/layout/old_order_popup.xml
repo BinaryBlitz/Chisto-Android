@@ -44,7 +44,6 @@
                     android:layout_width="44dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_courier"
-                    android:padding="3dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
                       android:text="@string/courier"
@@ -55,12 +54,12 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_gravity="center_horizontal"
                       android:layout_marginTop="12dp"
-                      android:id="@+id/curier_date"
+                      android:id="@+id/curier_date_dialog"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="4dp"
-                      android:id="@+id/curier_cost"
+                      android:id="@+id/curier_cost_dialog"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -74,7 +73,6 @@
             <ImageView
                     android:layout_width="44dp"
                     android:src="@drawable/ic_delivery"
-                    android:padding="3dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
@@ -85,14 +83,14 @@
                       android:layout_height="wrap_content"/>
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="12dp"
-                      android:id="@+id/delivery_date"
+                      android:id="@+id/delivery_date_dialog"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
 
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="4dp"
                       android:textSize="12sp"
-                      android:id="@+id/delivery_bounds"
+                      android:id="@+id/delivery_bounds_dialog"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -106,7 +104,7 @@
                     android:layout_width="44dp"
                     android:layout_gravity="center_horizontal|top"
                     android:src="@drawable/ic_cost"
-                    android:padding="4dp"
+                    android:padding="2dp"
                     android:layout_height="44dp"/>
             <TextView android:layout_width="wrap_content"
                       android:text="@string/cost"
@@ -117,7 +115,7 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_marginTop="18dp"
                       android:textSize="18sp"
-                      android:id="@+id/sum"
+                      android:id="@+id/sum_dialog"
                       android:textColor="#388E3C"
                       android:layout_gravity="center_horizontal"
                       android:layout_height="wrap_content"/>

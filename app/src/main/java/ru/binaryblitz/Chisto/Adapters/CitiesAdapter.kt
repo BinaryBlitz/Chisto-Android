@@ -44,12 +44,17 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.itemView.setOnClickListener {
             val intent = Intent(context, OrdersActivity::class.java)
             DeviceInfoStore.saveCity(context, city)
+            if (DeviceInfoStore.getToken(context) == "null") saveUser(city)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
-            if (DeviceInfoStore.getUserObject(context) == null)
-                DeviceInfoStore.saveUser(context, User(1, "null", "null", "null", city.name, "null", "null", "null", "null"))
             context.finish()
         }
+    }
+
+    private fun saveUser(city: ru.binaryblitz.Chisto.Model.City) {
+        val user = User.createDefault()
+        user.city = city.name
+        DeviceInfoStore.saveUser(context, user)
     }
 
     override fun getItemCount(): Int {

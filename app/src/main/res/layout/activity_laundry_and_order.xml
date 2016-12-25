@@ -24,10 +24,12 @@
               android:background="@drawable/card_gradient"
               android:layout_height="130dp"/>
 
-        <ImageView
+        <com.github.siyamed.shapeimageview.CircularImageView
+                app:siBorderWidth="2dp"
+                app:siBorderColor="#ffffff"
                 android:layout_width="56dp"
                 android:background="@drawable/blue_circle"
-                android:padding="5dp"
+                android:scaleType="centerCrop"
                 android:id="@+id/logo_image"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="102dp"
@@ -48,7 +50,6 @@
                         android:layout_width="38dp"
                         android:layout_gravity="center_horizontal"
                         android:src="@drawable/ic_courier"
-                        android:padding="3dp"
                         android:layout_height="38dp"/>
                 <TextView android:layout_width="wrap_content"
                           android:text="@string/courier"
@@ -78,7 +79,6 @@
                 <ImageView
                         android:layout_width="38dp"
                         android:src="@drawable/ic_delivery"
-                        android:padding="3dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_height="38dp"/>
                 <TextView android:layout_width="wrap_content"

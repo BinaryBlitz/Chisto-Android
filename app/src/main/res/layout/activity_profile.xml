@@ -70,7 +70,7 @@
                 <ImageView
                         android:layout_width="56dp"
                         android:src="@drawable/ic_user_blue"
-                        android:padding="12dp"
+                        android:padding="10dp"
                         android:layout_gravity="center_vertical|start"
                         android:layout_height="56dp"/>
 
@@ -112,7 +112,7 @@
                 <ImageView
                         android:layout_width="56dp"
                         android:src="@drawable/ic_my_orders"
-                        android:padding="12dp"
+                        android:padding="10dp"
                         android:layout_gravity="center_vertical|start"
                         android:layout_height="56dp"/>
 
@@ -154,7 +154,7 @@
                 <ImageView
                         android:layout_width="56dp"
                         android:src="@drawable/ic_app_mini_logo"
-                        android:padding="12dp"
+                        android:padding="10dp"
                         android:layout_gravity="center_vertical|start"
                         android:layout_height="56dp"/>
 
@@ -196,7 +196,7 @@
                 <ImageView
                         android:layout_width="56dp"
                         android:src="@drawable/ic_help"
-                        android:padding="12dp"
+                        android:padding="10dp"
                         android:layout_gravity="center_vertical|start"
                         android:layout_height="56dp"/>
 

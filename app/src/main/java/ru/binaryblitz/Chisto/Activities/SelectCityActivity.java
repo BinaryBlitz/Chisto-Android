@@ -231,7 +231,7 @@ public class SelectCityActivity extends BaseActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        checkDialogInput();
+                        if (checkDialogInput()) dialog.dismiss();
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {

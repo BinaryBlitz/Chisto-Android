@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import retrofit2.Response
 
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.ServerErrorHandler
 
 open class BaseActivity : AppCompatActivity() {

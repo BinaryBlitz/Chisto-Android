@@ -9,6 +9,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
@@ -17,15 +18,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
+import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.Model.User
-import ru.binaryblitz.Chisto.Push.RegistrationIntentService
+import ru.binaryblitz.Chisto.Push.MyInstanceIDListenerService
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
+import java.util.*
 import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
@@ -53,6 +57,46 @@ class PersonalInfoActivity : BaseActivity() {
 
         initFields()
         setOnClickListeners()
+
+        if (isUserExistOnServer()) Handler().post { getUser() }
+    }
+
+    private fun isUserExistOnServer(): Boolean {
+        return DeviceInfoStore.getToken(this) != "null" && DeviceInfoStore.getUserObject(this).firstName == "null"
+    }
+
+    private fun getUser() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this))
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                        dialog.dismiss()
+                        if (response.isSuccessful) parseUserResponse(response.body())
+                        else onServerError(response)
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        dialog.dismiss()
+                        onInternetConnectionError()
+                    }
+                })
+    }
+
+    private fun parseUserResponse(obj: JsonObject) {
+        val user = DeviceInfoStore.getUserObject(this)
+        user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
+        user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
+        user.streetName = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
+        user.apartmentNumber = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
+        user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
+        user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
+        user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
+        if (user.notes!!.isEmpty()) user.notes = "null"
+        DeviceInfoStore.saveUser(this, user)
+        setInfo()
     }
 
     override fun onResume() {
@@ -79,11 +123,14 @@ class PersonalInfoActivity : BaseActivity() {
         val array = JsonArray()
         val orders = OrderList.get()
 
-        for ((category, treatments, count) in orders!!.iterator()) {
-            for ((id) in treatments!!.iterator()) {
+        for ((category, treatments, count, color, decoration, decorationCost, size) in orders!!) {
+            val isDecoration = checkDecoration(treatments!!)
+            for ((id, treatmentName, description, cost, select, laundryTreatmentId) in treatments) {
+                if (id == AppConfig.decorationId) continue
                 val local = JsonObject()
-                local.addProperty("laundry_treatment_id", id)
-                local.addProperty("quantity", count)
+                local.addProperty("laundry_treatment_id", laundryTreatmentId)
+                local.addProperty("quantity", size ?: count)
+                local.addProperty("has_decoration", isDecoration)
                 array.add(local)
             }
         }
@@ -91,12 +138,16 @@ class PersonalInfoActivity : BaseActivity() {
         return array
     }
 
+    private fun checkDecoration(treatments: ArrayList<Treatment>): Boolean {
+        return treatments.any { it.id == AppConfig.decorationId }
+    }
+
     private fun generateJson(): JsonObject {
         val obj = JsonObject()
 
         obj.addProperty("street_name", street!!.text.toString())
         obj.addProperty("house_number", house!!.text.toString())
-        obj.addProperty("contact_number", phone!!.text.toString())
+        obj.addProperty("contact_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("apartment_number", flat!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", "foo@bar.com")
@@ -106,6 +157,8 @@ class PersonalInfoActivity : BaseActivity() {
         val toSend = JsonObject()
         toSend.add("order", obj)
 
+        LogUtil.logError(toSend.toString())
+
         return toSend
     }
 
@@ -113,7 +166,7 @@ class PersonalInfoActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this).api().sendOrder(OrderList.getLaundryId(), generateJson(), DeviceInfoStore.getToken(this))
+        ServerApi.get(this).api().sendOrder(OrderList.getLaundry().id, generateJson(), DeviceInfoStore.getToken(this))
                 .enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
@@ -154,19 +207,18 @@ class PersonalInfoActivity : BaseActivity() {
             goToOrderActivity()
         }
 
-        findViewById(R.id.left_btn).setOnClickListener {
-            finishActivity() }
+        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
 
-        findViewById(R.id.pay_btn).setOnClickListener {
-            process(false)
-        }
+        findViewById(R.id.pay_btn).setOnClickListener { process(false) }
 
-        findViewById(R.id.credit_card_btn).setOnClickListener {
-            process(true)
-        }
+        findViewById(R.id.credit_card_btn).setOnClickListener { process(true) }
 
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
+        }
+
+        findViewById(R.id.dialog).setOnClickListener {
+            Animations.animateRevealHide(findViewById(R.id.dialog))
         }
     }
 
@@ -197,33 +249,40 @@ class PersonalInfoActivity : BaseActivity() {
     private fun setInfo() {
         user = DeviceInfoStore.getUserObject(this)
 
+        if (user == null) {
+            setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
+            return
+        }
+
         setTextToField(city!!, user!!.city)
 
-        if (user!!.name == null || user!!.name == "null") {
+        if (user!!.firstName == null || user!!.firstName == "null") {
             setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
         } else {
             setTextToField(phone!!, user!!.phone)
         }
         setTextToField(email!!, user!!.email)
-        setTextToField(name!!, user!!.name)
+        setTextToField(name!!, user!!.firstName)
         setTextToField(lastname!!, user!!.lastname)
-        setTextToField(flat!!, user!!.flat)
+        setTextToField(flat!!, user!!.apartmentNumber)
         setTextToField(phone!!, user!!.phone)
-        setTextToField(house!!, user!!.house)
-        setTextToField(street!!, user!!.street)
+        setTextToField(house!!, user!!.houseNumber)
+        setTextToField(street!!, user!!.streetName)
+        setTextToField(comment!!, user!!.notes)
     }
 
     private fun setData() {
-        if (user == null) user = User(1, null, null, null, null, null, null, null, null)
+        if (user == null) user = User.createDefault()
 
-        user!!.name = name!!.text.toString()
+        user!!.firstName = name!!.text.toString()
         user!!.lastname = lastname!!.text.toString()
         user!!.city = city!!.text.toString()
-        user!!.flat = flat!!.text.toString()
+        user!!.apartmentNumber = flat!!.text.toString()
         user!!.phone = phone!!.text.toString()
-        user!!.street = street!!.text.toString()
-        user!!.house = house!!.text.toString()
+        user!!.streetName = street!!.text.toString()
+        user!!.houseNumber = house!!.text.toString()
         user!!.email = email!!.text.toString()
+        user!!.notes = comment!!.text.toString()
 
         DeviceInfoStore.saveUser(this, user)
     }
@@ -232,10 +291,16 @@ class PersonalInfoActivity : BaseActivity() {
         val obj = JsonObject()
         obj.addProperty("first_name", name!!.text.toString())
         obj.addProperty("last_name", lastname!!.text.toString())
-        obj.addProperty("phone_number", phone!!.text.toString())
+        obj.addProperty("apartment_number", flat!!.text.toString())
+        obj.addProperty("house_number", house!!.text.toString())
+        obj.addProperty("street_name", street!!.text.toString())
+        obj.addProperty("notes", comment!!.text.toString())
+        obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
         obj.addProperty("email", email!!.text.toString())
-        if (DeviceInfoStore.getToken(this) == "null") {
+        obj.addProperty("device_token", FirebaseInstanceId.getInstance().token)
+        obj.addProperty("platform", "android")
+        if (DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null") {
             obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
         }
 
@@ -249,26 +314,19 @@ class PersonalInfoActivity : BaseActivity() {
         LogUtil.logError(obj.toString())
         DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
         if (AndroidUtilities.checkPlayServices(this)) {
-            val intent = Intent(this@PersonalInfoActivity, RegistrationIntentService::class.java)
+            val intent = Intent(this@PersonalInfoActivity, MyInstanceIDListenerService::class.java)
             startService(intent)
         }
         sendToServer(payWithCreditCard)
     }
 
     private fun updateUser(payWithCreditCard: Boolean) {
-        val dialog = ProgressDialog(this)
-        dialog.show()
+        sendToServer(payWithCreditCard)
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                dialog.dismiss()
-                sendToServer(payWithCreditCard)
-            }
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) { }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                dialog.dismiss()
-                onInternetConnectionError()
-            }
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) { }
         })
     }
 

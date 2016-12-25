@@ -27,6 +27,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
@@ -43,6 +44,8 @@ class SelectServiceActivity : BaseActivity() {
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
     val EXTRA_USE_AREA = "userArea"
+
+    val squareCentimetersInSquareMeters = 10000.0
 
     private var width: Int = 0
     private var length: Int = 0
@@ -87,6 +90,10 @@ class SelectServiceActivity : BaseActivity() {
             }
             Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
             openActivity()
+        }
+
+        findViewById(R.id.dialog).setOnClickListener {
+            Animations.animateRevealHide(findViewById(R.id.dialog))
         }
 
         findViewById(R.id.cancel_btn).setOnClickListener {
@@ -145,13 +152,14 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun recomputeSquare(width: Boolean, editable: Editable, square: TextView) {
-        try {
-            if (editable.isNotEmpty() && editable.toString() != "0") {
+        if (editable.isNotEmpty() && editable.toString() != "0") {
+            try {
                 if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
-                square.text = java.lang.Double.toString((length * this.width).toDouble() / 1000.0) + " м²"
+                square.text = java.lang.Double.toString(Math.ceil((length * this.width).toDouble() / squareCentimetersInSquareMeters)) +
+                        getString(R.string.square_meter_symbol)
+            } catch (e: Exception) {
+                LogUtil.logException(e)
             }
-        } catch (e: Exception) {
-            LogUtil.logException(e)
         }
     }
 
@@ -177,21 +185,41 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun openActivity() {
-        if (adapter!!.getSelected().size != 0) {
-            OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
-            if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
-                OrderList.addTreatments(adapter!!.getSelected())
-                val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                startActivity(intent)
-            } else {
-                OrderList.addTreatmentsForEditing(adapter!!.getSelected())
-            }
+        if (isTreatmentsSelected()) processSelectedTreatments()
+        else showNothingSelectedError()
+    }
 
-            finish()
-        } else {
-            Snackbar.make(findViewById(R.id.main), R.string.nothing_selected_code, Snackbar.LENGTH_SHORT).show()
-        }
+    private fun processSelectedTreatments() {
+        OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) addTreatments()
+        else editTreatments()
+
+        finish()
+    }
+
+    private fun showNothingSelectedError() {
+        Snackbar.make(findViewById(R.id.main), R.string.nothing_selected, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun addTreatments() {
+        OrderList.addTreatments(adapter!!.getSelected())
+        goToOrdersActivity()
+    }
+
+    private fun goToOrdersActivity() {
+        val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+    private fun editTreatments() {
+        OrderList.addTreatmentsForEditing(adapter!!.getSelected())
+    }
+
+    private fun isTreatmentsSelected(): Boolean {
+        return adapter!!.getSelected().size != 0 &&
+                !(adapter!!.getSelected().size == 1 && adapter!!.getSelected()[0].id == AppConfig.decorationId)
     }
 
     private fun load() {
@@ -219,8 +247,7 @@ class SelectServiceActivity : BaseActivity() {
                             AndroidUtilities.getIntFieldFromJson(it.get("id")),
                             AndroidUtilities.getStringFieldFromJson(it.get("name")),
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
-                            0,
-                            false)
+                            0, false, 0)
                 }
 
         sort(collection)
@@ -229,11 +256,11 @@ class SelectServiceActivity : BaseActivity() {
         adapter!!.notifyDataSetChanged()
 
         adapter!!.add(Treatment(
-                -1,
+                AppConfig.decorationId,
                 getString(R.string.decoration),
                 getString(R.string.decoration_help),
                 0,
-                intent.getBooleanExtra(EXTRA_DECORATION, false)))
+                intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
 
         adapter!!.notifyDataSetChanged()
     }
