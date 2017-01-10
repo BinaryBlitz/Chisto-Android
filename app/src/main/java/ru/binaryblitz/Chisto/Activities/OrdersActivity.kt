@@ -163,10 +163,6 @@ class OrdersActivity : BaseActivity() {
             if (!checkReview()) showErrorDialog()
             else sendReview()
         }
-
-        findViewById(R.id.dialog).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog))
-        }
     }
 
     override fun onResume() {
