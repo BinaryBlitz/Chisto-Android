@@ -91,7 +91,7 @@ class OrdersActivity : BaseActivity() {
 
     private fun showErrorDialog() {
         MaterialDialog.Builder(this)
-                .title(R.string.app_name)
+                .title(getString(R.string.error))
                 .content(getString(R.string.wrong_review_code))
                 .positiveText(R.string.ok_code)
                 .onPositive { dialog, which -> dialog.dismiss() }

@@ -184,6 +184,7 @@
 
     <string name="status_changed">Статус заказа изменен</string>
     <string name="default_notification_text">Просмотрите информацию о заказе</string>
+    <string name="error">Ошибка</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

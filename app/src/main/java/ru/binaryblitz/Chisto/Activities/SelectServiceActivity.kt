@@ -107,7 +107,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun showErrorDialog() {
         MaterialDialog.Builder(this)
-                .title(R.string.app_name)
+                .title(R.string.error)
                 .content(getString(R.string.wrong_width_or_length_code))
                 .positiveText(R.string.ok_code)
                 .onPositive { dialog, which -> dialog.dismiss() }
