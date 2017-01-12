@@ -77,7 +77,6 @@ class CategoryInfoActivity : BaseActivity() {
     }
 
     private fun parseAnswer(array: JsonArray) {
-        LogUtil.logError(array.toString())
         val collection = (0..array.size() - 1)
                 .map { array.get(it).asJsonObject }
                 .mapTo(ArrayList<CategoryItem>()) {

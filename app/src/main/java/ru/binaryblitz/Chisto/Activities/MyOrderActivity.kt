@@ -99,10 +99,10 @@ class MyOrderActivity : BaseActivity() {
         setLaundryInfo(obj.get("laundry").asJsonObject)
         (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) +
                 AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        (findViewById(R.id.number) as TextView).text = "№ " + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        (findViewById(R.id.number) as TextView).text = getString(R.string.number_sign) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         (findViewById(R.id.date_text) as TextView).text = getDateFromJson(obj)
 
-        createOrderListView(obj.get("line_items").asJsonArray)
+        createOrderListView(obj.get("order_items").asJsonArray)
     }
 
     private fun createOrderListView(array: JsonArray) {
@@ -122,35 +122,42 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun getOrderFromJson(obj: JsonObject): Order {
-        val item = obj.get("laundry_treatment").asJsonObject.get("treatment").asJsonObject.get("item").asJsonObject
+
         val category = CategoryItem(
-                AndroidUtilities.getIntFieldFromJson(item.get("id")),
-                AndroidUtilities.getStringFieldFromJson(item.get("icon_url")),
-                AndroidUtilities.getStringFieldFromJson(item.get("name")),
+                0,
+                "",
+                "",
                 "",
                 false)
 
-        val treatments = ArrayList<Treatment>()
-        treatments.add(getTreatments(obj.get("laundry_treatment").asJsonObject))
-
         val order = Order(
                 category,
-                treatments,
+                getTreatments(obj.get("order_treatments").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
-                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))),
+                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(obj.get("item_id"))),
                 false, 0, null)
 
-        cost += treatments[0].cost * order.count
+        cost += getPrice(order.treatments!!) * order.count
 
         return order
     }
 
-    private fun getTreatments(obj: JsonObject): Treatment {
-        return Treatment(AndroidUtilities.getIntFieldFromJson(obj.get("treatment").asJsonObject.get("id")),
-                AndroidUtilities.getStringFieldFromJson(obj.get("treatment").asJsonObject.get("name")),
-                "",
-                AndroidUtilities.getIntFieldFromJson(obj.get("price")),
-                false, 0)
+    private fun getPrice(array: ArrayList<Treatment>): Int {
+        return array.sumBy { it.cost }
+    }
+
+    private fun getTreatments(array: JsonArray): ArrayList<Treatment> {
+        val treatments: ArrayList<Treatment> = (0..array.size() - 1)
+                .map { array.get(it).asJsonObject.get("laundry_treatment").asJsonObject }
+                .mapTo(ArrayList()) {
+                    Treatment(AndroidUtilities.getIntFieldFromJson(it.get("treatment").asJsonObject.get("id")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("treatment").asJsonObject.get("name")),
+                            "",
+                            AndroidUtilities.getIntFieldFromJson(it.get("price")),
+                            false, 0)
+                }
+
+        return treatments
     }
 
     private fun setSums() {
