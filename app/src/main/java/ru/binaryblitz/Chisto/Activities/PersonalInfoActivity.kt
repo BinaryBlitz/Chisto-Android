@@ -125,14 +125,21 @@ class PersonalInfoActivity : BaseActivity() {
 
         for ((category, treatments, count, color, decoration, decorationCost, size) in orders!!) {
             val isDecoration = checkDecoration(treatments!!)
+            val local = JsonObject()
+            local.addProperty("item_id", category.id)
+            local.addProperty("quantity", count)
+            if (size != null) local.addProperty("area", size)
+            local.addProperty("has_decoration", isDecoration)
+
+            val treatmentsArray = JsonArray()
             for ((id, treatmentName, description, cost, select, laundryTreatmentId) in treatments) {
                 if (id == AppConfig.decorationId) continue
-                val local = JsonObject()
-                local.addProperty("laundry_treatment_id", laundryTreatmentId)
-                local.addProperty("quantity", size ?: count)
-                local.addProperty("has_decoration", isDecoration)
-                array.add(local)
+                val treatmentJson = JsonObject()
+                treatmentJson.addProperty("laundry_treatment_id", laundryTreatmentId)
+                treatmentsArray.add(treatmentJson)
             }
+            local.add("order_treatments_attributes", treatmentsArray)
+            array.add(local)
         }
 
         return array
@@ -150,9 +157,9 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("contact_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("apartment_number", flat!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
-        obj.addProperty("email", "foo@bar.com")
+        obj.addProperty("email", email!!.text.toString())
 
-        obj.add("line_items_attributes", generateOrderTreatments())
+        obj.add("order_items_attributes", generateOrderTreatments())
 
         val toSend = JsonObject()
         toSend.add("order", obj)
