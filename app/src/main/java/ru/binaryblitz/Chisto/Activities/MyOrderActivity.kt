@@ -122,21 +122,29 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun getOrderFromJson(obj: JsonObject): Order {
+        val categoryJson = obj.get("order_treatments").asJsonArray.get(0).asJsonObject
+                .get("laundry_treatment").asJsonObject.get("treatment").asJsonObject.get("item").asJsonObject
 
-        val category = CategoryItem(0, "", "", "", false)
+        val category = getCategoryFromJson(categoryJson)
 
         val order = Order(
                 category,
                 getTreatments(obj.get("order_treatments").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
-                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(obj.get("item_id"))),
-                AndroidUtilities.getBooleanFieldFromJson(obj.get("has_decoration")),
-                0,
-                null)
+                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(categoryJson.get("category_id"))),
+                AndroidUtilities.getBooleanFieldFromJson(obj.get("has_decoration")), 0, null)
 
         calculatePrices(obj, order)
 
         return order
+    }
+
+    private fun getCategoryFromJson(obj: JsonObject): CategoryItem {
+        return CategoryItem(
+                AndroidUtilities.getIntFieldFromJson(obj.get("id")),
+                AndroidUtilities.getStringFieldFromJson(obj.get("icon_url")),
+                AndroidUtilities.getStringFieldFromJson(obj.get("name")),
+                "", false)
     }
 
     private fun calculatePrices(obj: JsonObject, order: Order) {

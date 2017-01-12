@@ -20,7 +20,6 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import java.util.*
 
 class CategoryInfoActivity : BaseActivity() {
