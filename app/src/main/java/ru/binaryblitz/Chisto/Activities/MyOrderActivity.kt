@@ -134,6 +134,12 @@ class MyOrderActivity : BaseActivity() {
                 0,
                 null)
 
+        calculatePrices(obj, order)
+
+        return order
+    }
+
+    private fun calculatePrices(obj: JsonObject, order: Order) {
         var treatmentsPrice = getPrice(order.treatments!!)
 
         if (order.decoration) {
@@ -143,8 +149,6 @@ class MyOrderActivity : BaseActivity() {
 
         treatmentsPrice = getPrice(order.treatments!!)
         cost += treatmentsPrice * order.count
-
-        return order
     }
 
     private fun getPrice(array: ArrayList<Treatment>): Int {
@@ -168,13 +172,18 @@ class MyOrderActivity : BaseActivity() {
     private fun setSums() {
         (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
 
-        if (cost < deliveryBound) {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.ruble_sign)
-            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
-        } else {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
-            (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
-        }
+        if (cost < deliveryBound) setPricesWithoutDeliveryPrice()
+        else setPricesWithDeliveryPrice()
+    }
+
+    private fun setPricesWithoutDeliveryPrice() {
+        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
+    }
+
+    private fun setPricesWithDeliveryPrice() {
+        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
     }
 
     private fun processDecoration(multiplier: Double, price: Int): Int {
@@ -264,12 +273,12 @@ class MyOrderActivity : BaseActivity() {
         (findViewById(R.id.status_text) as TextView).setText(text)
     }
 
-    private fun getDateFromJson(`object`: JsonObject): String {
+    private fun getDateFromJson(obj: JsonObject): String {
         var date: Date? = null
         try {
             val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
             format.timeZone = TimeZone.getTimeZone("UTC")
-            date = format.parse(`object`.get("created_at").asString)
+            date = format.parse(obj.get("created_at").asString)
         } catch (e: Exception) {
             LogUtil.logException(e)
         }
