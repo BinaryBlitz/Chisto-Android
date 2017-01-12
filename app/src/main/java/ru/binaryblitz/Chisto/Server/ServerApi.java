@@ -5,6 +5,7 @@ import android.content.Context;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.Interceptor;
@@ -19,6 +20,8 @@ public class ServerApi {
     private static ServerApi api;
     private static ApiEndpoints apiService;
     private static Retrofit retrofit;
+
+    private static final int TIME_OUT = 10;
 
     private void initRetrofit(final Context context) {
 
@@ -39,6 +42,8 @@ public class ServerApi {
                         return chain.proceed(request);
                     }
                 })
+                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .build();
 
         retrofit = new Retrofit.Builder()
@@ -53,9 +58,7 @@ public class ServerApi {
     public static ServerApi get(Context context) {
         if (api == null) {
             synchronized (ServerApi.class) {
-                if (api == null) {
-                    api = new ServerApi(context);
-                }
+                if (api == null) api = new ServerApi(context);
             }
         }
         return api;

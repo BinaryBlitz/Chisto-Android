@@ -91,7 +91,7 @@ class OrdersActivity : BaseActivity() {
 
     private fun showErrorDialog() {
         MaterialDialog.Builder(this)
-                .title(R.string.app_name)
+                .title(getString(R.string.error))
                 .content(getString(R.string.wrong_review_code))
                 .positiveText(R.string.ok_code)
                 .onPositive { dialog, which -> dialog.dismiss() }
@@ -162,10 +162,6 @@ class OrdersActivity : BaseActivity() {
         findViewById(R.id.cont_btn).setOnClickListener {
             if (!checkReview()) showErrorDialog()
             else sendReview()
-        }
-
-        findViewById(R.id.dialog).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog))
         }
     }
 
