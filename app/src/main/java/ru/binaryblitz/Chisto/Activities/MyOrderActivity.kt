@@ -123,21 +123,26 @@ class MyOrderActivity : BaseActivity() {
 
     private fun getOrderFromJson(obj: JsonObject): Order {
 
-        val category = CategoryItem(
-                0,
-                "",
-                "",
-                "",
-                false)
+        val category = CategoryItem(0, "", "", "", false)
 
         val order = Order(
                 category,
                 getTreatments(obj.get("order_treatments").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
                 ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(obj.get("item_id"))),
-                false, 0, null)
+                AndroidUtilities.getBooleanFieldFromJson(obj.get("has_decoration")),
+                0,
+                null)
 
-        cost += getPrice(order.treatments!!) * order.count
+        var treatmentsPrice = getPrice(order.treatments!!)
+
+        if (order.decoration) {
+            order.decorationPrice = processDecoration(AndroidUtilities.getDoubleFieldFromJson(obj.get("multiplier")), treatmentsPrice)
+            order.treatments!!.add(Treatment(0, getString(R.string.decoration), "", order.decorationPrice, false, 0))
+        }
+
+        treatmentsPrice = getPrice(order.treatments!!)
+        cost += treatmentsPrice * order.count
 
         return order
     }
@@ -172,6 +177,10 @@ class MyOrderActivity : BaseActivity() {
         }
     }
 
+    private fun processDecoration(multiplier: Double, price: Int): Int {
+        return (price * multiplier).toInt() - price
+    }
+
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
         val sum = getFillSum(order)
 
@@ -180,8 +189,7 @@ class MyOrderActivity : BaseActivity() {
                 sum,
                 order.count,
                 order.category.icon,
-                order.color
-        )
+                order.color)
 
         listToShow.add(Pair<String, Any>("H", header))
     }
