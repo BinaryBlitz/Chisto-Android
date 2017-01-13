@@ -42,7 +42,10 @@ class OrdersActivity : BaseActivity() {
         initRecyclerView()
         setOnClickListeners()
 
-        Handler().post { getUser() }
+        Handler().post {
+            if (newOrderId != 0) showOrderDialog(newOrderId)
+            else getUser()
+        }
     }
 
     private fun getUser() {
@@ -54,6 +57,15 @@ class OrdersActivity : BaseActivity() {
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
             }
         })
+    }
+
+    private fun showOrderDialog(id: Int) {
+        Handler().post {
+            dialogOpened = true
+            (findViewById(R.id.order_name) as TextView).text = getString(R.string.number_sign) + id.toString()
+            Animations.animateRevealShow(findViewById(R.id.dialog_new_order), this@OrdersActivity)
+            newOrderId = 0
+        }
     }
 
     private fun parseAnswer(obj: JsonObject) {
@@ -163,6 +175,11 @@ class OrdersActivity : BaseActivity() {
             if (!checkReview()) showErrorDialog()
             else sendReview()
         }
+
+        findViewById(R.id.new_order_dialog_btn).setOnClickListener {
+            Animations.animateRevealHide(findViewById(R.id.dialog_new_order))
+            getUser()
+        }
     }
 
     override fun onResume() {
@@ -195,6 +212,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     companion object {
-        var laundryId: Int = 0
+        var laundryId = 0
+        var newOrderId = 0
     }
 }

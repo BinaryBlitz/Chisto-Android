@@ -99,10 +99,10 @@ class MyOrderActivity : BaseActivity() {
         setLaundryInfo(obj.get("laundry").asJsonObject)
         (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) +
                 AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        (findViewById(R.id.number) as TextView).text = "№ " + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        (findViewById(R.id.number) as TextView).text = getString(R.string.number_sign) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         (findViewById(R.id.date_text) as TextView).text = getDateFromJson(obj)
 
-        createOrderListView(obj.get("line_items").asJsonArray)
+        createOrderListView(obj.get("order_items").asJsonArray)
     }
 
     private fun createOrderListView(array: JsonArray) {
@@ -122,47 +122,80 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun getOrderFromJson(obj: JsonObject): Order {
-        val item = obj.get("laundry_treatment").asJsonObject.get("treatment").asJsonObject.get("item").asJsonObject
-        val category = CategoryItem(
-                AndroidUtilities.getIntFieldFromJson(item.get("id")),
-                AndroidUtilities.getStringFieldFromJson(item.get("icon_url")),
-                AndroidUtilities.getStringFieldFromJson(item.get("name")),
-                "",
-                false)
+        val categoryJson = obj.get("order_treatments").asJsonArray.get(0).asJsonObject
+                .get("laundry_treatment").asJsonObject.get("treatment").asJsonObject.get("item").asJsonObject
 
-        val treatments = ArrayList<Treatment>()
-        treatments.add(getTreatments(obj.get("laundry_treatment").asJsonObject))
+        val category = getCategoryFromJson(categoryJson)
 
         val order = Order(
                 category,
-                treatments,
+                getTreatments(obj.get("order_treatments").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
-                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(item.get("category_id"))),
-                false, 0, null)
+                ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(categoryJson.get("category_id"))),
+                AndroidUtilities.getBooleanFieldFromJson(obj.get("has_decoration")), 0, null)
 
-        cost += treatments[0].cost * order.count
+        calculatePrices(obj, order)
 
         return order
     }
 
-    private fun getTreatments(obj: JsonObject): Treatment {
-        return Treatment(AndroidUtilities.getIntFieldFromJson(obj.get("treatment").asJsonObject.get("id")),
-                AndroidUtilities.getStringFieldFromJson(obj.get("treatment").asJsonObject.get("name")),
-                "",
-                AndroidUtilities.getIntFieldFromJson(obj.get("price")),
-                false, 0)
+    private fun getCategoryFromJson(obj: JsonObject): CategoryItem {
+        return CategoryItem(
+                AndroidUtilities.getIntFieldFromJson(obj.get("id")),
+                AndroidUtilities.getStringFieldFromJson(obj.get("icon_url")),
+                AndroidUtilities.getStringFieldFromJson(obj.get("name")),
+                "", false)
+    }
+
+    private fun calculatePrices(obj: JsonObject, order: Order) {
+        var treatmentsPrice = getPrice(order.treatments!!)
+
+        if (order.decoration) {
+            order.decorationPrice = processDecoration(AndroidUtilities.getDoubleFieldFromJson(obj.get("multiplier")), treatmentsPrice)
+            order.treatments!!.add(Treatment(0, getString(R.string.decoration), "", order.decorationPrice, false, 0))
+        }
+
+        treatmentsPrice = getPrice(order.treatments!!)
+        cost += treatmentsPrice * order.count
+    }
+
+    private fun getPrice(array: ArrayList<Treatment>): Int {
+        return array.sumBy { it.cost }
+    }
+
+    private fun getTreatments(array: JsonArray): ArrayList<Treatment> {
+        val treatments: ArrayList<Treatment> = (0..array.size() - 1)
+                .map { array.get(it).asJsonObject.get("laundry_treatment").asJsonObject }
+                .mapTo(ArrayList()) {
+                    Treatment(AndroidUtilities.getIntFieldFromJson(it.get("treatment").asJsonObject.get("id")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("treatment").asJsonObject.get("name")),
+                            "",
+                            AndroidUtilities.getIntFieldFromJson(it.get("price")),
+                            false, 0)
+                }
+
+        return treatments
     }
 
     private fun setSums() {
         (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
 
-        if (cost < deliveryBound) {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.ruble_sign)
-            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
-        } else {
-            (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
-            (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
-        }
+        if (cost < deliveryBound) setPricesWithoutDeliveryPrice()
+        else setPricesWithDeliveryPrice()
+    }
+
+    private fun setPricesWithoutDeliveryPrice() {
+        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
+    }
+
+    private fun setPricesWithDeliveryPrice() {
+        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
+    }
+
+    private fun processDecoration(multiplier: Double, price: Int): Int {
+        return (price * multiplier).toInt() - price
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
@@ -173,8 +206,7 @@ class MyOrderActivity : BaseActivity() {
                 sum,
                 order.count,
                 order.category.icon,
-                order.color
-        )
+                order.color)
 
         listToShow.add(Pair<String, Any>("H", header))
     }
@@ -249,12 +281,12 @@ class MyOrderActivity : BaseActivity() {
         (findViewById(R.id.status_text) as TextView).setText(text)
     }
 
-    private fun getDateFromJson(`object`: JsonObject): String {
+    private fun getDateFromJson(obj: JsonObject): String {
         var date: Date? = null
         try {
             val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
             format.timeZone = TimeZone.getTimeZone("UTC")
-            date = format.parse(`object`.get("created_at").asString)
+            date = format.parse(obj.get("created_at").asString)
         } catch (e: Exception) {
             LogUtil.logException(e)
         }

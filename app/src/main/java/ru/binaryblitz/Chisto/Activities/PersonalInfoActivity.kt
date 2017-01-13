@@ -48,8 +48,6 @@ class PersonalInfoActivity : BaseActivity() {
 
     private var user: User? = null
 
-    private var dialogOpened = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -108,14 +106,15 @@ class PersonalInfoActivity : BaseActivity() {
         finishActivity()
     }
 
+    private fun showPaymentError() {
+        Snackbar.make(findViewById(R.id.main), getString(R.string.payment_error), Snackbar.LENGTH_SHORT).show()
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == REQUEST_WEB) {
-            if (data!!.getBooleanExtra("success", false)) {
-                showOrderDialog(orderId)
-            } else {
-                Snackbar.make(findViewById(R.id.main), getString(R.string.payment_error), Snackbar.LENGTH_SHORT).show()
-            }
+            if (data!!.getBooleanExtra("success", false)) complete(orderId)
+            else showPaymentError()
         }
     }
 
@@ -125,14 +124,21 @@ class PersonalInfoActivity : BaseActivity() {
 
         for ((category, treatments, count, color, decoration, decorationCost, size) in orders!!) {
             val isDecoration = checkDecoration(treatments!!)
+            val local = JsonObject()
+            local.addProperty("item_id", category.id)
+            local.addProperty("quantity", count)
+            if (size != null) local.addProperty("area", size)
+            local.addProperty("has_decoration", isDecoration)
+
+            val treatmentsArray = JsonArray()
             for ((id, treatmentName, description, cost, select, laundryTreatmentId) in treatments) {
                 if (id == AppConfig.decorationId) continue
-                val local = JsonObject()
-                local.addProperty("laundry_treatment_id", laundryTreatmentId)
-                local.addProperty("quantity", size ?: count)
-                local.addProperty("has_decoration", isDecoration)
-                array.add(local)
+                val treatmentJson = JsonObject()
+                treatmentJson.addProperty("laundry_treatment_id", laundryTreatmentId)
+                treatmentsArray.add(treatmentJson)
             }
+            local.add("order_treatments_attributes", treatmentsArray)
+            array.add(local)
         }
 
         return array
@@ -150,9 +156,9 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("contact_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("apartment_number", flat!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
-        obj.addProperty("email", "foo@bar.com")
+        obj.addProperty("email", email!!.text.toString())
 
-        obj.add("line_items_attributes", generateOrderTreatments())
+        obj.add("order_items_attributes", generateOrderTreatments())
 
         val toSend = JsonObject()
         toSend.add("order", obj)
@@ -184,7 +190,7 @@ class PersonalInfoActivity : BaseActivity() {
     private fun parseAnswer(obj: JsonObject, payWithCreditCard: Boolean) {
         orderId = obj.get("id").asInt
         if (payWithCreditCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
-        else showOrderDialog(orderId)
+        else complete(orderId)
     }
 
     private fun openWebActivity(url: String) {
@@ -193,20 +199,13 @@ class PersonalInfoActivity : BaseActivity() {
         startActivityForResult(intent, REQUEST_WEB)
     }
 
-    private fun showOrderDialog(id: Int) {
-        Handler().post {
-            dialogOpened = true
-            (findViewById(R.id.order_name) as TextView).text = "№ " + id.toString()
-            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@PersonalInfoActivity)
-        }
+    private fun complete(orderId: Int) {
+        OrdersActivity.newOrderId = orderId
+        OrderList.clear()
+        goToOrderActivity()
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.cont_btn).setOnClickListener {
-            OrderList.clear()
-            goToOrderActivity()
-        }
-
         findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
 
         findViewById(R.id.pay_btn).setOnClickListener { process(false) }
@@ -243,7 +242,7 @@ class PersonalInfoActivity : BaseActivity() {
         email = findViewById(R.id.email) as MaterialEditText
         phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        (findViewById(R.id.price) as TextView).text = intent.getIntExtra(EXTRA_PRICE, 0).toString() + " \u20bd"
+        (findViewById(R.id.price) as TextView).text = intent.getIntExtra(EXTRA_PRICE, 0).toString() + getString(R.string.ruble_sign)
     }
 
     private fun setInfo() {

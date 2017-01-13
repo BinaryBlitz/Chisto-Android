@@ -20,7 +20,6 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import java.util.*
 
 class CategoryInfoActivity : BaseActivity() {
@@ -77,7 +76,6 @@ class CategoryInfoActivity : BaseActivity() {
     }
 
     private fun parseAnswer(array: JsonArray) {
-        LogUtil.logError(array.toString())
         val collection = (0..array.size() - 1)
                 .map { array.get(it).asJsonObject }
                 .mapTo(ArrayList<CategoryItem>()) {

@@ -100,4 +100,17 @@
         <include layout="@layout/dialog_review" />
 
     </FrameLayout>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:background="#99000000"
+            android:id="@+id/dialog_new_order"
+            android:visibility="gone"
+            android:elevation="8dp"
+            android:clickable="true"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/popup_your_order" />
+
+    </FrameLayout>
 </ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout>
