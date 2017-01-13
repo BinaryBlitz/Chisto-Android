@@ -44,7 +44,7 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if(!validateFields()) showDialog()
+        if (!validateFields()) showDialog()
         else setData()
     }
 
@@ -55,7 +55,7 @@ class ContactInfoActivity : BaseActivity() {
 
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener {
-            if(!validateFields()) showDialog()
+            if (!validateFields()) showDialog()
             else setData()
         }
 

@@ -33,7 +33,8 @@ class MyOrder(obj: JsonObject) {
             val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
             format.timeZone = TimeZone.getTimeZone("UTC")
             date = format.parse(obj.get("created_at").asString)
-        } catch (ignored: Exception) { }
+        } catch (ignored: Exception) {
+        }
 
         return date
     }

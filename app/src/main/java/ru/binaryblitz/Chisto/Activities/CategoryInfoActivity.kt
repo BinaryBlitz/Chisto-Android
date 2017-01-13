@@ -16,7 +16,7 @@ import ru.binaryblitz.Chisto.Adapters.CategoryItemsAdapter
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Custom.RecyclerListView
 import ru.binaryblitz.Chisto.Model.CategoryItem
-import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities

@@ -3,11 +3,11 @@ package ru.binaryblitz.Chisto.Utils;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
 
+import java.util.ArrayList;
+
 import ru.binaryblitz.Chisto.Model.Laundry;
 import ru.binaryblitz.Chisto.Model.Order;
 import ru.binaryblitz.Chisto.Model.Treatment;
-
-import java.util.ArrayList;
 
 @SuppressWarnings("unused")
 public class OrderList {
@@ -69,7 +69,7 @@ public class OrderList {
     public static void copyToBuffer(ArrayList<Treatment> treatments) {
         bufferTreatments.clear();
 
-        for(Treatment treatment: treatments) bufferTreatments.add(treatment.copy());
+        for (Treatment treatment : treatments) bufferTreatments.add(treatment.copy());
     }
 
     public static ArrayList<Treatment> getBufferTreatments() {
@@ -174,10 +174,12 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     private static boolean isDecoration() {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return false;
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null)
+            return false;
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) return true;
+            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId)
+                return true;
         }
 
         return false;
@@ -189,7 +191,8 @@ public class OrderList {
         int id = orders.get(currentItem).getCategory().getId();
 
         for (int i = 0; i < decorationMultipliers.size(); i++) {
-            if (decorationMultipliers.get(i).first == id) return decorationMultipliers.get(i).second;
+            if (decorationMultipliers.get(i).first == id)
+                return decorationMultipliers.get(i).second;
         }
 
         return 1.0;
@@ -230,7 +233,7 @@ public class OrderList {
 
     private static ArrayList<Treatment> copyFromBuffer() {
         ArrayList<Treatment> res = new ArrayList<>();
-        for(Treatment treatment: bufferTreatments) res.add(treatment.copy());
+        for (Treatment treatment : bufferTreatments) res.add(treatment.copy());
 
         return res;
     }

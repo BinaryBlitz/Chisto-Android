@@ -174,17 +174,17 @@ class PersonalInfoActivity : BaseActivity() {
 
         ServerApi.get(this).api().sendOrder(OrderList.getLaundry().id, generateJson(), DeviceInfoStore.getToken(this))
                 .enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                dialog.dismiss()
-                if (response.isSuccessful) parseAnswer(response.body(), payWithCreditCard)
-                else onServerError(response)
-            }
+                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                        dialog.dismiss()
+                        if (response.isSuccessful) parseAnswer(response.body(), payWithCreditCard)
+                        else onServerError(response)
+                    }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                dialog.dismiss()
-                onInternetConnectionError()
-            }
-        })
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        dialog.dismiss()
+                        onInternetConnectionError()
+                    }
+                })
     }
 
     private fun parseAnswer(obj: JsonObject, payWithCreditCard: Boolean) {
@@ -323,9 +323,9 @@ class PersonalInfoActivity : BaseActivity() {
         sendToServer(payWithCreditCard)
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) { }
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {}
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) { }
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {}
         })
     }
 

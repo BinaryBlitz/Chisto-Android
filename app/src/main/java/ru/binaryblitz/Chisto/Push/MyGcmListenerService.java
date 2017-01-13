@@ -13,7 +13,6 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import ru.binaryblitz.Chisto.Activities.MyOrderActivity;
-import ru.binaryblitz.Chisto.Activities.SplashActivity;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Utils.AppConfig;
 import ru.binaryblitz.Chisto.Utils.LogUtil;

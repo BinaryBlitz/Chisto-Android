@@ -3,7 +3,6 @@ package ru.binaryblitz.Chisto.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.util.Pair;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -20,7 +19,7 @@ public class ColorsList {
     public static void saveColors(Context context) {
         String saveStr = "";
 
-        for (Pair<Integer, Integer> color: colors) {
+        for (Pair<Integer, Integer> color : colors) {
             saveStr += Integer.toString(color.first) + "/" + Integer.toString(color.second) + "&";
         }
 
@@ -34,7 +33,7 @@ public class ColorsList {
         String loadStr = prefs.getString(PREF_COLORS, "null");
         String[] arr = loadStr.split("&");
 
-        for (String str: arr) {
+        for (String str : arr) {
             colors.add(new Pair<>(Integer.parseInt(str.split("/")[0]), Integer.parseInt(str.split("/")[1])));
         }
     }

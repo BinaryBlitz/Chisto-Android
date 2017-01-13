@@ -11,7 +11,6 @@ import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SplashActivity extends BaseActivity {
 

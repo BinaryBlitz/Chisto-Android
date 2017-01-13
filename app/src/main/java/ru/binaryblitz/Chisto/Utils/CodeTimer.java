@@ -6,6 +6,7 @@ public class CodeTimer {
 
     public interface OnTimer {
         void onTick(long millisUntilFinished);
+
         void onFinish();
     }
 

@@ -125,7 +125,8 @@ class LaundriesActivity : BaseActivity() {
             0 -> adapter!!.sortByCost()
             1 -> adapter!!.sortBySpeed()
             2 -> adapter!!.sortByRating()
-            else -> { }
+            else -> {
+            }
         }
     }
 

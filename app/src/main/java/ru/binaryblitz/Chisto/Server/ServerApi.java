@@ -2,8 +2,6 @@ package ru.binaryblitz.Chisto.Server;
 
 import android.content.Context;
 
-import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
-
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -14,6 +12,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
 
 public class ServerApi {
 

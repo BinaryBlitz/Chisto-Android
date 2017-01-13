@@ -1,8 +1,5 @@
 package ru.binaryblitz.Chisto.Activities;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +15,8 @@ import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Collections;

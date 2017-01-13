@@ -2,6 +2,7 @@ package ru.binaryblitz.Chisto.Server;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 import ru.binaryblitz.Chisto.Model.City;
 import ru.binaryblitz.Chisto.Model.User;
 import ru.binaryblitz.Chisto.Utils.LogUtil;

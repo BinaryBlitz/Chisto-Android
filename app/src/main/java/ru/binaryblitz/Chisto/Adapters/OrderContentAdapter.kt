@@ -22,7 +22,9 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
 
     private var collection = ArrayList<Pair<String, Any>>()
 
-    init { Image.init(context) }
+    init {
+        Image.init(context)
+    }
 
     fun clear() {
         collection.clear()

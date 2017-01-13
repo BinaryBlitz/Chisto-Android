@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import ru.binaryblitz.Chisto.Adapters.EditTreatmentsAdapter;
-
 public class TouchHelper extends ItemTouchHelper.SimpleCallback {
     private Drawable background;
     private Drawable xMark;
