@@ -128,9 +128,7 @@ class SelectServiceActivity : BaseActivity() {
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-            override fun afterTextChanged(editable: Editable) {
-                recomputeSquare(false, editable, square)
-            }
+            override fun afterTextChanged(editable: Editable) { recomputeSquare(false, editable, square) }
         })
 
         widthEditText.addTextChangedListener(object : TextWatcher {
@@ -138,9 +136,7 @@ class SelectServiceActivity : BaseActivity() {
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-            override fun afterTextChanged(editable: Editable) {
-                recomputeSquare(true, editable, square)
-            }
+            override fun afterTextChanged(editable: Editable) { recomputeSquare(true, editable, square) }
         })
     }
 
@@ -155,7 +151,7 @@ class SelectServiceActivity : BaseActivity() {
         if (editable.isNotEmpty() && editable.toString() != "0") {
             try {
                 if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
-                square.text = java.lang.Double.toString(Math.ceil((length * this.width).toDouble() / squareCentimetersInSquareMeters)) +
+                square.text = (Math.ceil((length * this.width).toDouble() / squareCentimetersInSquareMeters)).toInt().toString() +
                         getString(R.string.square_meter_symbol)
             } catch (e: Exception) {
                 LogUtil.logException(e)
@@ -164,6 +160,7 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun finishActivity() {
+        if (dialogOpened) return
         if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
         finish()
     }
