@@ -159,6 +159,7 @@
                 android:layout_marginRight="-8dp"
                 android:layout_gravity="end"
                 android:id="@+id/reviews_btn"
+                android:background="?android:attr/selectableItemBackground"
                 android:textColor="#ffffff"
                 android:text="@string/review"
                 android:padding="20dp"
