@@ -121,11 +121,13 @@ public class OrderList {
     public static void setCost(int treatmentId, int cost) {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == treatmentId) {
-                int decorationCost = orders.get(currentItem).getDecorationPrice();
-                orders.get(currentItem).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier()) - cost));
-                orders.get(currentItem).getTreatments().get(i).setCost(cost);
+        for (int j = 0; j < orders.size(); j++) {
+            for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
+                if (orders.get(j).getTreatments().get(i).getId() == treatmentId) {
+                    int decorationCost = orders.get(j).getDecorationPrice();
+                    orders.get(j).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier()) - cost));
+                    orders.get(j).getTreatments().get(i).setCost(cost);
+                }
             }
         }
     }
@@ -134,9 +136,7 @@ public class OrderList {
     public static void resetDecorationCosts() {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            orders.get(currentItem).setDecorationPrice(0);
-        }
+        for (int i = 0; i < orders.size(); i++) { orders.get(i).setDecorationPrice(0); }
     }
 
     @SuppressWarnings("ConstantConditions")
