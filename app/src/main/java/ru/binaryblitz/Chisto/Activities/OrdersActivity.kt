@@ -111,8 +111,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun checkReview(): Boolean {
-        return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0 &&
-                !(findViewById(R.id.review_text) as EditText).text.toString().isEmpty()
+        return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0
     }
 
     private fun generateJson(): JsonObject {
