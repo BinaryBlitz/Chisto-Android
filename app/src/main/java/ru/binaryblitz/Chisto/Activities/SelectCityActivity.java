@@ -44,6 +44,7 @@ import ru.binaryblitz.Chisto.Model.City;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.CustomPhoneNumberTextWatcher;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SelectCityActivity extends BaseActivity
@@ -98,7 +99,7 @@ public class SelectCityActivity extends BaseActivity
         if (view == null) return;
         phone = (MaterialEditText) view.findViewById(R.id.editText);
         city = (MaterialEditText) view.findViewById(R.id.editText2);
-        phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        phone.addTextChangedListener(new CustomPhoneNumberTextWatcher());
     }
 
     @Override
