@@ -22,7 +22,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.View;
 
 import com.afollestad.materialdialogs.DialogAction;

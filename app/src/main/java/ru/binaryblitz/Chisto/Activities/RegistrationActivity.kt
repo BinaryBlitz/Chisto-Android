@@ -157,10 +157,21 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun finishActivity(phone: String) {
+        if (cost == 0) openProfileScreen()
+        else openOrderScreen(phone)
+    }
+
+    private fun openOrderScreen(phone: String) {
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
         intent.putExtra(EXTRA_PHONE, phone)
         intent.putExtra(EXTRA_PRICE, cost)
         intent.putExtra(EXTRA_TOKEN, token)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun openProfileScreen() {
+        val intent = Intent(this@RegistrationActivity, ProfileActivity::class.java)
         startActivity(intent)
         finish()
     }

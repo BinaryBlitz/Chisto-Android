@@ -3,6 +3,7 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
@@ -42,6 +43,42 @@ class ContactInfoActivity : BaseActivity() {
 
         initFields()
         setOnClickListeners()
+
+        Handler().post { getUser() }
+    }
+
+    private fun getUser() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this))
+                .enqueue(object : Callback<JsonObject> {
+                    override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                        dialog.dismiss()
+                        if (response.isSuccessful) parseUserResponse(response.body())
+                        else onServerError(response)
+                    }
+
+                    override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                        dialog.dismiss()
+                        onInternetConnectionError()
+                    }
+                })
+    }
+
+    private fun parseUserResponse(obj: JsonObject) {
+        val user = DeviceInfoStore.getUserObject(this)
+        user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
+        user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
+        user.streetName = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
+        user.apartmentNumber = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
+        user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
+        user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
+        user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
+        if (user.notes!!.isEmpty()) user.notes = "null"
+        DeviceInfoStore.saveUser(this, user)
+        setInfo()
     }
 
     override fun onBackPressed() {
@@ -196,9 +233,7 @@ class ContactInfoActivity : BaseActivity() {
     private fun validateField(editText: MaterialEditText, numbers: Boolean): Boolean {
         var count = 0
 
-        if (numbers) {
-            count = findNumbers(editText)
-        }
+        if (numbers) count = findNumbers(editText)
 
         if (editText.text.toString().isEmpty() || count != 0) {
             editText.error = getString(R.string.wrong_data)
@@ -213,8 +248,7 @@ class ContactInfoActivity : BaseActivity() {
         val matcher = pattern.matcher(editText.text.toString())
 
         var count = 0
-        while (matcher.find())
-            count++
+        while (matcher.find()) count++
 
         return count
     }
