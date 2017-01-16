@@ -3,11 +3,14 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
+import android.text.Spannable
+import android.text.Spanned
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
@@ -28,6 +31,8 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
+import ru.binaryblitz.Chisto.Utils.AppConfig
+import ru.binaryblitz.Chisto.Utils.CustomPhoneNumberTextWatcher
 
 class RegistrationActivity : BaseActivity() {
 
@@ -117,6 +122,12 @@ class RegistrationActivity : BaseActivity() {
         continueButton!!.setOnClickListener { v ->
             AndroidUtilities.hideKeyboard(v)
             processPhoneInput()
+        }
+
+        findViewById(R.id.browse).setOnClickListener {
+            val intent = Intent(this@RegistrationActivity, WebActivity::class.java)
+            intent.putExtra("url", AppConfig.terms)
+            startActivity(intent)
         }
 
         findViewById(R.id.left_btn).setOnClickListener {
@@ -302,4 +313,3 @@ class RegistrationActivity : BaseActivity() {
         private var phoneFromServer: String? = null
     }
 }
-

@@ -62,6 +62,10 @@ class ContactInfoActivity : BaseActivity() {
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
+
+        findViewById(R.id.street_btn).setOnClickListener {
+            startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
+        }
     }
 
     private fun showDialog() {

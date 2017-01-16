@@ -217,6 +217,10 @@ class PersonalInfoActivity : BaseActivity() {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
         }
 
+        findViewById(R.id.street_btn).setOnClickListener {
+            startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
+        }
+
         findViewById(R.id.dialog).setOnClickListener {
             Animations.animateRevealHide(findViewById(R.id.dialog))
         }
