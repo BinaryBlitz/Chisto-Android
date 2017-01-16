@@ -457,7 +457,7 @@
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"
-            android:text="@string/continue_btn"
+            android:text="@string/next"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:id="@+id/continue_btn"
