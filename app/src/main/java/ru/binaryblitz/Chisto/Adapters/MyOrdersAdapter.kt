@@ -21,7 +21,6 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_my_order, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -34,8 +33,6 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         setIconAndColor(order, holder)
 
         holder.desc.text = getDateStringRepresentation(order.createAt)
-        holder.status.text = getDateStringRepresentation(order.createAt)
-
         holder.cost.text = order.price.toString() + context.getString(R.string.ruble_sign)
 
         holder.itemView.setOnClickListener {
