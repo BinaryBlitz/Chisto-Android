@@ -69,9 +69,6 @@ public class OrderList {
     public static ArrayList<Treatment> getAllTreatments() {
         ArrayList<Treatment> treatments = new ArrayList<>();
         for (int i = 0; i < orders.size(); i++) {
-            LogUtil.logError("category: " + orders.get(i).getCategory().getId());
-            for (int j = 0; j < orders.get(i).getTreatments().size(); j++)
-                LogUtil.logError(orders.get(i).getTreatments().get(j).getId());
             treatments.addAll(orders.get(i).getTreatments());
         }
 
@@ -125,13 +122,17 @@ public class OrderList {
     public static void setCost(int treatmentId, int cost) {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-        for (int j = 0; j < orders.size(); j++) {
-            for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
-                if (orders.get(j).getTreatments().get(i).getId() == treatmentId) {
-                    int decorationCost = orders.get(j).getDecorationPrice();
-                    orders.get(j).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier(j)) - cost));
-                    orders.get(j).getTreatments().get(i).setCost(cost);
-                }
+        for (int j = 0; j < orders.size(); j++) { setCostForOrder(j, treatmentId, cost); }
+    }
+
+    private static void setCostForOrder(int j, int treatmentId, int cost) {
+        if (orders.get(j).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
+            if (orders.get(j).getTreatments().get(i).getId() == treatmentId) {
+                int decorationCost = orders.get(j).getDecorationPrice();
+                orders.get(j).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier(j)) - cost));
+                orders.get(j).getTreatments().get(i).setCost(cost);
             }
         }
     }
@@ -156,11 +157,15 @@ public class OrderList {
     public static void setDecorationCost() {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-        for (int j = 0; j < orders.size(); j++) {
-            for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
-                if (orders.get(j).getTreatments().get(i).getId() == AppConfig.decorationId) {
-                    orders.get(j).getTreatments().get(i).setCost(orders.get(j).getDecorationPrice());
-                }
+        for (int j = 0; j < orders.size(); j++) { setDecorationPriceForOrder(j); }
+    }
+
+    private static void setDecorationPriceForOrder(int j) {
+        if (orders.get(j).getTreatments() == null) return;
+
+        for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
+            if (orders.get(j).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                orders.get(j).getTreatments().get(i).setCost(orders.get(j).getDecorationPrice());
             }
         }
     }
@@ -196,8 +201,7 @@ public class OrderList {
         int id = orders.get(index).getCategory().getId();
 
         for (int i = 0; i < decorationMultipliers.size(); i++) {
-            if (decorationMultipliers.get(i).first == id)
-                return decorationMultipliers.get(i).second;
+            if (decorationMultipliers.get(i).first == id) return decorationMultipliers.get(i).second;
         }
 
         return 1.0;
@@ -207,14 +211,10 @@ public class OrderList {
     public static void addTreatment(Treatment treatment) {
         if (currentItem < orders.size()) return;
 
-        if (orders.get(currentItem).getTreatments() == null) {
-            orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
-        }
+        if (orders.get(currentItem).getTreatments() == null) orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) {
-                return;
-            }
+            if (orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) return;
         }
 
         orders.get(currentItem).getTreatments().add(treatment);
