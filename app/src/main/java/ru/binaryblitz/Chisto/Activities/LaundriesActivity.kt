@@ -38,6 +38,8 @@ class LaundriesActivity : BaseActivity() {
     private var adapter: LaundriesAdapter? = null
     private var layout: SwipeRefreshLayout? = null
 
+    private var selectedIndex = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -117,7 +119,8 @@ class LaundriesActivity : BaseActivity() {
         MaterialDialog.Builder(this)
                 .title(R.string.title)
                 .items(items)
-                .itemsCallbackSingleChoice(AppConfig.decorationId) { dialog, view, which, text ->
+                .itemsCallbackSingleChoice(selectedIndex) { dialog, view, which, text ->
+                    selectedIndex = which
                     sort(which)
                     true
                 }
