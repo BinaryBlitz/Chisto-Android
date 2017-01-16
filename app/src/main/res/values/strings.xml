@@ -187,6 +187,9 @@
     <string name="number_sign">№</string>
     <string name="registration_browse">Регистрируясь в приложении, вы принимаете условия <u>Пользовательского соглашения</u></string>
     <string name="quit">Выйти</string>
+    <string name="payment_type">Способ оплаты</string>
+    <string name="money">Наличные</string>
+    <string name="bank_card">Картой онлайн</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
