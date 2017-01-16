@@ -19,7 +19,7 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
-        if (DeviceInfoStore.getUserObject(this) == null) openActivity(StartActivity.class);
+        if (DeviceInfoStore.getCityObject(this) == null) openActivity(StartActivity.class);
         else openActivity(OrdersActivity.class);
     }
 
