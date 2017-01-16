@@ -166,6 +166,7 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("apartment_number", flat!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", email!!.text.toString())
+        obj.addProperty("payment_method", selectedPaymentType)
 
         obj.add("order_items_attributes", generateOrderTreatments())
 
