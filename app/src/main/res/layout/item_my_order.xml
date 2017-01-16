@@ -22,24 +22,47 @@
             android:textSize="16sp"
             android:gravity="start"/>
 
-    <TextView
-            android:id="@+id/desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginLeft="54dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginStart="54dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="12dp"
-            android:textColor="#727272"
-            android:textSize="14sp"
-            android:gravity="start"/>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:orientation="horizontal"
+                  android:layout_marginTop="12dp"
+                  android:layout_gravity="center_vertical"
+                  android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="54dp"
+                android:layout_marginStart="54dp"
+                android:textColor="#727272"
+                android:textSize="14sp"
+                android:gravity="start"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:text=" \u2022 "
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:textColor="#727272"
+                android:textSize="14sp"
+                android:gravity="start"/>
+
+        <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="8dp"
+                android:textColor="#727272"
+                android:textSize="14sp"
+                android:gravity="start"/>
+    </LinearLayout>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:text="3 800 р"
             android:textSize="18sp"
             android:id="@+id/cost"
             android:layout_marginEnd="12dp"

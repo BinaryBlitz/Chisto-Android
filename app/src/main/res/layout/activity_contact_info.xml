@@ -349,6 +349,7 @@
                   android:textColor="@color/colorAccent"
                   android:layout_gravity="end|center_vertical"/>
     </FrameLayout>
+
     <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
