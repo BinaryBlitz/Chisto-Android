@@ -10,6 +10,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
+import ru.binaryblitz.Chisto.Utils.AppConfig;
 
 public class ProfileActivity extends BaseActivity {
 
@@ -58,7 +59,7 @@ public class ProfileActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ProfileActivity.this, WebActivity.class);
-                intent.putExtra("url", "https://docs.google.com/viewer?url=" + "https://chis.to/legal/terms-of-service.pdf");
+                intent.putExtra("url", AppConfig.terms);
                 startActivity(intent);
             }
         });
