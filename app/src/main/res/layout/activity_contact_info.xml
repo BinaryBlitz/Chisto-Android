@@ -8,7 +8,7 @@
 
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_marginBottom="124dp"
+            android:layout_marginBottom="110dp"
             android:layout_marginTop="56dp"
             android:layout_height="wrap_content">
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -311,6 +311,110 @@
                     app:met_primaryColor="@color/blackColor"
                     android:textColorHint="@color/greyColor"
                     android:layout_gravity="bottom" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp"
+                    android:layout_height="48dp">
+                <ImageView
+                        android:layout_width="56dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_wallet"
+                        android:padding="10dp"
+                        android:layout_height="56dp"/>
+
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:textStyle="bold"
+                          android:layout_marginEnd="100dp"
+                          android:text="@string/payment_type"
+                          android:layout_marginRight="100dp"
+                          android:textSize="18sp"
+                          android:textColor="@color/colorAccent"
+                          android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_marginRight="24dp"
+                         android:layout_marginEnd="24dp"
+                         android:layout_marginStart="56dp"
+                         android:layout_marginLeft="56dp"
+                         android:layout_height="56dp">
+                <LinearLayout android:layout_width="wrap_content"
+                              android:orientation="horizontal"
+                              android:layout_height="match_parent">
+                    <TextView android:layout_width="wrap_content"
+                              android:text="@string/bank_card"
+                              android:textColor="#212121"
+                              android:textSize="16sp"
+                              android:id="@+id/bank_text"
+                              android:layout_gravity="center_vertical"
+                              android:layout_marginEnd="12dp"
+                              android:layout_marginRight="12dp"
+                              android:layout_height="wrap_content"/>
+                    <ImageView
+                            android:layout_width="48dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_visa"
+                            android:padding="10dp"
+                            android:id="@+id/visa"
+                            android:layout_height="56dp"/>
+                    <ImageView
+                            android:layout_width="48dp"
+                            android:layout_gravity="center_vertical"
+                            android:src="@drawable/ic_master_card"
+                            android:padding="10dp"
+                            android:id="@+id/master_card"
+                            android:layout_height="56dp"/>
+                </LinearLayout>
+
+                <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
+                        android:layout_width="30dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:id="@+id/checkBox"
+                        android:layout_marginBottom="35dp"
+                        android:layout_marginTop="35dp"
+                        android:layout_height="30dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:clickable="true"
+                             android:id="@+id/bank_btn"
+                             android:layout_height="match_parent"/>
+            </FrameLayout>
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_marginRight="24dp"
+                         android:layout_marginEnd="24dp"
+                         android:layout_marginStart="56dp"
+                         android:layout_marginLeft="56dp"
+                         android:layout_height="56dp">
+                <LinearLayout android:layout_width="wrap_content"
+                              android:orientation="horizontal"
+                              android:layout_height="match_parent">
+                    <TextView android:layout_width="wrap_content"
+                              android:text="@string/money"
+                              android:textColor="#212121"
+                              android:textSize="16sp"
+                              android:id="@+id/money_text"
+                              android:layout_gravity="center_vertical"
+                              android:layout_marginEnd="12dp"
+                              android:layout_marginRight="12dp"
+                              android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
+                        android:layout_width="30dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:id="@+id/checkBox2"
+                        android:layout_marginBottom="35dp"
+                        android:layout_marginTop="35dp"
+                        android:layout_height="30dp"/>
+
+                <FrameLayout android:layout_width="match_parent"
+                             android:clickable="true"
+                             android:id="@+id/money_btn"
+                             android:layout_height="match_parent"/>
+            </FrameLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -320,7 +424,7 @@
             android:layout_gravity="bottom"
             android:layout_marginTop="8dp"
             android:background="#ffffff"
-            android:layout_marginBottom="68dp"
+            android:layout_marginBottom="50dp"
             android:layout_height="56dp">
         <ImageView
                 android:layout_width="56dp"
@@ -350,51 +454,20 @@
                   android:layout_gravity="end|center_vertical"/>
     </FrameLayout>
 
-    <LinearLayout
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/BrandButtonStyle"
+            android:text="@string/continue_btn"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="64dp"
+            android:id="@+id/continue_btn"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginBottom="-8dp"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
             android:layout_gravity="bottom"
-            android:layout_height="68dp">
-        <FrameLayout android:layout_width="match_parent"
-                     android:layout_weight="1.0"
-                     android:layout_height="match_parent">
-            <TextView
-                    android:text="@string/bank"
-                    android:layout_width="match_parent"
-                    android:layout_height="68dp"
-                    android:textColor="#ffffff"
-                    android:background="@drawable/pay_btn_back"
-                    android:textSize="16sp"
-                    android:layout_gravity="bottom"
-                    android:gravity="center"/>
-
-            <FrameLayout android:layout_width="match_parent"
-                         android:id="@+id/credit_card_btn"
-                         android:background="?attr/selectableItemBackground"
-                         android:layout_height="match_parent">
-            </FrameLayout>
-        </FrameLayout>
-
-        <FrameLayout android:layout_width="match_parent"
-                     android:layout_weight="1.0"
-                     android:layout_height="match_parent">
-            <TextView
-                    android:text="@string/pay"
-                    android:layout_width="match_parent"
-                    android:layout_height="68dp"
-                    android:textColor="#ffffff"
-                    android:background="@color/colorPrimary"
-                    android:textSize="16sp"
-                    android:layout_gravity="bottom"
-                    android:gravity="center"/>
-
-            <FrameLayout android:layout_width="match_parent"
-                         android:id="@+id/pay_btn"
-                         android:background="?attr/selectableItemBackground"
-                         android:layout_height="match_parent">
-            </FrameLayout>
-        </FrameLayout>
-    </LinearLayout>
+            android:gravity="center"/>
 
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -429,7 +502,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/reg"
+                        android:text="@string/order"
                         android:layout_gravity="center"
                         android:id="@+id/date_text_view"
                         android:gravity="center_vertical"
