@@ -32,8 +32,7 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:src="@drawable/ic_back"
                         android:padding="13dp"
-                        android:layout_gravity="start"
-                />
+                        android:layout_gravity="start"/>
 
                 <TextView
                         android:layout_width="wrap_content"
@@ -61,11 +60,11 @@
                 android:layout_height="wrap_content">
             <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_gravity="bottom"
                     android:background="#ffffff"
                     android:id="@+id/contact_data_btn"
-                    android:layout_height="88dp">
+                    android:layout_height="68dp">
 
                 <ImageView
                         android:layout_width="56dp"
@@ -103,11 +102,11 @@
 
             <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_gravity="bottom"
                     android:background="#ffffff"
                     android:id="@+id/my_orders_btn"
-                    android:layout_height="88dp">
+                    android:layout_height="68dp">
 
                 <ImageView
                         android:layout_width="56dp"
@@ -145,11 +144,11 @@
 
             <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_gravity="bottom"
                     android:background="#ffffff"
                     android:id="@+id/about_btn"
-                    android:layout_height="88dp">
+                    android:layout_height="68dp">
 
                 <ImageView
                         android:layout_width="56dp"
@@ -187,11 +186,11 @@
 
             <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     android:layout_gravity="bottom"
                     android:id="@+id/rules_btn"
                     android:background="#ffffff"
-                    android:layout_height="88dp">
+                    android:layout_height="68dp">
 
                 <ImageView
                         android:layout_width="56dp"
@@ -229,4 +228,19 @@
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
+
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/BrandButtonStyle"
+            android:text="@string/quit"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:id="@+id/quit_btn"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginBottom="-8dp"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:layout_gravity="bottom"
+            android:gravity="center"/>
 </FrameLayout>
