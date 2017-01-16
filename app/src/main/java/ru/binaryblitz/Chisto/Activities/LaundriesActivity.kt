@@ -68,8 +68,13 @@ class LaundriesActivity : BaseActivity() {
 
     private fun clickCurrentBtn() {
         val intent = Intent(this@LaundriesActivity, LaundryAndOrderActivity::class.java)
+        OrderList.resetDecorationCosts()
         OrderList.setLaundry(laundry!!)
+        OrderList.setDecorationMultiplier(laundry!!.decorationMultipliers!!)
         countSums(laundryObject!!.get("laundry_treatments").asJsonArray)
+
+        OrderList.setDecorationCost()
+
         setLaundryTreatmentsIds(laundry!!.index!!)
         intent.putExtra(EXTRA_ID, laundry!!.id)
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
@@ -246,7 +251,7 @@ class LaundriesActivity : BaseActivity() {
         if (treatments.size() == 0) return false
 
         val laundryTreatments = fillLaundryTreatments(treatments)
-        val orderTreatments = OrderList.getTreatments()
+        val orderTreatments = OrderList.getAllTreatments()
 
         return checkTreatmentsAvailability(orderTreatments, laundryTreatments)
     }
@@ -277,7 +282,7 @@ class LaundriesActivity : BaseActivity() {
         if (treatments.size() == 0) return
 
         val laundryTreatments = fillPrices(treatments)
-        val orderTreatments = OrderList.getTreatments()
+        val orderTreatments = OrderList.getAllTreatments()
 
         fillOrderList(orderTreatments, laundryTreatments)
     }
@@ -286,7 +291,7 @@ class LaundriesActivity : BaseActivity() {
         if (treatments.size() == 0) return
 
         val laundryTreatments = fillPrices(treatments)
-        val orderTreatments = OrderList.getTreatments()
+        val orderTreatments = OrderList.getAllTreatments()
 
         fillOrderList(orderTreatments, laundryTreatments)
     }

@@ -66,6 +66,18 @@ public class OrderList {
         }
     }
 
+    public static ArrayList<Treatment> getAllTreatments() {
+        ArrayList<Treatment> treatments = new ArrayList<>();
+        for (int i = 0; i < orders.size(); i++) {
+            LogUtil.logError("category: " + orders.get(i).getCategory().getId());
+            for (int j = 0; j < orders.get(i).getTreatments().size(); j++)
+                LogUtil.logError(orders.get(i).getTreatments().get(j).getId());
+            treatments.addAll(orders.get(i).getTreatments());
+        }
+
+        return treatments;
+    }
+
     public static void copyToBuffer(ArrayList<Treatment> treatments) {
         bufferTreatments.clear();
 
@@ -78,15 +90,11 @@ public class OrderList {
     }
 
     public static void remove(int i) {
-        if (i < orders.size()) {
-            orders.remove(i);
-        }
+        if (i < orders.size()) orders.remove(i);
     }
 
     public static void removeCurrent() {
-        if (currentItem <= orders.size() - 1) {
-            orders.remove(currentItem);
-        }
+        if (currentItem <= orders.size() - 1) orders.remove(currentItem);
     }
 
     public static void edit(int i) {
@@ -94,15 +102,11 @@ public class OrderList {
     }
 
     public static void changeCount(int count) {
-        if (currentItem < orders.size()) {
-            orders.get(currentItem).setCount(count);
-        }
+        if (currentItem < orders.size()) orders.get(currentItem).setCount(count);
     }
 
     public static void changeColor(int color) {
-        if (currentItem < orders.size()) {
-            orders.get(currentItem).setColor(color);
-        }
+        if (currentItem < orders.size()) orders.get(currentItem).setColor(color);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -125,7 +129,7 @@ public class OrderList {
             for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
                 if (orders.get(j).getTreatments().get(i).getId() == treatmentId) {
                     int decorationCost = orders.get(j).getDecorationPrice();
-                    orders.get(j).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier()) - cost));
+                    orders.get(j).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier(j)) - cost));
                     orders.get(j).getTreatments().get(i).setCost(cost);
                 }
             }
@@ -152,9 +156,11 @@ public class OrderList {
     public static void setDecorationCost() {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) {
-                orders.get(currentItem).getTreatments().get(i).setCost(orders.get(currentItem).getDecorationPrice());
+        for (int j = 0; j < orders.size(); j++) {
+            for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
+                if (orders.get(j).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                    orders.get(j).getTreatments().get(i).setCost(orders.get(j).getDecorationPrice());
+                }
             }
         }
     }
@@ -178,17 +184,16 @@ public class OrderList {
             return false;
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId)
-                return true;
+            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) return true;
         }
 
         return false;
     }
 
-    private static double findMultiplier() {
+    private static double findMultiplier(int index) {
         if (!isDecoration()) return 1.0;
 
-        int id = orders.get(currentItem).getCategory().getId();
+        int id = orders.get(index).getCategory().getId();
 
         for (int i = 0; i < decorationMultipliers.size(); i++) {
             if (decorationMultipliers.get(i).first == id)
