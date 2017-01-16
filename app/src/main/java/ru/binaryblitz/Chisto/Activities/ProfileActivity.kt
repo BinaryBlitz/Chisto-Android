@@ -4,6 +4,8 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
+import android.widget.TextView
 
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonObject
@@ -137,6 +139,15 @@ class ProfileActivity : BaseActivity() {
         user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
 
         if (user.notes!!.isEmpty()) user.notes = "null"
+
+        val ordersCount = AndroidUtilities.getIntFieldFromJson(obj.get("orders_count"))
+
+        if (ordersCount == 0) {
+            (findViewById(R.id.indicator) as TextView).visibility = View.GONE
+        } else {
+            (findViewById(R.id.indicator) as TextView).visibility = View.VISIBLE
+            (findViewById(R.id.indicator) as TextView).text = Integer.toString(ordersCount)
+        }
 
         DeviceInfoStore.saveUser(this, user)
     }

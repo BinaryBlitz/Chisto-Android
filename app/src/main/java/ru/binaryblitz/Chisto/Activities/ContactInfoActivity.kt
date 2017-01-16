@@ -3,8 +3,6 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
