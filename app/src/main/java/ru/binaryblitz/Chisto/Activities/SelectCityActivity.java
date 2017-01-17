@@ -322,8 +322,11 @@ public class SelectCityActivity extends BaseActivity
                 return;
             }
             mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mLastLocation != null) load(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            else onLocationError();
+            if (mLastLocation != null) {
+                load(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            } else {
+                onLocationError();
+            }
         } else {
             mGoogleApiClient.connect();
         }
