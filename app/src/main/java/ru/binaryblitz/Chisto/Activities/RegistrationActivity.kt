@@ -3,14 +3,10 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
-import android.text.Spannable
-import android.text.Spanned
 import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
@@ -167,10 +163,21 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun finishActivity(phone: String) {
+        if (cost == 0) openProfileScreen()
+        else openOrderScreen(phone)
+    }
+
+    private fun openOrderScreen(phone: String) {
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
         intent.putExtra(EXTRA_PHONE, phone)
         intent.putExtra(EXTRA_PRICE, cost)
         intent.putExtra(EXTRA_TOKEN, token)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun openProfileScreen() {
+        val intent = Intent(this@RegistrationActivity, ProfileActivity::class.java)
         startActivity(intent)
         finish()
     }
