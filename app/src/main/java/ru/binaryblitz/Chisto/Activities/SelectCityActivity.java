@@ -1,6 +1,13 @@
 package ru.binaryblitz.Chisto.Activities;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,11 +28,6 @@ import android.view.View;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.io.IOException;
@@ -65,7 +67,7 @@ public class SelectCityActivity extends BaseActivity
         setContentView(ru.binaryblitz.Chisto.R.layout.activity_select_city);
         Fabric.with(this, new Crashlytics());
 
-        findViewById(ru.binaryblitz.Chisto.R.id.back_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -223,14 +225,14 @@ public class SelectCityActivity extends BaseActivity
     private void showDialog() {
         MaterialDialog dialog = new MaterialDialog.Builder(SelectCityActivity.this)
                 .title(ru.binaryblitz.Chisto.R.string.app_name)
-                .customView(ru.binaryblitz.Chisto.R.layout.city_not_found_dialog, true)
+                .customView(R.layout.city_not_found_dialog, true)
                 .positiveText(ru.binaryblitz.Chisto.R.string.send_code)
                 .negativeText(ru.binaryblitz.Chisto.R.string.back_code)
                 .autoDismiss(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (checkDialogInput()) dialog.dismiss();
+                        if (checkDialogInput()) sendSubscription(dialog);
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -242,6 +244,39 @@ public class SelectCityActivity extends BaseActivity
                 .show();
 
         initDialog(dialog);
+    }
+
+    private JsonObject generateJson() {
+        JsonObject object = new JsonObject();
+        JsonObject toSend = new JsonObject();
+
+        object.addProperty("phone_number", phone.getText().toString());
+        object.addProperty("content", city.getText().toString());
+
+        toSend.add("subscription", object);
+
+        return toSend;
+    }
+
+    private void sendSubscription(final MaterialDialog dialog) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+
+        ServerApi.get(this).api().sendSubscription(generateJson()).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                progressDialog.dismiss();
+                dialog.dismiss();
+                if (!response.isSuccessful()) onInternetConnectionError();
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                progressDialog.dismiss();
+                dialog.dismiss();
+                onInternetConnectionError();
+            }
+        });
     }
 
     private boolean checkDialogInput() {
