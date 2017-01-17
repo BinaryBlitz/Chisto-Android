@@ -19,6 +19,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
+import ru.binaryblitz.Chisto.Utils.CustomPhoneNumberTextWatcher
 import java.util.regex.Pattern
 
 class ContactInfoActivity : BaseActivity() {
@@ -89,7 +90,7 @@ class ContactInfoActivity : BaseActivity() {
         phone = findViewById(R.id.phone) as MaterialEditText
         comment = findViewById(R.id.comment_text) as MaterialEditText
         email = findViewById(R.id.email) as MaterialEditText
-        phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        phone!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
     }
 
     private fun setInfo() {

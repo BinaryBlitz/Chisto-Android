@@ -69,7 +69,7 @@ class RegistrationActivity : BaseActivity() {
         continueButton = findViewById(R.id.button) as Button
         phoneEditText = findViewById(R.id.phone) as MaterialEditText
         codeEditText = findViewById(R.id.code_field) as MaterialEditText
-        phoneEditText!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        phoneEditText!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
 
         codeEditText!!.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {}

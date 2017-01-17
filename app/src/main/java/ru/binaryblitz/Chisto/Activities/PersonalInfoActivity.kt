@@ -26,11 +26,8 @@ import ru.binaryblitz.Chisto.Push.MyInstanceIDListenerService
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
-import ru.binaryblitz.Chisto.Utils.AndroidUtilities
+import ru.binaryblitz.Chisto.Utils.*
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
-import ru.binaryblitz.Chisto.Utils.AppConfig
-import ru.binaryblitz.Chisto.Utils.LogUtil
-import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 import java.util.regex.Pattern
 
@@ -283,7 +280,7 @@ class PersonalInfoActivity : BaseActivity() {
         phone = findViewById(R.id.phone) as MaterialEditText
         comment = findViewById(R.id.comment_text) as MaterialEditText
         email = findViewById(R.id.email) as MaterialEditText
-        phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        phone!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
 
         initCheckBoxes()
 
