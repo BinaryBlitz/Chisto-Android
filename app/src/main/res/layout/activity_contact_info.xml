@@ -345,7 +345,7 @@
                               android:orientation="horizontal"
                               android:layout_height="match_parent">
                     <TextView android:layout_width="wrap_content"
-                              android:text="@string/bank_card"
+                              android:text="@string/card"
                               android:textColor="#212121"
                               android:textSize="16sp"
                               android:id="@+id/bank_text"
@@ -372,7 +372,7 @@
                 <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
                         android:layout_width="30dp"
                         android:layout_gravity="center_vertical|end"
-                        android:id="@+id/checkBox"
+                        android:id="@+id/cardCheckBox"
                         android:layout_marginBottom="35dp"
                         android:layout_marginTop="35dp"
                         android:layout_height="30dp"/>
@@ -392,7 +392,7 @@
                               android:orientation="horizontal"
                               android:layout_height="match_parent">
                     <TextView android:layout_width="wrap_content"
-                              android:text="@string/money"
+                              android:text="@string/cash"
                               android:textColor="#212121"
                               android:textSize="16sp"
                               android:id="@+id/money_text"
@@ -405,7 +405,7 @@
                 <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
                         android:layout_width="30dp"
                         android:layout_gravity="center_vertical|end"
-                        android:id="@+id/checkBox2"
+                        android:id="@+id/cashCheckBox"
                         android:layout_marginBottom="35dp"
                         android:layout_marginTop="35dp"
                         android:layout_height="30dp"/>

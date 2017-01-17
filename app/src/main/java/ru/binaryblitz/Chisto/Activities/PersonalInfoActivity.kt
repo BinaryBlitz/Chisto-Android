@@ -39,7 +39,7 @@ class PersonalInfoActivity : BaseActivity() {
     val REQUEST_WEB = 100
 
     val CASH = "cash"
-    val BANK = "bank"
+    val CARD = "bank"
     val GREY_COLOR = "#727272"
     val BLACK_COLOR = "#212121"
 
@@ -223,21 +223,21 @@ class PersonalInfoActivity : BaseActivity() {
         (findViewById(R.id.visa) as ImageView).setImageResource(R.drawable.ic_visa)
         (findViewById(R.id.master_card) as ImageView).setImageResource(R.drawable.ic_master_card)
 
-        (findViewById(R.id.checkBox) as SmoothCheckBox).isChecked = true
-        (findViewById(R.id.checkBox2) as SmoothCheckBox).isChecked = false
+        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isChecked = true
+        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isChecked = false
 
-        selectedPaymentType = BANK
+        selectedPaymentType = CARD
     }
 
-    private fun selectDefault() {
+    private fun selectCash() {
         (findViewById(R.id.money_text) as TextView).setTextColor(Color.parseColor(BLACK_COLOR))
         (findViewById(R.id.bank_text) as TextView).setTextColor(Color.parseColor(GREY_COLOR))
 
         (findViewById(R.id.visa) as ImageView).setImageResource(R.drawable.ic_visa_no_active)
         (findViewById(R.id.master_card) as ImageView).setImageResource(R.drawable.ic_master_card_no_active)
 
-        (findViewById(R.id.checkBox2) as SmoothCheckBox).isChecked = true
-        (findViewById(R.id.checkBox) as SmoothCheckBox).isChecked = false
+        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isChecked = true
+        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isChecked = false
 
         selectedPaymentType = CASH
     }
@@ -247,9 +247,9 @@ class PersonalInfoActivity : BaseActivity() {
 
         findViewById(R.id.bank_btn).setOnClickListener { selectBankCard() }
 
-        findViewById(R.id.money_btn).setOnClickListener { selectDefault() }
+        findViewById(R.id.money_btn).setOnClickListener { selectCash() }
 
-        findViewById(R.id.continue_btn).setOnClickListener { process(selectedPaymentType == BANK) }
+        findViewById(R.id.continue_btn).setOnClickListener { process(selectedPaymentType == CARD) }
 
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
@@ -293,8 +293,8 @@ class PersonalInfoActivity : BaseActivity() {
     private fun initCheckBoxes() {
         selectBankCard()
 
-        (findViewById(R.id.checkBox2) as SmoothCheckBox).isEnabled = false
-        (findViewById(R.id.checkBox) as SmoothCheckBox).isEnabled = false
+        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isEnabled = false
+        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isEnabled = false
     }
 
     private fun setInfo() {
@@ -307,8 +307,12 @@ class PersonalInfoActivity : BaseActivity() {
 
         setTextToField(city!!, user!!.city)
 
-        if (user!!.firstName == null || user!!.firstName == "null") setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
-        else setTextToField(phone!!, user!!.phone)
+        if (user!!.firstName == null || user!!.firstName == "null") {
+            setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
+        }
+        else {
+            setTextToField(phone!!, user!!.phone)
+        }
 
         setTextToField(email!!, user!!.email)
         setTextToField(name!!, user!!.firstName)
