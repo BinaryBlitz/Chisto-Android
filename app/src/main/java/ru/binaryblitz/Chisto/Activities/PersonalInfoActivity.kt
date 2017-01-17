@@ -2,11 +2,12 @@ package ru.binaryblitz.Chisto.Activities
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.iid.FirebaseInstanceId
@@ -18,6 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
+import ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.Push.MyInstanceIDListenerService
@@ -36,6 +38,11 @@ class PersonalInfoActivity : BaseActivity() {
     val EXTRA_PHONE = "phone"
     val REQUEST_WEB = 100
 
+    val CASH = "cash"
+    val CARD = "bank"
+    val GREY_COLOR = "#727272"
+    val BLACK_COLOR = "#212121"
+
     private var name: MaterialEditText? = null
     private var lastname: MaterialEditText? = null
     private var city: MaterialEditText? = null
@@ -47,6 +54,8 @@ class PersonalInfoActivity : BaseActivity() {
     private var email: MaterialEditText? = null
 
     private var user: User? = null
+
+    private var selectedPaymentType = CASH
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -157,6 +166,7 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("apartment_number", flat!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", email!!.text.toString())
+        obj.addProperty("payment_method", selectedPaymentType)
 
         obj.add("order_items_attributes", generateOrderTreatments())
 
@@ -206,12 +216,40 @@ class PersonalInfoActivity : BaseActivity() {
         goToOrderActivity()
     }
 
+    private fun selectBankCard() {
+        (findViewById(R.id.bank_text) as TextView).setTextColor(Color.parseColor(BLACK_COLOR))
+        (findViewById(R.id.money_text) as TextView).setTextColor(Color.parseColor(GREY_COLOR))
+
+        (findViewById(R.id.visa) as ImageView).setImageResource(R.drawable.ic_visa)
+        (findViewById(R.id.master_card) as ImageView).setImageResource(R.drawable.ic_master_card)
+
+        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isChecked = true
+        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isChecked = false
+
+        selectedPaymentType = CARD
+    }
+
+    private fun selectCash() {
+        (findViewById(R.id.money_text) as TextView).setTextColor(Color.parseColor(BLACK_COLOR))
+        (findViewById(R.id.bank_text) as TextView).setTextColor(Color.parseColor(GREY_COLOR))
+
+        (findViewById(R.id.visa) as ImageView).setImageResource(R.drawable.ic_visa_no_active)
+        (findViewById(R.id.master_card) as ImageView).setImageResource(R.drawable.ic_master_card_no_active)
+
+        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isChecked = true
+        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isChecked = false
+
+        selectedPaymentType = CASH
+    }
+
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
 
-        findViewById(R.id.pay_btn).setOnClickListener { process(false) }
+        findViewById(R.id.bank_btn).setOnClickListener { selectBankCard() }
 
-        findViewById(R.id.credit_card_btn).setOnClickListener { process(true) }
+        findViewById(R.id.money_btn).setOnClickListener { selectCash() }
+
+        findViewById(R.id.continue_btn).setOnClickListener { process(selectedPaymentType == CARD) }
 
         findViewById(R.id.address_btn).setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
@@ -247,7 +285,16 @@ class PersonalInfoActivity : BaseActivity() {
         email = findViewById(R.id.email) as MaterialEditText
         phone!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
+        initCheckBoxes()
+
         (findViewById(R.id.price) as TextView).text = intent.getIntExtra(EXTRA_PRICE, 0).toString() + getString(R.string.ruble_sign)
+    }
+
+    private fun initCheckBoxes() {
+        selectBankCard()
+
+        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isEnabled = false
+        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isEnabled = false
     }
 
     private fun setInfo() {
@@ -262,9 +309,11 @@ class PersonalInfoActivity : BaseActivity() {
 
         if (user!!.firstName == null || user!!.firstName == "null") {
             setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
-        } else {
+        }
+        else {
             setTextToField(phone!!, user!!.phone)
         }
+
         setTextToField(email!!, user!!.email)
         setTextToField(name!!, user!!.firstName)
         setTextToField(lastname!!, user!!.lastname)
@@ -407,8 +456,7 @@ class PersonalInfoActivity : BaseActivity() {
         val matcher = pattern.matcher(editText.text.toString())
 
         var count = 0
-        while (matcher.find())
-            count++
+        while (matcher.find()) count++
 
         return count
     }

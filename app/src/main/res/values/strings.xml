@@ -186,9 +186,10 @@
     <string name="error">Ошибка</string>
     <string name="number_sign">№</string>
     <string name="registration_browse">Регистрируясь в приложении, вы принимаете условия <u>Пользовательского соглашения</u></string>
-
-    <string name="registration_browse">Регистрируясь в приложении, вы принимаете условия <u>Пользовательского соглашения</u></string>
     <string name="log_out">Выйти</string>
+    <string name="payment_type">Способ оплаты</string>
+    <string name="cash">Наличные</string>
+    <string name="card">Картой онлайн</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

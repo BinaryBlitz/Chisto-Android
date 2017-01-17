@@ -3,12 +3,8 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-
 import com.crashlytics.android.Crashlytics
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonObject
-
 import io.fabric.sdk.android.Fabric
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,7 +13,6 @@ import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
-import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AppConfig
 
 class ProfileActivity : BaseActivity() {
@@ -88,7 +83,6 @@ class ProfileActivity : BaseActivity() {
             }
         })
     }
-
 
     private fun logOut() {
         DeviceInfoStore.resetToken(this)
