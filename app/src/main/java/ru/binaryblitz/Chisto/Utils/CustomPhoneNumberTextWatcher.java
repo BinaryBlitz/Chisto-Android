@@ -12,8 +12,8 @@ import java.util.Locale;
 
 public class CustomPhoneNumberTextWatcher implements TextWatcher {
 
-    private boolean mSelfChange = false;
-    private AsYouTypeFormatter mFormatter;
+    private boolean selfChange = false;
+    private AsYouTypeFormatter formatter;
 
     public CustomPhoneNumberTextWatcher() {
         this(Locale.getDefault().getCountry());
@@ -21,7 +21,7 @@ public class CustomPhoneNumberTextWatcher implements TextWatcher {
 
     public CustomPhoneNumberTextWatcher(String countryCode) {
         if (countryCode == null) throw new IllegalArgumentException();
-        mFormatter = PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode);
+        formatter = PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode);
     }
 
     @Override
@@ -34,43 +34,79 @@ public class CustomPhoneNumberTextWatcher implements TextWatcher {
 
     @Override
     public synchronized void afterTextChanged(Editable s) {
-        if (mSelfChange) return;
+        if (selfChange) return;
 
-        String formatted = reformat(s, Selection.getSelectionEnd(s));
-        if (formatted != null) {
-            int rememberedPos = mFormatter.getRememberedPosition();
-            mSelfChange = true;
-            s.replace(0, s.length(), formatted, 0, formatted.length());
-            if (formatted.equals(s.toString())) Selection.setSelection(s, rememberedPos);
-            mSelfChange = false;
+        String formatted = new Formatter(s, Selection.getSelectionEnd(s)).reformat();
+        if (formatted != null) process(s, formatted);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PhoneNumberUtils.addTtsSpan(s, 0, s.length());
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PhoneNumberUtils.addTtsSpan(s, 0, s.length());
     }
 
-    private String reformat(CharSequence s, int cursor) {
-        int curIndex = cursor - 1;
-        String formatted = null;
-        mFormatter.clear();
+    private void process(Editable s, String formatted) {
+        int rememberedPos = formatter.getRememberedPosition();
+        selfChange = true;
+        s.replace(0, s.length(), formatted, 0, formatted.length());
+        if (formatted.equals(s.toString())) Selection.setSelection(s, rememberedPos);
+        selfChange = false;
+    }
+
+    private class Formatter {
+        int currentIndex;
+        CharSequence s;
         char lastNonSeparator = 0;
         boolean hasCursor = false;
-        int len = s.length();
-        for (int i = 0; i < len; i++) {
-            char c = s.charAt(i);
-            if (PhoneNumberUtils.isNonSeparator(c)) {
-                if (lastNonSeparator != 0) {
-                    formatted = getFormattedNumber(lastNonSeparator, hasCursor);
-                    hasCursor = false;
-                }
-                lastNonSeparator = c;
-            }
-            if (i == curIndex) hasCursor = true;
+        int length;
+
+        private Formatter(CharSequence s, int cursor) {
+            currentIndex = cursor - 1;
+            length = s.length();
         }
-        if (lastNonSeparator != 0) formatted = getFormattedNumber(lastNonSeparator, hasCursor);
 
-        return formatted;
-    }
+        private String reformat() {
+            String formatted = null;
+            formatter.clear();
+            lastNonSeparator = 0;
+            hasCursor = false;
 
-    private String getFormattedNumber(char lastNonSeparator, boolean hasCursor) {
-        return hasCursor ? mFormatter.inputDigitAndRememberPosition(lastNonSeparator) : mFormatter.inputDigit(lastNonSeparator);
+            for (int i = 0; i < length; i++) {
+                formatted = processSymbol(s.charAt(i), i, formatted);
+            }
+
+            if (lastNonSeparator != 0) {
+                formatted = getFormattedNumber(lastNonSeparator, hasCursor);
+            }
+
+            return formatted;
+        }
+
+        private String processSymbol(char c, int i, String current) {
+            String res = current;
+            if (PhoneNumberUtils.isNonSeparator(c)) {
+                res = processSeparator(c, current);
+            }
+
+            if (i == currentIndex) {
+                hasCursor = true;
+            }
+
+            return res;
+        }
+
+        private String processSeparator(char c, String current) {
+            String res = current;
+            if (lastNonSeparator != 0) {
+                res = getFormattedNumber(lastNonSeparator, hasCursor);
+                hasCursor = false;
+            }
+            lastNonSeparator = c;
+
+            return res;
+        }
+
+        private String getFormattedNumber(char lastNonSeparator, boolean hasCursor) {
+            return hasCursor ? formatter.inputDigitAndRememberPosition(lastNonSeparator) : formatter.inputDigit(lastNonSeparator);
+        }
     }
 }
