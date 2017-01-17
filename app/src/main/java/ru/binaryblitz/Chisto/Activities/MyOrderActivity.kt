@@ -102,7 +102,9 @@ class MyOrderActivity : BaseActivity() {
         (findViewById(R.id.number) as TextView).text = getString(R.string.number_sign) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         (findViewById(R.id.date_text) as TextView).text = getDateFromJson(obj)
 
-        createOrderListView(obj.get("order_items").asJsonArray)
+        if (obj.get("order_items") != null && !obj.get("order_items").isJsonNull) {
+            createOrderListView(obj.get("order_items").asJsonArray)
+        }
     }
 
     private fun createOrderListView(array: JsonArray) {
