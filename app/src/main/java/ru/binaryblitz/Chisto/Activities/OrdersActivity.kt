@@ -1,5 +1,6 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -154,10 +155,19 @@ class OrdersActivity : BaseActivity() {
         view.addItemDecoration(SwipeItemDecoration())
     }
 
+    private fun openActivity(activity: Class<out Activity>) {
+        val intent = Intent(this@OrdersActivity, activity)
+        startActivity(intent)
+    }
+
     private fun setOnClickListeners() {
+
         findViewById(R.id.left_btn).setOnClickListener {
-            val intent = Intent(this@OrdersActivity, ProfileActivity::class.java)
-            startActivity(intent)
+            if (DeviceInfoStore.getToken(this@OrdersActivity) == "null") {
+                openActivity(RegistrationActivity::class.java)
+            } else {
+                openActivity(ProfileActivity::class.java)
+            }
         }
 
         findViewById(R.id.right_btn).setOnClickListener {

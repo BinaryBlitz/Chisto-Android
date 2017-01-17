@@ -302,7 +302,7 @@ class PersonalInfoActivity : BaseActivity() {
             return
         }
 
-        setTextToField(city!!, user!!.city)
+        setTextToField(city!!, DeviceInfoStore.getCityObject(this).name)
 
         if (user!!.firstName == null || user!!.firstName == "null") {
             setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))

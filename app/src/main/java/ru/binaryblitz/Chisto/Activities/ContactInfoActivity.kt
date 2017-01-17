@@ -96,7 +96,7 @@ class ContactInfoActivity : BaseActivity() {
     private fun setInfo() {
         user = DeviceInfoStore.getUserObject(this) ?: return
         setTextToField(email!!, user!!.email)
-        setTextToField(city!!, user!!.city)
+        setTextToField(city!!, DeviceInfoStore.getCityObject(this).name)
         setTextToField(name!!, user!!.firstName)
         setTextToField(lastname!!, user!!.lastname)
         setTextToField(flat!!, user!!.apartmentNumber)
