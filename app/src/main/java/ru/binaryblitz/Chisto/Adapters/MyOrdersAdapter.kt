@@ -21,7 +21,6 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_my_order, parent, false)
-
         return ViewHolder(itemView)
     }
 
