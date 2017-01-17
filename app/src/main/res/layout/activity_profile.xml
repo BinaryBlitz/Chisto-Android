@@ -232,7 +232,7 @@
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"
-            android:text="@string/quit"
+            android:text="@string/log_out"
             android:layout_width="match_parent"
             android:layout_height="64dp"
             android:id="@+id/quit_btn"

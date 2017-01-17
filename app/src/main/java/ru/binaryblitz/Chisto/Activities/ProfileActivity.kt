@@ -49,7 +49,7 @@ class ProfileActivity : BaseActivity() {
         }
 
         findViewById(R.id.quit_btn).setOnClickListener {
-            quit()
+            logOut()
         }
 
 
@@ -90,7 +90,7 @@ class ProfileActivity : BaseActivity() {
     }
 
 
-    private fun quit() {
+    private fun logOut() {
         DeviceInfoStore.resetToken(this)
         DeviceInfoStore.resetUser(this)
         updateUser()

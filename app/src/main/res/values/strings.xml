@@ -187,7 +187,7 @@
     <string name="number_sign">№</string>
 
     <string name="registration_browse">Регистрируясь в приложении, вы принимаете условия <u>Пользовательского соглашения</u></string>
-    <string name="quit">Выйти</string>
+    <string name="log_out">Выйти</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
