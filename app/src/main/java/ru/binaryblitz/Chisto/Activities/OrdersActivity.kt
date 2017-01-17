@@ -163,9 +163,11 @@ class OrdersActivity : BaseActivity() {
     private fun setOnClickListeners() {
 
         findViewById(R.id.left_btn).setOnClickListener {
-            val userNotLogged = DeviceInfoStore.getToken(this@OrdersActivity) == "null"
-            if (userNotLogged) openActivity(RegistrationActivity::class.java)
-            else openActivity(ProfileActivity::class.java)
+            if (DeviceInfoStore.getToken(this@OrdersActivity) == "null") {
+                openActivity(RegistrationActivity::class.java)
+            } else {
+                openActivity(ProfileActivity::class.java)
+            }
         }
 
         findViewById(R.id.right_btn).setOnClickListener {
