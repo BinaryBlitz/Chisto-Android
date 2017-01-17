@@ -60,6 +60,7 @@ public class CustomPhoneNumberTextWatcher implements TextWatcher {
         int length;
 
         private Formatter(CharSequence s, int cursor) {
+            this.s = s;
             currentIndex = cursor - 1;
             length = s.length();
         }

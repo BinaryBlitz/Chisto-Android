@@ -28,7 +28,6 @@ class ProfileActivity : BaseActivity() {
 
         setOnClickListeners()
         Handler().post { getUser() }
-
     }
 
     private fun setOnClickListeners() {
