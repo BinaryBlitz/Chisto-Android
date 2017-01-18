@@ -92,6 +92,7 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun logOut() {
+        OrdersActivity.laundryId = 0
         DeviceInfoStore.resetToken(this)
         DeviceInfoStore.resetUser(this)
         updateUser()
