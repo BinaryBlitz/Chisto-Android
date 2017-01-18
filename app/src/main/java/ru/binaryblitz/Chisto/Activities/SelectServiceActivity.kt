@@ -88,16 +88,16 @@ class SelectServiceActivity : BaseActivity() {
                 showErrorDialog()
                 return@setOnClickListener
             }
-            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+            closeDialog()
             openActivity()
         }
 
         findViewById(R.id.dialog).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog))
+            closeDialog()
         }
 
         findViewById(R.id.cancel_btn).setOnClickListener {
-            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+            closeDialog()
         }
     }
 
@@ -114,8 +114,13 @@ class SelectServiceActivity : BaseActivity() {
                 .show()
     }
 
+    private fun closeDialog() {
+        Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+    }
+
     override fun onBackPressed() {
-        finishActivity()
+        if (dialogOpened) closeDialog()
+        else finishActivity()
     }
 
     private fun initSizeDialog() {
@@ -160,7 +165,6 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun finishActivity() {
-        if (dialogOpened) return
         if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
         finish()
     }
