@@ -183,7 +183,6 @@ class PersonalInfoActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        LogUtil.logError(response.errorBody().string())
                         if (response.isSuccessful) parseAnswer(response.body(), payWithCreditCard)
                         else onServerError(response)
                     }

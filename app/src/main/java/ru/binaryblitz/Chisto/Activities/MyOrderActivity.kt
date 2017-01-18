@@ -124,8 +124,7 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun getOrderFromJson(obj: JsonObject): Order {
-        val categoryJson = obj.get("order_treatments").asJsonArray.get(0).asJsonObject
-                .get("laundry_treatment").asJsonObject.get("treatment").asJsonObject.get("item").asJsonObject
+        val categoryJson = obj.get("order_treatments").asJsonArray.get(0).asJsonObject.get("treatment").asJsonObject.get("item").asJsonObject
 
         val category = getCategoryFromJson(categoryJson)
 
@@ -167,7 +166,7 @@ class MyOrderActivity : BaseActivity() {
 
     private fun getTreatments(array: JsonArray): ArrayList<Treatment> {
         val treatments: ArrayList<Treatment> = (0..array.size() - 1)
-                .map { array.get(it).asJsonObject.get("laundry_treatment").asJsonObject }
+                .map { array.get(it).asJsonObject }
                 .mapTo(ArrayList()) {
                     Treatment(AndroidUtilities.getIntFieldFromJson(it.get("treatment").asJsonObject.get("id")),
                             AndroidUtilities.getStringFieldFromJson(it.get("treatment").asJsonObject.get("name")),
