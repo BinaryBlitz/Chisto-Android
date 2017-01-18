@@ -124,6 +124,7 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun getOrderFromJson(obj: JsonObject): Order {
+        LogUtil.logError(obj.toString())
         val categoryJson = obj.get("order_treatments").asJsonArray.get(0).asJsonObject
                 .get("laundry_treatment").asJsonObject.get("treatment").asJsonObject.get("item").asJsonObject
 
