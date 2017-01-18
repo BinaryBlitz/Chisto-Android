@@ -59,6 +59,12 @@ class LaundryAndOrderActivity : BaseActivity() {
             intent.putExtra(EXTRA_ID, getIntent().getIntExtra(EXTRA_ID, 1))
             startActivity(intent)
         }
+
+        findViewById(R.id.ratingBarBtn).setOnClickListener {
+            val intent = Intent(this@LaundryAndOrderActivity, ReviewsActivity::class.java)
+            intent.putExtra(EXTRA_ID, getIntent().getIntExtra(EXTRA_ID, 1))
+            startActivity(intent)
+        }
     }
 
     private fun initElements() {
