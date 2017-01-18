@@ -38,7 +38,7 @@ class LaundriesActivity : BaseActivity() {
     private var adapter: LaundriesAdapter? = null
     private var layout: SwipeRefreshLayout? = null
 
-    private var selectedIndex = 0
+    private var selectedIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,9 +112,9 @@ class LaundriesActivity : BaseActivity() {
 
     private fun showDialog() {
         val items = ArrayList<String>()
+        items.add(getString(R.string.rate_filter))
         items.add(getString(R.string.cost_filter))
         items.add(getString(R.string.speed_filter))
-        items.add(getString(R.string.rate_filter))
 
         MaterialDialog.Builder(this)
                 .title(R.string.title)
