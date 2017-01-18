@@ -46,7 +46,6 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
         findViewById(R.id.cont_btn).setOnClickListener {
