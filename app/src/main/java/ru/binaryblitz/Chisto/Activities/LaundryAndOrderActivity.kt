@@ -46,7 +46,6 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
         findViewById(R.id.cont_btn).setOnClickListener {
@@ -56,6 +55,12 @@ class LaundryAndOrderActivity : BaseActivity() {
         }
 
         findViewById(R.id.reviews_btn).setOnClickListener {
+            val intent = Intent(this@LaundryAndOrderActivity, ReviewsActivity::class.java)
+            intent.putExtra(EXTRA_ID, getIntent().getIntExtra(EXTRA_ID, 1))
+            startActivity(intent)
+        }
+
+        findViewById(R.id.ratingBarBtn).setOnClickListener {
             val intent = Intent(this@LaundryAndOrderActivity, ReviewsActivity::class.java)
             intent.putExtra(EXTRA_ID, getIntent().getIntExtra(EXTRA_ID, 1))
             startActivity(intent)
