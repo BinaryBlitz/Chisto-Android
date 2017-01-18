@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 app:srb_starSize="12dp"
                 app:srb_numberOfStars="5"
-                app:srb_rating="3"
+                app:srb_rating="0"
                 app:srb_stepSize="0.5"
                 app:srb_starBorderWidth="3"
                 app:srb_starCornerRadius="2"
