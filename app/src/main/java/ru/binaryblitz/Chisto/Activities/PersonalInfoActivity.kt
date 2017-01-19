@@ -36,7 +36,7 @@ class PersonalInfoActivity : BaseActivity() {
     val REQUEST_WEB = 100
 
     val CASH = "cash"
-    val CARD = "bank"
+    val CARD = "card"
     val GREY_COLOR = "#727272"
     val BLACK_COLOR = "#212121"
 
