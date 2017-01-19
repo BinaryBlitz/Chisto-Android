@@ -66,7 +66,7 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun isUserExistOnServer(): Boolean {
-        return DeviceInfoStore.getToken(this) != "null" && DeviceInfoStore.getUserObject(this).firstName == "null"
+        return DeviceInfoStore.getToken(this) != "null"
     }
 
     private fun getUser() {
@@ -89,7 +89,8 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun parseUserResponse(obj: JsonObject) {
-        val user = DeviceInfoStore.getUserObject(this)
+        var user = DeviceInfoStore.getUserObject(this)
+        if (user == null) user = User.createDefault()
         user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
         user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
@@ -370,12 +371,19 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun updateUser(payWithCreditCard: Boolean) {
-        sendToServer(payWithCreditCard)
+        val dialog  = ProgressDialog(this)
+        dialog.show()
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {}
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                sendToServer(payWithCreditCard)
+            }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {}
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
         })
     }
 
