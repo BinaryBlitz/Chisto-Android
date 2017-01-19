@@ -382,7 +382,7 @@ class PersonalInfoActivity : BaseActivity() {
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 dialog.dismiss()
-                onInternetConnectionError()
+                sendToServer(payWithCreditCard)
             }
         })
     }
