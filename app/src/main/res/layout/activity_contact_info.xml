@@ -90,6 +90,7 @@
                     android:textColor="@color/greyColor"
                     android:inputType="phone"
                     android:textSize="16sp"
+                    android:maxLength="25"
                     android:lines="1"
                     android:hint="@string/phone"
                     android:layout_marginRight="24dp"
