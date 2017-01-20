@@ -139,8 +139,8 @@
 
     <string name="result_order">Итого</string>
 
-    <string name="ready_code">Выполняется</string>
-    <string name="process_code">Выполнен</string>
+    <string name="ready_code">Выполнен</string>
+    <string name="process_code">На рассмотрении</string>
     <string name="canceled_code">Отменен</string>
     <string name="cleaning_code">В чистке</string>
     <string name="dispatched_code">Доставка</string>

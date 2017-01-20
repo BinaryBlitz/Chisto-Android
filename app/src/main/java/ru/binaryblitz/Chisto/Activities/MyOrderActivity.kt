@@ -352,12 +352,12 @@ class MyOrderActivity : BaseActivity() {
             "processing" -> {
                 icon = R.drawable.ic_process_indicator
                 textColor = ContextCompat.getColor(this, R.color.processColor)
-                text = R.string.ready_code
+                text = R.string.process_code
             }
             "completed" -> {
                 icon = R.drawable.ic_completed_indicator
                 textColor = ContextCompat.getColor(this, R.color.completedColor)
-                text = R.string.process_code
+                text = R.string.ready_code
             }
             "cleaning" -> {
                 icon = R.drawable.ic_cleaning_indicator
