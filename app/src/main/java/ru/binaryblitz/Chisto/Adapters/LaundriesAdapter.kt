@@ -49,8 +49,11 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
         setDatesAndCosts(laundry, holder)
 
-        if (!laundry.isPassingMinimumPrice) disableLaundry(holder, laundry)
-        else enableLaundry(holder, laundry)
+        if (laundry.isPassingMinimumPrice) {
+            enableLaundry(holder, laundry)
+        } else {
+            disableLaundry(holder, laundry)
+        }
     }
 
     private fun disableLaundry(holder: ViewHolder, laundry: Laundry) {
