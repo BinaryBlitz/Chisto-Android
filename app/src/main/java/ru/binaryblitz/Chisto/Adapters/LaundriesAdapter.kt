@@ -2,6 +2,7 @@ package ru.binaryblitz.Chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.*
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +29,6 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private val EXTRA_DELIVERY_COST = "deliveryCost"
 
     init {
-        Image.init(context)
         collection = ArrayList<Laundry>()
     }
 
@@ -49,9 +49,62 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
         setDatesAndCosts(laundry, holder)
 
-        Image.loadPhoto(laundry.icon, holder.icon)
+        if (laundry.isPassingMinimumPrice) {
+            enableLaundry(holder, laundry)
+        } else {
+            disableLaundry(holder, laundry)
+        }
+    }
 
+    private fun disableLaundry(holder: ViewHolder, laundry: Laundry) {
+        Image.loadGrayScalePhoto(context, laundry.icon, holder.icon)
+        setDisabledColors(holder)
+        holder.itemView.setOnClickListener(null)
+    }
+
+    private fun enableLaundry(holder: ViewHolder, laundry: Laundry) {
+        Image.loadPhoto(context, laundry.icon, holder.icon)
+        setActiveColors(holder)
         holder.itemView.setOnClickListener { selectLaundry(laundry) }
+    }
+
+    private fun setActiveColors(holder: ViewHolder) {
+        val color = Color.parseColor("#212121")
+        val blueColor = Color.parseColor("#4bc2f7")
+        val greenColor = Color.parseColor("#388E3C")
+
+        holder.name.setTextColor(color)
+        holder.desc.setTextColor(color)
+        holder.ratingBar.borderColor = blueColor
+        holder.ratingBar.fillColor = blueColor
+        holder.collectionPrice.setTextColor(color)
+        holder.collectionDate.setTextColor(color)
+        holder.deliveryBounds.setTextColor(color)
+        holder.deliveryDate.setTextColor(color)
+        holder.deliveryTitle.setTextColor(blueColor)
+        holder.collectionTitle.setTextColor(blueColor)
+        holder.price.setTextColor(greenColor)
+
+        holder.itemView.findViewById(R.id.basic_price_layout).visibility = View.VISIBLE
+        holder.itemView.findViewById(R.id.minimum_price_layout).visibility = View.GONE
+    }
+
+    private fun setDisabledColors(holder: ViewHolder) {
+        val color = Color.parseColor("#b6b6b6")
+        holder.name.setTextColor(color)
+        holder.desc.setTextColor(color)
+        holder.ratingBar.borderColor = color
+        holder.ratingBar.fillColor = color
+        holder.collectionPrice.setTextColor(color)
+        holder.collectionDate.setTextColor(color)
+        holder.deliveryBounds.setTextColor(color)
+        holder.deliveryDate.setTextColor(color)
+        holder.deliveryTitle.setTextColor(color)
+        holder.collectionTitle.setTextColor(color)
+        holder.price.setTextColor(color)
+
+        holder.itemView.findViewById(R.id.basic_price_layout).visibility = View.GONE
+        holder.itemView.findViewById(R.id.minimum_price_layout).visibility = View.VISIBLE
     }
 
     private fun selectLaundry(laundry: Laundry) {
@@ -87,15 +140,18 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
-        holder.collectionCost.text = getPeriod(laundry)
+        holder.collectionPrice.text = getPeriod(laundry)
         holder.collectionDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate)
         holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
         holder.deliveryBounds.text = getPeriod(laundry)
         if (laundry.orderPrice!! >= laundry.freeDeliveryFrom!!) {
-            holder.cost.text = laundry.orderPrice!!.toString() + context.getString(R.string.ruble_sign)
+            holder.price.text = laundry.orderPrice!!.toString() + context.getString(R.string.ruble_sign)
         } else {
-            holder.cost.text = (laundry.orderPrice!! + laundry.deliveryFee!!).toString() + context.getString(R.string.ruble_sign)
+            holder.price.text = (laundry.orderPrice!! + laundry.deliveryFee!!).toString() + context.getString(R.string.ruble_sign)
         }
+
+        holder.minimumPriceValue.text = laundry.minimumOrderPrice.toString() + context.getString(R.string.ruble_sign)
+        holder.minimumPrice.text = context.getString(R.string.price) + " " + laundry.orderPrice!!.toString() + context.getString(R.string.ruble_sign)
     }
 
     private fun getPeriod(laundry: Laundry): String {
@@ -113,26 +169,18 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val desc: TextView
-        val collectionDate: TextView
-        val collectionCost: TextView
-        val deliveryDate: TextView
-        val deliveryBounds: TextView
-        val cost: TextView
-        val icon: ImageView
-        val ratingBar: SimpleRatingBar
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            desc = itemView.findViewById(R.id.description) as TextView
-            collectionDate = itemView.findViewById(R.id.curier_date) as TextView
-            collectionCost = itemView.findViewById(R.id.curier_cost) as TextView
-            deliveryDate = itemView.findViewById(R.id.delivery_date) as TextView
-            deliveryBounds = itemView.findViewById(R.id.delivery_bounds) as TextView
-            cost = itemView.findViewById(R.id.sum) as TextView
-            icon = itemView.findViewById(R.id.category_icon) as ImageView
-            ratingBar = itemView.findViewById(R.id.ratingBar) as SimpleRatingBar
-        }
+        val name = itemView.findViewById(R.id.name) as TextView
+        val desc = itemView.findViewById(R.id.description) as TextView
+        val collectionDate = itemView.findViewById(R.id.curier_date) as TextView
+        val collectionPrice = itemView.findViewById(R.id.curier_cost) as TextView
+        val deliveryDate = itemView.findViewById(R.id.delivery_date) as TextView
+        val deliveryBounds = itemView.findViewById(R.id.delivery_bounds) as TextView
+        val price = itemView.findViewById(R.id.sum) as TextView
+        val deliveryTitle = itemView.findViewById(R.id.delivery_title) as TextView
+        val minimumPrice = itemView.findViewById(R.id.minimum_cost_title) as TextView
+        val minimumPriceValue = itemView.findViewById(R.id.minimum_cost_price) as TextView
+        val collectionTitle = itemView.findViewById(R.id.collection_title) as TextView
+        val icon = itemView.findViewById(R.id.category_icon) as ImageView
+        val ratingBar = itemView.findViewById(R.id.ratingBar) as SimpleRatingBar
     }
 }

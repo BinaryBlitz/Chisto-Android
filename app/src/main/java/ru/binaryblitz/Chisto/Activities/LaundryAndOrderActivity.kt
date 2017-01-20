@@ -107,7 +107,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(allOrdersCost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.price) as TextView).text = Integer.toString(allOrdersCost) + getString(R.string.ruble_sign)
 
         deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
         if (deliveryCost != 0) {
@@ -179,8 +179,8 @@ class LaundryAndOrderActivity : BaseActivity() {
         (findViewById(R.id.name_text) as TextView).text = obj.get("name").asString
         (findViewById(R.id.desc_text) as TextView).text = obj.get("description").asString
 
-        Image.loadPhoto(ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(R.id.back_image) as ImageView)
-        Image.loadPhoto(ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(R.id.logo_image) as ImageView)
+        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(R.id.back_image) as ImageView)
+        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(R.id.logo_image) as ImageView)
 
         val count = obj.get("ratings_count").asInt
         val pluralText = resources.getQuantityString(R.plurals.review, count, count)

@@ -22,10 +22,6 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
 
     private var collection = ArrayList<Pair<String, Any>>()
 
-    init {
-        Image.init(context)
-    }
-
     fun clear() {
         collection.clear()
         notifyDataSetChanged()
@@ -61,17 +57,17 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
 
     private fun bindHeader(position: Int, holder: HeaderViewHolder) {
         val header = collection[position].second as Header
-        Image.loadPhoto(header.icon, holder.icon)
+        Image.loadPhoto(context, header.icon, holder.icon)
         holder.icon.setColorFilter(header.color)
         holder.name.text = header.name + " " + (header.sum / header.count).toString() +
                 context.getString(R.string.ruble_sign) + "  \u00D7" + header.count.toString()
-        holder.cost.text = header.sum.toString() + context.getString(R.string.ruble_sign)
+        holder.price.text = header.sum.toString() + context.getString(R.string.ruble_sign)
     }
 
     private fun bindBasic(position: Int, holder: BasicViewHolder) {
         val basic = collection[position].second as Basic
         holder.name.text = basic.name
-        holder.cost.text = basic.sum.toString() + context.getString(R.string.ruble_sign)
+        holder.price.text = basic.sum.toString() + context.getString(R.string.ruble_sign)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -84,25 +80,14 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
     }
 
     private inner class HeaderViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val icon: ImageView
-        val cost: TextView
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            cost = itemView.findViewById(R.id.cost) as TextView
-            icon = itemView.findViewById(R.id.category_icon) as ImageView
-        }
+        val name = itemView.findViewById(R.id.name) as TextView
+        val icon = itemView.findViewById(R.id.category_icon) as ImageView
+        val price = itemView.findViewById(R.id.price) as TextView
     }
 
     private inner class BasicViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val cost: TextView
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            cost = itemView.findViewById(R.id.cost) as TextView
-        }
+        val name = itemView.findViewById(R.id.name) as TextView
+        val price = itemView.findViewById(R.id.price) as TextView
     }
 
     companion object {

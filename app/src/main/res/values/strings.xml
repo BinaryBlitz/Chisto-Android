@@ -73,7 +73,7 @@
     <string name="call_us">Позвонить нам</string>
     <string name="email">Написать письмо</string>
 
-    <string name="cost">Стоимость</string>
+    <string name="price">Стоимость</string>
     <string name="courier">Сбор вещей</string>
 
     <string name="delete_from_order">Вы хотите удалить эту вещь из заказа?</string>
@@ -192,6 +192,7 @@
     <string name="card">Картой онлайн</string>
     <string name="order_price">Стоимость заказа</string>
     <string name="promo">Промокод</string>
+    <string name="minimum_order_price">Минимальная сумма заказа</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

@@ -22,7 +22,6 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
     val EXTRA_ID = "id"
 
     init {
-        Image.init(context)
         categories = ArrayList<Category>()
     }
 
@@ -50,7 +49,7 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         holder.name.text = category.name
         holder.description.text = category.description
 
-        Image.loadPhoto(category.icon, holder.icon)
+        Image.loadPhoto(context, category.icon, holder.icon)
         holder.icon.setColorFilter(category.color)
 
         holder.itemView.setOnClickListener {
@@ -66,15 +65,8 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        internal var name: TextView
-        internal var description: TextView
-        internal var icon: ImageView
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            description = itemView.findViewById(R.id.description) as TextView
-            icon = itemView.findViewById(R.id.category_icon) as ImageView
-        }
+        internal var name = itemView.findViewById(R.id.name) as TextView
+        internal var description = itemView.findViewById(R.id.description) as TextView
+        internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
     }
 }

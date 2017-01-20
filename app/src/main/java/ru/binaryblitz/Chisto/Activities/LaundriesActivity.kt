@@ -196,12 +196,15 @@ class LaundriesActivity : BaseActivity() {
         countSums(i)
         OrderList.setDecorationCost()
         laundry.orderPrice = allOrdersCost
-        if (!checkMinimumCost(laundry, obj)) return
+        if (!checkMinimumCost(laundry, obj)) {
+            laundry.isPassingMinimumPrice = false
+        }
         collection.add(laundry)
     }
 
     private fun checkMinimumCost(laundry: Laundry, obj: JsonObject): Boolean {
         val minimum = AndroidUtilities.getIntFieldFromJson(obj.get("minimum_order_price"))
+        laundry.minimumOrderPrice = minimum
         return laundry.orderPrice!! >= minimum
     }
 
@@ -231,7 +234,9 @@ class LaundriesActivity : BaseActivity() {
                 index,
                 getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee")),
-                AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
+                AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from")),
+                true,
+                0
         )
     }
 
@@ -363,8 +368,8 @@ class LaundriesActivity : BaseActivity() {
         setTextToField(R.id.name_text, laundry!!.name)
         setDates(laundry!!)
 
-        Image.loadPhoto(ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(R.id.back_image) as ImageView)
-        Image.loadPhoto(ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(R.id.logo_image) as ImageView)
+        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(R.id.back_image) as ImageView)
+        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(R.id.logo_image) as ImageView)
 
         Handler().post {
             dialogOpened = true

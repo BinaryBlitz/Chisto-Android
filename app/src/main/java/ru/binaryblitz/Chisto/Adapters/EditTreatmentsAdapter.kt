@@ -89,14 +89,8 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val desc: TextView
-        val index: TextView
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            desc = itemView.findViewById(R.id.description) as TextView
-            index = itemView.findViewById(R.id.index) as TextView
-        }
+        val name = itemView.findViewById(R.id.name) as TextView
+        val desc = itemView.findViewById(R.id.description) as TextView
+        val index = itemView.findViewById(R.id.index) as TextView
     }
 }
