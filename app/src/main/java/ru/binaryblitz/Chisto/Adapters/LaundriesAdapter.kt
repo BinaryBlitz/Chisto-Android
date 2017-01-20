@@ -49,7 +49,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
         setDatesAndCosts(laundry, holder)
 
-        if (position == 1) {
+        if (!laundry.isPassingMinimumPrice) {
             Image.loadGrayScalePhoto(context, laundry.icon, holder.icon)
             setDisabledColors(holder)
         } else {
@@ -142,8 +142,8 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
             holder.cost.text = (laundry.orderPrice!! + laundry.deliveryFee!!).toString() + context.getString(R.string.ruble_sign)
         }
 
-        holder.minimumPriceValue.text = holder.cost.text
-        holder.minimumPrice.text = context.getString(R.string.cost) + " " + laundry.minimumOrderPrice.toString() + context.getString(R.string.ruble_sign)
+        holder.minimumPriceValue.text = laundry.minimumOrderPrice.toString() + context.getString(R.string.ruble_sign)
+        holder.minimumPrice.text = context.getString(R.string.cost) + " " + holder.cost.text
     }
 
     private fun getPeriod(laundry: Laundry): String {
