@@ -3,10 +3,10 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
@@ -15,6 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Model.User
+import ru.binaryblitz.Chisto.Push.MyInstanceIDListenerService
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
@@ -35,6 +36,8 @@ class ContactInfoActivity : BaseActivity() {
 
     private var user: User? = null
 
+    private val EXTRA_TOKEN = "token"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -45,8 +48,21 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
+        finishActivity()
+    }
+
+    private fun finishActivity() {
+        if (DeviceInfoStore.getToken(this) == "null") finishIfNotLoggedIn()
+        else finishIfLoggedIn()
+    }
+
+    private fun finishIfLoggedIn() {
         if (!validateFields()) showDialog()
         else setData()
+    }
+
+    private fun finishIfNotLoggedIn() {
+        showDialogIfNotLoggedIn()
     }
 
     override fun onResume() {
@@ -80,6 +96,17 @@ class ContactInfoActivity : BaseActivity() {
                 .show()
     }
 
+    private fun showDialogIfNotLoggedIn() {
+        MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content(getString(R.string.registration_not_completed_error))
+                .positiveText(R.string.yes_code)
+                .negativeText(R.string.no_code)
+                .onPositive { dialog, action -> run { finish() } }
+                .onNegative { dialog, action -> run { dialog.dismiss() } }
+                .show()
+    }
+    
     private fun initFields() {
         name = findViewById(R.id.name_text) as MaterialEditText
         lastname = findViewById(R.id.lastname_text) as MaterialEditText
@@ -91,6 +118,57 @@ class ContactInfoActivity : BaseActivity() {
         comment = findViewById(R.id.comment_text) as MaterialEditText
         email = findViewById(R.id.email) as MaterialEditText
         phone!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
+    }
+
+    private fun generateUserJson(): JsonObject {
+        val obj = JsonObject()
+        obj.addProperty("first_name", name!!.text.toString())
+        obj.addProperty("last_name", lastname!!.text.toString())
+        obj.addProperty("apartment_number", flat!!.text.toString())
+        obj.addProperty("house_number", house!!.text.toString())
+        obj.addProperty("street_name", street!!.text.toString())
+        obj.addProperty("notes", comment!!.text.toString())
+        obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
+        obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
+        obj.addProperty("email", email!!.text.toString())
+        obj.addProperty("device_token", FirebaseInstanceId.getInstance().token)
+        obj.addProperty("platform", "android")
+        if (DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null") {
+            obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
+        }
+
+        val toSend = JsonObject()
+        toSend.add("user", obj)
+
+        return toSend
+    }
+
+    private fun parseUserAnswer(obj: JsonObject) {
+        DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
+        if (AndroidUtilities.checkPlayServices(this)) {
+            val intent = Intent(this@ContactInfoActivity, MyInstanceIDListenerService::class.java)
+            startService(intent)
+        }
+
+        finish()
+    }
+
+    private fun createUser() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                if (response.isSuccessful) parseUserAnswer(response.body())
+                else onServerError(response)
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
     }
 
     private fun setInfo() {
@@ -122,21 +200,8 @@ class ContactInfoActivity : BaseActivity() {
         if (user!!.notes!!.isEmpty()) user!!.notes = "null"
         DeviceInfoStore.saveUser(this, user)
 
-        updateUser()
-    }
-
-    private fun generateUserJson(): JsonObject {
-        val obj = JsonObject()
-        obj.addProperty("first_name", name!!.text.toString())
-        obj.addProperty("last_name", lastname!!.text.toString())
-        obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
-        obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
-        obj.addProperty("email", email!!.text.toString())
-
-        val toSend = JsonObject()
-        toSend.add("user", obj)
-
-        return toSend
+        if (DeviceInfoStore.getToken(this) == "null") createUser()
+        else updateUser()
     }
 
     private fun updateUser() {
