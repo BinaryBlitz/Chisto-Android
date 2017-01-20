@@ -73,7 +73,7 @@
     <string name="call_us">Позвонить нам</string>
     <string name="email">Написать письмо</string>
 
-    <string name="cost">Стоимость</string>
+    <string name="price">Стоимость</string>
     <string name="courier">Сбор вещей</string>
 
     <string name="delete_from_order">Вы хотите удалить эту вещь из заказа?</string>

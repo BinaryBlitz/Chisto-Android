@@ -89,11 +89,11 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.name) as TextView
-        val cost: TextView = itemView.findViewById(R.id.cost) as TextView
-        val desc: TextView = itemView.findViewById(R.id.desc) as TextView
-        val status: TextView = itemView.findViewById(R.id.status) as TextView
-        val marker: ImageView = itemView.findViewById(R.id.marker) as ImageView
-
+        val name = itemView.findViewById(R.id.name) as TextView
+        val cost = itemView.findViewById(R.id.price) as TextView
+        val desc = itemView.findViewById(R.id.desc) as TextView
+        val status = itemView.findViewById(R.id.status) as TextView
+        val marker = itemView.findViewById(R.id.marker) as ImageView
     }
 }
+

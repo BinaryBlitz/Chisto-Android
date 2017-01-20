@@ -105,9 +105,9 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView = itemView.findViewById(R.id.name) as TextView
-        val description: TextView = itemView.findViewById(R.id.description) as TextView
-        val count: TextView = itemView.findViewById(R.id.count) as TextView
-        val icon: ImageView = itemView.findViewById(R.id.category_icon) as ImageView
+        val name = itemView.findViewById(R.id.name) as TextView
+        val description = itemView.findViewById(R.id.description) as TextView
+        val count = itemView.findViewById(R.id.count) as TextView
+        val icon = itemView.findViewById(R.id.category_icon) as ImageView
     }
 }

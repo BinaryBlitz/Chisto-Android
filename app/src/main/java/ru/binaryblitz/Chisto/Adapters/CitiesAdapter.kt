@@ -98,12 +98,8 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val marker: ImageView
+        val name = itemView.findViewById(R.id.name) as TextView
+        val marker = itemView.findViewById(R.id.marker) as ImageView
 
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            marker = itemView.findViewById(R.id.marker) as ImageView
-        }
     }
 }

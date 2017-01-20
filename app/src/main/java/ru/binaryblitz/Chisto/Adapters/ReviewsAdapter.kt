@@ -51,16 +51,9 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val date: TextView
-        val comment: TextView
-        val stars: SimpleRatingBar
-
-        init {
-            name = itemView.findViewById(R.id.user_text) as TextView
-            date = itemView.findViewById(R.id.date_text) as TextView
-            comment = itemView.findViewById(R.id.comment_text) as TextView
-            stars = itemView.findViewById(R.id.ratings) as SimpleRatingBar
-        }
+        val name = itemView.findViewById(R.id.user_text) as TextView
+        val date = itemView.findViewById(R.id.date_text) as TextView
+        val comment = itemView.findViewById(R.id.comment_text) as TextView
+        val stars = itemView.findViewById(R.id.ratings) as SimpleRatingBar
     }
 }

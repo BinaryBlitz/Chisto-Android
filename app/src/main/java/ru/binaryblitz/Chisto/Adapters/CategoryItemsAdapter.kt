@@ -94,8 +94,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var name: TextView = itemView.findViewById(R.id.name) as TextView
-        internal var description: TextView = itemView.findViewById(R.id.description) as TextView
-        internal var icon: ImageView = itemView.findViewById(R.id.category_icon) as ImageView
+        internal var name = itemView.findViewById(R.id.name) as TextView
+        internal var description = itemView.findViewById(R.id.description) as TextView
+        internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
     }
 }
