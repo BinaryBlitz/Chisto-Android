@@ -196,12 +196,15 @@ class LaundriesActivity : BaseActivity() {
         countSums(i)
         OrderList.setDecorationCost()
         laundry.orderPrice = allOrdersCost
-        if (!checkMinimumCost(laundry, obj)) return
+        if (!checkMinimumCost(laundry, obj)) {
+            laundry.isPassingMinimumPrice = false
+        }
         collection.add(laundry)
     }
 
     private fun checkMinimumCost(laundry: Laundry, obj: JsonObject): Boolean {
         val minimum = AndroidUtilities.getIntFieldFromJson(obj.get("minimum_order_price"))
+        laundry.minimumOrderPrice = minimum
         return laundry.orderPrice!! >= minimum
     }
 
@@ -231,7 +234,9 @@ class LaundriesActivity : BaseActivity() {
                 index,
                 getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee")),
-                AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
+                AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from")),
+                true,
+                0
         )
     }
 

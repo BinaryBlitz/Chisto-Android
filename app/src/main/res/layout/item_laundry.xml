@@ -86,6 +86,7 @@
                           android:text="@string/courier"
                           android:textColor="@color/colorAccent"
                           android:textSize="16sp"
+                          android:id="@+id/collection_title"
                           android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>
                 <TextView android:layout_width="wrap_content"
@@ -117,6 +118,7 @@
                           android:text="@string/delivery"
                           android:textColor="@color/colorAccent"
                           android:textSize="16sp"
+                          android:id="@+id/delivery_title"
                           android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>
                 <TextView android:layout_width="wrap_content"
@@ -135,6 +137,8 @@
             <LinearLayout
                     android:layout_width="0dp"
                     android:layout_weight="1.0"
+                    android:id="@+id/basic_price_layout"
+                    android:visibility="gone"
                     android:orientation="vertical"
                     android:layout_gravity="center_vertical"
                     android:layout_height="match_parent">
@@ -148,13 +152,56 @@
                           android:text="@string/cost"
                           android:textColor="@color/colorAccent"
                           android:textSize="16sp"
+                          android:id="@+id/price_title"
                           android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>
                 <TextView android:layout_width="wrap_content"
                           android:layout_marginTop="18dp"
                           android:textSize="18sp"
                           android:id="@+id/sum"
+                          android:visibility="gone"
                           android:textColor="#388E3C"
+                          android:layout_gravity="center_horizontal"
+                          android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1.0"
+                    android:orientation="vertical"
+                    android:id="@+id/minimum_price_layout"
+                    android:background="@drawable/right_border"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content">
+                <ImageView
+                        android:layout_width="44dp"
+                        android:src="@drawable/ic_cost"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="44dp"/>
+                <TextView android:layout_width="wrap_content"
+                          android:text="@string/delivery"
+                          android:textSize="12sp"
+                          android:layout_marginTop="8dp"
+                          android:textColor="#b6b6b6"
+                          android:id="@+id/minimum_cost_title"
+                          android:layout_gravity="center_horizontal"
+                          android:layout_height="wrap_content"/>
+                <TextView android:layout_width="wrap_content"
+                          android:layout_marginTop="4dp"
+                          android:gravity="center"
+                          android:textColor="#b6b6b6"
+                          android:textSize="12sp"
+                          android:text="Минимальная\nсумма заказа"
+                          android:id="@+id/minimum_cost_help"
+                          android:layout_gravity="center_horizontal"
+                          android:layout_height="wrap_content"/>
+
+                <TextView android:layout_width="wrap_content"
+                          android:layout_marginTop="4dp"
+                          android:textSize="16sp"
+                          android:text="38000"
+                          android:textColor="#333"
+                          android:id="@+id/minimum_cost_price"
                           android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>
             </LinearLayout>
