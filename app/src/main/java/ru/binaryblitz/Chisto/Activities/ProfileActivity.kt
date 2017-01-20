@@ -1,5 +1,6 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -22,27 +23,59 @@ import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 
 class ProfileActivity : BaseActivity() {
     val EXTRA_PHONE = "phone"
+    val EXTRA_SELECTED = "selected"
+    val SELECTED_CONTACT_INFO_ACTIVITY = 2
+    val SELECTED_ORDERS_ACTIVITY = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_profile)
-
         setOnClickListeners()
-        Handler().post { getUser() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initElements()
+        Handler().post { if (DeviceInfoStore.getToken(this) != "null") { getUser() } }
+    }
+
+    private fun initElements() {
+        if (DeviceInfoStore.getToken(this) == "null") {
+            findViewById(R.id.quit_btn).visibility = View.GONE
+        } else {
+            findViewById(R.id.quit_btn).visibility = View.VISIBLE
+        }
+    }
+
+    private fun openActivity(selected: Int, activity: Class<out Activity>) {
+        val intent = Intent(this@ProfileActivity, activity)
+        intent.putExtra(EXTRA_SELECTED, selected)
+        startActivity(intent)
+    }
+
+    private fun openActivity(activity: Class<out Activity>) {
+        val intent = Intent(this@ProfileActivity, activity)
+        startActivity(intent)
     }
 
     private fun setOnClickListeners() {
         findViewById(R.id.back_btn).setOnClickListener { finish() }
 
         findViewById(R.id.contact_data_btn).setOnClickListener {
-            val intent = Intent(this@ProfileActivity, ContactInfoActivity::class.java)
-            startActivity(intent)
+            if (DeviceInfoStore.getToken(this) == "null") {
+                openActivity(SELECTED_CONTACT_INFO_ACTIVITY, RegistrationActivity::class.java)
+            } else {
+                openActivity(ContactInfoActivity::class.java)
+            }
         }
 
         findViewById(R.id.my_orders_btn).setOnClickListener {
-            val intent = Intent(this@ProfileActivity, MyOrdersActivity::class.java)
-            startActivity(intent)
+            if (DeviceInfoStore.getToken(this) == "null") {
+                openActivity(SELECTED_ORDERS_ACTIVITY, RegistrationActivity::class.java)
+            } else {
+                openActivity(MyOrdersActivity::class.java)
+            }
         }
 
         findViewById(R.id.about_btn).setOnClickListener {
@@ -53,7 +86,6 @@ class ProfileActivity : BaseActivity() {
         findViewById(R.id.quit_btn).setOnClickListener {
             logOut()
         }
-
 
         findViewById(R.id.rules_btn).setOnClickListener {
             val intent = Intent(this@ProfileActivity, WebActivity::class.java)
@@ -99,19 +131,17 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun getUser() {
-        val dialog = ProgressDialog(this)
-        dialog.show()
-
         ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this))
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                        dialog.dismiss()
-                        if (response.isSuccessful) parseUserResponse(response.body())
-                        else onServerError(response)
+                        if (response.isSuccessful) {
+                            parseUserResponse(response.body())
+                        } else {
+                            onServerError(response)
+                        }
                     }
 
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                        dialog.dismiss()
                         onInternetConnectionError()
                     }
                 })
@@ -122,10 +152,11 @@ class ProfileActivity : BaseActivity() {
 
         if (user == null) user = User.createDefault()
 
-        if (AndroidUtilities.getStringFieldFromJson(obj.get("phone_number")).isEmpty())
+        if (AndroidUtilities.getStringFieldFromJson(obj.get("phone_number")).isEmpty()) {
             user.phone = intent.getStringExtra(EXTRA_PHONE)
-        else
+        } else {
             user.phone = AndroidUtilities.getStringFieldFromJson(obj.get("phone_number"))
+        }
 
         user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
@@ -135,8 +166,6 @@ class ProfileActivity : BaseActivity() {
         user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
         user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
         user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
-
-        if (user.notes!!.isEmpty()) user.notes = "null"
 
         val ordersCount = AndroidUtilities.getIntFieldFromJson(obj.get("orders_count"))
         if (ordersCount == 0) {
