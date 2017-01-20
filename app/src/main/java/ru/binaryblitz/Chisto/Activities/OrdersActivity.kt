@@ -163,23 +163,16 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-
         findViewById(R.id.left_btn).setOnClickListener {
-            if (DeviceInfoStore.getToken(this@OrdersActivity) == "null") {
-                openActivity(RegistrationActivity::class.java)
-            } else {
-                openActivity(ProfileActivity::class.java)
-            }
+            openActivity(ProfileActivity::class.java)
         }
 
         findViewById(R.id.right_btn).setOnClickListener {
-            val intent = Intent(this@OrdersActivity, SelectCategoryActivity::class.java)
-            startActivity(intent)
+            openActivity(SelectCategoryActivity::class.java)
         }
 
         findViewById(R.id.add_btn).setOnClickListener {
-            val intent = Intent(this@OrdersActivity, SelectCategoryActivity::class.java)
-            startActivity(intent)
+            openActivity(SelectCategoryActivity::class.java)
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {

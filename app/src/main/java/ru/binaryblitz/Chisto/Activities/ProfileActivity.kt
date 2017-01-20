@@ -1,5 +1,6 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -28,21 +29,32 @@ class ProfileActivity : BaseActivity() {
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_profile)
 
+        initElements()
         setOnClickListeners()
-        Handler().post { getUser() }
+        Handler().post { if (DeviceInfoStore.getToken(this) != "null") { getUser() } }
+    }
+
+    private fun initElements() {
+        if (DeviceInfoStore.getToken(this) == "null") findViewById(R.id.quit_btn).visibility = View.GONE
+        else findViewById(R.id.quit_btn).visibility = View.VISIBLE
+    }
+
+    private fun openActivity(activity: Class<out Activity>) {
+        val intent = Intent(this@ProfileActivity, activity)
+        startActivity(intent)
     }
 
     private fun setOnClickListeners() {
         findViewById(R.id.back_btn).setOnClickListener { finish() }
 
         findViewById(R.id.contact_data_btn).setOnClickListener {
-            val intent = Intent(this@ProfileActivity, ContactInfoActivity::class.java)
-            startActivity(intent)
+            if (DeviceInfoStore.getToken(this) == "null") openActivity(RegistrationActivity::class.java)
+            else openActivity(ContactInfoActivity::class.java)
         }
 
         findViewById(R.id.my_orders_btn).setOnClickListener {
-            val intent = Intent(this@ProfileActivity, MyOrdersActivity::class.java)
-            startActivity(intent)
+            if (DeviceInfoStore.getToken(this) == "null") openActivity(RegistrationActivity::class.java)
+            else openActivity(MyOrdersActivity::class.java)
         }
 
         findViewById(R.id.about_btn).setOnClickListener {
@@ -53,7 +65,6 @@ class ProfileActivity : BaseActivity() {
         findViewById(R.id.quit_btn).setOnClickListener {
             logOut()
         }
-
 
         findViewById(R.id.rules_btn).setOnClickListener {
             val intent = Intent(this@ProfileActivity, WebActivity::class.java)
