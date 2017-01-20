@@ -33,6 +33,8 @@ import ru.binaryblitz.Chisto.Utils.CustomPhoneNumberTextWatcher
 class RegistrationActivity : BaseActivity() {
 
     val EXTRA_PHONE = "phone"
+    val EXTRA_SELECTED = "selected"
+    val SELECTED_CONTACT_INFO_ACTIVITY = 2
 
     private var code = false
     private var cost = 0
@@ -162,8 +164,20 @@ class RegistrationActivity : BaseActivity() {
         if (!token.isJsonNull) DeviceInfoStore.saveToken(this, token.asString)
     }
 
+    private fun continueRegistration() {
+        if (DeviceInfoStore.getToken(this) == "null") openContactInfo()
+        else openSelectedActivity()
+    }
+
+    private fun openSelectedActivity() {
+        val choice = intent.getIntExtra(EXTRA_SELECTED, 0)
+
+        if (choice == SELECTED_CONTACT_INFO_ACTIVITY) openContactInfo()
+        else openMyOrders()
+    }
+
     private fun finishActivity(phone: String) {
-        if (cost == 0) openProfileScreen()
+        if (cost == 0) continueRegistration()
         else openOrderScreen(phone)
     }
 
@@ -176,8 +190,14 @@ class RegistrationActivity : BaseActivity() {
         finish()
     }
 
-    private fun openProfileScreen() {
-        val intent = Intent(this@RegistrationActivity, ProfileActivity::class.java)
+    private fun openMyOrders() {
+        val intent = Intent(this@RegistrationActivity, MyOrdersActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun openContactInfo() {
+        val intent = Intent(this@RegistrationActivity, ContactInfoActivity::class.java)
         startActivity(intent)
         finish()
     }

@@ -28,9 +28,12 @@ class ProfileActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_profile)
-
-        initElements()
         setOnClickListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initElements()
         Handler().post { if (DeviceInfoStore.getToken(this) != "null") { getUser() } }
     }
 
@@ -110,19 +113,14 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun getUser() {
-        val dialog = ProgressDialog(this)
-        dialog.show()
-
         ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this))
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                        dialog.dismiss()
                         if (response.isSuccessful) parseUserResponse(response.body())
                         else onServerError(response)
                     }
 
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                        dialog.dismiss()
                         onInternetConnectionError()
                     }
                 })
