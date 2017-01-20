@@ -23,6 +23,9 @@ import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 
 class ProfileActivity : BaseActivity() {
     val EXTRA_PHONE = "phone"
+    val EXTRA_SELECTED = "selected"
+    val SELECTED_CONTACT_INFO_ACTIVITY = 2
+    val SELECTED_ORDERS_ACTIVITY = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +45,12 @@ class ProfileActivity : BaseActivity() {
         else findViewById(R.id.quit_btn).visibility = View.VISIBLE
     }
 
+    private fun openActivity(selected: Int, activity: Class<out Activity>) {
+        val intent = Intent(this@ProfileActivity, activity)
+        intent.putExtra(EXTRA_SELECTED, selected)
+        startActivity(intent)
+    }
+
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@ProfileActivity, activity)
         startActivity(intent)
@@ -51,12 +60,12 @@ class ProfileActivity : BaseActivity() {
         findViewById(R.id.back_btn).setOnClickListener { finish() }
 
         findViewById(R.id.contact_data_btn).setOnClickListener {
-            if (DeviceInfoStore.getToken(this) == "null") openActivity(RegistrationActivity::class.java)
+            if (DeviceInfoStore.getToken(this) == "null") openActivity(SELECTED_CONTACT_INFO_ACTIVITY, RegistrationActivity::class.java)
             else openActivity(ContactInfoActivity::class.java)
         }
 
         findViewById(R.id.my_orders_btn).setOnClickListener {
-            if (DeviceInfoStore.getToken(this) == "null") openActivity(RegistrationActivity::class.java)
+            if (DeviceInfoStore.getToken(this) == "null") openActivity(SELECTED_ORDERS_ACTIVITY, RegistrationActivity::class.java)
             else openActivity(MyOrdersActivity::class.java)
         }
 
