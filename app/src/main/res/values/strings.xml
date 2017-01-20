@@ -190,6 +190,8 @@
     <string name="payment_type">Способ оплаты</string>
     <string name="cash">Наличные</string>
     <string name="card">Картой онлайн</string>
+    <string name="order_price">Стоимость заказа</string>
+    <string name="promo">Промокод</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
