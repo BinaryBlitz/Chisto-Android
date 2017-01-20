@@ -36,7 +36,7 @@ class PersonalInfoActivity : BaseActivity() {
     val REQUEST_WEB = 100
 
     val CASH = "cash"
-    val CARD = "bank"
+    val CARD = "card"
     val GREY_COLOR = "#727272"
     val BLACK_COLOR = "#212121"
 
@@ -66,7 +66,7 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun isUserExistOnServer(): Boolean {
-        return DeviceInfoStore.getToken(this) != "null" && DeviceInfoStore.getUserObject(this).firstName == "null"
+        return DeviceInfoStore.getToken(this) != "null"
     }
 
     private fun getUser() {
@@ -89,7 +89,8 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun parseUserResponse(obj: JsonObject) {
-        val user = DeviceInfoStore.getUserObject(this)
+        var user = DeviceInfoStore.getUserObject(this)
+        if (user == null) user = User.createDefault()
         user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
         user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
@@ -175,7 +176,7 @@ class PersonalInfoActivity : BaseActivity() {
         return toSend
     }
 
-    private fun sendToServer(payWithCreditCard: Boolean) {
+    private fun sendToServer(payWithCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
@@ -183,7 +184,7 @@ class PersonalInfoActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        if (response.isSuccessful) parseAnswer(response.body(), payWithCreditCard)
+                        if (response.isSuccessful) parseAnswer(response.body(), payWithCard)
                         else onServerError(response)
                     }
 
@@ -194,9 +195,9 @@ class PersonalInfoActivity : BaseActivity() {
                 })
     }
 
-    private fun parseAnswer(obj: JsonObject, payWithCreditCard: Boolean) {
+    private fun parseAnswer(obj: JsonObject, payWithCard: Boolean) {
         orderId = obj.get("id").asInt
-        if (payWithCreditCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        if (payWithCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
         else complete(orderId)
     }
 
@@ -369,24 +370,31 @@ class PersonalInfoActivity : BaseActivity() {
         sendToServer(payWithCreditCard)
     }
 
-    private fun updateUser(payWithCreditCard: Boolean) {
-        sendToServer(payWithCreditCard)
+    private fun updateUser(payWithCard: Boolean) {
+        val dialog  = ProgressDialog(this)
+        dialog.show()
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {}
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                sendToServer(payWithCard)
+            }
 
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {}
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                sendToServer(payWithCard)
+            }
         })
     }
 
-    private fun createUser(payWithCreditCard: Boolean) {
+    private fun createUser(payWithCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
         ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseUserAnswer(payWithCreditCard, response.body())
+                if (response.isSuccessful) parseUserAnswer(payWithCard, response.body())
                 else onServerError(response)
             }
 
