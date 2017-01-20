@@ -132,7 +132,7 @@ public class OrderList {
             if (orders.get(j).getTreatments().get(i).getId() == treatmentId) {
                 int decorationCost = orders.get(j).getDecorationPrice();
                 orders.get(j).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier(j)) - cost));
-                orders.get(j).getTreatments().get(i).setCost(cost);
+                orders.get(j).getTreatments().get(i).setPrice(cost);
             }
         }
     }
@@ -165,7 +165,7 @@ public class OrderList {
 
         for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
             if (orders.get(j).getTreatments().get(i).getId() == AppConfig.decorationId) {
-                orders.get(j).getTreatments().get(i).setCost(orders.get(j).getDecorationPrice());
+                orders.get(j).getTreatments().get(i).setPrice(orders.get(j).getDecorationPrice());
             }
         }
     }

@@ -1,5 +1,6 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
@@ -7,11 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Pair
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import io.fabric.sdk.android.Fabric
 import retrofit2.Call
 import retrofit2.Callback
@@ -20,22 +24,24 @@ import ru.binaryblitz.Chisto.Adapters.OrderContentAdapter
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Custom.RecyclerListView
 import ru.binaryblitz.Chisto.Model.CategoryItem
+import ru.binaryblitz.Chisto.Model.MyOrder
 import ru.binaryblitz.Chisto.Model.Order
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.*
+import ru.binaryblitz.Chisto.Utils.Animations.Animations
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MyOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
-
-    private var cost: Int = 0
-    private var deliveryCost: Int = 0
-    private var deliveryBound: Int = 0
+    private var dialogOpened = false
+    private var price: Int = 0
+    private var deliveryPrice: Int = 0
+    private var freeDeliveryFrom: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +56,7 @@ class MyOrderActivity : BaseActivity() {
         Handler().post {
             layout!!.isRefreshing = true
             load()
+            getUser()
         }
     }
 
@@ -75,6 +82,11 @@ class MyOrderActivity : BaseActivity() {
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
         findViewById(R.id.phone_call).setOnClickListener { AndroidUtilities.call(this@MyOrderActivity, AppConfig.phone) }
+
+        findViewById(R.id.cont_btn).setOnClickListener {
+            if (!checkReview()) showErrorDialog()
+            else sendReview()
+        }
     }
 
     private fun load() {
@@ -107,6 +119,95 @@ class MyOrderActivity : BaseActivity() {
         }
     }
 
+    private fun getUser() {
+        ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                if (response.isSuccessful) parseUser(response.body())
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+            }
+        })
+    }
+
+    private fun generateJson(): JsonObject {
+        val obj = JsonObject()
+
+        obj.addProperty("value", (findViewById(R.id.ratingBar) as SimpleRatingBar).rating)
+        obj.addProperty("content", (findViewById(R.id.review_text) as EditText).text.toString())
+
+        val toSend = JsonObject()
+        toSend.add("rating", obj)
+
+        return toSend
+    }
+
+    private fun parseReviewResponse() {
+        Animations.animateRevealHide(findViewById(R.id.dialog))
+    }
+
+    private fun showReviewDialog(id: Int) {
+        Handler().post {
+            dialogOpened = true
+            (findViewById(R.id.order_name_completed) as TextView).text =
+                    getString(R.string.order) + " № " + id.toString() + getString(R.string.completed)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
+        }
+    }
+
+    private fun showErrorDialog() {
+        MaterialDialog.Builder(this)
+                .title(getString(R.string.error))
+                .content(getString(R.string.wrong_review_code))
+                .positiveText(R.string.ok_code)
+                .onPositive { dialog, which -> dialog.dismiss() }
+                .show()
+    }
+
+    private fun checkReview(): Boolean {
+        return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0
+    }
+
+    private fun parseUser(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
+        val order = obj.get("order")
+        if (order == null || obj.get("order").isJsonNull) return
+
+        val myOrder = MyOrder(order.asJsonObject)
+
+        if (myOrder.status != MyOrder.Status.COMPLETED) return
+
+        val review = order.asJsonObject.get("rating") ?: return
+
+        OrdersActivity.laundryId = AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("laundry").asJsonObject.get("id"))
+
+        if (review.isJsonNull) {
+            showReviewDialog(AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("id")))
+        }
+    }
+
+    private fun sendReview() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+        ServerApi.get(this).api().sendReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                if (response.isSuccessful) {
+                    parseReviewResponse()
+                } else {
+                    onServerError(response)
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                onInternetConnectionError()
+            }
+        })
+    }
+
     private fun createOrderListView(array: JsonArray) {
         ColorsList.load(this)
         val listToShow = ArrayList<Pair<String, Any>>()
@@ -120,7 +221,7 @@ class MyOrderActivity : BaseActivity() {
         adapter!!.setCollection(listToShow)
         adapter!!.notifyDataSetChanged()
 
-        setSums()
+        setPrices()
     }
 
     private fun getOrderFromJson(obj: JsonObject): Order {
@@ -157,11 +258,11 @@ class MyOrderActivity : BaseActivity() {
         }
 
         treatmentsPrice = getPrice(order.treatments!!)
-        cost += treatmentsPrice * order.count
+        price += treatmentsPrice * order.count
     }
 
     private fun getPrice(array: ArrayList<Treatment>): Int {
-        return array.sumBy { it.cost }
+        return array.sumBy { it.price }
     }
 
     private fun getTreatments(array: JsonArray): ArrayList<Treatment> {
@@ -178,20 +279,23 @@ class MyOrderActivity : BaseActivity() {
         return treatments
     }
 
-    private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
+    private fun setPrices() {
+        (findViewById(R.id.price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
 
-        if (cost < deliveryBound) setPricesWithoutDeliveryPrice()
-        else setPricesWithDeliveryPrice()
+        if (price < freeDeliveryFrom) {
+            setPricesWithoutDeliveryPrice()
+        } else {
+            setPricesWithDeliveryPrice()
+        }
     }
 
     private fun setPricesWithoutDeliveryPrice() {
-        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.ruble_sign)
-        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price + deliveryPrice) + getString(R.string.ruble_sign)
+        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryPrice) + getString(R.string.ruble_sign)
     }
 
     private fun setPricesWithDeliveryPrice() {
-        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
         (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
     }
 
@@ -215,13 +319,13 @@ class MyOrderActivity : BaseActivity() {
     private fun addBasic(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
         (0..order.treatments!!.size - 1)
                 .map { order.treatments!![it] }
-                .map { OrderContentAdapter.Basic(it.name, it.cost) }
+                .map { OrderContentAdapter.Basic(it.name, it.price) }
                 .mapTo(listToShow) { Pair<String, Any>("B", it) }
     }
 
     private fun getFillSum(order: Order): Int {
         if (order.treatments == null) return 0
-        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].cost }
+        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].price }
         sum *= order.count
 
         return sum
@@ -235,8 +339,8 @@ class MyOrderActivity : BaseActivity() {
                 findViewById(R.id.category_icon) as ImageView
         )
 
-        deliveryBound = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
-        deliveryCost = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
+        freeDeliveryFrom = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
+        deliveryPrice = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
     }
 
     private fun processStatus(status: String) {

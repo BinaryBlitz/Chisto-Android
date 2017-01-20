@@ -135,13 +135,13 @@ class LaundryAndOrderActivity : BaseActivity() {
         OrderList.pullDecorationToEndOfTreatmentsList()
         (0..order.treatments!!.size - 1)
                 .map { order.treatments!![it] }
-                .map { OrderContentAdapter.Basic(it.name, it.cost) }
+                .map { OrderContentAdapter.Basic(it.name, it.price) }
                 .mapTo(listToShow) { Pair<String, Any>("B", it) }
     }
 
     private fun getFillSum(order: Order): Int {
         if (order.treatments == null) return 0
-        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].cost }
+        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].price }
         sum *= order.count
 
         return sum
