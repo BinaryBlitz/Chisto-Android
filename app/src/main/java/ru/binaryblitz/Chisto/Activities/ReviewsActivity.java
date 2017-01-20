@@ -17,11 +17,7 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
@@ -36,9 +32,8 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Server.ServerConfig;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.DateUtils;
 import ru.binaryblitz.Chisto.Utils.Image;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
-import ru.binaryblitz.Chisto.Utils.ServerErrorHandler;
 
 public class ReviewsActivity extends BaseActivity {
     private static final String EXTRA_ID = "id";
@@ -105,7 +100,6 @@ public class ReviewsActivity extends BaseActivity {
     }
 
     private void parseAnswer(JsonArray array) {
-        LogUtil.logError(array.toString());
         ArrayList<Review> collection = new ArrayList<>();
 
         for (int i = 0; i < array.size(); i++) {
@@ -113,7 +107,7 @@ public class ReviewsActivity extends BaseActivity {
 
             collection.add(new Review(
                     AndroidUtilities.INSTANCE.getIntFieldFromJson(object.get("id")),
-                    getDateFromJson(object),
+                    DateUtils.INSTANCE.parse(AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("created_at"))),
                     getUserName(object.get("user").getAsJsonObject()),
                     AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("content")),
                     (float) AndroidUtilities.INSTANCE.getDoubleFieldFromJson(object.get("value"))
@@ -128,19 +122,6 @@ public class ReviewsActivity extends BaseActivity {
         String firstName = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("first_name"));
         String lastName = AndroidUtilities.INSTANCE.getStringFieldFromJson(object.get("last_name"));
         return firstName + " " + lastName;
-    }
-
-    private Date getDateFromJson(JsonObject object) {
-        Date date = null;
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-            format.setTimeZone(TimeZone.getTimeZone("UTC"));
-            date = format.parse(object.get("created_at").getAsString());
-        } catch (Exception e) {
-            LogUtil.logException(e);
-        }
-
-        return date;
     }
 
     private void load() {

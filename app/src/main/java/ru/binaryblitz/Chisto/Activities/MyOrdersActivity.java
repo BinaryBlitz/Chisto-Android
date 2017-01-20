@@ -116,7 +116,7 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
         Collections.sort(collection, new Comparator<MyOrder>() {
             @Override
             public int compare(MyOrder myOrder, MyOrder t1) {
-                return -myOrder.getCreateAt().compareTo(t1.getCreateAt());
+                return -myOrder.getCreatedAt().compareTo(t1.getCreatedAt());
             }
         });
     }

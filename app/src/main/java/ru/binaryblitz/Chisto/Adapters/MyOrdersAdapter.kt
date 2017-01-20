@@ -32,7 +32,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         holder.name.text = context.getString(R.string.my_order_code) + order.id
         setIconAndColor(order, holder)
 
-        holder.desc.text = getDateStringRepresentation(order.createAt)
+        holder.desc.text = getDateStringRepresentation(order.createdAt)
 
         holder.cost.text = order.price.toString() + context.getString(R.string.ruble_sign)
 
