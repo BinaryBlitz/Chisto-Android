@@ -180,7 +180,10 @@ class MyOrderActivity : BaseActivity() {
         val review = order.asJsonObject.get("rating") ?: return
 
         OrdersActivity.laundryId = AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("laundry").asJsonObject.get("id"))
-        if (review.isJsonNull) showReviewDialog(AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("id")))
+
+        if (review.isJsonNull) {
+            showReviewDialog(AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("id")))
+        }
     }
 
     private fun sendReview() {
@@ -190,8 +193,11 @@ class MyOrderActivity : BaseActivity() {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
                 Animations.animateRevealHide(findViewById(R.id.dialog))
-                if (response.isSuccessful) parseReviewResponse()
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseReviewResponse()
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
@@ -276,8 +282,11 @@ class MyOrderActivity : BaseActivity() {
     private fun setSums() {
         (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
 
-        if (cost < deliveryBound) setPricesWithoutDeliveryPrice()
-        else setPricesWithDeliveryPrice()
+        if (cost < deliveryBound) {
+            setPricesWithoutDeliveryPrice()
+        } else {
+            setPricesWithDeliveryPrice()
+        }
     }
 
     private fun setPricesWithoutDeliveryPrice() {
