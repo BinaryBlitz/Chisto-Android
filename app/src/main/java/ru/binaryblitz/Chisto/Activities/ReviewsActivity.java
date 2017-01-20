@@ -147,9 +147,9 @@ public class ReviewsActivity extends BaseActivity {
     private void parseAnswer(JsonObject object) {
         ((TextView) findViewById(ru.binaryblitz.Chisto.R.id.name_text)).setText(object.get("name").getAsString());
 
-        Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
+        Image.loadPhoto(this, ServerConfig.INSTANCE.getImageUrl() +
                 object.get("background_image_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.back_image));
-        Image.loadPhoto(ServerConfig.INSTANCE.getImageUrl() +
+        Image.loadPhoto(this, ServerConfig.INSTANCE.getImageUrl() +
                 object.get("logo_url").getAsString(), (ImageView) findViewById(ru.binaryblitz.Chisto.R.id.logo_image));
         int count =  object.get("ratings_count").getAsInt();
 

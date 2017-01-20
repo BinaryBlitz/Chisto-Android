@@ -22,10 +22,6 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
 
     private var collection = ArrayList<Pair<String, Any>>()
 
-    init {
-        Image.init(context)
-    }
-
     fun clear() {
         collection.clear()
         notifyDataSetChanged()
@@ -61,7 +57,7 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
 
     private fun bindHeader(position: Int, holder: HeaderViewHolder) {
         val header = collection[position].second as Header
-        Image.loadPhoto(header.icon, holder.icon)
+        Image.loadPhoto(context, header.icon, holder.icon)
         holder.icon.setColorFilter(header.color)
         holder.name.text = header.name + " " + (header.sum / header.count).toString() +
                 context.getString(R.string.ruble_sign) + "  \u00D7" + header.count.toString()

@@ -34,7 +34,6 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private val EXTRA_DELIVERY_COST = "deliveryCost"
 
     init {
-        Image.init(context)
         collection = ArrayList<Laundry>()
     }
 
@@ -58,7 +57,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         if (laundry.isPassingMinimumPrice) setDisabledColors(holder)
         else setDisabledColors(holder)
 
-        Image.loadPhoto(laundry.icon, holder.icon)
+        Image.loadGrayScalePhoto(context, laundry.icon, holder.icon)
 
         holder.itemView.setOnClickListener { selectLaundry(laundry) }
     }

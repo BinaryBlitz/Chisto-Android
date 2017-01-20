@@ -53,7 +53,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.description.text = description
         holder.count.text = "\u00D7" + order.count + " шт"
 
-        Image.loadPhoto(order.category.icon, holder.icon)
+        Image.loadPhoto(context, order.category.icon, holder.icon)
         holder.icon.setColorFilter(order.color)
 
         holder.itemView.setOnClickListener {
@@ -105,16 +105,9 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val description: TextView
-        val count: TextView
-        val icon: ImageView
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            description = itemView.findViewById(R.id.description) as TextView
-            count = itemView.findViewById(R.id.count) as TextView
-            icon = itemView.findViewById(R.id.category_icon) as ImageView
-        }
+        val name: TextView = itemView.findViewById(R.id.name) as TextView
+        val description: TextView = itemView.findViewById(R.id.description) as TextView
+        val count: TextView = itemView.findViewById(R.id.count) as TextView
+        val icon: ImageView = itemView.findViewById(R.id.category_icon) as ImageView
     }
 }

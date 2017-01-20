@@ -47,7 +47,6 @@ class MyOrderActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_my_order)
-        Image.init(this)
 
         initList()
         initSwipeRefresh()
@@ -335,6 +334,7 @@ class MyOrderActivity : BaseActivity() {
         (findViewById(R.id.name) as TextView).text = AndroidUtilities.getStringFieldFromJson(obj.get("name"))
         (findViewById(R.id.description) as TextView).text = AndroidUtilities.getStringFieldFromJson(obj.get("description"))
         Image.loadPhoto(
+                this,
                 AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
                 findViewById(R.id.category_icon) as ImageView
         )
