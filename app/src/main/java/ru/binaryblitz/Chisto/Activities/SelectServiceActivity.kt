@@ -79,8 +79,11 @@ class SelectServiceActivity : BaseActivity() {
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            if (intent.getBooleanExtra(EXTRA_USE_AREA, false)) showSizeDialog()
-            else openActivity()
+            if (intent.getBooleanExtra(EXTRA_USE_AREA, false)) {
+                showSizeDialog()
+            } else {
+                openActivity()
+            }
         }
 
         findViewById(R.id.size_ok_btn).setOnClickListener {
@@ -88,16 +91,16 @@ class SelectServiceActivity : BaseActivity() {
                 showErrorDialog()
                 return@setOnClickListener
             }
-            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+            closeDialog()
             openActivity()
         }
 
         findViewById(R.id.dialog).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog))
+            closeDialog()
         }
 
         findViewById(R.id.cancel_btn).setOnClickListener {
-            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+            closeDialog()
         }
     }
 
@@ -114,8 +117,16 @@ class SelectServiceActivity : BaseActivity() {
                 .show()
     }
 
+    private fun closeDialog() {
+        Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+    }
+
     override fun onBackPressed() {
-        finishActivity()
+        if (dialogOpened) {
+            closeDialog()
+        } else {
+            finishActivity()
+        }
     }
 
     private fun initSizeDialog() {
@@ -160,7 +171,6 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun finishActivity() {
-        if (dialogOpened) return
         if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
         finish()
     }
@@ -182,15 +192,21 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun openActivity() {
-        if (isTreatmentsSelected()) processSelectedTreatments()
-        else showNothingSelectedError()
+        if (isTreatmentsSelected()) {
+            processSelectedTreatments()
+        } else {
+            showNothingSelectedError()
+        }
     }
 
     private fun processSelectedTreatments() {
         OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
 
-        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) addTreatments()
-        else editTreatments()
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+            addTreatments()
+        } else {
+            editTreatments()
+        }
 
         finish()
     }
@@ -223,8 +239,11 @@ class SelectServiceActivity : BaseActivity() {
         ServerApi.get(this).api().getTreatments(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) parseAnswer(response.body())
-                else onInternetConnectionError()
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                } else {
+                    onInternetConnectionError()
+                }
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
