@@ -193,6 +193,11 @@ class OrdersActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (dialogOpened) return
+        super.onBackPressed()
+    }
+
     override fun onResume() {
         super.onResume()
         update()
