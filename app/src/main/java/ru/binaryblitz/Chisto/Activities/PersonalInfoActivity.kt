@@ -370,31 +370,31 @@ class PersonalInfoActivity : BaseActivity() {
         sendToServer(payWithCreditCard)
     }
 
-    private fun updateUser(payWithCreditCard: Boolean) {
+    private fun updateUser(payWithCard: Boolean) {
         val dialog  = ProgressDialog(this)
         dialog.show()
 
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                sendToServer(payWithCreditCard)
+                sendToServer(payWithCard)
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 dialog.dismiss()
-                sendToServer(payWithCreditCard)
+                sendToServer(payWithCard)
             }
         })
     }
 
-    private fun createUser(payWithCreditCard: Boolean) {
+    private fun createUser(payWithCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
         ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseUserAnswer(payWithCreditCard, response.body())
+                if (response.isSuccessful) parseUserAnswer(payWithCard, response.body())
                 else onServerError(response)
             }
 
