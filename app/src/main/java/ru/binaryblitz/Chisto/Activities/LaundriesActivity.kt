@@ -237,7 +237,7 @@ class LaundriesActivity : BaseActivity() {
 
     private fun getFillSum(order: Order): Int {
         if (order.treatments == null) return 0
-        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].cost }
+        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].price }
         sum *= order.count
         return sum
     }

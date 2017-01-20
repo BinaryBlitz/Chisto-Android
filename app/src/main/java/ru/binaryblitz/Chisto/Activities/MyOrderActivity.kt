@@ -39,9 +39,9 @@ class MyOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
     private var dialogOpened = false
-    private var cost: Int = 0
-    private var deliveryCost: Int = 0
-    private var deliveryBound: Int = 0
+    private var price: Int = 0
+    private var deliveryPrice: Int = 0
+    private var freeDeliveryFrom: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -221,7 +221,7 @@ class MyOrderActivity : BaseActivity() {
         adapter!!.setCollection(listToShow)
         adapter!!.notifyDataSetChanged()
 
-        setSums()
+        setPrices()
     }
 
     private fun getOrderFromJson(obj: JsonObject): Order {
@@ -258,11 +258,11 @@ class MyOrderActivity : BaseActivity() {
         }
 
         treatmentsPrice = getPrice(order.treatments!!)
-        cost += treatmentsPrice * order.count
+        price += treatmentsPrice * order.count
     }
 
     private fun getPrice(array: ArrayList<Treatment>): Int {
-        return array.sumBy { it.cost }
+        return array.sumBy { it.price }
     }
 
     private fun getTreatments(array: JsonArray): ArrayList<Treatment> {
@@ -279,10 +279,10 @@ class MyOrderActivity : BaseActivity() {
         return treatments
     }
 
-    private fun setSums() {
-        (findViewById(R.id.cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
+    private fun setPrices() {
+        (findViewById(R.id.price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
 
-        if (cost < deliveryBound) {
+        if (price < freeDeliveryFrom) {
             setPricesWithoutDeliveryPrice()
         } else {
             setPricesWithDeliveryPrice()
@@ -290,12 +290,12 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun setPricesWithoutDeliveryPrice() {
-        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost + deliveryCost) + getString(R.string.ruble_sign)
-        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price + deliveryPrice) + getString(R.string.ruble_sign)
+        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryPrice) + getString(R.string.ruble_sign)
     }
 
     private fun setPricesWithDeliveryPrice() {
-        (findViewById(R.id.final_cost) as TextView).text = Integer.toString(cost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
         (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
     }
 
@@ -319,13 +319,13 @@ class MyOrderActivity : BaseActivity() {
     private fun addBasic(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
         (0..order.treatments!!.size - 1)
                 .map { order.treatments!![it] }
-                .map { OrderContentAdapter.Basic(it.name, it.cost) }
+                .map { OrderContentAdapter.Basic(it.name, it.price) }
                 .mapTo(listToShow) { Pair<String, Any>("B", it) }
     }
 
     private fun getFillSum(order: Order): Int {
         if (order.treatments == null) return 0
-        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].cost }
+        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].price }
         sum *= order.count
 
         return sum
@@ -339,8 +339,8 @@ class MyOrderActivity : BaseActivity() {
                 findViewById(R.id.category_icon) as ImageView
         )
 
-        deliveryBound = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
-        deliveryCost = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
+        freeDeliveryFrom = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
+        deliveryPrice = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
     }
 
     private fun processStatus(status: String) {
