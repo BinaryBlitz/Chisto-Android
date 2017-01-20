@@ -88,7 +88,6 @@ class ContactInfoActivity : BaseActivity() {
         user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
         user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
         user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
-        if (user.notes!!.isEmpty()) user.notes = "null"
         DeviceInfoStore.saveUser(this, user)
         setInfo()
     }
