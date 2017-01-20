@@ -8,6 +8,7 @@ import android.os.Handler
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -70,6 +71,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
         val order = obj.get("order")
         if (order == null || obj.get("order").isJsonNull) return
 
