@@ -164,20 +164,20 @@ class RegistrationActivity : BaseActivity() {
         if (!token.isJsonNull) DeviceInfoStore.saveToken(this, token.asString)
     }
 
-    private fun continueRegistration() {
-        if (DeviceInfoStore.getToken(this) == "null") openContactInfo()
-        else openSelectedActivity()
+    private fun continueRegistration(phone: String) {
+        if (DeviceInfoStore.getToken(this) == "null") openContactInfo(phone)
+        else openSelectedActivity(phone)
     }
 
-    private fun openSelectedActivity() {
+    private fun openSelectedActivity(phone: String) {
         val choice = intent.getIntExtra(EXTRA_SELECTED, 0)
 
-        if (choice == SELECTED_CONTACT_INFO_ACTIVITY) openContactInfo()
+        if (choice == SELECTED_CONTACT_INFO_ACTIVITY) openContactInfo(phone)
         else openMyOrders()
     }
 
     private fun finishActivity(phone: String) {
-        if (cost == 0) continueRegistration()
+        if (cost == 0) continueRegistration(phone)
         else openOrderScreen(phone)
     }
 
@@ -196,8 +196,10 @@ class RegistrationActivity : BaseActivity() {
         finish()
     }
 
-    private fun openContactInfo() {
+    private fun openContactInfo(phone: String) {
         val intent = Intent(this@RegistrationActivity, ContactInfoActivity::class.java)
+        intent.putExtra(EXTRA_PHONE, phone)
+        intent.putExtra(EXTRA_TOKEN, token)
         startActivity(intent)
         finish()
     }
@@ -334,7 +336,7 @@ class RegistrationActivity : BaseActivity() {
 
     companion object {
         private val ANIMATION_DURATION = 700
-        private var token: String? = null
+        private var token: String? = ""
         private val EXTRA_PRICE = "price"
         private val EXTRA_TOKEN = "token"
         private var phoneFromServer: String? = null

@@ -37,6 +37,7 @@ class ContactInfoActivity : BaseActivity() {
     private var user: User? = null
 
     private val EXTRA_TOKEN = "token"
+    private val EXTRA_PHONE = "phone"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,7 +107,7 @@ class ContactInfoActivity : BaseActivity() {
                 .onNegative { dialog, action -> run { dialog.dismiss() } }
                 .show()
     }
-    
+
     private fun initFields() {
         name = findViewById(R.id.name_text) as MaterialEditText
         lastname = findViewById(R.id.lastname_text) as MaterialEditText
@@ -172,7 +173,13 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setInfo() {
-        user = DeviceInfoStore.getUserObject(this) ?: return
+        user = DeviceInfoStore.getUserObject(this)
+
+        if (user == null) {
+            setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
+            return
+        }
+
         setTextToField(email!!, user!!.email)
         setTextToField(city!!, DeviceInfoStore.getCityObject(this).name)
         setTextToField(name!!, user!!.firstName)
