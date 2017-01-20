@@ -193,9 +193,8 @@
     <string name="order_price">Стоимость заказа</string>
     <string name="promo">Промокод</string>
     <string name="minimum_order_price">Минимальная сумма заказа</string>
+    <string name="registration_not_completed_error">Регистрация не завершена. Выйти?</string>
     
-    <string name="registration_not_completed_error">Вы не завершили регистрацию. Вы уверены, что хотите выйти?</string>
-
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
         <item quantity="one">%1$d отзыв</item>

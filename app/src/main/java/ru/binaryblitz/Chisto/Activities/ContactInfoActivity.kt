@@ -59,8 +59,11 @@ class ContactInfoActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        if (response.isSuccessful) parseUserResponse(response.body())
-                        else onServerError(response)
+                        if (response.isSuccessful) {
+                            parseUserResponse(response.body())
+                        } else {
+                            onServerError(response)
+                        }
                     }
 
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -95,13 +98,19 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun finishActivity() {
-        if (DeviceInfoStore.getToken(this) == "null") finishIfNotLoggedIn()
-        else finishIfLoggedIn()
+        if (DeviceInfoStore.getToken(this) == "null") {
+            finishIfNotLoggedIn()
+        } else {
+            finishIfLoggedIn()
+        }
     }
 
     private fun finishIfLoggedIn() {
-        if (!validateFields()) showDialog()
-        else setData()
+        if (!validateFields()) {
+            showDialog()
+        } else {
+            setData()
+        }
     }
 
     private fun finishIfNotLoggedIn() {
@@ -115,8 +124,11 @@ class ContactInfoActivity : BaseActivity() {
 
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener {
-            if (!validateFields()) showDialog()
-            else setData()
+            if (!validateFields()) {
+                showDialog()
+            } else {
+                setData()
+            }
         }
 
         findViewById(R.id.address_btn).setOnClickListener {
@@ -203,8 +215,11 @@ class ContactInfoActivity : BaseActivity() {
         ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseUserAnswer(response.body())
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseUserAnswer(response.body())
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -246,11 +261,13 @@ class ContactInfoActivity : BaseActivity() {
         user!!.houseNumber = house!!.text.toString()
         user!!.email = email!!.text.toString()
         user!!.notes = comment!!.text.toString()
-        if (user!!.notes!!.isEmpty()) user!!.notes = "null"
         DeviceInfoStore.saveUser(this, user)
 
-        if (DeviceInfoStore.getToken(this) == "null") createUser()
-        else updateUser()
+        if (DeviceInfoStore.getToken(this) == "null") {
+            createUser()
+        } else {
+            updateUser()
+        }
     }
 
     private fun updateUser() {
