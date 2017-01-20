@@ -192,6 +192,7 @@
     <string name="card">Картой онлайн</string>
     <string name="order_price">Стоимость заказа</string>
     <string name="promo">Промокод</string>
+    <string name="minimum_order_price">Минимальная сумма заказа</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

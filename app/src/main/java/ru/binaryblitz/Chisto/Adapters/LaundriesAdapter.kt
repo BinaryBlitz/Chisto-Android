@@ -18,11 +18,6 @@ import ru.binaryblitz.Chisto.Utils.DateUtils
 import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
-import android.graphics.ColorMatrixColorFilter
-import android.graphics.ColorMatrix
-
-
-
 
 class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -54,26 +49,36 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
         setDatesAndCosts(laundry, holder)
 
-        if (laundry.isPassingMinimumPrice) setDisabledColors(holder)
-        else setDisabledColors(holder)
-
-        Image.loadGrayScalePhoto(context, laundry.icon, holder.icon)
+        if (position == 1) {
+            Image.loadGrayScalePhoto(context, laundry.icon, holder.icon)
+            setDisabledColors(holder)
+        } else {
+            Image.loadPhoto(context, laundry.icon, holder.icon)
+            setActiveColors(holder)
+        }
 
         holder.itemView.setOnClickListener { selectLaundry(laundry) }
     }
 
     private fun setActiveColors(holder: ViewHolder) {
         val color = Color.parseColor("#212121")
+        val blueColor = Color.parseColor("#4bc2f7")
+        val greenColor = Color.parseColor("#388E3C")
+
         holder.name.setTextColor(color)
         holder.desc.setTextColor(color)
-        holder.ratingBar.borderColor = color
-        holder.ratingBar.fillColor = color
+        holder.ratingBar.borderColor = blueColor
+        holder.ratingBar.fillColor = blueColor
         holder.collectionCost.setTextColor(color)
         holder.collectionDate.setTextColor(color)
         holder.deliveryBounds.setTextColor(color)
         holder.deliveryDate.setTextColor(color)
-        holder.icon.setColorFilter(color)
-        holder.cost.setTextColor(color)
+        holder.deliveryTitle.setTextColor(blueColor)
+        holder.collectionTitle.setTextColor(blueColor)
+        holder.cost.setTextColor(greenColor)
+
+        holder.itemView.findViewById(R.id.basic_price_layout).visibility = View.VISIBLE
+        holder.itemView.findViewById(R.id.minimum_price_layout).visibility = View.GONE
     }
 
     private fun setDisabledColors(holder: ViewHolder) {
@@ -88,13 +93,6 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.deliveryDate.setTextColor(color)
         holder.deliveryTitle.setTextColor(color)
         holder.collectionTitle.setTextColor(color)
-
-        val matrix = ColorMatrix()
-        matrix.setSaturation(0f)
-
-        val filter = ColorMatrixColorFilter(matrix)
-        holder.icon.colorFilter = filter
-
         holder.cost.setTextColor(color)
 
         holder.itemView.findViewById(R.id.basic_price_layout).visibility = View.GONE
