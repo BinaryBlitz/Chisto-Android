@@ -193,8 +193,6 @@ class LaundryAndOrderActivity : BaseActivity() {
     private fun setDates() {
         (findViewById(R.id.curier_date) as TextView).text = intent.getStringExtra(EXTRA_COLLECTION_DATE)
         (findViewById(R.id.delivery_date) as TextView).text = intent.getStringExtra(EXTRA_DELIVERY_DATE)
-        (findViewById(R.id.delivery_bounds) as TextView).text = intent.getStringExtra(EXTRA_DELIVERY_BOUNDS)
-        (findViewById(R.id.delivery_bounds2) as TextView).text = intent.getStringExtra(EXTRA_DELIVERY_BOUNDS)
     }
 
     companion object {
@@ -203,6 +201,5 @@ class LaundryAndOrderActivity : BaseActivity() {
         private val EXTRA_DELIVERY_COST = "deliveryCost"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
-        private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
     }
 }

@@ -7,4 +7,11 @@
         <item name="android:colorAccent">@color/colorPrimary</item>
     </style>
 
+    <style name="PromoButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">0dp</item>
+        <item name="colorButtonNormal">@color/canceledColor</item>
+        <item name="android:colorAccent">@color/canceledColor</item>
+    </style>
+
 </resources>
