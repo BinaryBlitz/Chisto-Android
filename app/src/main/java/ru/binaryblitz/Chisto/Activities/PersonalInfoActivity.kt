@@ -176,7 +176,7 @@ class PersonalInfoActivity : BaseActivity() {
         return toSend
     }
 
-    private fun sendToServer(payWithCreditCard: Boolean) {
+    private fun sendToServer(payWithCard: Boolean) {
         val dialog = ProgressDialog(this)
         dialog.show()
 
@@ -184,7 +184,7 @@ class PersonalInfoActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        if (response.isSuccessful) parseAnswer(response.body(), payWithCreditCard)
+                        if (response.isSuccessful) parseAnswer(response.body(), payWithCard)
                         else onServerError(response)
                     }
 
@@ -195,9 +195,9 @@ class PersonalInfoActivity : BaseActivity() {
                 })
     }
 
-    private fun parseAnswer(obj: JsonObject, payWithCreditCard: Boolean) {
+    private fun parseAnswer(obj: JsonObject, payWithCard: Boolean) {
         orderId = obj.get("id").asInt
-        if (payWithCreditCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        if (payWithCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
         else complete(orderId)
     }
 
