@@ -2,7 +2,7 @@ package ru.binaryblitz.Chisto.Model
 
 import com.google.gson.JsonObject
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import java.text.SimpleDateFormat
+import ru.binaryblitz.Chisto.Utils.DateUtils
 import java.util.*
 
 class MyOrder(obj: JsonObject) {
@@ -26,19 +26,6 @@ class MyOrder(obj: JsonObject) {
         }
     }
 
-
-    private fun getDateFromJson(obj: JsonObject): Date? {
-        var date: Date? = null
-        try {
-            val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
-            format.timeZone = TimeZone.getTimeZone("UTC")
-            date = format.parse(obj.get("created_at").asString)
-        } catch (ignored: Exception) {
-        }
-
-        return date
-    }
-
     enum class Status {
         PROCESS,
         COMPLETED,
@@ -53,7 +40,7 @@ class MyOrder(obj: JsonObject) {
         laundryId = AndroidUtilities.getIntFieldFromJson(obj.get("laundry_id"))
         isPaid = AndroidUtilities.getBooleanFieldFromJson(obj.get("paid"))
         status = getStatusFromJson(obj)
-        createAt = getDateFromJson(obj)!!
+        createAt = DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("created_at")))
         price = AndroidUtilities.getIntFieldFromJson(obj.get("total_price"))
     }
 }
