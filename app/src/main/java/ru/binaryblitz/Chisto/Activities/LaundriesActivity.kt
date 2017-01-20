@@ -30,6 +30,7 @@ import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
 import ru.binaryblitz.Chisto.Utils.*
 import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import java.text.SimpleDateFormat
 import java.util.*
 
 class LaundriesActivity : BaseActivity() {
@@ -224,8 +225,8 @@ class LaundriesActivity : BaseActivity() {
                 AndroidUtilities.getDoubleFieldFromJson(obj.get("rating")).toFloat(),
                 DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_date"))),
                 DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_date"))),
-                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_date_opens_at"))),
-                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_date_closes_at"))),
+                parseDate(obj, "delivery_date_opens_at", "HH:mm"),
+                parseDate(obj, "delivery_date_closes_at", "HH:mm"),
                 allOrdersCost,
                 index,
                 getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
@@ -391,6 +392,21 @@ class LaundriesActivity : BaseActivity() {
 
     private fun setTextToField(id: Int, text: String) {
         (findViewById(id) as TextView).text = text
+    }
+
+    fun parseDate(obj: JsonObject, elementName: String, pattern: String): Date? {
+        if (obj.isJsonNull) return null
+
+        var date: Date? = null
+        try {
+            val format = SimpleDateFormat(pattern, Locale.US)
+            format.timeZone = TimeZone.getTimeZone("UTC")
+            date = format.parse(AndroidUtilities.getStringFieldFromJson(obj.get(elementName)))
+        } catch (e: Exception) {
+            LogUtil.logException(e)
+        }
+
+        return date
     }
 
     companion object {

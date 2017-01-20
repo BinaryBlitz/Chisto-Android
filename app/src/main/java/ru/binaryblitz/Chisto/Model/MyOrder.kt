@@ -6,12 +6,12 @@ import ru.binaryblitz.Chisto.Utils.DateUtils
 import java.util.*
 
 class MyOrder(obj: JsonObject) {
-    val id: Int
-    val laundryId: Int
-    val isPaid: Boolean
+    val id: Int = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+    val laundryId: Int = AndroidUtilities.getIntFieldFromJson(obj.get("laundry_id"))
+    val isPaid: Boolean = AndroidUtilities.getBooleanFieldFromJson(obj.get("paid"))
     val status: MyOrder.Status
-    val createAt: Date
-    val price: Int
+    val createdAt: Date = DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("created_at")))
+    val price: Int = AndroidUtilities.getIntFieldFromJson(obj.get("total_price"))
 
     private fun getStatusFromJson(obj: JsonObject): MyOrder.Status {
         val status = obj.get("status").asString
@@ -36,11 +36,6 @@ class MyOrder(obj: JsonObject) {
     }
 
     init {
-        id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        laundryId = AndroidUtilities.getIntFieldFromJson(obj.get("laundry_id"))
-        isPaid = AndroidUtilities.getBooleanFieldFromJson(obj.get("paid"))
         status = getStatusFromJson(obj)
-        createAt = DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("created_at")))
-        price = AndroidUtilities.getIntFieldFromJson(obj.get("total_price"))
     }
 }
