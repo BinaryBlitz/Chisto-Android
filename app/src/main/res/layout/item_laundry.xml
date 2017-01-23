@@ -95,12 +95,12 @@
                 <TextView android:layout_width="wrap_content"
                           android:layout_gravity="center_horizontal"
                           android:layout_marginTop="12dp"
-                          android:id="@+id/curier_date"
+                          android:id="@+id/collection_date"
                           android:layout_height="wrap_content"/>
 
                 <TextView android:layout_width="wrap_content"
                           android:layout_marginTop="4dp"
-                          android:id="@+id/curier_period"
+                          android:id="@+id/collection_period"
                           android:textSize="12sp"
                           android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>

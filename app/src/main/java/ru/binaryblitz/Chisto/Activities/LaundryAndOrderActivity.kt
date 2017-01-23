@@ -35,7 +35,6 @@ import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
     private var adapter: OrderContentAdapter? = null
-
     private var deliveryFee = 0
     private var dialogOpened = false
 
@@ -158,14 +157,14 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun setSums() {
-        (findViewById(R.id.price) as TextView).text = Integer.toString(allOrdersPrice) + getString(R.string.ruble_sign)
+        (findViewById(R.id.price) as TextView).text = Integer.toString(totalPrice) + getString(R.string.ruble_sign)
 
         deliveryFee = intent.getIntExtra(EXTRA_DELIVERY_FEE, 0)
         if (deliveryFee != 0) {
             (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryFee) + getString(R.string.ruble_sign)
         }
         (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
-                Integer.toString(allOrdersPrice + deliveryFee) + getString(R.string.ruble_sign)
+                Integer.toString(totalPrice + deliveryFee) + getString(R.string.ruble_sign)
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
@@ -198,7 +197,7 @@ class LaundryAndOrderActivity : BaseActivity() {
         return sum
     }
 
-    private val allOrdersPrice: Int
+    private val totalPrice: Int
         get() {
             val price = (0..OrderList.get()!!.size - 1).sumBy { getFillSum(OrderList.get(it)!!) }
             return price
@@ -206,7 +205,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
-        intent.putExtra(EXTRA_PRICE, allOrdersPrice + deliveryFee)
+        intent.putExtra(EXTRA_PRICE, totalPrice + deliveryFee)
         startActivity(intent)
     }
 

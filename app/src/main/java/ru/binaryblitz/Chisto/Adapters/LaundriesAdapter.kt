@@ -16,7 +16,6 @@ import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.DateUtils
 import ru.binaryblitz.Chisto.Utils.Image
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
@@ -217,8 +216,8 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById(R.id.name) as TextView
         val description = itemView.findViewById(R.id.description) as TextView
-        val collectionDate = itemView.findViewById(R.id.curier_date) as TextView
-        val collectionPeriod = itemView.findViewById(R.id.curier_period) as TextView
+        val collectionDate = itemView.findViewById(R.id.collection_date) as TextView
+        val collectionPeriod = itemView.findViewById(R.id.collection_period) as TextView
         val deliveryDate = itemView.findViewById(R.id.delivery_date) as TextView
         val deliveryBounds = itemView.findViewById(R.id.delivery_bounds) as TextView
         val price = itemView.findViewById(R.id.sum) as TextView
