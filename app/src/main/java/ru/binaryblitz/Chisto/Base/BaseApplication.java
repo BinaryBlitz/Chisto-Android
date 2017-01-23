@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import java.util.Locale;
 
 public class BaseApplication extends Application {
@@ -19,6 +21,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        JodaTimeAndroid.init(this);
         setLanguage(this, "ru");
     }
 

@@ -16,6 +16,7 @@ import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.DateUtils
 import ru.binaryblitz.Chisto.Utils.Image
+import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
@@ -77,7 +78,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.desc.setTextColor(color)
         holder.ratingBar.borderColor = blueColor
         holder.ratingBar.fillColor = blueColor
-        holder.collectionPrice.setTextColor(color)
+        holder.collectionPeriod.setTextColor(color)
         holder.collectionDate.setTextColor(color)
         holder.deliveryBounds.setTextColor(color)
         holder.deliveryDate.setTextColor(color)
@@ -95,7 +96,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.desc.setTextColor(color)
         holder.ratingBar.borderColor = color
         holder.ratingBar.fillColor = color
-        holder.collectionPrice.setTextColor(color)
+        holder.collectionPeriod.setTextColor(color)
         holder.collectionDate.setTextColor(color)
         holder.deliveryBounds.setTextColor(color)
         holder.deliveryDate.setTextColor(color)
@@ -140,7 +141,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
-        holder.collectionPrice.text = getPeriod(laundry)
+        holder.collectionPeriod.text = getCollectionPeriod(laundry)
         holder.collectionDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate)
         holder.deliveryDate.text = DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate)
         holder.deliveryBounds.text = getPeriod(laundry)
@@ -160,6 +161,12 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
                 DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
     }
 
+    private fun getCollectionPeriod(laundry: Laundry): String {
+        return context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.collectionDateOpensAt) +
+                context.getString(R.string.end_bound_code) +
+                DateUtils.getTimeStringRepresentation(laundry.collectionDateClosesAt)
+    }
+
     override fun getItemCount(): Int {
         return collection.size
     }
@@ -172,7 +179,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         val name = itemView.findViewById(R.id.name) as TextView
         val desc = itemView.findViewById(R.id.description) as TextView
         val collectionDate = itemView.findViewById(R.id.curier_date) as TextView
-        val collectionPrice = itemView.findViewById(R.id.curier_cost) as TextView
+        val collectionPeriod = itemView.findViewById(R.id.curier_period) as TextView
         val deliveryDate = itemView.findViewById(R.id.delivery_date) as TextView
         val deliveryBounds = itemView.findViewById(R.id.delivery_bounds) as TextView
         val price = itemView.findViewById(R.id.sum) as TextView
