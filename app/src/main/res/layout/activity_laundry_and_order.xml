@@ -216,7 +216,7 @@
                          android:layout_height="wrap_content"
                          android:layout_marginEnd="12dp"
                          android:layout_marginRight="12dp"
-                         android:id="@+id/cost"
+                         android:id="@+id/price"
                          android:textSize="18sp"
                          android:textColor="@color/colorAccent"
                          android:layout_gravity="end|center_vertical"/>
