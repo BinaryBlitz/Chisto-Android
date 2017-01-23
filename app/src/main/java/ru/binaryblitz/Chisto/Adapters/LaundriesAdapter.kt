@@ -16,6 +16,7 @@ import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.DateUtils
 import ru.binaryblitz.Chisto.Utils.Image
+import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
@@ -125,12 +126,28 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     fun sortByCost() {
-        Collections.sort(collection, { first, second -> first.orderPrice!!.compareTo(second.orderPrice!!) })
+        Collections.sort(collection, { first, second -> comparePrices(first, second) })
         notifyDataSetChanged()
     }
 
+    fun comparePrices(first: Laundry, second: Laundry): Int {
+        LogUtil.logError(getPrice(first).toString() + "    " + getPrice(second) + "    " + getPrice(first).compareTo(getPrice(second)))
+        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) return -1
+        else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) return 1
+        else return getPrice(first).compareTo(getPrice(second))
+    }
+
+    fun getPrice(laundry: Laundry): Int {
+        var price = laundry.orderPrice!!
+        if (laundry.orderPrice!! < laundry.freeDeliveryFrom!!) {
+            price = laundry.orderPrice!! + laundry.deliveryFee!!
+        }
+
+        return price
+    }
+
     fun sortBySpeed() {
-        Collections.sort(collection, { first, second -> first.deliveryDate!!.compareTo(second.deliveryDate!!) })
+        Collections.sort(collection, { first, second -> -first.deliveryDate!!.compareTo(second.deliveryDate!!) })
         notifyDataSetChanged()
     }
 
