@@ -35,7 +35,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         if (collection[position].selected) {
             setSelected(holder)
         } else {
-            setUnSelected(holder)
+            setDeselected(holder)
         }
 
         holder.itemView.setOnClickListener {
@@ -55,7 +55,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.marker.visibility = View.VISIBLE
     }
 
-    private fun setUnSelected(holder: ViewHolder) {
+    private fun setDeselected(holder: ViewHolder) {
         holder.name.setTextColor(ContextCompat.getColor(context, R.color.greyColor))
         holder.marker.visibility = View.GONE
     }
@@ -94,16 +94,16 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         notifyDataSetChanged()
     }
 
-    fun distanceBetween(firstLat: Double, firstLon: Double, secondLat: Double, secondLon: Double): Float {
-        val first = Location("")
-        val second = Location("")
+    fun distanceBetween(firstLatitude: Double, firstLongitude: Double, secondLatitude: Double, secondLongitude: Double): Float {
+        val startPoint = Location("")
+        val endPoint = Location("")
 
-        first.latitude = firstLat
-        first.longitude = firstLon
-        second.latitude = secondLat
-        second.longitude = secondLon
+        startPoint.latitude = firstLatitude
+        startPoint.longitude = firstLongitude
+        endPoint.latitude = secondLatitude
+        endPoint.longitude = secondLongitude
 
-        return first.distanceTo(second)
+        return startPoint.distanceTo(endPoint)
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -135,19 +135,19 @@ class SelectServiceActivity : BaseActivity() {
         val square = findViewById(R.id.square_text) as TextView
 
         lengthEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(editable: Editable) { recomputeSquare(false, editable, square) }
+            override fun afterTextChanged(s: Editable) { recomputeSquare(false, s, square) }
         })
 
         widthEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(editable: Editable) { recomputeSquare(true, editable, square) }
+            override fun afterTextChanged(s: Editable) { recomputeSquare(true, s, square) }
         })
     }
 
@@ -282,6 +282,6 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun sort(collection: ArrayList<Treatment>) {
-        Collections.sort(collection) { treatment, t -> treatment.name.compareTo(t.name) }
+        Collections.sort(collection) { treatment1, treatment2 -> treatment1.name.compareTo(treatment2.name) }
     }
 }
