@@ -26,7 +26,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private val EXTRA_COLLECTION_DATE = "collectionDate"
     private val EXTRA_DELIVERY_DATE = "deliveryDate"
     private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
-    private val EXTRA_DELIVERY_COST = "deliveryCost"
+    private val EXTRA_DELIVERY_FEE = "deliveryFee"
 
     init {
         collection = ArrayList<Laundry>()
@@ -44,7 +44,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         val laundry = collection[position]
 
         holder.name.text = laundry.name
-        holder.desc.text = laundry.desc
+        holder.description.text = laundry.description
         holder.ratingBar.rating = laundry.rating
 
         setDatesAndCosts(laundry, holder)
@@ -74,7 +74,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         val greenColor = Color.parseColor("#388E3C")
 
         holder.name.setTextColor(color)
-        holder.desc.setTextColor(color)
+        holder.description.setTextColor(color)
         holder.ratingBar.borderColor = blueColor
         holder.ratingBar.fillColor = blueColor
         holder.collectionPrice.setTextColor(color)
@@ -92,7 +92,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     private fun setDisabledColors(holder: ViewHolder) {
         val color = Color.parseColor("#b6b6b6")
         holder.name.setTextColor(color)
-        holder.desc.setTextColor(color)
+        holder.description.setTextColor(color)
         holder.ratingBar.borderColor = color
         holder.ratingBar.fillColor = color
         holder.collectionPrice.setTextColor(color)
@@ -111,14 +111,14 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         val intent = Intent(context, LaundryAndOrderActivity::class.java)
         OrderList.setLaundry(laundry)
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
-        OrderList.resetDecorationCosts()
+        OrderList.resetDecorationPrices()
         (context as LaundriesActivity).countSums(laundry.index!!)
         context.setLaundryTreatmentsIds(laundry.index)
         intent.putExtra(EXTRA_ID, laundry.id)
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.collectionDate))
         intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry.deliveryDate))
         if (laundry.orderPrice!! < laundry.freeDeliveryFrom!!) {
-            intent.putExtra(EXTRA_DELIVERY_COST, laundry.deliveryFee!!)
+            intent.putExtra(EXTRA_DELIVERY_FEE, laundry.deliveryFee!!)
         }
         intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry))
         context.startActivity(intent)
@@ -209,7 +209,7 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById(R.id.name) as TextView
-        val desc = itemView.findViewById(R.id.description) as TextView
+        val description = itemView.findViewById(R.id.description) as TextView
         val collectionDate = itemView.findViewById(R.id.curier_date) as TextView
         val collectionPrice = itemView.findViewById(R.id.curier_cost) as TextView
         val deliveryDate = itemView.findViewById(R.id.delivery_date) as TextView

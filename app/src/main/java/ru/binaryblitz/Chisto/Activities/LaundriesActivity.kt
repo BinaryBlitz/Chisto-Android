@@ -70,12 +70,12 @@ class LaundriesActivity : BaseActivity() {
 
     private fun clickCurrentBtn() {
         val intent = Intent(this@LaundriesActivity, LaundryAndOrderActivity::class.java)
-        OrderList.resetDecorationCosts()
+        OrderList.resetDecorationPrices()
         OrderList.setLaundry(laundry!!)
         OrderList.setDecorationMultiplier(laundry!!.decorationMultipliers!!)
         countSums(laundryObject!!.get("laundry_treatments").asJsonArray)
 
-        OrderList.setDecorationCost()
+        OrderList.setDecorationPrice()
 
         setLaundryTreatmentsIds(laundry!!.index!!)
         intent.putExtra(EXTRA_ID, laundry!!.id)
@@ -193,11 +193,11 @@ class LaundriesActivity : BaseActivity() {
     private fun processOrderForLaundry(i: Int, obj: JsonObject, collection: ArrayList<Laundry>) {
         val laundry = parseLaundry(i, obj)
         if (!checkTreatments(obj)) return
-        OrderList.resetDecorationCosts()
+        OrderList.resetDecorationPrices()
         OrderList.setLaundry(laundry)
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
         countSums(i)
-        OrderList.setDecorationCost()
+        OrderList.setDecorationPrice()
         laundry.orderPrice = allOrdersCost
         if (!checkMinimumCost(laundry, obj)) {
             laundry.isPassingMinimumPrice = false
@@ -316,7 +316,7 @@ class LaundriesActivity : BaseActivity() {
     private fun setPriceForTreatment(treatment: Treatment, laundryTreatments: ArrayList<Pair<Int, Int>>) {
         laundryTreatments.indices
                 .filter { treatment.id == laundryTreatments[it].first }
-                .forEach { OrderList.setCost(treatment.id, laundryTreatments[it].second) }
+                .forEach { OrderList.setPrice(treatment.id, laundryTreatments[it].second) }
     }
 
     private fun fillPrices(treatments: JsonArray): ArrayList<Pair<Int, Int>> {
@@ -351,7 +351,7 @@ class LaundriesActivity : BaseActivity() {
         laundryObject = obj
 
         laundry = parseLaundry(index, obj)
-        OrderList.resetDecorationCosts()
+        OrderList.resetDecorationPrices()
         OrderList.setLaundry(laundry!!)
         OrderList.setDecorationMultiplier(laundry!!.decorationMultipliers!!)
 
@@ -359,14 +359,14 @@ class LaundriesActivity : BaseActivity() {
             countSums(obj.get("laundry_treatments").asJsonArray)
         }
 
-        OrderList.setDecorationCost()
+        OrderList.setDecorationPrice()
         laundry!!.orderPrice = allOrdersCost
 
         setCosts(laundry!!)
 
         if (!checkMinimumCost(laundry!!, obj)) return
 
-        setTextToField(R.id.desc_text, laundry!!.desc)
+        setTextToField(R.id.desc_text, laundry!!.description)
         setTextToField(R.id.order_current_btn, getString(R.string.ordering_code))
         setTextToField(R.id.name_text, laundry!!.name)
         setDates(laundry!!)

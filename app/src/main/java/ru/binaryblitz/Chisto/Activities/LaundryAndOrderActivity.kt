@@ -32,7 +32,7 @@ import java.util.*
 class LaundryAndOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
-    private var deliveryCost = 0
+    private var deliveryFee = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +90,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun createOrderListView() {
-        OrderList.setDecorationCost()
+        OrderList.setDecorationPrice()
         val orderList = OrderList.get()
         val listToShow = ArrayList<Pair<String, Any>>()
 
@@ -107,14 +107,14 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun setSums() {
-        (findViewById(R.id.price) as TextView).text = Integer.toString(allOrdersCost) + getString(R.string.ruble_sign)
+        (findViewById(R.id.price) as TextView).text = Integer.toString(allOrdersPrice) + getString(R.string.ruble_sign)
 
-        deliveryCost = intent.getIntExtra(EXTRA_DELIVERY_COST, 0)
-        if (deliveryCost != 0) {
-            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryCost) + getString(R.string.ruble_sign)
+        deliveryFee = intent.getIntExtra(EXTRA_DELIVERY_FEE, 0)
+        if (deliveryFee != 0) {
+            (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryFee) + getString(R.string.ruble_sign)
         }
         (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
-                Integer.toString(allOrdersCost + deliveryCost) + getString(R.string.ruble_sign)
+                Integer.toString(allOrdersPrice + deliveryFee) + getString(R.string.ruble_sign)
     }
 
     private fun addHeader(order: Order, listToShow: ArrayList<Pair<String, Any>>) {
@@ -147,15 +147,15 @@ class LaundryAndOrderActivity : BaseActivity() {
         return sum
     }
 
-    private val allOrdersCost: Int
+    private val allOrdersPrice: Int
         get() {
-            val cost = (0..OrderList.get()!!.size - 1).sumBy { getFillSum(OrderList.get(it)!!) }
-            return cost
+            val price = (0..OrderList.get()!!.size - 1).sumBy { getFillSum(OrderList.get(it)!!) }
+            return price
         }
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
-        intent.putExtra(EXTRA_PRICE, allOrdersCost + deliveryCost)
+        intent.putExtra(EXTRA_PRICE, allOrdersPrice + deliveryFee)
         startActivity(intent)
     }
 
@@ -201,7 +201,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     companion object {
         private val EXTRA_ID = "id"
         private val EXTRA_PRICE = "price"
-        private val EXTRA_DELIVERY_COST = "deliveryCost"
+        private val EXTRA_DELIVERY_FEE = "deliveryFee"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
     }

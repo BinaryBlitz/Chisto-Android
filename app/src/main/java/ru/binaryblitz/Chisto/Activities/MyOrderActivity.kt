@@ -40,7 +40,7 @@ class MyOrderActivity : BaseActivity() {
     private var adapter: OrderContentAdapter? = null
     private var dialogOpened = false
     private var price: Int = 0
-    private var deliveryPrice: Int = 0
+    private var deliveryFee: Int = 0
     private var freeDeliveryFrom: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -297,8 +297,8 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun setPricesWithoutDeliveryPrice() {
-        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price + deliveryPrice) + getString(R.string.ruble_sign)
-        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryPrice) + getString(R.string.ruble_sign)
+        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price + deliveryFee) + getString(R.string.ruble_sign)
+        (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryFee) + getString(R.string.ruble_sign)
     }
 
     private fun setPricesWithDeliveryPrice() {
@@ -348,7 +348,7 @@ class MyOrderActivity : BaseActivity() {
         )
 
         freeDeliveryFrom = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
-        deliveryPrice = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
+        deliveryFee = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
     }
 
     private fun processStatus(status: String) {
@@ -360,12 +360,12 @@ class MyOrderActivity : BaseActivity() {
             "processing" -> {
                 icon = R.drawable.ic_process_indicator
                 textColor = ContextCompat.getColor(this, R.color.processColor)
-                text = R.string.process_code
+                text = R.string.processing_code
             }
             "completed" -> {
                 icon = R.drawable.ic_completed_indicator
                 textColor = ContextCompat.getColor(this, R.color.completedColor)
-                text = R.string.ready_code
+                text = R.string.completed_code
             }
             "cleaning" -> {
                 icon = R.drawable.ic_cleaning_indicator
