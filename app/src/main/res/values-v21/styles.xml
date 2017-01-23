@@ -14,4 +14,7 @@
         <item name="android:colorAccent">@color/canceledColor</item>
     </style>
 
+    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/canceledColor</item>
+    </style>
 </resources>

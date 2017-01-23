@@ -33,10 +33,13 @@
                   android:textSize="18sp"
                   android:hint="@string/promo_hint"
                   android:maxLength="4"
+                  android:textColorHint="#727272"
+                  android:textColorHighlight="#ed495a"
                   android:textColor="#ed495a"
                   android:inputType="textCapSentences"
-                  android:id="@+id/review_text"
+                  android:id="@+id/promo_text"
                   android:gravity="center"
+                  app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
                   android:layout_height="wrap_content"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -66,7 +69,7 @@
             android:layout_marginLeft="-12dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="-8dp"
-            android:id="@+id/cont_btn"
+            android:id="@+id/promo_btn"
             android:textColor="#ffffff"
             android:textSize="14sp"
             android:layout_gravity="bottom"

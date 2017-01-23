@@ -3,11 +3,15 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Pair
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -25,6 +29,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
+import ru.binaryblitz.Chisto.Utils.Animations.Animations
 import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
@@ -32,7 +37,9 @@ import java.util.*
 class LaundryAndOrderActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
+
     private var deliveryFee = 0
+    private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +52,36 @@ class LaundryAndOrderActivity : BaseActivity() {
         load()
     }
 
+    private fun showPromoDialog() {
+        Handler().post {
+            dialogOpened = true
+            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
+        }
+    }
+
+    private fun closeDialog() {
+        dialogOpened = false
+        Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+    }
+
+    override fun onBackPressed() {
+        if (dialogOpened) {
+            closeDialog()
+        } else {
+            finish()
+        }
+    }
+
+    private fun checkPromo(): Boolean {
+        if ((findViewById(R.id.promo_text) as EditText).text.toString().isEmpty()) {
+            findViewById(R.id.promo_btn)!!.isEnabled = false
+            return false
+        }
+
+        findViewById(R.id.promo_btn)!!.isEnabled = true
+        return true
+    }
+
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
@@ -52,6 +89,17 @@ class LaundryAndOrderActivity : BaseActivity() {
             val userNotLogged = DeviceInfoStore.getToken(this@LaundryAndOrderActivity) == "null"
             if (userNotLogged) openActivity(RegistrationActivity::class.java)
             else openActivity(PersonalInfoActivity::class.java)
+        }
+
+        findViewById(R.id.promo_btn).setOnClickListener {
+            if (checkPromo()) {
+                closeDialog()
+            }
+        }
+
+
+        findViewById(R.id.add_btn).setOnClickListener {
+            showPromoDialog()
         }
 
         findViewById(R.id.reviews_btn).setOnClickListener {
@@ -72,10 +120,19 @@ class LaundryAndOrderActivity : BaseActivity() {
         layout!!.setOnRefreshListener(null)
         layout!!.isEnabled = false
         layout!!.setColorSchemeResources(R.color.colorAccent)
-
+        findViewById(R.id.promo_btn)!!.isEnabled = false
+        
         load()
         initList()
         createOrderListView()
+
+        (findViewById(R.id.promo_text) as EditText).addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun afterTextChanged(editable: Editable) { checkPromo() }
+        })
     }
 
     private fun initList() {
