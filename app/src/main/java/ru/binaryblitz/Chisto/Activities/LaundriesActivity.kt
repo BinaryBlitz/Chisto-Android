@@ -8,6 +8,7 @@ import android.support.v4.util.Pair
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -175,7 +176,6 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswer(array: JsonArray) {
-        LogUtil.logError(array.toString())
         LaundriesActivity.array = array
         val collection = ArrayList<Laundry>()
 
@@ -239,7 +239,9 @@ class LaundriesActivity : BaseActivity() {
                 AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee")),
                 AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from")),
                 true,
-                0
+                0,
+                parseDate(obj, "collection_date_opens_at", "HH:mm"),
+                parseDate(obj, "collection_date_closes_at", "HH:mm")
         )
     }
 
