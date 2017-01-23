@@ -130,9 +130,9 @@ class LaundriesActivity : BaseActivity() {
 
     private fun sort(which: Int) {
         when (which) {
-            0 -> adapter!!.sortByCost()
-            1 -> adapter!!.sortBySpeed()
-            2 -> adapter!!.sortByRating()
+            1 -> adapter!!.sortByCost()
+            2 -> adapter!!.sortBySpeed()
+            3 -> adapter!!.sortByRating()
             else -> {
             }
         }
@@ -183,9 +183,9 @@ class LaundriesActivity : BaseActivity() {
             val obj = array.get(i).asJsonObject
             processOrderForLaundry(i, obj, collection)
         }
-        adapter!!.sortByRating()
         adapter!!.setCollection(collection)
         adapter!!.notifyDataSetChanged()
+        adapter!!.sortByRating()
 
         loadLaundry()
     }
