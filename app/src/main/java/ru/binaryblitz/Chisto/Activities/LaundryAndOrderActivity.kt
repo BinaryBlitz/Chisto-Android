@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -35,7 +34,6 @@ import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
-    private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
 
     private var deliveryFee = 0
@@ -116,12 +114,8 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun initElements() {
-        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout!!.setOnRefreshListener(null)
-        layout!!.isEnabled = false
-        layout!!.setColorSchemeResources(R.color.colorAccent)
         findViewById(R.id.promo_btn)!!.isEnabled = false
-        
+
         load()
         initList()
         createOrderListView()
@@ -217,10 +211,8 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun load() {
-        layout!!.isRefreshing = true
         ServerApi.get(this@LaundryAndOrderActivity).api().getLaundry(intent.getIntExtra(EXTRA_ID, 1)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                layout!!.isRefreshing = false
                 if (response.isSuccessful) {
                     parseAnswer(response.body())
                 } else {
@@ -229,7 +221,6 @@ class LaundryAndOrderActivity : BaseActivity() {
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                layout!!.isRefreshing = false
                 onInternetConnectionError()
             }
         })
