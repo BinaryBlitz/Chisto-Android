@@ -78,20 +78,29 @@ public class OrderList {
     public static void copyToBuffer(ArrayList<Treatment> treatments) {
         bufferTreatments.clear();
 
-        for (Treatment treatment : treatments) bufferTreatments.add(treatment.copy());
+        for (Treatment treatment : treatments) {
+            bufferTreatments.add(treatment.copy());
+        }
     }
 
     public static ArrayList<Treatment> getBufferTreatments() {
-        if (currentItem < orders.size()) return bufferTreatments;
-        else return new ArrayList<>();
+        if (currentItem < orders.size()) {
+            return bufferTreatments;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     public static void remove(int i) {
-        if (i < orders.size()) orders.remove(i);
+        if (i < orders.size()) {
+            orders.remove(i);
+        }
     }
 
     public static void removeCurrent() {
-        if (currentItem <= orders.size() - 1) orders.remove(currentItem);
+        if (currentItem <= orders.size() - 1) {
+            orders.remove(currentItem);
+        }
     }
 
     public static void edit(int i) {
@@ -99,11 +108,15 @@ public class OrderList {
     }
 
     public static void changeCount(int count) {
-        if (currentItem < orders.size()) orders.get(currentItem).setCount(count);
+        if (currentItem < orders.size()) {
+            orders.get(currentItem).setCount(count);
+        }
     }
 
     public static void changeColor(int color) {
-        if (currentItem < orders.size()) orders.get(currentItem).setColor(color);
+        if (currentItem < orders.size()) {
+            orders.get(currentItem).setColor(color);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -120,9 +133,13 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void setCost(int treatmentId, int cost) {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
+            return;
+        }
 
-        for (int j = 0; j < orders.size(); j++) { setCostForOrder(j, treatmentId, cost); }
+        for (int j = 0; j < orders.size(); j++) {
+            setCostForOrder(j, treatmentId, cost);
+        }
     }
 
     private static void setCostForOrder(int j, int treatmentId, int cost) {
@@ -139,14 +156,20 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void resetDecorationCosts() {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
+            return;
+        }
 
-        for (int i = 0; i < orders.size(); i++) { orders.get(i).setDecorationPrice(0); }
+        for (int i = 0; i < orders.size(); i++) {
+            orders.get(i).setDecorationPrice(0);
+        }
     }
 
     @SuppressWarnings("ConstantConditions")
     public static void setSize(int size) {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
+            return;
+        }
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
             orders.get(currentItem).setSize(size);
@@ -155,13 +178,19 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void setDecorationCost() {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
+            return;
+        }
 
-        for (int j = 0; j < orders.size(); j++) { setDecorationPriceForOrder(j); }
+        for (int j = 0; j < orders.size(); j++) {
+            setDecorationPriceForOrder(j);
+        }
     }
 
     private static void setDecorationPriceForOrder(int j) {
-        if (orders.get(j).getTreatments() == null) return;
+        if (orders.get(j).getTreatments() == null) {
+            return;
+        }
 
         for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
             if (orders.get(j).getTreatments().get(i).getId() == AppConfig.decorationId) {
@@ -172,7 +201,9 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void pullDecorationToEndOfTreatmentsList() {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
+            return;
+        }
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
             if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) {
@@ -185,23 +216,30 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     private static boolean isDecoration() {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null)
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
             return false;
+        }
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) return true;
+            if (orders.get(currentItem).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                return true;
+            }
         }
 
         return false;
     }
 
     private static double findMultiplier(int index) {
-        if (!isDecoration()) return 1.0;
+        if (!isDecoration()) {
+            return 1.0;
+        }
 
         int id = orders.get(index).getCategory().getId();
 
         for (int i = 0; i < decorationMultipliers.size(); i++) {
-            if (decorationMultipliers.get(i).first == id) return decorationMultipliers.get(i).second;
+            if (decorationMultipliers.get(i).first == id) {
+                return decorationMultipliers.get(i).second;
+            }
         }
 
         return 1.0;
@@ -209,12 +247,18 @@ public class OrderList {
 
     @SuppressWarnings("ConstantConditions")
     public static void addTreatment(Treatment treatment) {
-        if (currentItem < orders.size()) return;
+        if (currentItem < orders.size()) {
+            return;
+        }
 
-        if (orders.get(currentItem).getTreatments() == null) orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
+        if (orders.get(currentItem).getTreatments() == null) {
+            orders.get(currentItem).setTreatments(new ArrayList<Treatment>());
+        }
 
         for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            if (orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) return;
+            if (orders.get(currentItem).getTreatments().get(i).getId() == treatment.getId()) {
+                return;
+            }
         }
 
         orders.get(currentItem).getTreatments().add(treatment);
@@ -231,14 +275,18 @@ public class OrderList {
     }
 
     public static void saveTreatments(ArrayList<Treatment> treatments) {
-        if (currentItem >= orders.size()) return;
+        if (currentItem >= orders.size()) {
+            return;
+        }
         addTreatments(copyFromBuffer());
         bufferTreatments.clear();
     }
 
     private static ArrayList<Treatment> copyFromBuffer() {
         ArrayList<Treatment> res = new ArrayList<>();
-        for (Treatment treatment : bufferTreatments) res.add(treatment.copy());
+        for (Treatment treatment : bufferTreatments) {
+            res.add(treatment.copy());
+        }
 
         return res;
     }
@@ -246,7 +294,9 @@ public class OrderList {
     @SuppressWarnings("ConstantConditions")
     public static void addTreatmentsForEditing(ArrayList<Treatment> treatments) {
         if (currentItem < orders.size()) {
-            if (bufferTreatments == null) bufferTreatments = new ArrayList<>();
+            if (bufferTreatments == null) {
+                bufferTreatments = new ArrayList<>();
+            }
             bufferTreatments = treatments;
         }
     }

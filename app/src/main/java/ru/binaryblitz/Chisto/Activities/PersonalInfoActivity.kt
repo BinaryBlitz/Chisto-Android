@@ -77,8 +77,11 @@ class PersonalInfoActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        if (response.isSuccessful) parseUserResponse(response.body())
-                        else onServerError(response)
+                        if (response.isSuccessful) {
+                            parseUserResponse(response.body())
+                        } else {
+                            onServerError(response)
+                        }
                     }
 
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -99,7 +102,6 @@ class PersonalInfoActivity : BaseActivity() {
         user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
         user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
         user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
-        if (user.notes!!.isEmpty()) user.notes = "null"
         DeviceInfoStore.saveUser(this, user)
         setInfo()
     }
@@ -120,8 +122,11 @@ class PersonalInfoActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == REQUEST_WEB) {
-            if (data!!.getBooleanExtra("success", false)) complete(orderId)
-            else showPaymentError()
+            if (data!!.getBooleanExtra("success", false)) {
+                complete(orderId)
+            } else {
+                showPaymentError()
+            }
         }
     }
 
@@ -134,7 +139,9 @@ class PersonalInfoActivity : BaseActivity() {
             val local = JsonObject()
             local.addProperty("item_id", category.id)
             local.addProperty("quantity", count)
-            if (size != null) local.addProperty("area", size)
+            if (size != null) {
+                local.addProperty("area", size)
+            }
             local.addProperty("has_decoration", isDecoration)
 
             val treatmentsArray = JsonArray()
@@ -184,8 +191,11 @@ class PersonalInfoActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        if (response.isSuccessful) parseAnswer(response.body(), payWithCard)
-                        else onServerError(response)
+                        if (response.isSuccessful) {
+                            parseAnswer(response.body(), payWithCard)
+                        } else {
+                            onServerError(response)
+                        }
                     }
 
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -264,9 +274,11 @@ class PersonalInfoActivity : BaseActivity() {
     private fun process(payWithCreditCard: Boolean) {
         if (validateFields()) {
             setData()
-            val auth = DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null"
-            if (auth) createUser(payWithCreditCard)
-            else updateUser(payWithCreditCard)
+            if (DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null") {
+                createUser(payWithCreditCard)
+            } else {
+                updateUser(payWithCreditCard)
+            }
         }
     }
 
@@ -394,8 +406,11 @@ class PersonalInfoActivity : BaseActivity() {
         ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
-                if (response.isSuccessful) parseUserAnswer(payWithCard, response.body())
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseUserAnswer(payWithCard, response.body())
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -445,7 +460,9 @@ class PersonalInfoActivity : BaseActivity() {
     private fun validateField(editText: MaterialEditText, numbers: Boolean): Boolean {
         var count = 0
 
-        if (numbers) count = findNumbers(editText)
+        if (numbers) {
+            count = findNumbers(editText)
+        }
 
         if (editText.text.toString().isEmpty() || count != 0) {
             editText.error = getString(R.string.wrong_data)
@@ -460,7 +477,9 @@ class PersonalInfoActivity : BaseActivity() {
         val matcher = pattern.matcher(editText.text.toString())
 
         var count = 0
-        while (matcher.find()) count++
+        while (matcher.find()) {
+            count++
+        }
 
         return count
     }

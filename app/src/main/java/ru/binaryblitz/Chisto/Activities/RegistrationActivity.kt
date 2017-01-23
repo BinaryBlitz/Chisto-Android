@@ -70,12 +70,14 @@ class RegistrationActivity : BaseActivity() {
         phoneEditText!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
 
         codeEditText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {}
+            override fun afterTextChanged(s: Editable?) {}
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0!!.length == 5) verifyRequest()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s!!.length == 5) {
+                    verifyRequest()
+                }
             }
         })
     }
@@ -148,7 +150,9 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun verifyRequest() {
-        if (!checkCodeInput()) return
+        if (!checkCodeInput()) {
+            return
+        }
         executeVerifyRequest()
     }
 
@@ -161,24 +165,35 @@ class RegistrationActivity : BaseActivity() {
 
     private fun saveToken(obj: JsonObject) {
         val token = obj.get("api_token")
-        if (!token.isJsonNull) DeviceInfoStore.saveToken(this, token.asString)
+        if (!token.isJsonNull) {
+            DeviceInfoStore.saveToken(this, token.asString)
+        }
     }
 
     private fun continueRegistration(phone: String) {
-        if (DeviceInfoStore.getToken(this) == "null") openContactInfo(phone)
-        else openSelectedActivity(phone)
+        if (DeviceInfoStore.getToken(this) == "null") {
+            openContactInfo(phone)
+        } else {
+            openSelectedActivity(phone)
+        }
     }
 
     private fun openSelectedActivity(phone: String) {
         val choice = intent.getIntExtra(EXTRA_SELECTED, 0)
 
-        if (choice == SELECTED_CONTACT_INFO_ACTIVITY) openContactInfo(phone)
-        else openMyOrders()
+        if (choice == SELECTED_CONTACT_INFO_ACTIVITY) {
+            openContactInfo(phone)
+        } else {
+            openMyOrders()
+        }
     }
 
     private fun finishActivity(phone: String) {
-        if (cost == 0) continueRegistration(phone)
-        else openOrderScreen(phone)
+        if (cost == 0) {
+            continueRegistration(phone)
+        } else {
+            openOrderScreen(phone)
+        }
     }
 
     private fun openOrderScreen(phone: String) {
@@ -212,8 +227,11 @@ class RegistrationActivity : BaseActivity() {
                 object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        if (!response.isSuccessful) showCodeError()
-                        else parseVerifyAnswer(response.body())
+                        if (response.isSuccessful) {
+                            parseVerifyAnswer(response.body())
+                        } else {
+                            showCodeError()
+                        }
                     }
 
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {

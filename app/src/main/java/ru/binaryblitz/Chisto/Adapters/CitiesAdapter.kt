@@ -24,7 +24,6 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -34,21 +33,31 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.name.text = city.name
 
         if (collection[position].selected) {
-            holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
-            holder.marker.visibility = View.VISIBLE
+            setSelected(holder)
         } else {
-            holder.name.setTextColor(ContextCompat.getColor(context, R.color.greyColor))
-            holder.marker.visibility = View.GONE
+            setDeselected(holder)
         }
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, OrdersActivity::class.java)
             DeviceInfoStore.saveCity(context, city)
-            if (DeviceInfoStore.getToken(context) == "null") saveUser(city)
+            if (DeviceInfoStore.getToken(context) == "null") {
+                saveUser(city)
+            }
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             context.startActivity(intent)
             context.finish()
         }
+    }
+
+    private fun setSelected(holder: ViewHolder) {
+        holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
+        holder.marker.visibility = View.VISIBLE
+    }
+
+    private fun setDeselected(holder: ViewHolder) {
+        holder.name.setTextColor(ContextCompat.getColor(context, R.color.greyColor))
+        holder.marker.visibility = View.GONE
     }
 
     private fun saveUser(city: ru.binaryblitz.Chisto.Model.City) {
@@ -85,21 +94,20 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         notifyDataSetChanged()
     }
 
-    fun distanceBetween(firstLat: Double, firstLon: Double, secondLat: Double, secondLon: Double): Float {
-        val loc1 = Location("")
-        val loc2 = Location("")
+    fun distanceBetween(firstLatitude: Double, firstLongitude: Double, secondLatitude: Double, secondLongitude: Double): Float {
+        val startPoint = Location("")
+        val endPoint = Location("")
 
-        loc1.latitude = firstLat
-        loc1.longitude = firstLon
-        loc2.latitude = secondLat
-        loc2.longitude = secondLon
+        startPoint.latitude = firstLatitude
+        startPoint.longitude = firstLongitude
+        endPoint.latitude = secondLatitude
+        endPoint.longitude = secondLongitude
 
-        return loc1.distanceTo(loc2)
+        return startPoint.distanceTo(endPoint)
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById(R.id.name) as TextView
         val marker = itemView.findViewById(R.id.marker) as ImageView
-
     }
 }

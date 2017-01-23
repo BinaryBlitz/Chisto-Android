@@ -106,8 +106,11 @@ public class MapActivity extends BaseActivity
 
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
-                    if (results != null && results.count > 0) notifyDataSetChanged();
-                    else notifyDataSetInvalidated();
+                    if (results != null && results.count > 0) {
+                        notifyDataSetChanged();
+                    } else {
+                        notifyDataSetInvalidated();
+                    }
                 }
             };
         }
@@ -172,9 +175,13 @@ public class MapActivity extends BaseActivity
             while ((read = in.read(buff)) != -1) {
                 jsonResults.append(buff, 0, read);
             }
-        } catch (MalformedURLException e) { return null; }
-        catch (IOException e) { return null; }
-        finally { if (conn != null) conn.disconnect(); }
+        } catch (MalformedURLException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        } finally {
+            if (conn != null) conn.disconnect();
+        }
 
         return parseAnswer(jsonResults);
     }
@@ -189,7 +196,9 @@ public class MapActivity extends BaseActivity
             for (int i = 0; i < prevJsonArray.length(); i++) {
                 resultList.add(prevJsonArray.getJSONObject(i).getString("description"));
             }
-        } catch (JSONException ignored) {}
+        } catch (JSONException e) {
+            LogUtil.logException(e);
+        }
 
         return resultList;
     }
@@ -327,8 +336,11 @@ public class MapActivity extends BaseActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mGoogleApiClient.isConnected()) getLocation();
-                else mGoogleApiClient.connect();
+                if (mGoogleApiClient.isConnected()) {
+                    getLocation();
+                } else {
+                    mGoogleApiClient.connect();
+                }
             }
         }, 50);
     }
@@ -381,8 +393,7 @@ public class MapActivity extends BaseActivity
                     @Override
                     public void run() {
                         if (setText) {
-                            getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
-                                    googleMap.getCameraPosition().target.longitude);
+                            getCompleteAddressString(googleMap.getCameraPosition().target.latitude, googleMap.getCameraPosition().target.longitude);
                             searchBox.setText(selected);
                         }
                         searchBox.dismissDropDown();

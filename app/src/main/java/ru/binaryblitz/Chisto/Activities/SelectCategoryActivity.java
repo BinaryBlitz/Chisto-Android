@@ -97,8 +97,11 @@ public class SelectCategoryActivity extends BaseActivity {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if (response.isSuccessful()) parseAnswer(response.body());
-                else onServerError(response);
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                } else {
+                    onServerError(response);
+                }
             }
 
             @Override
@@ -114,9 +117,11 @@ public class SelectCategoryActivity extends BaseActivity {
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
-            boolean featured = AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"));
-            if (featured) collection.add(0, parseCategory(object));
-            else collection.add(parseCategory(object));
+            if (AndroidUtilities.INSTANCE.getBooleanFieldFromJson(object.get("featured"))) {
+                collection.add(0, parseCategory(object));
+            } else {
+                collection.add(parseCategory(object));
+            }
         }
 
         sort(collection);
@@ -180,10 +185,14 @@ public class SelectCategoryActivity extends BaseActivity {
     private void sort(ArrayList<Category> collection) {
         Collections.sort(collection, new Comparator<Category>() {
             @Override
-            public int compare(Category category, Category t1) {
-                if (category.getFeatured() && !t1.getFeatured()) return -1;
-                else if (!category.getFeatured() && t1.getFeatured()) return 1;
-                else return category.getName().compareTo(t1.getName());
+            public int compare(Category category, Category t) {
+                if (category.getFeatured() && !t.getFeatured()) {
+                    return -1;
+                } else if (!category.getFeatured() && t.getFeatured()) {
+                    return 1;
+                } else {
+                    return category.getName().compareTo(t.getName());
+                }
             }
         });
     }

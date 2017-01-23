@@ -45,15 +45,20 @@ class OrdersActivity : BaseActivity() {
         setOnClickListeners()
 
         Handler().post {
-            if (newOrderId != 0) showOrderDialog(newOrderId)
-            else getUser()
+            if (newOrderId != 0) {
+                showOrderDialog(newOrderId)
+            } else {
+                getUser()
+            }
         }
     }
 
     private fun getUser() {
         ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                if (response.isSuccessful) parseAnswer(response.body())
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -92,8 +97,11 @@ class OrdersActivity : BaseActivity() {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
                 Animations.animateRevealHide(findViewById(R.id.dialog))
-                if (response.isSuccessful) parseReviewResponse()
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseReviewResponse()
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
@@ -176,8 +184,11 @@ class OrdersActivity : BaseActivity() {
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            if (!checkReview()) showErrorDialog()
-            else sendReview()
+            if (!checkReview()) {
+                showErrorDialog()
+            } else {
+                sendReview()
+            }
         }
 
         findViewById(R.id.new_order_dialog_btn).setOnClickListener {
@@ -202,8 +213,11 @@ class OrdersActivity : BaseActivity() {
         adapter!!.setCollection(OrderList.get()!!)
         adapter!!.notifyDataSetChanged()
 
-        if (adapter!!.itemCount != 0) setContinueButtonEnabled()
-        else setContinueButtonDisabled()
+        if (adapter!!.itemCount != 0) {
+            setContinueButtonEnabled()
+        } else {
+            setContinueButtonDisabled()
+        }
     }
 
     private fun setContinueButtonEnabled() {

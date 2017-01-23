@@ -83,8 +83,11 @@ class MyOrderActivity : BaseActivity() {
         findViewById(R.id.phone_call).setOnClickListener { AndroidUtilities.call(this@MyOrderActivity, AppConfig.phone) }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            if (!checkReview()) showErrorDialog()
-            else sendReview()
+            if (!checkReview()) {
+                showErrorDialog()
+            } else {
+                sendReview()
+            }
         }
     }
 
@@ -92,8 +95,11 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().getOrder(intent.getIntExtra(EXTRA_ID, 1), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) parseAnswer(response.body())
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -121,7 +127,9 @@ class MyOrderActivity : BaseActivity() {
     private fun getUser() {
         ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                if (response.isSuccessful) parseUser(response.body())
+                if (response.isSuccessful) {
+                    parseUser(response.body())
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {

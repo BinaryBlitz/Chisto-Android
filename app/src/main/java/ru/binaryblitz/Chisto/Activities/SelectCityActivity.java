@@ -155,14 +155,14 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void setOnClickListeners() {
-        findViewById(ru.binaryblitz.Chisto.R.id.my_loc_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.my_loc_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getLocation();
             }
         });
 
-        findViewById(ru.binaryblitz.Chisto.R.id.city_not_found_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.city_not_found_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialog();
@@ -171,7 +171,7 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void initList() {
-        RecyclerListView view = (RecyclerListView) findViewById(ru.binaryblitz.Chisto.R.id.recyclerView);
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
@@ -179,9 +179,9 @@ public class SelectCityActivity extends BaseActivity
         adapter = new CitiesAdapter(this);
         view.setAdapter(adapter);
 
-        layout = (SwipeRefreshLayout) findViewById(ru.binaryblitz.Chisto.R.id.refresh);
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(ru.binaryblitz.Chisto.R.color.colorAccent);
+        layout.setColorSchemeResources(R.color.colorAccent);
     }
 
     private void load() {
@@ -189,8 +189,11 @@ public class SelectCityActivity extends BaseActivity
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if (response.isSuccessful()) parseAnswer(response.body());
-                else onServerError(response);
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                } else {
+                    onServerError(response);
+                }
             }
 
             @Override
@@ -228,7 +231,9 @@ public class SelectCityActivity extends BaseActivity
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (checkDialogInput()) sendSubscription(dialog);
+                        if (checkDialogInput()) {
+                            sendSubscription(dialog);
+                        }
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -263,7 +268,9 @@ public class SelectCityActivity extends BaseActivity
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 progressDialog.dismiss();
                 dialog.dismiss();
-                if (!response.isSuccessful()) onInternetConnectionError();
+                if (!response.isSuccessful()) {
+                    onInternetConnectionError();
+                }
             }
 
             @Override

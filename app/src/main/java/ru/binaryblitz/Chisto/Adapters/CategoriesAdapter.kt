@@ -29,12 +29,6 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         this.categories = categories
     }
 
-    @SuppressWarnings("unused")
-    fun clear() {
-        categories!!.clear()
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
 
