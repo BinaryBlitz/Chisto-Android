@@ -18,7 +18,6 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_review, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -32,7 +31,7 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
         } else {
             holder.comment.text = collection[position].comment
         }
-        holder.stars.rating = collection[position].rating
+        holder.rating.rating = collection[position].rating
     }
 
     override fun getItemCount(): Int {
@@ -57,6 +56,6 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
         val name = itemView.findViewById(R.id.user_text) as TextView
         val date = itemView.findViewById(R.id.date_text) as TextView
         val comment = itemView.findViewById(R.id.comment_text) as TextView
-        val stars = itemView.findViewById(R.id.ratings) as SimpleRatingBar
+        val rating = itemView.findViewById(R.id.ratings) as SimpleRatingBar
     }
 }

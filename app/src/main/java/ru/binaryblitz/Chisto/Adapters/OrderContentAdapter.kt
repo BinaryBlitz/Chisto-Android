@@ -22,11 +22,6 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
 
     private var collection = ArrayList<Pair<String, Any>>()
 
-    fun clear() {
-        collection.clear()
-        notifyDataSetChanged()
-    }
-
     fun setCollection(collection: ArrayList<Pair<String, Any>>) {
         this.collection = collection
     }

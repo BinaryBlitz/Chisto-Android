@@ -55,7 +55,7 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         val treatment = collection[position]
 
         holder.name.text = treatment.name
-        holder.desc.text = treatment.description
+        holder.description.text = treatment.description
         holder.checkBox.setmCheckedColor(color)
 
         holder.checkBox.isChecked = treatment.select
@@ -78,7 +78,7 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById(R.id.name) as TextView
-        val desc = itemView.findViewById(R.id.description) as TextView
+        val description = itemView.findViewById(R.id.description) as TextView
         val checkBox = itemView.findViewById(R.id.checkBox) as SmoothCheckBox
     }
 }

@@ -132,33 +132,27 @@ public class OrderList {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void setCost(int treatmentId, int cost) {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
-            return;
-        }
+    public static void setPrice(int treatmentId, int price) {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-        for (int j = 0; j < orders.size(); j++) {
-            setCostForOrder(j, treatmentId, cost);
-        }
+        for (int j = 0; j < orders.size(); j++) { setPriceForOrder(j, treatmentId, price); }
     }
 
-    private static void setCostForOrder(int j, int treatmentId, int cost) {
+    private static void setPriceForOrder(int j, int treatmentId, int price) {
         if (orders.get(j).getTreatments() == null) return;
 
         for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
             if (orders.get(j).getTreatments().get(i).getId() == treatmentId) {
-                int decorationCost = orders.get(j).getDecorationPrice();
-                orders.get(j).setDecorationPrice(decorationCost + ((int) ((double) cost * findMultiplier(j)) - cost));
-                orders.get(j).getTreatments().get(i).setPrice(cost);
+                int decorationPrice = orders.get(j).getDecorationPrice();
+                orders.get(j).setDecorationPrice(decorationPrice + ((int) ((double) price * findMultiplier(j)) - price));
+                orders.get(j).getTreatments().get(i).setPrice(price);
             }
         }
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void resetDecorationCosts() {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
-            return;
-        }
+    public static void resetDecorationPrices() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
         for (int i = 0; i < orders.size(); i++) {
             orders.get(i).setDecorationPrice(0);
@@ -177,10 +171,8 @@ public class OrderList {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void setDecorationCost() {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
-            return;
-        }
+    public static void setDecorationPrice() {
+        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
         for (int j = 0; j < orders.size(); j++) {
             setDecorationPriceForOrder(j);

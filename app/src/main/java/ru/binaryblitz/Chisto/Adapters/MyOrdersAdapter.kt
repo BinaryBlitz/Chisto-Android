@@ -32,7 +32,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         holder.name.text = context.getString(R.string.my_order_code) + order.id
         setIconAndColor(order, holder)
 
-        holder.desc.text = getDateStringRepresentation(order.createdAt)
+        holder.description.text = getDateStringRepresentation(order.createdAt)
 
         holder.cost.text = order.price.toString() + context.getString(R.string.ruble_sign)
 
@@ -89,7 +89,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById(R.id.name) as TextView
         val cost = itemView.findViewById(R.id.price) as TextView
-        val desc = itemView.findViewById(R.id.desc) as TextView
+        val description = itemView.findViewById(R.id.desc) as TextView
         val status = itemView.findViewById(R.id.status) as TextView
         val marker = itemView.findViewById(R.id.marker) as ImageView
     }
