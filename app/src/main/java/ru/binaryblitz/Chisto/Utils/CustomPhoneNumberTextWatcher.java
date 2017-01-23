@@ -19,7 +19,7 @@ public class CustomPhoneNumberTextWatcher implements TextWatcher {
         this(Locale.getDefault().getCountry());
     }
 
-    public CustomPhoneNumberTextWatcher(String countryCode) {
+    CustomPhoneNumberTextWatcher(String countryCode) {
         if (countryCode == null) throw new IllegalArgumentException();
         formatter = PhoneNumberUtil.getInstance().getAsYouTypeFormatter(countryCode);
     }
@@ -71,15 +71,34 @@ public class CustomPhoneNumberTextWatcher implements TextWatcher {
             lastNonSeparator = 0;
             hasCursor = false;
 
-            for (int i = 0; i < length; i++) {
-                formatted = processSymbol(s.charAt(i), i, formatted);
-            }
-
-            if (lastNonSeparator != 0) {
-                formatted = getFormattedNumber(lastNonSeparator, hasCursor);
+            if (s.length() == 1 && s.charAt(0) != '+') {
+                formatted = formatStartSymbol();
+            } else {
+                formatted = formatBasicString();
             }
 
             return formatted;
+        }
+
+        private String formatStartSymbol() {
+            String formatted;
+            formatter.inputDigitAndRememberPosition('+');
+            formatted = formatter.inputDigitAndRememberPosition(s.charAt(0));
+
+            return formatted;
+        }
+
+        private String formatBasicString() {
+            String res = null;
+            for (int i = 0; i < length; i++) {
+                res = processSymbol(s.charAt(i), i, res);
+            }
+
+            if (lastNonSeparator != 0) {
+                res = getFormattedNumber(lastNonSeparator, hasCursor);
+            }
+
+            return res;
         }
 
         private String processSymbol(char c, int i, String current) {
