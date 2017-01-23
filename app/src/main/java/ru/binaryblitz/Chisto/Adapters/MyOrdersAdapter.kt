@@ -2,7 +2,6 @@ package ru.binaryblitz.Chisto.Adapters
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +33,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
 
         holder.description.text = getDateStringRepresentation(order.createdAt)
 
-        holder.cost.text = order.price.toString() + context.getString(R.string.ruble_sign)
+        holder.price.text = order.price.toString() + context.getString(R.string.ruble_sign)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, MyOrderActivity::class.java)
@@ -77,7 +76,6 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
         return format.format(date)
     }
 
-
     override fun getItemCount(): Int {
         return collection.size
     }
@@ -88,7 +86,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val name = itemView.findViewById(R.id.name) as TextView
-        val cost = itemView.findViewById(R.id.price) as TextView
+        val price = itemView.findViewById(R.id.price) as TextView
         val description = itemView.findViewById(R.id.desc) as TextView
         val status = itemView.findViewById(R.id.status) as TextView
         val marker = itemView.findViewById(R.id.marker) as ImageView
