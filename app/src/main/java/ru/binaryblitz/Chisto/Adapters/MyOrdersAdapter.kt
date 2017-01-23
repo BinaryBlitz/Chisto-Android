@@ -46,7 +46,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
     private fun setIconAndColor(order: MyOrder, holder: ViewHolder) {
         when (order.status) {
             MyOrder.Status.COMPLETED -> {
-                setInformation(holder, R.drawable.ic_completed_indicator, R.color.completedColor, R.string.ready_code)
+                setInformation(holder, R.drawable.ic_completed_indicator, R.color.completedColor, R.string.completed_code)
             }
             MyOrder.Status.CANCELED -> {
                 setInformation(holder, R.drawable.ic_canceled_indicator, R.color.canceledColor, R.string.canceled_code)
@@ -61,7 +61,7 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
                 setInformation(holder, R.drawable.ic_cleaning_indicator, R.color.cleaningColor, R.string.cleaning_code)
             }
             else -> {
-                setInformation(holder, R.drawable.ic_process_indicator, R.color.processColor, R.string.process_code)
+                setInformation(holder, R.drawable.ic_process_indicator, R.color.processColor, R.string.processing_code)
             }
         }
     }
