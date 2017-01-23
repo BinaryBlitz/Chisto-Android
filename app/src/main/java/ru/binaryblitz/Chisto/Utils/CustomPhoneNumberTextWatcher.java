@@ -66,7 +66,7 @@ public class CustomPhoneNumberTextWatcher implements TextWatcher {
         }
 
         private String reformat() {
-            String formatted = null;
+            String formatted;
             formatter.clear();
             lastNonSeparator = 0;
             hasCursor = false;
@@ -89,40 +89,40 @@ public class CustomPhoneNumberTextWatcher implements TextWatcher {
         }
 
         private String formatBasicString() {
-            String res = null;
+            String result = null;
             for (int i = 0; i < length; i++) {
-                res = processSymbol(s.charAt(i), i, res);
+                result = processSymbol(s.charAt(i), i, result);
             }
 
             if (lastNonSeparator != 0) {
-                res = getFormattedNumber(lastNonSeparator, hasCursor);
+                result = getFormattedNumber(lastNonSeparator, hasCursor);
             }
 
-            return res;
+            return result;
         }
 
         private String processSymbol(char c, int i, String current) {
-            String res = current;
+            String result = current;
             if (PhoneNumberUtils.isNonSeparator(c)) {
-                res = processSeparator(c, current);
+                result = processSeparator(c, current);
             }
 
             if (i == currentIndex) {
                 hasCursor = true;
             }
 
-            return res;
+            return result;
         }
 
         private String processSeparator(char c, String current) {
-            String res = current;
+            String result = current;
             if (lastNonSeparator != 0) {
-                res = getFormattedNumber(lastNonSeparator, hasCursor);
+                result = getFormattedNumber(lastNonSeparator, hasCursor);
                 hasCursor = false;
             }
             lastNonSeparator = c;
 
-            return res;
+            return result;
         }
 
         private String getFormattedNumber(char lastNonSeparator, boolean hasCursor) {
