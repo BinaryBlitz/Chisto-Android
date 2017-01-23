@@ -100,7 +100,7 @@
 
                 <TextView android:layout_width="wrap_content"
                           android:layout_marginTop="4dp"
-                          android:id="@+id/curier_cost"
+                          android:id="@+id/curier_period"
                           android:textSize="12sp"
                           android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>
