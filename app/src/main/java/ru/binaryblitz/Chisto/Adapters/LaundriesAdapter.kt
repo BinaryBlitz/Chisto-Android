@@ -131,7 +131,6 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     fun comparePrices(first: Laundry, second: Laundry): Int {
-        LogUtil.logError(getPrice(first).toString() + "    " + getPrice(second) + "    " + getPrice(first).compareTo(getPrice(second)))
         if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) return -1
         else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) return 1
         else return getPrice(first).compareTo(getPrice(second))
@@ -147,13 +146,25 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     fun sortBySpeed() {
-        Collections.sort(collection, { first, second -> -first.deliveryDate!!.compareTo(second.deliveryDate!!) })
+        Collections.sort(collection, { first, second -> compareSpeed(first, second) })
         notifyDataSetChanged()
     }
 
+    fun compareSpeed(first: Laundry, second: Laundry): Int {
+        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) return -1
+        else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) return 1
+        else return first.deliveryDate!!.compareTo(second.deliveryDate!!)
+    }
+
     fun sortByRating() {
-        Collections.sort(collection, { first, second -> -first.rating.compareTo(second.rating) })
+        Collections.sort(collection, { first, second -> compareRating(first, second) })
         notifyDataSetChanged()
+    }
+
+    fun compareRating(first: Laundry, second: Laundry): Int {
+        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) return -1
+        else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) return 1
+        else return -first.rating.compareTo(second.rating)
     }
 
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
