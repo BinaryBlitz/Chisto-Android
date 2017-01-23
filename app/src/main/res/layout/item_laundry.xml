@@ -21,49 +21,52 @@
                     android:layout_marginStart="12dp"
                     android:id="@+id/category_icon"
                     android:layout_height="64dp"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/name"
-                      android:layout_marginStart="100dp"
-                      android:layout_marginEnd="100dp"
-                      android:layout_marginRight="100dp"
-                      android:textSize="16sp"
-                      android:textColor="#212121"
-                      android:layout_marginLeft="100dp"
-                      android:layout_gravity="center_vertical"
-                      android:layout_marginBottom="30dp"/>
+            <LinearLayout android:layout_width="match_parent"
+                          android:orientation="vertical"
+                          android:layout_gravity="center_vertical"
+                          android:layout_height="wrap_content">
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/name"
+                          android:layout_marginStart="100dp"
+                          android:layout_marginEnd="100dp"
+                          android:layout_marginRight="100dp"
+                          android:textSize="16sp"
+                          android:textColor="#212121"
+                          android:layout_marginLeft="100dp"
+                          android:layout_gravity="top"/>
 
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/description"
-                      android:textSize="14sp"
-                      android:textColor="#727272"
-                      android:layout_marginStart="100dp"
-                      android:layout_marginLeft="100dp"
-                      android:maxLines="2"
-                      android:layout_marginEnd="60dp"
-                      android:layout_marginTop="4dp"
-                      android:layout_marginRight="60dp"
-                      android:layout_gravity="center_vertical"
-            />
+                <TextView android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:id="@+id/description"
+                          android:textSize="14sp"
+                          android:layout_marginTop="8dp"
+                          android:layout_marginBottom="8dp"
+                          android:textColor="#727272"
+                          android:layout_marginStart="100dp"
+                          android:layout_marginLeft="100dp"
+                          android:maxLines="2"
+                          android:layout_marginEnd="60dp"
+                          android:layout_marginRight="60dp"
+                          android:layout_gravity="center_vertical"/>
 
-            <com.iarcuschin.simpleratingbar.SimpleRatingBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srb_starSize="12dp"
-                    app:srb_numberOfStars="5"
-                    app:srb_rating="3"
-                    app:srb_starBorderWidth="3"
-                    app:srb_stepSize="0.5"
-                    android:id="@+id/ratingBar"
-                    app:srb_starCornerRadius="2"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginTop="32dp"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginLeft="100dp"
-                    app:srb_borderColor="@color/colorPrimary"
-                    app:srb_fillColor="@color/colorPrimary"
-            />
+                <com.iarcuschin.simpleratingbar.SimpleRatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srb_starSize="12dp"
+                        app:srb_numberOfStars="5"
+                        app:srb_rating="3"
+                        app:srb_starBorderWidth="3"
+                        app:srb_stepSize="0.5"
+                        android:id="@+id/ratingBar"
+                        app:srb_starCornerRadius="2"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="100dp"
+                        android:layout_marginLeft="100dp"
+                        app:srb_borderColor="@color/colorPrimary"
+                        app:srb_fillColor="@color/colorPrimary"
+                />
+            </LinearLayout>
         </FrameLayout>
         <LinearLayout
                 android:layout_width="match_parent"
@@ -173,10 +176,10 @@
                     android:layout_gravity="center_vertical"
                     android:layout_height="wrap_content">
                 <ImageView
-                        android:layout_width="44dp"
+                        android:layout_width="42dp"
                         android:src="@drawable/ic_cost"
                         android:layout_gravity="center_horizontal"
-                        android:layout_height="44dp"/>
+                        android:layout_height="42dp"/>
                 <TextView android:layout_width="wrap_content"
                           android:text="@string/delivery"
                           android:textSize="12sp"
@@ -185,7 +188,7 @@
                           android:id="@+id/minimum_cost_title"
                           android:layout_gravity="center_horizontal"
                           android:layout_height="wrap_content"/>
-                <TextView android:layout_width="wrap_content"
+                <TextView android:layout_width="match_parent"
                           android:layout_marginTop="4dp"
                           android:gravity="center"
                           android:textColor="#b6b6b6"
@@ -196,8 +199,8 @@
                           android:layout_height="wrap_content"/>
 
                 <TextView android:layout_width="wrap_content"
-                          android:layout_marginTop="4dp"
-                          android:textSize="16sp"
+                          android:layout_marginTop="2dp"
+                          android:textSize="14sp"
                           android:textColor="#333"
                           android:id="@+id/minimum_cost_price"
                           android:layout_gravity="center_horizontal"
@@ -206,7 +209,7 @@
         </LinearLayout>
         <View android:layout_width="match_parent"
               android:layout_gravity="bottom"
-              android:layout_marginTop="8dp"
+              android:layout_marginTop="4dp"
               android:background="#b6b6b6"
               android:layout_height="1px" />
     </LinearLayout>
