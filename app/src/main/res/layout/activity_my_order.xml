@@ -62,7 +62,7 @@
 
             <com.github.siyamed.shapeimageview.CircularImageView
                     app:siBorderWidth="2dp"
-                    app:siBorderColor="#00ffffff"
+                    app:siBorderColor="#eaeaea"
                     android:scaleType="centerCrop"
                     android:layout_width="34dp"
                     android:layout_marginLeft="12dp"
