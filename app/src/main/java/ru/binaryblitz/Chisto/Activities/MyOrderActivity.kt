@@ -41,6 +41,8 @@ class MyOrderActivity : BaseActivity() {
     private var price: Int = 0
     private var deliveryFee: Int = 0
     private var freeDeliveryFrom: Int = 0
+    private var isRated = false
+    private var orderId = 0
 
     val CASH = "cash"
     val CARD = "card"
@@ -87,8 +89,20 @@ class MyOrderActivity : BaseActivity() {
             if (!checkReview()) {
                 showErrorDialog()
             } else {
-                sendReview()
+                executeRatingRequest()
             }
+        }
+
+        findViewById(R.id.review_btn).setOnClickListener {
+            showReviewDialog()
+        }
+    }
+
+    private fun executeRatingRequest() {
+        if (isRated) {
+            updateReview()
+        } else {
+            sendReview()
         }
     }
 
@@ -123,8 +137,10 @@ class MyOrderActivity : BaseActivity() {
             createOrderListView(obj.get("order_items").asJsonArray)
         }
 
-        if (obj.get("rating") == null || obj.get("rating").isJsonNull) {
-            showReviewDialog(AndroidUtilities.getIntFieldFromJson(obj.get("id")))
+        orderId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        isRated = obj.get("rating") != null && !obj.get("rating").isJsonNull
+        if (!isRated) {
+            showReviewDialog()
         }
     }
 
@@ -141,14 +157,15 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun parseReviewResponse() {
+        isRated = true
         Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
-    private fun showReviewDialog(id: Int) {
+    private fun showReviewDialog() {
         Handler().post {
             dialogOpened = true
             (findViewById(R.id.order_name_completed) as TextView).text =
-                    getString(R.string.order) + " № " + id.toString() + getString(R.string.completed)
+                    getString(R.string.order) + " № " + orderId.toString() + getString(R.string.completed)
             Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
         }
     }
@@ -170,6 +187,28 @@ class MyOrderActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
         ServerApi.get(this).api().sendReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                if (response.isSuccessful) {
+                    parseReviewResponse()
+                } else {
+                    onServerError(response)
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                onInternetConnectionError()
+            }
+        })
+    }
+
+    private fun updateReview() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+        ServerApi.get(this).api().updateReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
                 Animations.animateRevealHide(findViewById(R.id.dialog))

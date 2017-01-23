@@ -61,6 +61,9 @@ public interface ApiEndpoints {
     @POST("laundries/{id}/ratings")
     Call<JsonObject> sendReview(@Path("id") int id, @Body JsonObject object, @Query("api_token") String token);
 
+    @PATCH("ratings/{id}")
+    Call<JsonObject> updateReview(@Path("id") int id, @Body JsonObject object, @Query("api_token") String token);
+
     @POST("subscriptions")
     Call<JsonObject> sendSubscription(@Body JsonObject object);
 }
