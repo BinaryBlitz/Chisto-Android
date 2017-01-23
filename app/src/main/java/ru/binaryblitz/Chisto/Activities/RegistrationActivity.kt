@@ -189,7 +189,7 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun finishActivity(phone: String) {
-        if (cost == 0) {
+        if (price == 0) {
             continueRegistration(phone)
         } else {
             openOrderScreen(phone)
