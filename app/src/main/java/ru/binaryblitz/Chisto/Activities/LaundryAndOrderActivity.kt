@@ -3,11 +3,14 @@ package ru.binaryblitz.Chisto.Activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
+import android.os.Handler
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Pair
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.crashlytics.android.Crashlytics
@@ -25,14 +28,16 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
+import ru.binaryblitz.Chisto.Utils.Animations.Animations
 import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
-    private var layout: SwipeRefreshLayout? = null
     private var adapter: OrderContentAdapter? = null
+
     private var deliveryFee = 0
+    private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +50,36 @@ class LaundryAndOrderActivity : BaseActivity() {
         load()
     }
 
+    private fun showPromoDialog() {
+        Handler().post {
+            dialogOpened = true
+            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
+        }
+    }
+
+    private fun closeDialog() {
+        dialogOpened = false
+        Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+    }
+
+    override fun onBackPressed() {
+        if (dialogOpened) {
+            closeDialog()
+        } else {
+            finish()
+        }
+    }
+
+    private fun checkPromo(): Boolean {
+        if ((findViewById(R.id.promo_text) as EditText).text.toString().isEmpty()) {
+            findViewById(R.id.promo_btn)!!.isEnabled = false
+            return false
+        }
+
+        findViewById(R.id.promo_btn)!!.isEnabled = true
+        return true
+    }
+
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
@@ -52,6 +87,17 @@ class LaundryAndOrderActivity : BaseActivity() {
             val userNotLogged = DeviceInfoStore.getToken(this@LaundryAndOrderActivity) == "null"
             if (userNotLogged) openActivity(RegistrationActivity::class.java)
             else openActivity(PersonalInfoActivity::class.java)
+        }
+
+        findViewById(R.id.promo_btn).setOnClickListener {
+            if (checkPromo()) {
+                closeDialog()
+            }
+        }
+
+
+        findViewById(R.id.add_btn).setOnClickListener {
+            showPromoDialog()
         }
 
         findViewById(R.id.reviews_btn).setOnClickListener {
@@ -68,14 +114,19 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun initElements() {
-        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout!!.setOnRefreshListener(null)
-        layout!!.isEnabled = false
-        layout!!.setColorSchemeResources(R.color.colorAccent)
+        findViewById(R.id.promo_btn)!!.isEnabled = false
 
         load()
         initList()
         createOrderListView()
+
+        (findViewById(R.id.promo_text) as EditText).addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable) { checkPromo() }
+        })
     }
 
     private fun initList() {
@@ -160,10 +211,8 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun load() {
-        layout!!.isRefreshing = true
         ServerApi.get(this@LaundryAndOrderActivity).api().getLaundry(intent.getIntExtra(EXTRA_ID, 1)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                layout!!.isRefreshing = false
                 if (response.isSuccessful) {
                     parseAnswer(response.body())
                 } else {
@@ -172,7 +221,6 @@ class LaundryAndOrderActivity : BaseActivity() {
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-                layout!!.isRefreshing = false
                 onInternetConnectionError()
             }
         })

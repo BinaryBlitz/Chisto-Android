@@ -197,6 +197,8 @@
     <string name="final_price">Итого к оплате</string>
     <string name="support_phone_number"><u>+7 (495) 766-78-49</u></string>
     <string name="review_btn">Оставить отзыв</string>
+    <string name="promo_hint">Введите промокод</string>
+    <string name="promo_help">Распространяется на все услуги</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

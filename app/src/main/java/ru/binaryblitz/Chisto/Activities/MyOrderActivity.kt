@@ -130,6 +130,7 @@ class MyOrderActivity : BaseActivity() {
         processStatus(status)
         processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
         setLaundryInfo(obj.get("laundry").asJsonObject)
+
         (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         (findViewById(R.id.date) as TextView).text = getDateFromJson(obj)
 

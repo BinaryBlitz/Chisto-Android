@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:id="@+id/refresh"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
                  android:orientation="vertical"
                  android:layout_width="match_parent"
                  android:background="#ffffff"
@@ -324,5 +319,17 @@
                 android:textSize="16sp"
                 android:layout_gravity="bottom"
                 android:gravity="center"/>
-    </FrameLayout>
-</android.support.v4.widget.SwipeRefreshLayout>
+
+        <FrameLayout
+                android:layout_width="match_parent"
+                android:background="#99000000"
+                android:id="@+id/dialog"
+                android:clickable="true"
+                android:elevation="8dp"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+            <include layout="@layout/dialog_promocode" />
+
+        </FrameLayout>
+    </ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout>
