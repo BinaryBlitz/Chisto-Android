@@ -24,7 +24,6 @@ import ru.binaryblitz.Chisto.Adapters.OrderContentAdapter
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Custom.RecyclerListView
 import ru.binaryblitz.Chisto.Model.CategoryItem
-import ru.binaryblitz.Chisto.Model.MyOrder
 import ru.binaryblitz.Chisto.Model.Order
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
@@ -42,6 +41,11 @@ class MyOrderActivity : BaseActivity() {
     private var price: Int = 0
     private var deliveryFee: Int = 0
     private var freeDeliveryFrom: Int = 0
+    private var isRated = false
+    private var orderId = 0
+
+    val CASH = "cash"
+    val CARD = "card"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +59,6 @@ class MyOrderActivity : BaseActivity() {
         Handler().post {
             layout!!.isRefreshing = true
             load()
-            getUser()
         }
     }
 
@@ -83,11 +86,23 @@ class MyOrderActivity : BaseActivity() {
         findViewById(R.id.phone_call).setOnClickListener { AndroidUtilities.call(this@MyOrderActivity, AppConfig.phone) }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            if (!checkReview()) {
+            if (!checkRating()) {
                 showErrorDialog()
             } else {
-                sendReview()
+                executeRatingRequest()
             }
+        }
+
+        findViewById(R.id.review_btn).setOnClickListener {
+            showReviewDialog()
+        }
+    }
+
+    private fun executeRatingRequest() {
+        if (isRated) {
+            updateRating()
+        } else {
+            sendRating()
         }
     }
 
@@ -113,28 +128,20 @@ class MyOrderActivity : BaseActivity() {
         LogUtil.logError(obj.toString())
         val status = AndroidUtilities.getStringFieldFromJson(obj.get("status"))
         processStatus(status)
+        processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
         setLaundryInfo(obj.get("laundry").asJsonObject)
-        (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) +
-                AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        (findViewById(R.id.number) as TextView).text = getString(R.string.number_sign) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        (findViewById(R.id.date_text) as TextView).text = getDateFromJson(obj)
+        (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        (findViewById(R.id.date) as TextView).text = getDateFromJson(obj)
 
         if (obj.get("order_items") != null && !obj.get("order_items").isJsonNull) {
             createOrderListView(obj.get("order_items").asJsonArray)
         }
-    }
 
-    private fun getUser() {
-        ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                if (response.isSuccessful) {
-                    parseUser(response.body())
-                }
-            }
-
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-            }
-        })
+        orderId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        isRated = obj.get("rating") != null && !obj.get("rating").isJsonNull
+        if (!isRated) {
+            showReviewDialog()
+        }
     }
 
     private fun generateJson(): JsonObject {
@@ -150,14 +157,15 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun parseReviewResponse() {
+        isRated = true
         Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
-    private fun showReviewDialog(id: Int) {
+    private fun showReviewDialog() {
         Handler().post {
             dialogOpened = true
             (findViewById(R.id.order_name_completed) as TextView).text =
-                    getString(R.string.order) + " № " + id.toString() + getString(R.string.completed)
+                    getString(R.string.order) + " № " + orderId.toString() + getString(R.string.completed)
             Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
         }
     }
@@ -171,32 +179,36 @@ class MyOrderActivity : BaseActivity() {
                 .show()
     }
 
-    private fun checkReview(): Boolean {
+    private fun checkRating(): Boolean {
         return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0
     }
 
-    private fun parseUser(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
-        val order = obj.get("order")
-        if (order == null || obj.get("order").isJsonNull) return
-
-        val myOrder = MyOrder(order.asJsonObject)
-
-        if (myOrder.status != MyOrder.Status.COMPLETED) return
-
-        val review = order.asJsonObject.get("rating") ?: return
-
-        OrdersActivity.laundryId = AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("laundry").asJsonObject.get("id"))
-
-        if (review.isJsonNull) {
-            showReviewDialog(AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("id")))
-        }
-    }
-
-    private fun sendReview() {
+    private fun sendRating() {
         val dialog = ProgressDialog(this)
         dialog.show()
         ServerApi.get(this).api().sendReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                if (response.isSuccessful) {
+                    parseReviewResponse()
+                } else {
+                    onServerError(response)
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
+                dialog.dismiss()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
+                onInternetConnectionError()
+            }
+        })
+    }
+
+    private fun updateRating() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+        ServerApi.get(this).api().updateReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
                 Animations.animateRevealHide(findViewById(R.id.dialog))
@@ -290,18 +302,18 @@ class MyOrderActivity : BaseActivity() {
         (findViewById(R.id.price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
 
         if (price < freeDeliveryFrom) {
-            setPricesWithoutDeliveryPrice()
+            setPricesWithDeliveryFee()
         } else {
-            setPricesWithDeliveryPrice()
+            setPricesWithoutDeliveryFee()
         }
     }
 
-    private fun setPricesWithoutDeliveryPrice() {
+    private fun setPricesWithDeliveryFee() {
         (findViewById(R.id.final_price) as TextView).text = Integer.toString(price + deliveryFee) + getString(R.string.ruble_sign)
         (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryFee) + getString(R.string.ruble_sign)
     }
 
-    private fun setPricesWithDeliveryPrice() {
+    private fun setPricesWithoutDeliveryFee() {
         (findViewById(R.id.final_price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
         (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
     }
@@ -349,6 +361,28 @@ class MyOrderActivity : BaseActivity() {
 
         freeDeliveryFrom = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
         deliveryFee = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
+    }
+
+    private fun processPaymentMethod(paymentType: String) {
+        val icon: Int
+        val text: Int
+        when (paymentType) {
+            CASH -> {
+                icon = R.drawable.ic_cash
+                text = R.string.cash
+            }
+            CARD -> {
+                icon = R.drawable.ic_card
+                text = R.string.card
+            }
+            else -> {
+                icon = R.drawable.ic_cash
+                text = R.string.cash
+            }
+        }
+
+        (findViewById(R.id.payment_type_icon) as ImageView).setImageResource(icon)
+        (findViewById(R.id.payment_type_text) as TextView).setText(text)
     }
 
     private fun processStatus(status: String) {
