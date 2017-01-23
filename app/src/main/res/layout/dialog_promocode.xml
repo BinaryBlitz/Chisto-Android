@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:background="#ffffff"
+              android:id="@+id/main_dialog_part"
+              android:layout_margin="12dp"
+              android:layout_gravity="center"
+              android:layout_height="wrap_content">
+
+    <ImageView
+            android:layout_width="56dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+            android:gravity="center"
+            android:src="@drawable/ic_promo"
+            android:layout_marginStart="24dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:layout_height="56dp"/>
+
+    <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content">
+
+        <EditText android:layout_width="match_parent"
+                  android:textSize="18sp"
+                  android:hint="@string/promo_hint"
+                  android:maxLength="4"
+                  android:textColor="#ed495a"
+                  android:inputType="textCapSentences"
+                  android:id="@+id/review_text"
+                  android:gravity="center"
+                  android:layout_height="wrap_content"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:text="@string/promo_help"
+            android:textColor="#212121"
+            android:textSize="16sp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginLeft="24dp"
+            android:gravity="center"
+            android:layout_marginStart="24dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="26dp"
+            android:layout_height="wrap_content"/>
+
+
+    <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/PromoButtonStyle"
+            android:text="@string/send"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_marginRight="-12dp"
+            android:layout_marginLeft="-12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="-8dp"
+            android:id="@+id/cont_btn"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:layout_gravity="bottom"
+            android:gravity="center"/>
+</LinearLayout>
