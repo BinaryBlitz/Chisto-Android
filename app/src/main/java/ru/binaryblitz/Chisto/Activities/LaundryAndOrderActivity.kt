@@ -121,11 +121,11 @@ class LaundryAndOrderActivity : BaseActivity() {
         createOrderListView()
 
         (findViewById(R.id.promo_text) as EditText).addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(editable: Editable) { checkPromo() }
+            override fun afterTextChanged(s: Editable) { checkPromo() }
         })
     }
 
