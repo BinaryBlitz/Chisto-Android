@@ -86,7 +86,7 @@ class MyOrderActivity : BaseActivity() {
         findViewById(R.id.phone_call).setOnClickListener { AndroidUtilities.call(this@MyOrderActivity, AppConfig.phone) }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            if (!checkReview()) {
+            if (!checkRating()) {
                 showErrorDialog()
             } else {
                 executeRatingRequest()
@@ -100,9 +100,9 @@ class MyOrderActivity : BaseActivity() {
 
     private fun executeRatingRequest() {
         if (isRated) {
-            updateReview()
+            updateRating()
         } else {
-            sendReview()
+            sendRating()
         }
     }
 
@@ -179,11 +179,11 @@ class MyOrderActivity : BaseActivity() {
                 .show()
     }
 
-    private fun checkReview(): Boolean {
+    private fun checkRating(): Boolean {
         return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0
     }
 
-    private fun sendReview() {
+    private fun sendRating() {
         val dialog = ProgressDialog(this)
         dialog.show()
         ServerApi.get(this).api().sendReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
@@ -205,7 +205,7 @@ class MyOrderActivity : BaseActivity() {
         })
     }
 
-    private fun updateReview() {
+    private fun updateRating() {
         val dialog = ProgressDialog(this)
         dialog.show()
         ServerApi.get(this).api().updateReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
