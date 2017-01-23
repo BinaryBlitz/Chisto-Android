@@ -68,8 +68,6 @@ class MyOrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recy
 
     private fun setInformation(holder: ViewHolder, icon: Int, color: Int, text: Int) {
         holder.marker.setImageResource(icon)
-        holder.cost.setTextColor(ContextCompat.getColor(context, color))
-        holder.status.setTextColor(ContextCompat.getColor(context, color))
         holder.status.text = context.getString(text)
     }
 
