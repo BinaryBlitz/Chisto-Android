@@ -85,7 +85,9 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if (response.isSuccessful()) parseAnswer(response.body());
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                }
             }
 
             @Override
@@ -102,7 +104,6 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
 
         for (int i = 0; i < array.size(); i++) {
             JsonObject object = array.get(i).getAsJsonObject();
-
             collection.add(new MyOrder(object));
         }
 
@@ -115,8 +116,8 @@ public class MyOrdersActivity extends BaseActivity implements SwipeRefreshLayout
     private void sort(ArrayList<MyOrder> collection) {
         Collections.sort(collection, new Comparator<MyOrder>() {
             @Override
-            public int compare(MyOrder myOrder, MyOrder t1) {
-                return -myOrder.getCreatedAt().compareTo(t1.getCreatedAt());
+            public int compare(MyOrder myOrder, MyOrder t) {
+                return -myOrder.getCreatedAt().compareTo(t.getCreatedAt());
             }
         });
     }

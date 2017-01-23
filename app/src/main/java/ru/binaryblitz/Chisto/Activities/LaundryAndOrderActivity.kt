@@ -164,8 +164,11 @@ class LaundryAndOrderActivity : BaseActivity() {
         ServerApi.get(this@LaundryAndOrderActivity).api().getLaundry(intent.getIntExtra(EXTRA_ID, 1)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) parseAnswer(response.body())
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {

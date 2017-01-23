@@ -343,8 +343,9 @@ class ContactInfoActivity : BaseActivity() {
         val matcher = pattern.matcher(editText.text.toString())
 
         var count = 0
-        while (matcher.find())
+        while (matcher.find()) {
             count++
+        }
 
         return count
     }

@@ -87,8 +87,11 @@ public class ReviewsActivity extends BaseActivity {
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if (response.isSuccessful()) parseAnswer(response.body());
-                else onServerError(response);
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                } else {
+                    onServerError(response);
+                }
             }
 
             @Override
@@ -132,8 +135,11 @@ public class ReviewsActivity extends BaseActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 dialog.dismiss();
-                if (response.isSuccessful()) parseAnswer(response.body());
-                else onInternetConnectionError();
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                } else {
+                    onInternetConnectionError();
+                }
             }
 
             @Override

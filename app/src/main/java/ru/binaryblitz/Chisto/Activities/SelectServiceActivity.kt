@@ -282,6 +282,6 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun sort(collection: ArrayList<Treatment>) {
-        Collections.sort(collection) { treatment, t1 -> treatment.name.compareTo(t1.name) }
+        Collections.sort(collection) { treatment, t -> treatment.name.compareTo(t.name) }
     }
 }

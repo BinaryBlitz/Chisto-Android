@@ -51,8 +51,11 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == HEADER) bindHeader(position, viewHolder as HeaderViewHolder)
-        else bindBasic(position, viewHolder as BasicViewHolder)
+        if (getItemViewType(position) == HEADER) {
+            bindHeader(position, viewHolder as HeaderViewHolder)
+        } else {
+            bindBasic(position, viewHolder as BasicViewHolder)
+        }
     }
 
     private fun bindHeader(position: Int, holder: HeaderViewHolder) {
@@ -71,8 +74,11 @@ class OrderContentAdapter(private val context: Activity) : RecyclerView.Adapter<
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (collection[position].first == "H") return HEADER
-        else return BASIC
+        if (collection[position].first == "H") {
+            return HEADER
+        } else {
+            return BASIC
+        }
     }
 
     override fun getItemCount(): Int {

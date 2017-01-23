@@ -142,8 +142,11 @@ class LaundriesActivity : BaseActivity() {
         ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) parseAnswer(response.body())
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
@@ -391,8 +394,11 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun getDeliveryFee(laundry: Laundry): Int {
-        if (laundry.orderPrice!! >= laundry.freeDeliveryFrom!!) return 0
-        else return laundry.deliveryFee!!
+        if (laundry.orderPrice!! >= laundry.freeDeliveryFrom!!) {
+            return 0
+        } else {
+            return laundry.deliveryFee!!
+        }
     }
 
     private fun setTextToField(id: Int, text: String) {
