@@ -24,7 +24,6 @@ import ru.binaryblitz.Chisto.Adapters.OrderContentAdapter
 import ru.binaryblitz.Chisto.Base.BaseActivity
 import ru.binaryblitz.Chisto.Custom.RecyclerListView
 import ru.binaryblitz.Chisto.Model.CategoryItem
-import ru.binaryblitz.Chisto.Model.MyOrder
 import ru.binaryblitz.Chisto.Model.Order
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
@@ -58,7 +57,6 @@ class MyOrderActivity : BaseActivity() {
         Handler().post {
             layout!!.isRefreshing = true
             load()
-            getUser()
         }
     }
 
@@ -119,25 +117,15 @@ class MyOrderActivity : BaseActivity() {
         processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
         setLaundryInfo(obj.get("laundry").asJsonObject)
         (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        //(findViewById(R.id.number) as TextView).text = getString(R.string.number_sign) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         (findViewById(R.id.date) as TextView).text = getDateFromJson(obj)
 
         if (obj.get("order_items") != null && !obj.get("order_items").isJsonNull) {
             createOrderListView(obj.get("order_items").asJsonArray)
         }
-    }
 
-    private fun getUser() {
-        ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
-            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                if (response.isSuccessful) {
-                    parseUser(response.body())
-                }
-            }
-
-            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
-            }
-        })
+        if (obj.get("rating") == null || obj.get("rating").isJsonNull) {
+            showReviewDialog(AndroidUtilities.getIntFieldFromJson(obj.get("id")))
+        }
     }
 
     private fun generateJson(): JsonObject {
@@ -176,24 +164,6 @@ class MyOrderActivity : BaseActivity() {
 
     private fun checkReview(): Boolean {
         return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0
-    }
-
-    private fun parseUser(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
-        val order = obj.get("order")
-        if (order == null || obj.get("order").isJsonNull) return
-
-        val myOrder = MyOrder(order.asJsonObject)
-
-        if (myOrder.status != MyOrder.Status.COMPLETED) return
-
-        val review = order.asJsonObject.get("rating") ?: return
-
-        OrdersActivity.laundryId = AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("laundry").asJsonObject.get("id"))
-
-        if (review.isJsonNull) {
-            showReviewDialog(AndroidUtilities.getIntFieldFromJson(order.asJsonObject.get("id")))
-        }
     }
 
     private fun sendReview() {
