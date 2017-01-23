@@ -175,7 +175,6 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseAnswer(array: JsonArray) {
-        LogUtil.logError(array.toString())
         LaundriesActivity.array = array
         val collection = ArrayList<Laundry>()
 
@@ -198,7 +197,7 @@ class LaundriesActivity : BaseActivity() {
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
         countSums(i)
         OrderList.setDecorationPrice()
-        laundry.orderPrice = allOrdersCost
+        laundry.orderPrice = totalPrice
         if (!checkMinimumCost(laundry, obj)) {
             laundry.isPassingMinimumPrice = false
         }
@@ -233,27 +232,29 @@ class LaundriesActivity : BaseActivity() {
                 DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_date"))),
                 parseDate(obj, "delivery_date_opens_at", "HH:mm"),
                 parseDate(obj, "delivery_date_closes_at", "HH:mm"),
-                allOrdersCost,
+                totalPrice,
                 index,
                 getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee")),
                 AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from")),
                 true,
-                0
+                0,
+                parseDate(obj, "collection_date_opens_at", "HH:mm"),
+                parseDate(obj, "collection_date_closes_at", "HH:mm")
         )
     }
 
-    private fun getFillSum(order: Order): Int {
+    private fun getOrderPartPrice(order: Order): Int {
         if (order.treatments == null) return 0
         var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].price }
         sum *= order.count
         return sum
     }
 
-    private val allOrdersCost: Int
+    private val totalPrice: Int
         get() {
-            val cost = (0..OrderList.get()!!.size - 1).sumBy { getFillSum(OrderList.get(it)!!) }
-            return cost
+            val price = (0..OrderList.get()!!.size - 1).sumBy { getOrderPartPrice(OrderList.get(it)!!) }
+            return price
         }
 
     private fun checkTreatments(obj: JsonObject): Boolean {
@@ -360,7 +361,7 @@ class LaundriesActivity : BaseActivity() {
         }
 
         OrderList.setDecorationPrice()
-        laundry!!.orderPrice = allOrdersCost
+        laundry!!.orderPrice = totalPrice
 
         setCosts(laundry!!)
 
