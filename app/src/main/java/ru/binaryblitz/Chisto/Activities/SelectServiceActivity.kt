@@ -118,6 +118,7 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun closeDialog() {
+        dialogOpened = false
         Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
     }
 
