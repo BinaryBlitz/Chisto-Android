@@ -314,7 +314,7 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun setPricesWithoutDeliveryFee() {
-        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price - 10) + getString(R.string.ruble_sign)
+        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
         (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
     }
 
