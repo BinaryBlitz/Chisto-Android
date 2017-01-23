@@ -16,7 +16,6 @@ import ru.binaryblitz.Chisto.Model.Laundry
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.DateUtils
 import ru.binaryblitz.Chisto.Utils.Image
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
@@ -131,9 +130,13 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     fun comparePrices(first: Laundry, second: Laundry): Int {
-        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) return -1
-        else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) return 1
-        else return getPrice(first).compareTo(getPrice(second))
+        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) {
+            return -1
+        } else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) {
+            return 1
+        } else {
+            return getPrice(first).compareTo(getPrice(second))
+        }
     }
 
     fun getPrice(laundry: Laundry): Int {
@@ -151,9 +154,13 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     fun compareSpeed(first: Laundry, second: Laundry): Int {
-        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) return -1
-        else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) return 1
-        else return first.deliveryDate!!.compareTo(second.deliveryDate!!)
+        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) {
+            return -1
+        } else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) {
+            return 1
+        } else {
+            return first.deliveryDate!!.compareTo(second.deliveryDate!!)
+        }
     }
 
     fun sortByRating() {
@@ -162,9 +169,13 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
     }
 
     fun compareRating(first: Laundry, second: Laundry): Int {
-        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) return -1
-        else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) return 1
-        else return -first.rating.compareTo(second.rating)
+        if (first.isPassingMinimumPrice && !second.isPassingMinimumPrice) {
+            return -1
+        } else if (!first.isPassingMinimumPrice && second.isPassingMinimumPrice) {
+            return 1
+        } else {
+            return -first.rating.compareTo(second.rating)
+        }
     }
 
     private fun setDatesAndCosts(laundry: Laundry, holder: ViewHolder) {
