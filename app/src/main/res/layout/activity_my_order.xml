@@ -3,13 +3,13 @@
 <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:id="@+id/refresh"
+        android:background="#ffffff"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
     <ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
                  android:orientation="vertical"
                  android:layout_width="match_parent"
                  android:id="@+id/main"
-                 android:background="#eaeaea"
                  android:layout_height="match_parent">
         <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
@@ -59,8 +59,7 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:layout_marginTop="56dp"
-                android:background="#ffffff"
+                android:layout_marginTop="68dp"
                 android:layout_height="match_parent">
             <FrameLayout android:layout_width="match_parent"
                          android:layout_height="70dp">
@@ -120,27 +119,24 @@
 
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:textSize="12sp"
+                          android:textSize="14sp"
                           android:id="@+id/status_text"
                           android:textColor="#727272"
                           android:layout_marginStart="130dp"
                           android:layout_marginLeft="130dp"
                           android:layout_marginEnd="40dp"
-                          android:layout_marginBottom="17dp"
                           android:layout_marginRight="40dp"
-                          android:layout_gravity="end|bottom"/>
+                          android:layout_gravity="end|center_vertical"/>
 
                 <ImageView
-                        android:layout_width="20dp"
+                        android:layout_width="32dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginStart="12dp"
-                        android:layout_marginTop="24dp"
                         android:id="@+id/order_icon"
-                        android:layout_gravity="end|bottom"
-                        android:layout_marginEnd="12dp"
-                        android:layout_marginRight="12dp"
-                        android:layout_marginBottom="15dp"
-                        android:layout_height="20dp"/>
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="6dp"
+                        android:layout_marginRight="6dp"
+                        android:layout_height="32dp"/>
             </FrameLayout>
             <View android:layout_width="match_parent"
                   android:background="#b6b6b6"
@@ -165,26 +161,23 @@
 
                 <TextView android:layout_width="wrap_content"
                           android:layout_height="wrap_content"
-                          android:textSize="12sp"
+                          android:textSize="14sp"
                           android:id="@+id/payment_type_text"
-                          android:textColor="#727272"
+                          android:textColor="@color/completedColor"
                           android:layout_marginStart="130dp"
                           android:layout_marginLeft="130dp"
                           android:layout_marginEnd="40dp"
-                          android:layout_marginBottom="17dp"
                           android:layout_marginRight="40dp"
-                          android:layout_gravity="end|bottom"/>
+                          android:layout_gravity="end|center_vertical"/>
 
                 <ImageView
                         android:layout_width="20dp"
                         android:layout_marginLeft="12dp"
                         android:layout_marginStart="12dp"
-                        android:layout_marginTop="24dp"
                         android:id="@+id/payment_type_icon"
-                        android:layout_gravity="end|bottom"
+                        android:layout_gravity="end|center_vertical"
                         android:layout_marginEnd="12dp"
                         android:layout_marginRight="12dp"
-                        android:layout_marginBottom="15dp"
                         android:layout_height="20dp"/>
             </FrameLayout>
             <View android:layout_width="match_parent"
@@ -212,8 +205,9 @@
                           android:layout_height="wrap_content"
                           android:layout_marginEnd="12dp"
                           android:textColor="#ed495a"
+                          android:text="BIANCA10"
                           android:layout_marginRight="12dp"
-                          android:textSize="18sp"
+                          android:textSize="16sp"
                           android:id="@+id/promo_price_difference"
                           android:layout_gravity="end|center_vertical"/>
             </FrameLayout>
@@ -281,6 +275,7 @@
                           android:layout_marginEnd="12dp"
                           android:layout_marginRight="12dp"
                           android:textSize="18sp"
+                          android:text="-10 ₽"
                           android:id="@+id/promo"
                           android:textColor="#ed495a"
                           android:layout_gravity="end|center_vertical"/>
@@ -344,9 +339,9 @@
                           android:layout_height="wrap_content"
                           android:layout_marginEnd="12dp"
                           android:layout_marginRight="12dp"
-                          android:id="@+id/cost"
+                          android:id="@+id/price"
                           android:textSize="18sp"
-                          android:textColor="@color/colorAccent"
+                          android:textColor="@color/greyColor"
                           android:layout_gravity="end|center_vertical"/>
             </FrameLayout>
 
@@ -358,6 +353,7 @@
             <ru.binaryblitz.Chisto.Custom.RecyclerListView
                     android:layout_width="match_parent"
                     android:id="@+id/recyclerView"
+                    android:background="#eaeaea"
                     android:layout_height="match_parent"/>
         </LinearLayout>
 

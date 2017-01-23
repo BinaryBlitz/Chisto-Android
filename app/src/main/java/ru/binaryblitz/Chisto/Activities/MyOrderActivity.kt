@@ -43,6 +43,9 @@ class MyOrderActivity : BaseActivity() {
     private var deliveryFee: Int = 0
     private var freeDeliveryFrom: Int = 0
 
+    val CASH = "cash"
+    val CARD = "card"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
@@ -113,11 +116,11 @@ class MyOrderActivity : BaseActivity() {
         LogUtil.logError(obj.toString())
         val status = AndroidUtilities.getStringFieldFromJson(obj.get("status"))
         processStatus(status)
+        processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
         setLaundryInfo(obj.get("laundry").asJsonObject)
-        (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) +
-                AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        (findViewById(R.id.number) as TextView).text = getString(R.string.number_sign) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        (findViewById(R.id.date_text) as TextView).text = getDateFromJson(obj)
+        (findViewById(R.id.date_text_view) as TextView).text = getString(R.string.my_order_code) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        //(findViewById(R.id.number) as TextView).text = getString(R.string.number_sign) + AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        (findViewById(R.id.date) as TextView).text = getDateFromJson(obj)
 
         if (obj.get("order_items") != null && !obj.get("order_items").isJsonNull) {
             createOrderListView(obj.get("order_items").asJsonArray)
@@ -290,19 +293,19 @@ class MyOrderActivity : BaseActivity() {
         (findViewById(R.id.price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
 
         if (price < freeDeliveryFrom) {
-            setPricesWithoutDeliveryPrice()
+            setPricesWithDeliveryFee()
         } else {
-            setPricesWithDeliveryPrice()
+            setPricesWithoutDeliveryFee()
         }
     }
 
-    private fun setPricesWithoutDeliveryPrice() {
+    private fun setPricesWithDeliveryFee() {
         (findViewById(R.id.final_price) as TextView).text = Integer.toString(price + deliveryFee) + getString(R.string.ruble_sign)
         (findViewById(R.id.delivery) as TextView).text = Integer.toString(deliveryFee) + getString(R.string.ruble_sign)
     }
 
-    private fun setPricesWithDeliveryPrice() {
-        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price) + getString(R.string.ruble_sign)
+    private fun setPricesWithoutDeliveryFee() {
+        (findViewById(R.id.final_price) as TextView).text = Integer.toString(price - 10) + getString(R.string.ruble_sign)
         (findViewById(R.id.delivery) as TextView).text = getString(R.string.free)
     }
 
@@ -349,6 +352,28 @@ class MyOrderActivity : BaseActivity() {
 
         freeDeliveryFrom = AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from"))
         deliveryFee = AndroidUtilities.getIntFieldFromJson(obj.get("delivery_fee"))
+    }
+
+    private fun processPaymentMethod(paymentType: String) {
+        val icon: Int
+        val text: Int
+        when (paymentType) {
+            CASH -> {
+                icon = R.drawable.ic_cash
+                text = R.string.cash
+            }
+            CARD -> {
+                icon = R.drawable.ic_card
+                text = R.string.card
+            }
+            else -> {
+                icon = R.drawable.ic_cash
+                text = R.string.cash
+            }
+        }
+
+        (findViewById(R.id.payment_type_icon) as ImageView).setImageResource(icon)
+        (findViewById(R.id.payment_type_text) as TextView).setText(text)
     }
 
     private fun processStatus(status: String) {
