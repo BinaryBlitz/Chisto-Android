@@ -30,7 +30,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.*
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -159,7 +159,7 @@ class MyOrderActivity : BaseActivity() {
 
     private fun parseReviewResponse() {
         isRated = true
-        Animations.animateRevealHide(findViewById(R.id.dialog))
+        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     private fun showReviewDialog() {
@@ -167,7 +167,7 @@ class MyOrderActivity : BaseActivity() {
             dialogOpened = true
             (findViewById(R.id.order_name_completed) as TextView).text =
                     getString(R.string.order) + " № " + orderId.toString() + getString(R.string.completed)
-            Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
         }
     }
 
@@ -190,7 +190,7 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().sendReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
                 if (response.isSuccessful) {
                     parseReviewResponse()
                 } else {
@@ -200,7 +200,7 @@ class MyOrderActivity : BaseActivity() {
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
                 onInternetConnectionError()
             }
         })
@@ -212,7 +212,7 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().updateReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
                 if (response.isSuccessful) {
                     parseReviewResponse()
                 } else {
@@ -222,7 +222,7 @@ class MyOrderActivity : BaseActivity() {
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
                 onInternetConnectionError()
             }
         })

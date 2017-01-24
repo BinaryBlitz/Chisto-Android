@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
+import cn.refactor.library.SmoothCheckBox
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.OrderList

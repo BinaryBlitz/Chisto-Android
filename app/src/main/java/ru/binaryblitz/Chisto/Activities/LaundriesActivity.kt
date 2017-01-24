@@ -29,7 +29,7 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
 import ru.binaryblitz.Chisto.Utils.*
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,7 +62,7 @@ class LaundriesActivity : BaseActivity() {
             if (dialogOpened) {
                 Handler().post {
                     dialogOpened = false
-                    Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+                    ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
                 }
             }
         }
@@ -377,7 +377,7 @@ class LaundriesActivity : BaseActivity() {
 
         Handler().post {
             dialogOpened = true
-            Animations.animateRevealShow(findViewById(R.id.dialog), this@LaundriesActivity)
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog), this@LaundriesActivity)
         }
     }
 

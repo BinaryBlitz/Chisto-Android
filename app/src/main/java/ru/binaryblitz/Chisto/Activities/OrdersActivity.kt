@@ -27,7 +27,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.*
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 
 class OrdersActivity : BaseActivity() {
 
@@ -70,7 +70,7 @@ class OrdersActivity : BaseActivity() {
         Handler().post {
             dialogOpened = true
             (findViewById(R.id.order_name) as TextView).text = getString(R.string.number_sign) + id.toString()
-            Animations.animateRevealShow(findViewById(R.id.dialog_new_order), this@OrdersActivity)
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog_new_order), this@OrdersActivity)
             newOrderId = 0
         }
     }
@@ -96,7 +96,7 @@ class OrdersActivity : BaseActivity() {
         ServerApi.get(this).api().sendReview(laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
                 if (response.isSuccessful) {
                     parseReviewResponse()
                 } else {
@@ -106,7 +106,7 @@ class OrdersActivity : BaseActivity() {
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
                 onInternetConnectionError()
             }
         })
@@ -138,7 +138,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseReviewResponse() {
-        Animations.animateRevealHide(findViewById(R.id.dialog))
+        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     private fun showReviewDialog(id: Int) {
@@ -146,7 +146,7 @@ class OrdersActivity : BaseActivity() {
             dialogOpened = true
             (findViewById(R.id.order_name_completed) as TextView).text =
                     getString(R.string.order) + " № " + id.toString() + getString(R.string.completed)
-            Animations.animateRevealShow(findViewById(R.id.dialog), this@OrdersActivity)
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog), this@OrdersActivity)
         }
     }
 
@@ -192,7 +192,7 @@ class OrdersActivity : BaseActivity() {
         }
 
         findViewById(R.id.new_order_dialog_btn).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog_new_order))
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog_new_order))
             getUser()
         }
     }
