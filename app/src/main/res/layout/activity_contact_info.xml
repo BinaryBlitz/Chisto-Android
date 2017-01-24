@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                                                           xmlns:app="http://schemas.android.com/apk/res-auto"
                                                           android:orientation="vertical"
                                                           android:layout_width="match_parent"
@@ -526,4 +526,4 @@
         <include layout="@layout/popup_your_order" />
 
     </FrameLayout>
-</ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout>
+</io.codetail.widget.RevealFrameLayout>

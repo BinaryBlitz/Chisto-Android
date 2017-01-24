@@ -3,7 +3,7 @@
         android:id="@+id/refresh"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
-    <FrameLayout
+    <io.codetail.widget.RevealFrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/main"
@@ -129,5 +129,5 @@
             <include layout="@layout/dialog_size" />
 
         </FrameLayout>
-    </FrameLayout>
+    </io.codetail.widget.RevealFrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

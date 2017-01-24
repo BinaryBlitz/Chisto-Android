@@ -27,7 +27,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.*
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 import java.util.*
 import java.util.regex.Pattern
 
@@ -267,7 +267,7 @@ class PersonalInfoActivity : BaseActivity() {
         }
 
         findViewById(R.id.dialog).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog))
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
         }
     }
 

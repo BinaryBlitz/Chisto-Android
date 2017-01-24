@@ -28,7 +28,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
@@ -52,13 +52,13 @@ class LaundryAndOrderActivity : BaseActivity() {
     private fun showPromoDialog() {
         Handler().post {
             dialogOpened = true
-            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
         }
     }
 
     private fun closeDialog() {
         dialogOpened = false
-        Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
     }
 
     override fun onBackPressed() {

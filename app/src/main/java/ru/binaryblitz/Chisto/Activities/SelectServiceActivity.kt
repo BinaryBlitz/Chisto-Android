@@ -26,7 +26,7 @@ import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
@@ -119,7 +119,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun closeDialog() {
         dialogOpened = false
-        Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
     }
 
     override fun onBackPressed() {
@@ -155,7 +155,7 @@ class SelectServiceActivity : BaseActivity() {
     private fun showSizeDialog() {
         Handler().post {
             dialogOpened = true
-            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@SelectServiceActivity)
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@SelectServiceActivity)
         }
     }
 

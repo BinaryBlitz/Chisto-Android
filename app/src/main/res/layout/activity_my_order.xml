@@ -6,7 +6,7 @@
         android:background="#eaeaea"
         android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android">
-    <ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    <io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
                  android:orientation="vertical"
                  android:layout_width="match_parent"
                  android:id="@+id/main"
@@ -422,5 +422,5 @@
             <include layout="@layout/dialog_review" />
 
         </FrameLayout>
-    </ru.binaryblitz.Chisto.Utils.Animations.RevealFrameLayout>
+    </io.codetail.widget.RevealFrameLayout>
 </android.support.v4.widget.SwipeRefreshLayout>
