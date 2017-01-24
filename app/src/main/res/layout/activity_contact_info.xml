@@ -370,7 +370,7 @@
                             android:layout_height="56dp"/>
                 </LinearLayout>
 
-                <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
+                <cn.refactor.library.SmoothCheckBox
                         android:layout_width="30dp"
                         android:layout_gravity="center_vertical|end"
                         android:id="@+id/cardCheckBox"
@@ -403,7 +403,7 @@
                               android:layout_height="wrap_content"/>
                 </LinearLayout>
 
-                <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
+                <cn.refactor.library.SmoothCheckBox
                         android:layout_width="30dp"
                         android:layout_gravity="center_vertical|end"
                         android:id="@+id/cashCheckBox"

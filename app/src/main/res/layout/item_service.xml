@@ -32,7 +32,7 @@
                   android:layout_marginTop="4dp"/>
     </LinearLayout>
 
-    <ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
+    <cn.refactor.library.SmoothCheckBox
             android:layout_width="30dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="12dp"

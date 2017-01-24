@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import cn.refactor.library.SmoothCheckBox
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonArray
@@ -19,7 +20,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.Base.BaseActivity
-import ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.Model.User
 import ru.binaryblitz.Chisto.Push.MyInstanceIDListenerService
@@ -27,7 +27,6 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.*
-import ru.binaryblitz.Chisto.Utils.Animations
 import java.util.*
 import java.util.regex.Pattern
 
