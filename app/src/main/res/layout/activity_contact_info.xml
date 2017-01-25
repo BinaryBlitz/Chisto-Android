@@ -375,6 +375,9 @@
                         android:layout_gravity="center_vertical|end"
                         android:id="@+id/cardCheckBox"
                         android:layout_marginBottom="35dp"
+                        app:stroke_width="0dp"
+                        app:color_checked="@color/colorAccent"
+                        app:color_unchecked_stroke="#CFCFCF"
                         android:layout_marginTop="35dp"
                         android:layout_height="30dp"/>
 
@@ -407,6 +410,9 @@
                         android:layout_width="30dp"
                         android:layout_gravity="center_vertical|end"
                         android:id="@+id/cashCheckBox"
+                        app:stroke_width="0dp"
+                        app:color_checked="@color/colorAccent"
+                        app:color_unchecked_stroke="#CFCFCF"
                         android:layout_marginBottom="35dp"
                         android:layout_marginTop="35dp"
                         android:layout_height="30dp"/>

@@ -38,6 +38,7 @@ class PersonalInfoActivity : BaseActivity() {
     val CARD = "card"
     val GREY_COLOR = "#727272"
     val BLACK_COLOR = "#212121"
+    private var greyColor: Int = Color.parseColor("#CFCFCF")
 
     private var name: MaterialEditText? = null
     private var lastname: MaterialEditText? = null
@@ -299,10 +300,16 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun initCheckBoxes() {
+        initCheckBox((findViewById(R.id.cashCheckBox) as SmoothCheckBox))
+        initCheckBox((findViewById(R.id.cardCheckBox) as SmoothCheckBox))
         selectBankCard()
+    }
 
-        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isEnabled = false
-        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isEnabled = false
+    private fun initCheckBox(checkBox: SmoothCheckBox) {
+        checkBox.isEnabled = false
+        val unCheckedColor = SmoothCheckBox::class.java.getDeclaredField("mUnCheckedColor")
+        unCheckedColor.isAccessible = true
+        unCheckedColor.set(checkBox, greyColor)
     }
 
     private fun setInfo() {
