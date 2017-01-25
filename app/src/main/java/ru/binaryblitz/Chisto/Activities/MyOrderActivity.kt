@@ -62,6 +62,11 @@ class MyOrderActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (dialogOpened) return
+        super.onBackPressed()
+    }
+
     private fun initList() {
         val view = findViewById(R.id.recyclerView) as RecyclerListView
         view.layoutManager = LinearLayoutManager(this)
