@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.widget.NestedScrollView
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
@@ -52,13 +53,13 @@ class LaundryAndOrderActivity : BaseActivity() {
     private fun showPromoDialog() {
         Handler().post {
             dialogOpened = true
-            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
+            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
         }
     }
 
     private fun closeDialog() {
         dialogOpened = false
-        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+        Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
     }
 
     override fun onBackPressed() {
@@ -83,9 +84,11 @@ class LaundryAndOrderActivity : BaseActivity() {
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            val userNotLogged = DeviceInfoStore.getToken(this@LaundryAndOrderActivity) == "null"
-            if (userNotLogged) openActivity(RegistrationActivity::class.java)
-            else openActivity(PersonalInfoActivity::class.java)
+            if (DeviceInfoStore.getToken(this@LaundryAndOrderActivity) == "null") {
+                openActivity(RegistrationActivity::class.java)
+            } else {
+                openActivity(PersonalInfoActivity::class.java)
+            }
         }
 
         findViewById(R.id.promo_btn).setOnClickListener {
@@ -132,7 +135,6 @@ class LaundryAndOrderActivity : BaseActivity() {
         val view = findViewById(R.id.recyclerView) as RecyclerListView
         view.layoutManager = LinearLayoutManager(this)
         view.itemAnimator = DefaultItemAnimator()
-        view.setHasFixedSize(true)
         view.emptyView = null
 
         adapter = OrderContentAdapter(this)
@@ -152,6 +154,10 @@ class LaundryAndOrderActivity : BaseActivity() {
 
         adapter!!.setCollection(listToShow)
         adapter!!.notifyDataSetChanged()
+
+        Handler().postDelayed({
+            (findViewById(R.id.scroll) as NestedScrollView).fullScroll(NestedScrollView.FOCUS_UP)
+        }, 100)
 
         setSums()
     }
