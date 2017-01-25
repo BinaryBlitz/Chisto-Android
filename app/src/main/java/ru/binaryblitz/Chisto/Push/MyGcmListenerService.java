@@ -37,11 +37,11 @@ public class MyGcmListenerService extends FirebaseMessagingService {
     }
 
     private void sendNotification(int orderId, String messageBody) {
+        MyOrderActivity.Companion.setOpenedFromPush(true);
         Intent intent = new Intent(this, MyOrderActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("id", orderId);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)

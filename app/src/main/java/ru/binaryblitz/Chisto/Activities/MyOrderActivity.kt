@@ -140,7 +140,7 @@ class MyOrderActivity : BaseActivity() {
 
         orderId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         isRated = obj.get("rating") != null && !obj.get("rating").isJsonNull
-        if (!isRated) {
+        if (!isRated && isOpenedFromPush) {
             showReviewDialog()
         }
     }
@@ -159,7 +159,7 @@ class MyOrderActivity : BaseActivity() {
 
     private fun parseReviewResponse() {
         isRated = true
-        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+        Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     private fun showReviewDialog() {
@@ -167,7 +167,7 @@ class MyOrderActivity : BaseActivity() {
             dialogOpened = true
             (findViewById(R.id.order_name_completed) as TextView).text =
                     getString(R.string.order) + " № " + orderId.toString() + getString(R.string.completed)
-            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
         }
     }
 
@@ -190,7 +190,8 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().sendReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+                isOpenedFromPush = false
+                Animations.animateRevealHide(findViewById(R.id.dialog))
                 if (response.isSuccessful) {
                     parseReviewResponse()
                 } else {
@@ -200,7 +201,8 @@ class MyOrderActivity : BaseActivity() {
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 dialog.dismiss()
-                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+                isOpenedFromPush = false
+                Animations.animateRevealHide(findViewById(R.id.dialog))
                 onInternetConnectionError()
             }
         })
@@ -446,5 +448,6 @@ class MyOrderActivity : BaseActivity() {
 
     companion object {
         private val EXTRA_ID = "id"
+        var isOpenedFromPush = false
     }
 }
