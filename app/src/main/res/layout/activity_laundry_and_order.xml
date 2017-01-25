@@ -150,7 +150,12 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:textColor="#ffffff"
                 android:text="@string/review"
-                android:padding="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                android:paddingEnd="20dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
