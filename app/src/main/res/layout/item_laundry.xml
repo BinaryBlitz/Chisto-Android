@@ -209,7 +209,7 @@
         </LinearLayout>
         <View android:layout_width="match_parent"
               android:layout_gravity="bottom"
-              android:layout_marginTop="4dp"
+              android:layout_marginTop="8dp"
               android:background="#b6b6b6"
               android:layout_height="1px" />
     </LinearLayout>
