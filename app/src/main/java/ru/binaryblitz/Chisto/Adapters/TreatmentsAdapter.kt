@@ -17,6 +17,7 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
     private var collection = ArrayList<Treatment>()
     private var color: Int = Color.parseColor("#212121")
+    private var greyColor: Int = Color.parseColor("#CFCFCF")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_service, parent, false)
@@ -56,7 +57,7 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
         holder.name.text = treatment.name
         holder.description.text = treatment.description
-        holder.checkBox.setmCheckedColor(color)
+        setColorForCheckBox(holder.checkBox, color)
 
         holder.checkBox.isChecked = treatment.select
 
@@ -66,6 +67,16 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         }
 
         holder.checkBox.setOnCheckedChangeListener { compoundButton, b -> collection[holder.adapterPosition].select = b }
+    }
+
+    private fun setColorForCheckBox(checkBox: SmoothCheckBox, color: Int) {
+        val checkedColor = SmoothCheckBox::class.java.getDeclaredField("mCheckedColor")
+        checkedColor.isAccessible = true
+        checkedColor.set(checkBox, color)
+
+        val unCheckedColor = SmoothCheckBox::class.java.getDeclaredField("mUnCheckedColor")
+        unCheckedColor.isAccessible = true
+        unCheckedColor.set(checkBox, greyColor)
     }
 
     override fun getItemCount(): Int {
