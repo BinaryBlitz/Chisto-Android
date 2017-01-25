@@ -4,6 +4,7 @@ import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
+import android.support.v4.widget.NestedScrollView
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -66,7 +67,6 @@ class MyOrderActivity : BaseActivity() {
         val view = findViewById(R.id.recyclerView) as RecyclerListView
         view.layoutManager = LinearLayoutManager(this)
         view.itemAnimator = DefaultItemAnimator()
-        view.setHasFixedSize(true)
         view.emptyView = null
 
         adapter = OrderContentAdapter(this)
@@ -159,7 +159,7 @@ class MyOrderActivity : BaseActivity() {
 
     private fun parseReviewResponse() {
         isRated = true
-        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+        Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     private fun showReviewDialog() {
@@ -167,7 +167,7 @@ class MyOrderActivity : BaseActivity() {
             dialogOpened = true
             (findViewById(R.id.order_name_completed) as TextView).text =
                     getString(R.string.order) + " № " + orderId.toString() + getString(R.string.completed)
-            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@MyOrderActivity)
         }
     }
 
@@ -240,6 +240,10 @@ class MyOrderActivity : BaseActivity() {
 
         adapter!!.setCollection(listToShow)
         adapter!!.notifyDataSetChanged()
+
+        Handler().postDelayed({
+            (findViewById(R.id.scroll) as NestedScrollView).fullScroll(NestedScrollView.FOCUS_UP)
+        }, 100)
 
         setPrices()
     }
