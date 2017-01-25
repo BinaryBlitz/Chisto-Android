@@ -115,11 +115,7 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().getOrder(intent.getIntExtra(EXTRA_ID, 1), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) {
-                    parseAnswer(response.body())
-                } else {
-                    onServerError(response)
-                }
+                parseAnswer(response.body())
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -130,7 +126,6 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         val status = AndroidUtilities.getStringFieldFromJson(obj.get("status"))
         processStatus(status)
         processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
