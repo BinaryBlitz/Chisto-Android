@@ -367,6 +367,8 @@
                             android:src="@drawable/ic_master_card"
                             android:padding="10dp"
                             android:id="@+id/master_card"
+                            android:layout_marginLeft="-16dp"
+                            android:layout_marginStart="-16dp"
                             android:layout_height="56dp"/>
                 </LinearLayout>
 
