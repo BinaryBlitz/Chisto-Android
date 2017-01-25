@@ -20,7 +20,6 @@
     <TextView
             android:layout_width="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:text="3 800 р"
             android:textSize="18sp"
             android:id="@+id/price"
             android:textColor="#727272"
