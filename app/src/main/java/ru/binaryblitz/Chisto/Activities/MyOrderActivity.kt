@@ -63,6 +63,11 @@ class MyOrderActivity : BaseActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (dialogOpened) return
+        super.onBackPressed()
+    }
+
     private fun initList() {
         val view = findViewById(R.id.recyclerView) as RecyclerListView
         view.layoutManager = LinearLayoutManager(this)
@@ -110,11 +115,7 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().getOrder(intent.getIntExtra(EXTRA_ID, 1), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) {
-                    parseAnswer(response.body())
-                } else {
-                    onServerError(response)
-                }
+                parseAnswer(response.body())
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -125,7 +126,6 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         val status = AndroidUtilities.getStringFieldFromJson(obj.get("status"))
         processStatus(status)
         processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
@@ -140,7 +140,7 @@ class MyOrderActivity : BaseActivity() {
 
         orderId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         isRated = obj.get("rating") != null && !obj.get("rating").isJsonNull
-        if (!isRated) {
+        if (!isRated && isOpenedFromPush) {
             showReviewDialog()
         }
     }
@@ -190,7 +190,8 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().sendReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+                isOpenedFromPush = false
+                Animations.animateRevealHide(findViewById(R.id.dialog))
                 if (response.isSuccessful) {
                     parseReviewResponse()
                 } else {
@@ -200,7 +201,8 @@ class MyOrderActivity : BaseActivity() {
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 dialog.dismiss()
-                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+                isOpenedFromPush = false
+                Animations.animateRevealHide(findViewById(R.id.dialog))
                 onInternetConnectionError()
             }
         })
@@ -450,5 +452,6 @@ class MyOrderActivity : BaseActivity() {
 
     companion object {
         private val EXTRA_ID = "id"
+        var isOpenedFromPush = false
     }
 }
