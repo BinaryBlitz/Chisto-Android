@@ -62,7 +62,7 @@ class LaundriesActivity : BaseActivity() {
             if (dialogOpened) {
                 Handler().post {
                     dialogOpened = false
-                    ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+                    Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
                 }
             }
         }
@@ -82,7 +82,7 @@ class LaundriesActivity : BaseActivity() {
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
         intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
         if (laundry!!.orderPrice!! < laundry!!.freeDeliveryFrom!!) {
-            intent.putExtra(EXTRA_DELIVERY_COST, laundry!!.deliveryFee!!)
+            intent.putExtra(EXTRA_DELIVERY_FEE, laundry!!.deliveryFee!!)
         }
         intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry!!))
         startActivity(intent)
@@ -363,7 +363,7 @@ class LaundriesActivity : BaseActivity() {
         OrderList.setDecorationPrice()
         laundry!!.orderPrice = totalPrice
 
-        setCosts(laundry!!)
+        setPrices(laundry!!)
 
         if (!checkMinimumCost(laundry!!, obj)) return
 
@@ -377,7 +377,7 @@ class LaundriesActivity : BaseActivity() {
 
         Handler().post {
             dialogOpened = true
-            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog), this@LaundriesActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@LaundriesActivity)
         }
     }
 
@@ -387,7 +387,7 @@ class LaundriesActivity : BaseActivity() {
         setTextToField(R.id.delivery_bounds_dialog, getPeriod(laundry))
     }
 
-    private fun setCosts(laundry: Laundry) {
+    private fun setPrices(laundry: Laundry) {
         setTextToField(R.id.curier_cost_dialog, getString(R.string.from_code) +
                 DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
                 getString(R.string.end_bound_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
@@ -428,7 +428,7 @@ class LaundriesActivity : BaseActivity() {
         private var laundryObject: JsonObject? = null
         private val EXTRA_ID = "id"
         private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
-        private val EXTRA_DELIVERY_COST = "deliveryCost"
+        private val EXTRA_DELIVERY_FEE = "deliveryFee"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
     }
