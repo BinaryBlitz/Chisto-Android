@@ -129,10 +129,11 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun sort(which: Int) {
+        LogUtil.logError(which)
         when (which) {
+            0 -> adapter!!.sortByRating()
             1 -> adapter!!.sortByCost()
             2 -> adapter!!.sortBySpeed()
-            3 -> adapter!!.sortByRating()
             else -> {
             }
         }
