@@ -210,6 +210,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun processSelectedTreatments() {
         OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+        OrderList.setSize((findViewById(R.id.square_text) as TextView).text.toString())
 
         if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
             addTreatments()
