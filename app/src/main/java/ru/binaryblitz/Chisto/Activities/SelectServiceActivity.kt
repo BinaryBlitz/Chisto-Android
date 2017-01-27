@@ -30,6 +30,7 @@ import ru.binaryblitz.Chisto.Utils.Animations
 import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -119,7 +120,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun closeDialog() {
         dialogOpened = false
-        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+        Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     override fun onBackPressed() {
@@ -155,15 +156,20 @@ class SelectServiceActivity : BaseActivity() {
     private fun showSizeDialog() {
         Handler().post {
             dialogOpened = true
-            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@SelectServiceActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@SelectServiceActivity)
         }
     }
 
     private fun recomputeSquare(width: Boolean, editable: Editable, square: TextView) {
         if (editable.isNotEmpty() && editable.toString() != "0") {
             try {
-                if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
-                square.text = (Math.ceil((length * this.width).toDouble() / squareCentimetersInSquareMeters)).toInt().toString() +
+                if (width) {
+                    this.width = Integer.parseInt(editable.toString())
+                } else {
+                    length = Integer.parseInt(editable.toString())
+                }
+                val format = DecimalFormat("#.####")
+                square.text = format.format((length * this.width).toDouble() / squareCentimetersInSquareMeters) +
                         getString(R.string.square_meter_symbol)
             } catch (e: Exception) {
                 LogUtil.logException(e)
@@ -172,7 +178,9 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun finishActivity() {
-        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+            OrderList.removeCurrent()
+        }
         finish()
     }
 
