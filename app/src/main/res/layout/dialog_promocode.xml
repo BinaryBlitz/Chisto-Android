@@ -32,7 +32,7 @@
         <EditText android:layout_width="match_parent"
                   android:textSize="18sp"
                   android:hint="@string/promo_hint"
-                  android:maxLength="4"
+                  android:maxLength="20"
                   android:textColorHint="#727272"
                   android:textColorHighlight="#ed495a"
                   android:textColor="#ed495a"

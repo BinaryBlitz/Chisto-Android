@@ -60,7 +60,6 @@
         <EditText android:layout_width="match_parent"
                   android:textSize="18sp"
                   android:hint="@string/your_review"
-                  android:maxLength="4"
                   android:inputType="textCapSentences"
                   android:id="@+id/review_text"
                   android:gravity="center"
