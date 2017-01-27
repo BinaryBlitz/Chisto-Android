@@ -26,28 +26,28 @@
                           android:layout_gravity="center_vertical"
                           android:layout_height="wrap_content">
                 <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/name"
-                          android:layout_marginStart="100dp"
-                          android:layout_marginEnd="100dp"
-                          android:layout_marginRight="100dp"
-                          android:textSize="16sp"
-                          android:textColor="#212121"
-                          android:layout_marginLeft="100dp"
-                          android:layout_gravity="top"/>
-
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name"
+                    android:layout_marginStart="100dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginRight="12dp"
+                    android:textSize="16sp"
+                    android:textColor="#212121"
+                    android:layout_marginLeft="100dp"
+                    android:layout_gravity="top"/>
                 <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
+                          android:layout_height="44dp"
                           android:id="@+id/description"
                           android:textSize="14sp"
-                          android:layout_marginTop="8dp"
-                          android:layout_marginBottom="8dp"
+                          android:layout_marginTop="4dp"
+                          android:layout_marginBottom="6dp"
                           android:textColor="#727272"
+                          android:gravity="center_vertical"
                           android:layout_marginStart="100dp"
                           android:layout_marginLeft="100dp"
                           android:maxLines="2"
-                          android:layout_marginEnd="60dp"
-                          android:layout_marginRight="60dp"
+                          android:layout_marginEnd="12dp"
+                          android:layout_marginRight="12dp"
                           android:layout_gravity="center_vertical"/>
 
                 <com.iarcuschin.simpleratingbar.SimpleRatingBar
