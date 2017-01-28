@@ -38,7 +38,6 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
         return collection.size
     }
 
-
     fun getDateFullString(date: Date?): String {
         if (date == null) return ""
 
