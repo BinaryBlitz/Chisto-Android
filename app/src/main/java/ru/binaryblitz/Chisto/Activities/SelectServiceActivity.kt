@@ -46,6 +46,8 @@ class SelectServiceActivity : BaseActivity() {
     val EXTRA_NAME = "name"
     val EXTRA_USE_AREA = "userArea"
 
+    val format = "#.#"
+
     val squareCentimetersInSquareMeters = 10000.0
 
     private var width: Int = 0
@@ -162,19 +164,23 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun recomputeSquare(width: Boolean, editable: Editable, square: TextView) {
         if (editable.isNotEmpty() && editable.toString() != "0") {
-            try {
-                if (width) {
-                    this.width = Integer.parseInt(editable.toString())
-                } else {
-                    length = Integer.parseInt(editable.toString())
-                }
-                val format = DecimalFormat("#.####")
-                square.text = format.format((length * this.width).toDouble() / squareCentimetersInSquareMeters) +
-                        getString(R.string.square_meter_symbol)
-            } catch (e: Exception) {
-                LogUtil.logException(e)
-            }
+            compute(width, editable.toString(), square)
         }
+    }
+
+    private fun compute(width: Boolean, str: String, square: TextView) {
+        try {
+            val input = Integer.parseInt(str)
+            if (width) this.width = input else this.length = input
+            formatSquareInpuAndSetToTextView(square)
+        } catch (e: Exception) {
+            LogUtil.logException(e)
+        }
+    }
+    
+    private fun formatSquareInpuAndSetToTextView(square: TextView) {
+        square.text = DecimalFormat(format).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
+                getString(R.string.square_meter_symbol)
     }
 
     private fun finishActivity() {
