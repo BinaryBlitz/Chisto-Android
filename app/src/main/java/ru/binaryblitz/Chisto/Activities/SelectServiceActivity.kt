@@ -30,6 +30,7 @@ import ru.binaryblitz.Chisto.Utils.Animations
 import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -44,6 +45,8 @@ class SelectServiceActivity : BaseActivity() {
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
     val EXTRA_USE_AREA = "userArea"
+
+    val format = "#.#"
 
     val squareCentimetersInSquareMeters = 10000.0
 
@@ -119,7 +122,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun closeDialog() {
         dialogOpened = false
-        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+        Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     override fun onBackPressed() {
@@ -155,24 +158,35 @@ class SelectServiceActivity : BaseActivity() {
     private fun showSizeDialog() {
         Handler().post {
             dialogOpened = true
-            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@SelectServiceActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@SelectServiceActivity)
         }
     }
 
     private fun recomputeSquare(width: Boolean, editable: Editable, square: TextView) {
         if (editable.isNotEmpty() && editable.toString() != "0") {
-            try {
-                if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
-                square.text = (Math.ceil((length * this.width).toDouble() / squareCentimetersInSquareMeters)).toInt().toString() +
-                        getString(R.string.square_meter_symbol)
-            } catch (e: Exception) {
-                LogUtil.logException(e)
-            }
+            compute(width, editable.toString(), square)
         }
     }
 
+    private fun compute(width: Boolean, str: String, square: TextView) {
+        try {
+            val input = Integer.parseInt(str)
+            if (width) this.width = input else this.length = input
+            formatSquareInpuAndSetToTextView(square)
+        } catch (e: Exception) {
+            LogUtil.logException(e)
+        }
+    }
+    
+    private fun formatSquareInpuAndSetToTextView(square: TextView) {
+        square.text = DecimalFormat(format).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
+                getString(R.string.square_meter_symbol)
+    }
+
     private fun finishActivity() {
-        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+            OrderList.removeCurrent()
+        }
         finish()
     }
 
@@ -202,6 +216,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun processSelectedTreatments() {
         OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+        OrderList.setSize((findViewById(R.id.square_text) as TextView).text.toString())
 
         if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
             addTreatments()

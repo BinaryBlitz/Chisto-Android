@@ -160,7 +160,7 @@ public class OrderList {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void setSize(int size) {
+    public static void setSize(String size) {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
             return;
         }
