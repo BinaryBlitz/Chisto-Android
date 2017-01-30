@@ -73,7 +73,6 @@ public class SelectCategoryActivity extends BaseActivity {
     }
 
     private void finishActivity() {
-        OrderList.removeCurrent();
         finish();
     }
 
