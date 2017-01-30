@@ -40,12 +40,12 @@ class PersonalInfoActivity : BaseActivity() {
     val BLACK_COLOR = "#212121"
     private var greyColor: Int = Color.parseColor("#CFCFCF")
 
-    private var name: MaterialEditText? = null
-    private var lastname: MaterialEditText? = null
+    private var firstName: MaterialEditText? = null
+    private var lastName: MaterialEditText? = null
     private var city: MaterialEditText? = null
-    private var street: MaterialEditText? = null
-    private var house: MaterialEditText? = null
-    private var flat: MaterialEditText? = null
+    private var streetName: MaterialEditText? = null
+    private var houseNumber: MaterialEditText? = null
+    private var apartmentNumber: MaterialEditText? = null
     private var comment: MaterialEditText? = null
     private var phone: MaterialEditText? = null
     private var email: MaterialEditText? = null
@@ -165,25 +165,30 @@ class PersonalInfoActivity : BaseActivity() {
     private fun generateJson(): JsonObject {
         val obj = JsonObject()
 
-        obj.addProperty("street_name", street!!.text.toString())
-        obj.addProperty("house_number", house!!.text.toString())
+        obj.addProperty("street_name", streetName!!.text.toString())
+        obj.addProperty("house_number", houseNumber!!.text.toString())
         obj.addProperty("contact_number", AndroidUtilities.processText(phone!!))
-        obj.addProperty("apartment_number", flat!!.text.toString())
+        obj.addProperty("apartment_number", apartmentNumber!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", email!!.text.toString())
         obj.addProperty("payment_method", selectedPaymentType)
+
+        val promoId = intent.getIntExtra(EXTRA_PROMO_CODE_ID, 0)
+        if (promoId != 0) {
+            obj.addProperty("promo_code_id", promoId)
+        }
 
         obj.add("order_items_attributes", generateOrderTreatments())
 
         val toSend = JsonObject()
         toSend.add("order", obj)
 
-        LogUtil.logError(toSend.toString())
-
         return toSend
     }
 
     private fun sendToServer(payWithCard: Boolean) {
+        if (OrderList.getLaundry() == null) return
+
         val dialog = ProgressDialog(this)
         dialog.show()
 
@@ -207,8 +212,11 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun parseAnswer(obj: JsonObject, payWithCard: Boolean) {
         orderId = obj.get("id").asInt
-        if (payWithCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
-        else complete(orderId)
+        if (payWithCard) {
+            openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        } else {
+            complete(orderId)
+        }
     }
 
     private fun openWebActivity(url: String) {
@@ -283,12 +291,12 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun initFields() {
-        name = findViewById(R.id.name_text) as MaterialEditText
-        lastname = findViewById(R.id.lastname_text) as MaterialEditText
+        firstName = findViewById(R.id.name_text) as MaterialEditText
+        lastName = findViewById(R.id.lastname_text) as MaterialEditText
         city = findViewById(R.id.city_text) as MaterialEditText
-        street = findViewById(R.id.street_text) as MaterialEditText
-        house = findViewById(R.id.house_text) as MaterialEditText
-        flat = findViewById(R.id.flat_text) as MaterialEditText
+        streetName = findViewById(R.id.street_text) as MaterialEditText
+        houseNumber = findViewById(R.id.house_text) as MaterialEditText
+        apartmentNumber = findViewById(R.id.flat_text) as MaterialEditText
         phone = findViewById(R.id.phone) as MaterialEditText
         comment = findViewById(R.id.comment_text) as MaterialEditText
         email = findViewById(R.id.email) as MaterialEditText
@@ -330,25 +338,25 @@ class PersonalInfoActivity : BaseActivity() {
         }
 
         setTextToField(email!!, user!!.email)
-        setTextToField(name!!, user!!.firstName)
-        setTextToField(lastname!!, user!!.lastname)
-        setTextToField(flat!!, user!!.apartmentNumber)
+        setTextToField(firstName!!, user!!.firstName)
+        setTextToField(lastName!!, user!!.lastname)
+        setTextToField(apartmentNumber!!, user!!.apartmentNumber)
         setTextToField(phone!!, user!!.phone)
-        setTextToField(house!!, user!!.houseNumber)
-        setTextToField(street!!, user!!.streetName)
+        setTextToField(houseNumber!!, user!!.houseNumber)
+        setTextToField(streetName!!, user!!.streetName)
         setTextToField(comment!!, user!!.notes)
     }
 
     private fun setData() {
         if (user == null) user = User.createDefault()
 
-        user!!.firstName = name!!.text.toString()
-        user!!.lastname = lastname!!.text.toString()
+        user!!.firstName = firstName!!.text.toString()
+        user!!.lastname = lastName!!.text.toString()
         user!!.city = city!!.text.toString()
-        user!!.apartmentNumber = flat!!.text.toString()
+        user!!.apartmentNumber = apartmentNumber!!.text.toString()
         user!!.phone = phone!!.text.toString()
-        user!!.streetName = street!!.text.toString()
-        user!!.houseNumber = house!!.text.toString()
+        user!!.streetName = streetName!!.text.toString()
+        user!!.houseNumber = houseNumber!!.text.toString()
         user!!.email = email!!.text.toString()
         user!!.notes = comment!!.text.toString()
 
@@ -357,11 +365,11 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun generateUserJson(): JsonObject {
         val obj = JsonObject()
-        obj.addProperty("first_name", name!!.text.toString())
-        obj.addProperty("last_name", lastname!!.text.toString())
-        obj.addProperty("apartment_number", flat!!.text.toString())
-        obj.addProperty("house_number", house!!.text.toString())
-        obj.addProperty("street_name", street!!.text.toString())
+        obj.addProperty("first_name", firstName!!.text.toString())
+        obj.addProperty("last_name", lastName!!.text.toString())
+        obj.addProperty("apartment_number", apartmentNumber!!.text.toString())
+        obj.addProperty("house_number", houseNumber!!.text.toString())
+        obj.addProperty("street_name", streetName!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
@@ -379,7 +387,6 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun parseUserAnswer(payWithCreditCard: Boolean, obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
         if (AndroidUtilities.checkPlayServices(this)) {
             val intent = Intent(this@PersonalInfoActivity, MyInstanceIDListenerService::class.java)
@@ -433,12 +440,12 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun validateFields(): Boolean {
-        var res = validateField(name!!, true)
-        res = res and validateField(lastname!!, true)
+        var res = validateField(firstName!!, true)
+        res = res and validateField(lastName!!, true)
         res = res and validateField(city!!, true)
-        res = res and validateField(street!!, false)
-        res = res and validateField(house!!, false)
-        res = res and validateField(flat!!, false)
+        res = res and validateField(streetName!!, false)
+        res = res and validateField(houseNumber!!, false)
+        res = res and validateField(apartmentNumber!!, false)
         res = res and validatePhoneField(phone!!)
         res = res and validateEmailField(email!!)
 
@@ -504,6 +511,7 @@ class PersonalInfoActivity : BaseActivity() {
     companion object {
         private val EXTRA_PRICE = "price"
         private val EXTRA_TOKEN = "token"
+        private val EXTRA_PROMO_CODE_ID = "promoCodeId"
         var orderId: Int = 0
     }
 }

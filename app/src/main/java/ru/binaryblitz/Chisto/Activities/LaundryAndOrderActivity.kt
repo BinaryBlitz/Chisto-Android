@@ -1,6 +1,7 @@
 package ru.binaryblitz.Chisto.Activities
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -10,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Pair
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -29,15 +31,15 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
-import ru.binaryblitz.Chisto.Utils.Animations
-import ru.binaryblitz.Chisto.Utils.Image
-import ru.binaryblitz.Chisto.Utils.OrderList
+import ru.binaryblitz.Chisto.Utils.*
 import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
     private var adapter: OrderContentAdapter? = null
     private var deliveryFee = 0
     private var dialogOpened = false
+    private var promoCodeId = 0
+    private var discount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +52,66 @@ class LaundryAndOrderActivity : BaseActivity() {
         load()
     }
 
-    private fun showPromoDialog() {
+    private fun showPromoCodeDialog() {
         Handler().post {
             dialogOpened = true
             Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
         }
+    }
+
+    private fun parsePromoCode(obj: JsonObject) {
+        hidePromoCodeButton()
+        parsePromoInformationFromJson(obj)
+        closeDialog()
+    }
+
+    private fun hidePromoCodeButton() {
+        findViewById(R.id.add_btn).visibility = View.GONE
+        findViewById(R.id.promo_discount).visibility = View.VISIBLE
+    }
+
+    private fun parsePromoInformationFromJson(obj: JsonObject) {
+        promoCodeId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        discount = calculateDiscount(AndroidUtilities.getIntFieldFromJson(obj.get("discount")))
+
+        (findViewById(R.id.promo_discount) as TextView).text =
+                getString(R.string.minus_sign) +
+                discount +
+                getString(R.string.ruble_sign)
+
+        (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
+                Integer.toString(totalPrice + deliveryFee - discount) + getString(R.string.ruble_sign)
+    }
+
+    private fun calculateDiscount(percent: Int): Int {
+        return ((totalPrice + deliveryFee).toDouble() * (percent.toDouble() / 100.0)).toInt()
+    }
+
+    private fun showPromoError() {
+        (findViewById(R.id.promo_help_text) as TextView).text = getString(R.string.promo_error)
+    }
+
+    private fun getPromoCode() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().getPromoCode((findViewById(R.id.promo_text) as EditText).text.toString(), DeviceInfoStore.getToken(this))
+                .enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                AndroidUtilities.hideKeyboard(findViewById(R.id.main))
+                if (response.isSuccessful) {
+                    parsePromoCode(response.body())
+                } else {
+                    showPromoError()
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
     }
 
     private fun closeDialog() {
@@ -70,7 +127,7 @@ class LaundryAndOrderActivity : BaseActivity() {
         }
     }
 
-    private fun checkPromo(): Boolean {
+    private fun checkPromoCode(): Boolean {
         if ((findViewById(R.id.promo_text) as EditText).text.toString().isEmpty()) {
             findViewById(R.id.promo_btn)!!.isEnabled = false
             return false
@@ -92,14 +149,14 @@ class LaundryAndOrderActivity : BaseActivity() {
         }
 
         findViewById(R.id.promo_btn).setOnClickListener {
-            if (checkPromo()) {
-                closeDialog()
+            if (checkPromoCode()) {
+                getPromoCode()
             }
         }
 
 
         findViewById(R.id.add_btn).setOnClickListener {
-            showPromoDialog()
+            showPromoCodeDialog()
         }
 
         findViewById(R.id.reviews_btn).setOnClickListener {
@@ -127,7 +184,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable) { checkPromo() }
+            override fun afterTextChanged(s: Editable) { checkPromoCode() }
         })
     }
 
@@ -211,7 +268,8 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
-        intent.putExtra(EXTRA_PRICE, totalPrice + deliveryFee)
+        intent.putExtra(EXTRA_PROMO_CODE_ID, promoCodeId)
+        intent.putExtra(EXTRA_PRICE, totalPrice + deliveryFee - discount)
         startActivity(intent)
     }
 
@@ -257,5 +315,6 @@ class LaundryAndOrderActivity : BaseActivity() {
         private val EXTRA_DELIVERY_FEE = "deliveryFee"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
+        private val EXTRA_PROMO_CODE_ID = "promoCodeId"
     }
 }

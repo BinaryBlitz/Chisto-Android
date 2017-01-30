@@ -220,7 +220,7 @@
                               android:text="BIANCA10"
                               android:layout_marginRight="24dp"
                               android:textSize="16sp"
-                              android:id="@+id/promo_price_difference"
+                              android:id="@+id/promo_name"
                               android:layout_gravity="end|center_vertical"/>
                 </FrameLayout>
                 <View android:layout_width="match_parent"
@@ -292,7 +292,7 @@
                               android:layout_marginRight="24dp"
                               android:textSize="18sp"
                               android:text="-10 ₽"
-                              android:id="@+id/promo"
+                              android:id="@+id/promo_price_difference"
                               android:textColor="#ed495a"
                               android:layout_gravity="end|center_vertical"/>
                 </FrameLayout>
