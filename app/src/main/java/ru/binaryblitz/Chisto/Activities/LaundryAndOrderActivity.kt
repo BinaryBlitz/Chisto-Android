@@ -52,20 +52,20 @@ class LaundryAndOrderActivity : BaseActivity() {
         load()
     }
 
-    private fun showPromoDialog() {
+    private fun showPromoCodeDialog() {
         Handler().post {
             dialogOpened = true
             Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
         }
     }
 
-    private fun parsePromo(obj: JsonObject) {
-        hidePromoBtn()
+    private fun parsePromoCode(obj: JsonObject) {
+        hidePromoCodeButton()
         parsePromoInformationFromJson(obj)
         closeDialog()
     }
 
-    private fun hidePromoBtn() {
+    private fun hidePromoCodeButton() {
         findViewById(R.id.add_btn).visibility = View.GONE
         findViewById(R.id.promo_discount).visibility = View.VISIBLE
     }
@@ -91,7 +91,7 @@ class LaundryAndOrderActivity : BaseActivity() {
         (findViewById(R.id.promo_help_text) as TextView).text = getString(R.string.promo_error)
     }
 
-    private fun getPromo() {
+    private fun getPromoCode() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
@@ -101,7 +101,7 @@ class LaundryAndOrderActivity : BaseActivity() {
                 dialog.dismiss()
                 AndroidUtilities.hideKeyboard(findViewById(R.id.main))
                 if (response.isSuccessful) {
-                    parsePromo(response.body())
+                    parsePromoCode(response.body())
                 } else {
                     showPromoError()
                 }
@@ -127,7 +127,7 @@ class LaundryAndOrderActivity : BaseActivity() {
         }
     }
 
-    private fun checkPromo(): Boolean {
+    private fun checkPromoCode(): Boolean {
         if ((findViewById(R.id.promo_text) as EditText).text.toString().isEmpty()) {
             findViewById(R.id.promo_btn)!!.isEnabled = false
             return false
@@ -149,14 +149,14 @@ class LaundryAndOrderActivity : BaseActivity() {
         }
 
         findViewById(R.id.promo_btn).setOnClickListener {
-            if (checkPromo()) {
-                getPromo()
+            if (checkPromoCode()) {
+                getPromoCode()
             }
         }
 
 
         findViewById(R.id.add_btn).setOnClickListener {
-            showPromoDialog()
+            showPromoCodeDialog()
         }
 
         findViewById(R.id.reviews_btn).setOnClickListener {
@@ -184,7 +184,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable) { checkPromo() }
+            override fun afterTextChanged(s: Editable) { checkPromoCode() }
         })
     }
 

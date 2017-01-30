@@ -43,9 +43,9 @@ class PersonalInfoActivity : BaseActivity() {
     private var firstName: MaterialEditText? = null
     private var lastName: MaterialEditText? = null
     private var city: MaterialEditText? = null
-    private var street: MaterialEditText? = null
-    private var house: MaterialEditText? = null
-    private var flat: MaterialEditText? = null
+    private var streetName: MaterialEditText? = null
+    private var houseNumber: MaterialEditText? = null
+    private var apartmentNumber: MaterialEditText? = null
     private var comment: MaterialEditText? = null
     private var phone: MaterialEditText? = null
     private var email: MaterialEditText? = null
@@ -165,10 +165,10 @@ class PersonalInfoActivity : BaseActivity() {
     private fun generateJson(): JsonObject {
         val obj = JsonObject()
 
-        obj.addProperty("street_name", street!!.text.toString())
-        obj.addProperty("house_number", house!!.text.toString())
+        obj.addProperty("street_name", streetName!!.text.toString())
+        obj.addProperty("house_number", houseNumber!!.text.toString())
         obj.addProperty("contact_number", AndroidUtilities.processText(phone!!))
-        obj.addProperty("apartment_number", flat!!.text.toString())
+        obj.addProperty("apartment_number", apartmentNumber!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("email", email!!.text.toString())
         obj.addProperty("payment_method", selectedPaymentType)
@@ -294,9 +294,9 @@ class PersonalInfoActivity : BaseActivity() {
         firstName = findViewById(R.id.name_text) as MaterialEditText
         lastName = findViewById(R.id.lastname_text) as MaterialEditText
         city = findViewById(R.id.city_text) as MaterialEditText
-        street = findViewById(R.id.street_text) as MaterialEditText
-        house = findViewById(R.id.house_text) as MaterialEditText
-        flat = findViewById(R.id.flat_text) as MaterialEditText
+        streetName = findViewById(R.id.street_text) as MaterialEditText
+        houseNumber = findViewById(R.id.house_text) as MaterialEditText
+        apartmentNumber = findViewById(R.id.flat_text) as MaterialEditText
         phone = findViewById(R.id.phone) as MaterialEditText
         comment = findViewById(R.id.comment_text) as MaterialEditText
         email = findViewById(R.id.email) as MaterialEditText
@@ -340,10 +340,10 @@ class PersonalInfoActivity : BaseActivity() {
         setTextToField(email!!, user!!.email)
         setTextToField(firstName!!, user!!.firstName)
         setTextToField(lastName!!, user!!.lastname)
-        setTextToField(flat!!, user!!.apartmentNumber)
+        setTextToField(apartmentNumber!!, user!!.apartmentNumber)
         setTextToField(phone!!, user!!.phone)
-        setTextToField(house!!, user!!.houseNumber)
-        setTextToField(street!!, user!!.streetName)
+        setTextToField(houseNumber!!, user!!.houseNumber)
+        setTextToField(streetName!!, user!!.streetName)
         setTextToField(comment!!, user!!.notes)
     }
 
@@ -353,10 +353,10 @@ class PersonalInfoActivity : BaseActivity() {
         user!!.firstName = firstName!!.text.toString()
         user!!.lastname = lastName!!.text.toString()
         user!!.city = city!!.text.toString()
-        user!!.apartmentNumber = flat!!.text.toString()
+        user!!.apartmentNumber = apartmentNumber!!.text.toString()
         user!!.phone = phone!!.text.toString()
-        user!!.streetName = street!!.text.toString()
-        user!!.houseNumber = house!!.text.toString()
+        user!!.streetName = streetName!!.text.toString()
+        user!!.houseNumber = houseNumber!!.text.toString()
         user!!.email = email!!.text.toString()
         user!!.notes = comment!!.text.toString()
 
@@ -367,9 +367,9 @@ class PersonalInfoActivity : BaseActivity() {
         val obj = JsonObject()
         obj.addProperty("first_name", firstName!!.text.toString())
         obj.addProperty("last_name", lastName!!.text.toString())
-        obj.addProperty("apartment_number", flat!!.text.toString())
-        obj.addProperty("house_number", house!!.text.toString())
-        obj.addProperty("street_name", street!!.text.toString())
+        obj.addProperty("apartment_number", apartmentNumber!!.text.toString())
+        obj.addProperty("house_number", houseNumber!!.text.toString())
+        obj.addProperty("street_name", streetName!!.text.toString())
         obj.addProperty("notes", comment!!.text.toString())
         obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
         obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
@@ -443,9 +443,9 @@ class PersonalInfoActivity : BaseActivity() {
         var res = validateField(firstName!!, true)
         res = res and validateField(lastName!!, true)
         res = res and validateField(city!!, true)
-        res = res and validateField(street!!, false)
-        res = res and validateField(house!!, false)
-        res = res and validateField(flat!!, false)
+        res = res and validateField(streetName!!, false)
+        res = res and validateField(houseNumber!!, false)
+        res = res and validateField(apartmentNumber!!, false)
         res = res and validatePhoneField(phone!!)
         res = res and validateEmailField(email!!)
 
