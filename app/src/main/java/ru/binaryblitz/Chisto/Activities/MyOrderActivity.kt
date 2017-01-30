@@ -142,7 +142,6 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun parseAnswer(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         val status = AndroidUtilities.getStringFieldFromJson(obj.get("status"))
         processStatus(status)
         processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
@@ -155,7 +154,9 @@ class MyOrderActivity : BaseActivity() {
             createOrderListView(obj.get("order_items").asJsonArray)
         }
 
-        parsePromo(obj.get("promo_code").asJsonObject)
+        if (obj.get("promo_code") != null && !obj.get("promo_code").isJsonNull) {
+            parsePromo(obj.get("promo_code").asJsonObject)
+        }
 
         orderId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         isRated = obj.get("rating") != null && !obj.get("rating").isJsonNull

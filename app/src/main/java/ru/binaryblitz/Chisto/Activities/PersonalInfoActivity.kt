@@ -40,8 +40,8 @@ class PersonalInfoActivity : BaseActivity() {
     val BLACK_COLOR = "#212121"
     private var greyColor: Int = Color.parseColor("#CFCFCF")
 
-    private var name: MaterialEditText? = null
-    private var lastname: MaterialEditText? = null
+    private var firstName: MaterialEditText? = null
+    private var lastName: MaterialEditText? = null
     private var city: MaterialEditText? = null
     private var street: MaterialEditText? = null
     private var house: MaterialEditText? = null
@@ -183,12 +183,12 @@ class PersonalInfoActivity : BaseActivity() {
         val toSend = JsonObject()
         toSend.add("order", obj)
 
-        LogUtil.logError(toSend.toString())
-
         return toSend
     }
 
     private fun sendToServer(payWithCard: Boolean) {
+        if (OrderList.getLaundry() == null) return
+
         val dialog = ProgressDialog(this)
         dialog.show()
 
@@ -212,8 +212,11 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun parseAnswer(obj: JsonObject, payWithCard: Boolean) {
         orderId = obj.get("id").asInt
-        if (payWithCard) openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
-        else complete(orderId)
+        if (payWithCard) {
+            openWebActivity(obj.get("payment").asJsonObject.get("payment_url").asString)
+        } else {
+            complete(orderId)
+        }
     }
 
     private fun openWebActivity(url: String) {
@@ -288,8 +291,8 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun initFields() {
-        name = findViewById(R.id.name_text) as MaterialEditText
-        lastname = findViewById(R.id.lastname_text) as MaterialEditText
+        firstName = findViewById(R.id.name_text) as MaterialEditText
+        lastName = findViewById(R.id.lastname_text) as MaterialEditText
         city = findViewById(R.id.city_text) as MaterialEditText
         street = findViewById(R.id.street_text) as MaterialEditText
         house = findViewById(R.id.house_text) as MaterialEditText
@@ -335,8 +338,8 @@ class PersonalInfoActivity : BaseActivity() {
         }
 
         setTextToField(email!!, user!!.email)
-        setTextToField(name!!, user!!.firstName)
-        setTextToField(lastname!!, user!!.lastname)
+        setTextToField(firstName!!, user!!.firstName)
+        setTextToField(lastName!!, user!!.lastname)
         setTextToField(flat!!, user!!.apartmentNumber)
         setTextToField(phone!!, user!!.phone)
         setTextToField(house!!, user!!.houseNumber)
@@ -347,8 +350,8 @@ class PersonalInfoActivity : BaseActivity() {
     private fun setData() {
         if (user == null) user = User.createDefault()
 
-        user!!.firstName = name!!.text.toString()
-        user!!.lastname = lastname!!.text.toString()
+        user!!.firstName = firstName!!.text.toString()
+        user!!.lastname = lastName!!.text.toString()
         user!!.city = city!!.text.toString()
         user!!.apartmentNumber = flat!!.text.toString()
         user!!.phone = phone!!.text.toString()
@@ -362,8 +365,8 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun generateUserJson(): JsonObject {
         val obj = JsonObject()
-        obj.addProperty("first_name", name!!.text.toString())
-        obj.addProperty("last_name", lastname!!.text.toString())
+        obj.addProperty("first_name", firstName!!.text.toString())
+        obj.addProperty("last_name", lastName!!.text.toString())
         obj.addProperty("apartment_number", flat!!.text.toString())
         obj.addProperty("house_number", house!!.text.toString())
         obj.addProperty("street_name", street!!.text.toString())
@@ -384,7 +387,6 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun parseUserAnswer(payWithCreditCard: Boolean, obj: JsonObject) {
-        LogUtil.logError(obj.toString())
         DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
         if (AndroidUtilities.checkPlayServices(this)) {
             val intent = Intent(this@PersonalInfoActivity, MyInstanceIDListenerService::class.java)
@@ -438,8 +440,8 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun validateFields(): Boolean {
-        var res = validateField(name!!, true)
-        res = res and validateField(lastname!!, true)
+        var res = validateField(firstName!!, true)
+        res = res and validateField(lastName!!, true)
         res = res and validateField(city!!, true)
         res = res and validateField(street!!, false)
         res = res and validateField(house!!, false)

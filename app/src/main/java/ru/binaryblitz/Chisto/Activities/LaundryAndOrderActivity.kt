@@ -72,7 +72,6 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun parsePromoInformationFromJson(obj: JsonObject) {
         promoCodeId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-
         discount = calculateDiscount(AndroidUtilities.getIntFieldFromJson(obj.get("discount")))
 
         (findViewById(R.id.promo_discount) as TextView).text =
