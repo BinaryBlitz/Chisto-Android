@@ -33,6 +33,7 @@
                   android:textSize="18sp"
                   android:hint="@string/promo_hint"
                   android:maxLength="20"
+                  android:imeOptions="actionDone"
                   android:textColorHint="#727272"
                   android:textColorHighlight="#ed495a"
                   android:textAllCaps="true"
