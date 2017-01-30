@@ -66,4 +66,7 @@ public interface ApiEndpoints {
 
     @POST("subscriptions")
     Call<JsonObject> sendSubscription(@Body JsonObject object);
+
+    @GET("promo_codes/{code}")
+    Call<JsonObject> getPromoCode(@Path("code") String code, @Query("api_token") String token);
 }

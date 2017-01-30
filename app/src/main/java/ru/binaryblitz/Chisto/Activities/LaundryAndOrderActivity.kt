@@ -1,6 +1,7 @@
 package ru.binaryblitz.Chisto.Activities
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -29,9 +30,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
-import ru.binaryblitz.Chisto.Utils.Animations
-import ru.binaryblitz.Chisto.Utils.Image
-import ru.binaryblitz.Chisto.Utils.OrderList
+import ru.binaryblitz.Chisto.Utils.*
 import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
@@ -55,6 +54,38 @@ class LaundryAndOrderActivity : BaseActivity() {
             dialogOpened = true
             Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
         }
+    }
+
+    private fun parsePromo(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
+        closeDialog()
+    }
+
+    private fun showPromoError() {
+        (findViewById(R.id.promo_help_text) as TextView).text = getString(R.string.promo_error)
+    }
+
+    private fun getPromo() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().getPromoCode((findViewById(R.id.promo_text) as EditText).text.toString(), DeviceInfoStore.getToken(this))
+                .enqueue(object : Callback<JsonObject> {
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                dialog.dismiss()
+                AndroidUtilities.hideKeyboard(findViewById(R.id.main))
+                if (response.isSuccessful) {
+                    parsePromo(response.body())
+                } else {
+                    showPromoError()
+                }
+            }
+
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                dialog.dismiss()
+                onInternetConnectionError()
+            }
+        })
     }
 
     private fun closeDialog() {
@@ -93,7 +124,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
         findViewById(R.id.promo_btn).setOnClickListener {
             if (checkPromo()) {
-                closeDialog()
+                getPromo()
             }
         }
 
