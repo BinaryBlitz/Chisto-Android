@@ -39,6 +39,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     private var deliveryFee = 0
     private var dialogOpened = false
     private var promoCodeId = 0
+    private var discount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,10 +72,20 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun parsePromoInformationFromJson(obj: JsonObject) {
         promoCodeId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+
+        discount = calculateDiscount(AndroidUtilities.getIntFieldFromJson(obj.get("discount")))
+
         (findViewById(R.id.promo_discount) as TextView).text =
                 getString(R.string.minus_sign) +
-                AndroidUtilities.getStringFieldFromJson(obj.get("discount")) +
+                discount +
                 getString(R.string.ruble_sign)
+
+        (findViewById(R.id.cont_btn) as Button).text = getString(R.string.create_order_code) +
+                Integer.toString(totalPrice + deliveryFee - discount) + getString(R.string.ruble_sign)
+    }
+
+    private fun calculateDiscount(percent: Int): Int {
+        return ((totalPrice + deliveryFee).toDouble() * (percent.toDouble() / 100.0)).toInt()
     }
 
     private fun showPromoError() {
@@ -259,7 +270,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
         intent.putExtra(EXTRA_PROMO_CODE_ID, promoCodeId)
-        intent.putExtra(EXTRA_PRICE, totalPrice + deliveryFee)
+        intent.putExtra(EXTRA_PRICE, totalPrice + deliveryFee - discount)
         startActivity(intent)
     }
 
