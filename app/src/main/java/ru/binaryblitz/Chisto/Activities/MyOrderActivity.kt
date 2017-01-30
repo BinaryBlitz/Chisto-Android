@@ -125,7 +125,24 @@ class MyOrderActivity : BaseActivity() {
         })
     }
 
+    private fun parsePromo(obj: JsonObject) {
+        (findViewById(R.id.promo_name) as TextView).text = AndroidUtilities.getStringFieldFromJson(obj.get("code"))
+        (findViewById(R.id.promo_price_difference) as TextView).text =
+                getString(R.string.minus_sign) +
+                        calculateDiscount(AndroidUtilities.getIntFieldFromJson(obj.get("discount"))) +
+                        getString(R.string.ruble_sign)
+    }
+
+    private fun calculateDiscount(percent: Int): Int {
+        if (price < freeDeliveryFrom) {
+            return ((price + deliveryFee).toDouble() * (percent.toDouble() / 100.0)).toInt()
+        } else {
+            return ((price + deliveryFee).toDouble() * (percent.toDouble() / 100.0)).toInt()
+        }
+    }
+
     private fun parseAnswer(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
         val status = AndroidUtilities.getStringFieldFromJson(obj.get("status"))
         processStatus(status)
         processPaymentMethod(AndroidUtilities.getStringFieldFromJson(obj.get("payment_method")))
@@ -137,6 +154,8 @@ class MyOrderActivity : BaseActivity() {
         if (obj.get("order_items") != null && !obj.get("order_items").isJsonNull) {
             createOrderListView(obj.get("order_items").asJsonArray)
         }
+
+        parsePromo(obj.get("promo_code").asJsonObject)
 
         orderId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         isRated = obj.get("rating") != null && !obj.get("rating").isJsonNull
