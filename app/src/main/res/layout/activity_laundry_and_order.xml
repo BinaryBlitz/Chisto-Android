@@ -276,7 +276,18 @@
                               android:textSize="16sp"
                               android:textColor="#ed495a"
                               android:layout_gravity="center_vertical"/>
-               <Button
+
+                    <TextView android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginRight="12dp"
+                        android:textSize="18sp"
+                        android:visibility="gone"
+                        android:id="@+id/promo_discount"
+                        android:textColor="#ed495a"
+                        android:layout_gravity="end|center_vertical"/>
+
+                    <Button
                        style="@style/Widget.AppCompat.Button.Colored"
                        android:theme="@style/PromoButtonStyle"
                        android:layout_width="wrap_content"

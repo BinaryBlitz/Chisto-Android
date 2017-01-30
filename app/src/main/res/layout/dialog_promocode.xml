@@ -37,7 +37,7 @@
                   android:textColorHighlight="#ed495a"
                   android:textAllCaps="true"
                   android:textColor="#ed495a"
-                  android:inputType="textCapSentences"
+                  android:inputType="textCapCharacters"
                   android:id="@+id/promo_text"
                   android:gravity="center"
                   app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"

@@ -173,6 +173,11 @@ class PersonalInfoActivity : BaseActivity() {
         obj.addProperty("email", email!!.text.toString())
         obj.addProperty("payment_method", selectedPaymentType)
 
+        val promoId = intent.getIntExtra(EXTRA_PROMO_CODE_ID, 0)
+        if (promoId != 0) {
+            obj.addProperty("promo_code_id", promoId)
+        }
+
         obj.add("order_items_attributes", generateOrderTreatments())
 
         val toSend = JsonObject()
@@ -504,6 +509,7 @@ class PersonalInfoActivity : BaseActivity() {
     companion object {
         private val EXTRA_PRICE = "price"
         private val EXTRA_TOKEN = "token"
+        private val EXTRA_PROMO_CODE_ID = "promoCodeId"
         var orderId: Int = 0
     }
 }

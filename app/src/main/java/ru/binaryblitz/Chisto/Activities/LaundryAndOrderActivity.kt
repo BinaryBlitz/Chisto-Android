@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Pair
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -37,6 +38,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     private var adapter: OrderContentAdapter? = null
     private var deliveryFee = 0
     private var dialogOpened = false
+    private var promoCodeId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +59,22 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun parsePromo(obj: JsonObject) {
-        LogUtil.logError(obj.toString())
+        hidePromoBtn()
+        parsePromoInformationFromJson(obj)
         closeDialog()
+    }
+
+    private fun hidePromoBtn() {
+        findViewById(R.id.add_btn).visibility = View.GONE
+        findViewById(R.id.promo_discount).visibility = View.VISIBLE
+    }
+
+    private fun parsePromoInformationFromJson(obj: JsonObject) {
+        promoCodeId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+        (findViewById(R.id.promo_discount) as TextView).text =
+                getString(R.string.minus_sign) +
+                AndroidUtilities.getStringFieldFromJson(obj.get("discount")) +
+                getString(R.string.ruble_sign)
     }
 
     private fun showPromoError() {
@@ -242,6 +258,7 @@ class LaundryAndOrderActivity : BaseActivity() {
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@LaundryAndOrderActivity, activity)
+        intent.putExtra(EXTRA_PROMO_CODE_ID, promoCodeId)
         intent.putExtra(EXTRA_PRICE, totalPrice + deliveryFee)
         startActivity(intent)
     }
@@ -288,5 +305,6 @@ class LaundryAndOrderActivity : BaseActivity() {
         private val EXTRA_DELIVERY_FEE = "deliveryFee"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
+        private val EXTRA_PROMO_CODE_ID = "promoCodeId"
     }
 }

@@ -201,6 +201,7 @@ class RegistrationActivity : BaseActivity() {
         intent.putExtra(EXTRA_PHONE, phone)
         intent.putExtra(EXTRA_PRICE, price)
         intent.putExtra(EXTRA_TOKEN, token)
+        intent.putExtra(EXTRA_PROMO_CODE_ID, intent.getIntExtra(EXTRA_PROMO_CODE_ID, 0))
         startActivity(intent)
         finish()
     }
@@ -357,6 +358,7 @@ class RegistrationActivity : BaseActivity() {
         private var token: String? = ""
         private val EXTRA_PRICE = "price"
         private val EXTRA_TOKEN = "token"
+        private val EXTRA_PROMO_CODE_ID = "promoCodeId"
         private var phoneFromServer: String? = null
     }
 }
