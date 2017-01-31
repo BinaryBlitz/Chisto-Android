@@ -350,7 +350,7 @@ public class MapActivity extends BaseActivity
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 2);
+                    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, LOCATION_PERMISSION);
                 } else {
                     getLocation();
                 }
