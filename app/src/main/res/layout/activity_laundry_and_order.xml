@@ -156,30 +156,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="36sp"
-                android:textColor="#c9c9c9"
+                android:textColor="#e4e4e4"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="212dp"
                 android:text="\u25B2"/>
 
     <FrameLayout
             android:layout_width="match_parent"
-            android:background="#eaeaea"
+            android:background="#e4e4e4"
             android:layout_marginTop="236dp"
             android:layout_marginBottom="52dp"
             android:layout_height="match_parent">
         <TextView
                 android:text="@string/order_help"
                 android:layout_width="wrap_content"
-                android:layout_height="56dp"
-                android:background="#c9c9c9"
-                android:padding="12dp"
+                android:layout_height="68dp"
+                android:background="#e4e4e4"
                 android:textColor="#212121"
                 android:textSize="14sp"
                 android:gravity="center"/>
         <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:id="@+id/scroll"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="68dp"
                 android:layout_height="match_parent">
             <LinearLayout android:layout_width="match_parent"
                           android:orientation="vertical"
