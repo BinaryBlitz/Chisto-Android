@@ -158,11 +158,14 @@ class LaundriesActivity : BaseActivity() {
     }
 
     fun setLaundryTreatmentsIds(index: Int) {
-        val treatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
-        if (treatments.size() == 0) return
-        val orderTreatments = OrderList.getTreatments()
-        for (treatment in orderTreatments) {
-            treatment.laundryTreatmentId = findId(treatment.id, treatments)
+        val laundryTreatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
+        if (laundryTreatments.size() == 0) return
+
+        for ((category, treatments) in OrderList.get()!!) {
+            for (treatment in treatments!!) {
+                if (treatment.id == AppConfig.decorationId) continue
+                treatment.laundryTreatmentId = findId(treatment.id, laundryTreatments)
+            }
         }
     }
 

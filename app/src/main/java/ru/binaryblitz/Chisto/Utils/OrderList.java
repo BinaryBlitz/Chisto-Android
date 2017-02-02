@@ -135,7 +135,9 @@ public class OrderList {
     public static void setPrice(int treatmentId, int price) {
         if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) return;
 
-        for (int j = 0; j < orders.size(); j++) { setPriceForOrder(j, treatmentId, price); }
+        for (int j = 0; j < orders.size(); j++) {
+            setPriceForOrder(j, treatmentId, price);
+        }
     }
 
     private static void setPriceForOrder(int j, int treatmentId, int price) {
@@ -160,14 +162,11 @@ public class OrderList {
     }
 
     @SuppressWarnings("ConstantConditions")
-    public static void setSize(String size) {
-        if (currentItem >= orders.size() || orders.get(currentItem).getTreatments() == null) {
+    public static void setSize(double size) {
+        if (currentItem >= orders.size()) {
             return;
         }
-
-        for (int i = 0; i < orders.get(currentItem).getTreatments().size(); i++) {
-            orders.get(currentItem).setSize(size);
-        }
+        orders.get(currentItem).setSize(size);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -179,14 +178,14 @@ public class OrderList {
         }
     }
 
-    private static void setDecorationPriceForOrder(int j) {
-        if (orders.get(j).getTreatments() == null) {
+    private static void setDecorationPriceForOrder(int i) {
+        if (orders.get(i).getTreatments() == null) {
             return;
         }
 
-        for (int i = 0; i < orders.get(j).getTreatments().size(); i++) {
-            if (orders.get(j).getTreatments().get(i).getId() == AppConfig.decorationId) {
-                orders.get(j).getTreatments().get(i).setPrice(orders.get(j).getDecorationPrice());
+        for (int i = 0; i < orders.get(i).getTreatments().size(); i++) {
+            if (orders.get(i).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                orders.get(i).getTreatments().get(i).setPrice(orders.get(i).getDecorationPrice());
             }
         }
     }

@@ -172,13 +172,13 @@ class SelectServiceActivity : BaseActivity() {
         try {
             val input = Integer.parseInt(str)
             if (width) this.width = input else this.length = input
-            formatSquareInpuAndSetToTextView(square)
+            formatSquareInputAndSetToTextView(square)
         } catch (e: Exception) {
             LogUtil.logException(e)
         }
     }
     
-    private fun formatSquareInpuAndSetToTextView(square: TextView) {
+    private fun formatSquareInputAndSetToTextView(square: TextView) {
         square.text = DecimalFormat(format).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
                 getString(R.string.square_meter_symbol)
     }
@@ -216,7 +216,11 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun processSelectedTreatments() {
         OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
-        OrderList.setSize((findViewById(R.id.square_text) as TextView).text.toString())
+
+        val size = (findViewById(R.id.square_text) as TextView).text.toString()
+        if (size != getString(R.string.zero_size)) {
+            OrderList.setSize(size.split(" ")[0].toDouble())
+        }
 
         if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
             addTreatments()
