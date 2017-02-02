@@ -7,6 +7,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,9 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.view.View;
-import android.widget.EditText;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -46,6 +45,7 @@ import ru.binaryblitz.Chisto.Model.City;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.ServerApi;
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.Utils.CustomPhoneNumberTextWatcher;
 import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SelectCityActivity extends BaseActivity
@@ -53,7 +53,7 @@ public class SelectCityActivity extends BaseActivity
 
     private CitiesAdapter adapter;
     private SwipeRefreshLayout layout;
-
+    private static final int LOCATION_PERMISSION = 2;
     protected GoogleApiClient mGoogleApiClient;
     protected Location mLastLocation;
 
@@ -66,7 +66,7 @@ public class SelectCityActivity extends BaseActivity
         setContentView(ru.binaryblitz.Chisto.R.layout.activity_select_city);
         Fabric.with(this, new Crashlytics());
 
-        findViewById(ru.binaryblitz.Chisto.R.id.back_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.back_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -100,7 +100,7 @@ public class SelectCityActivity extends BaseActivity
         if (view == null) return;
         phone = (MaterialEditText) view.findViewById(R.id.editText);
         city = (MaterialEditText) view.findViewById(R.id.editText2);
-        phone.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+        phone.addTextChangedListener(new CustomPhoneNumberTextWatcher());
     }
 
     @Override
@@ -112,11 +112,8 @@ public class SelectCityActivity extends BaseActivity
     public void onConnected(Bundle bundle) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, LOCATION_PERMISSION);
                 } else {
                     getLocation();
                 }
@@ -132,7 +129,7 @@ public class SelectCityActivity extends BaseActivity
     public void onRequestPermissionsResult(int requestCode,
                                            @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
-            case 2: {
+            case LOCATION_PERMISSION: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getLocation();
                 } else {
@@ -158,14 +155,14 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void setOnClickListeners() {
-        findViewById(ru.binaryblitz.Chisto.R.id.my_loc_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.my_loc_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getLocation();
             }
         });
 
-        findViewById(ru.binaryblitz.Chisto.R.id.city_not_found_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.city_not_found_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDialog();
@@ -174,7 +171,7 @@ public class SelectCityActivity extends BaseActivity
     }
 
     private void initList() {
-        RecyclerListView view = (RecyclerListView) findViewById(ru.binaryblitz.Chisto.R.id.recyclerView);
+        RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
         view.setHasFixedSize(true);
@@ -182,9 +179,9 @@ public class SelectCityActivity extends BaseActivity
         adapter = new CitiesAdapter(this);
         view.setAdapter(adapter);
 
-        layout = (SwipeRefreshLayout) findViewById(ru.binaryblitz.Chisto.R.id.refresh);
+        layout = (SwipeRefreshLayout) findViewById(R.id.refresh);
         layout.setOnRefreshListener(this);
-        layout.setColorSchemeResources(ru.binaryblitz.Chisto.R.color.colorAccent);
+        layout.setColorSchemeResources(R.color.colorAccent);
     }
 
     private void load() {
@@ -192,8 +189,11 @@ public class SelectCityActivity extends BaseActivity
             @Override
             public void onResponse(Call<JsonArray> call, Response<JsonArray> response) {
                 layout.setRefreshing(false);
-                if (response.isSuccessful()) parseAnswer(response.body());
-                else onServerError(response);
+                if (response.isSuccessful()) {
+                    parseAnswer(response.body());
+                } else {
+                    onServerError(response);
+                }
             }
 
             @Override
@@ -224,14 +224,16 @@ public class SelectCityActivity extends BaseActivity
     private void showDialog() {
         MaterialDialog dialog = new MaterialDialog.Builder(SelectCityActivity.this)
                 .title(ru.binaryblitz.Chisto.R.string.app_name)
-                .customView(ru.binaryblitz.Chisto.R.layout.city_not_found_dialog, true)
+                .customView(R.layout.city_not_found_dialog, true)
                 .positiveText(ru.binaryblitz.Chisto.R.string.send_code)
                 .negativeText(ru.binaryblitz.Chisto.R.string.back_code)
                 .autoDismiss(false)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        if (checkDialogInput()) dialog.dismiss();
+                        if (checkDialogInput()) {
+                            sendSubscription(dialog);
+                        }
                     }
                 })
                 .onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -243,6 +245,41 @@ public class SelectCityActivity extends BaseActivity
                 .show();
 
         initDialog(dialog);
+    }
+
+    private JsonObject generateJson() {
+        JsonObject object = new JsonObject();
+        JsonObject toSend = new JsonObject();
+
+        object.addProperty("phone_number", phone.getText().toString());
+        object.addProperty("content", city.getText().toString());
+
+        toSend.add("subscription", object);
+
+        return toSend;
+    }
+
+    private void sendSubscription(final MaterialDialog dialog) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+
+        ServerApi.get(this).api().sendSubscription(generateJson()).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                progressDialog.dismiss();
+                dialog.dismiss();
+                if (!response.isSuccessful()) {
+                    onInternetConnectionError();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                progressDialog.dismiss();
+                dialog.dismiss();
+                onInternetConnectionError();
+            }
+        });
     }
 
     private boolean checkDialogInput() {
@@ -282,9 +319,7 @@ public class SelectCityActivity extends BaseActivity
     private void getLocation() {
         layout.setRefreshing(false);
         if (mGoogleApiClient.isConnected()) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 onLocationError();
                 return;
             }

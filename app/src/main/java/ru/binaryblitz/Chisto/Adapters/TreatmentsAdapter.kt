@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import ru.binaryblitz.Chisto.Custom.CheckBox.SmoothCheckBox
+import cn.refactor.library.SmoothCheckBox
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.OrderList
@@ -17,6 +17,7 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
     private var collection = ArrayList<Treatment>()
     private var color: Int = Color.parseColor("#212121")
+    private var greyColor: Int = Color.parseColor("#CFCFCF")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_service, parent, false)
@@ -55,14 +56,10 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         val treatment = collection[position]
 
         holder.name.text = treatment.name
-        holder.desc.text = treatment.description
-        holder.checkBox.setmCheckedColor(color)
+        holder.description.text = treatment.description
+        setColorForCheckBox(holder.checkBox, color)
 
-        if (treatment.select) {
-            holder.checkBox.isChecked = true
-        } else {
-            holder.checkBox.isChecked = false
-        }
+        holder.checkBox.isChecked = treatment.select
 
         holder.itemView.setOnClickListener {
             treatment.select = !treatment.select
@@ -70,6 +67,16 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         }
 
         holder.checkBox.setOnCheckedChangeListener { compoundButton, b -> collection[holder.adapterPosition].select = b }
+    }
+
+    private fun setColorForCheckBox(checkBox: SmoothCheckBox, color: Int) {
+        val checkedColor = SmoothCheckBox::class.java.getDeclaredField("mCheckedColor")
+        checkedColor.isAccessible = true
+        checkedColor.set(checkBox, color)
+
+        val unCheckedColor = SmoothCheckBox::class.java.getDeclaredField("mUnCheckedColor")
+        unCheckedColor.isAccessible = true
+        unCheckedColor.set(checkBox, greyColor)
     }
 
     override fun getItemCount(): Int {
@@ -81,14 +88,8 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val desc: TextView
-        val checkBox: SmoothCheckBox
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            desc = itemView.findViewById(R.id.description) as TextView
-            checkBox = itemView.findViewById(R.id.checkBox) as SmoothCheckBox
-        }
+        val name = itemView.findViewById(R.id.name) as TextView
+        val description = itemView.findViewById(R.id.description) as TextView
+        val checkBox = itemView.findViewById(R.id.checkBox) as SmoothCheckBox
     }
 }

@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">#c5c5c5</item>
+        <item name="colorControlActivated">@color/greyColor</item>
+        <item name="colorControlHighlight">@color/greyColor</item>
     </style>
 
     <style name="BrandButtonStyle" parent="Widget.AppCompat.Button.Colored">
@@ -13,6 +16,17 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="PromoButtonStyle" parent="Widget.AppCompat.Button.Colored">
+        <item name="colorButtonNormal">@color/greyColor</item>
+        <item name="colorAccent">@color/canceledColor</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">0dp</item>
+    </style>
+
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/greyColor</item>
     </style>
 
 </resources>

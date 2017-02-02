@@ -14,7 +14,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Utils.Image
 import java.util.*
 
-class  CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categories: ArrayList<Category>? = null
 
@@ -22,18 +22,11 @@ class  CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<R
     val EXTRA_ID = "id"
 
     init {
-        Image.init(context)
         categories = ArrayList<Category>()
     }
 
     fun setCategories(categories: ArrayList<Category>) {
         this.categories = categories
-    }
-
-    @SuppressWarnings("unused")
-    fun clear() {
-        categories!!.clear()
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -50,7 +43,7 @@ class  CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<R
         holder.name.text = category.name
         holder.description.text = category.description
 
-        Image.loadPhoto(category.icon, holder.icon)
+        Image.loadPhoto(context, category.icon, holder.icon)
         holder.icon.setColorFilter(category.color)
 
         holder.itemView.setOnClickListener {
@@ -66,15 +59,8 @@ class  CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<R
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        internal var name: TextView
-        internal var description: TextView
-        internal var icon: ImageView
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            description = itemView.findViewById(R.id.description) as TextView
-            icon = itemView.findViewById(R.id.category_icon) as ImageView
-        }
+        internal var name = itemView.findViewById(R.id.name) as TextView
+        internal var description = itemView.findViewById(R.id.description) as TextView
+        internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
     }
 }

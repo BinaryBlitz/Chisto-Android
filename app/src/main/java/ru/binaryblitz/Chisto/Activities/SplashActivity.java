@@ -11,7 +11,6 @@ import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.Base.BaseActivity;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore;
-import ru.binaryblitz.Chisto.Utils.LogUtil;
 
 public class SplashActivity extends BaseActivity {
 
@@ -20,8 +19,12 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_splash);
-        if (DeviceInfoStore.getUserObject(this) == null) openActivity(StartActivity.class);
-        else openActivity(OrdersActivity.class);
+
+        if (DeviceInfoStore.getCityObject(this) == null) {
+            openActivity(StartActivity.class);
+        } else {
+            openActivity(OrdersActivity.class);
+        }
     }
 
     private void openActivity(Class<? extends Activity> activity) {

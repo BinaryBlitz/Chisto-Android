@@ -18,7 +18,6 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_review, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -27,15 +26,17 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
 
         holder.name.text = collection[position].userName
         holder.date.text = getDateFullString(collection[position].date)
-        if (collection[position].comment!!.isEmpty()) holder.comment.text = context.getString(R.string.no_comment)
-        else holder.comment.text = collection[position].comment
-        holder.stars.rating = collection[position].rating
+        if (collection[position].comment!!.isEmpty()) {
+            holder.comment.text = context.getString(R.string.no_comment)
+        } else {
+            holder.comment.text = collection[position].comment
+        }
+        holder.rating.rating = collection[position].rating
     }
 
     override fun getItemCount(): Int {
         return collection.size
     }
-
 
     fun getDateFullString(date: Date?): String {
         if (date == null) return ""
@@ -51,16 +52,9 @@ class ReviewsAdapter(private val context: Activity) : RecyclerView.Adapter<Recyc
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name: TextView
-        val date: TextView
-        val comment: TextView
-        val stars: SimpleRatingBar
-
-        init {
-            name = itemView.findViewById(R.id.user_text) as TextView
-            date = itemView.findViewById(R.id.date_text) as TextView
-            comment = itemView.findViewById(R.id.comment_text) as TextView
-            stars = itemView.findViewById(R.id.ratings) as SimpleRatingBar
-        }
+        val name = itemView.findViewById(R.id.user_text) as TextView
+        val date = itemView.findViewById(R.id.date_text) as TextView
+        val comment = itemView.findViewById(R.id.comment_text) as TextView
+        val rating = itemView.findViewById(R.id.ratings) as SimpleRatingBar
     }
 }

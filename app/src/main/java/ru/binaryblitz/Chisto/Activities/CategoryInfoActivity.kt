@@ -20,20 +20,21 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Server.ServerConfig
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import ru.binaryblitz.Chisto.Utils.LogUtil
 import java.util.*
 
 class CategoryInfoActivity : BaseActivity() {
     private var adapter: CategoryItemsAdapter? = null
     private var layout: SwipeRefreshLayout? = null
 
+    private val EXTRA_COLOR = "color"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_category_info)
 
-        findViewById(ru.binaryblitz.Chisto.R.id.toolbar).setBackgroundColor(intent.getIntExtra("color", Color.parseColor("#212121")))
-        AndroidUtilities.colorAndroidBar(this, intent.getIntExtra("color", Color.parseColor("#212121")))
+        findViewById(ru.binaryblitz.Chisto.R.id.toolbar).setBackgroundColor(intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121")))
+        AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121")))
 
         findViewById(R.id.left_btn).setOnClickListener { finish() }
 
@@ -58,15 +59,18 @@ class CategoryInfoActivity : BaseActivity() {
         layout!!.isEnabled = false
         layout!!.setColorSchemeResources(R.color.colorAccent)
 
-        adapter!!.setColor(intent.getIntExtra("color", Color.parseColor("#212121")))
+        adapter!!.setColor(intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121")))
     }
 
     private fun load() {
         ServerApi.get(this).api().getItems(intent.getIntExtra("id", 0)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) parseAnswer(response.body())
-                else onServerError(response)
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
@@ -77,7 +81,6 @@ class CategoryInfoActivity : BaseActivity() {
     }
 
     private fun parseAnswer(array: JsonArray) {
-        LogUtil.logError(array.toString())
         val collection = (0..array.size() - 1)
                 .map { array.get(it).asJsonObject }
                 .mapTo(ArrayList<CategoryItem>()) {

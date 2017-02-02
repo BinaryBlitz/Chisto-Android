@@ -26,10 +26,11 @@ import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 import ru.binaryblitz.Chisto.Utils.AppConfig
 import ru.binaryblitz.Chisto.Utils.LogUtil
 import ru.binaryblitz.Chisto.Utils.OrderList
+import java.text.DecimalFormat
 import java.util.*
 
 
@@ -44,6 +45,8 @@ class SelectServiceActivity : BaseActivity() {
     val EXTRA_ID = "id"
     val EXTRA_NAME = "name"
     val EXTRA_USE_AREA = "userArea"
+
+    val format = "#.#"
 
     val squareCentimetersInSquareMeters = 10000.0
 
@@ -79,8 +82,11 @@ class SelectServiceActivity : BaseActivity() {
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            if (intent.getBooleanExtra(EXTRA_USE_AREA, false)) showSizeDialog()
-            else openActivity()
+            if (intent.getBooleanExtra(EXTRA_USE_AREA, false)) {
+                showSizeDialog()
+            } else {
+                openActivity()
+            }
         }
 
         findViewById(R.id.size_ok_btn).setOnClickListener {
@@ -88,16 +94,16 @@ class SelectServiceActivity : BaseActivity() {
                 showErrorDialog()
                 return@setOnClickListener
             }
-            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+            closeDialog()
             openActivity()
         }
 
         findViewById(R.id.dialog).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog))
+            closeDialog()
         }
 
         findViewById(R.id.cancel_btn).setOnClickListener {
-            Animations.animateRevealHide(findViewById(ru.binaryblitz.Chisto.R.id.dialog))
+            closeDialog()
         }
     }
 
@@ -107,15 +113,24 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun showErrorDialog() {
         MaterialDialog.Builder(this)
-                .title(R.string.app_name)
+                .title(R.string.error)
                 .content(getString(R.string.wrong_width_or_length_code))
                 .positiveText(R.string.ok_code)
                 .onPositive { dialog, which -> dialog.dismiss() }
                 .show()
     }
 
+    private fun closeDialog() {
+        dialogOpened = false
+        Animations.animateRevealHide(findViewById(R.id.dialog))
+    }
+
     override fun onBackPressed() {
-        finishActivity()
+        if (dialogOpened) {
+            closeDialog()
+        } else {
+            finishActivity()
+        }
     }
 
     private fun initSizeDialog() {
@@ -124,47 +139,54 @@ class SelectServiceActivity : BaseActivity() {
         val square = findViewById(R.id.square_text) as TextView
 
         lengthEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(editable: Editable) {
-                recomputeSquare(false, editable, square)
-            }
+            override fun afterTextChanged(s: Editable) { recomputeSquare(false, s, square) }
         })
 
         widthEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) { }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(editable: Editable) {
-                recomputeSquare(true, editable, square)
-            }
+            override fun afterTextChanged(s: Editable) { recomputeSquare(true, s, square) }
         })
     }
 
     private fun showSizeDialog() {
         Handler().post {
             dialogOpened = true
-            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@SelectServiceActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@SelectServiceActivity)
         }
     }
 
     private fun recomputeSquare(width: Boolean, editable: Editable, square: TextView) {
         if (editable.isNotEmpty() && editable.toString() != "0") {
-            try {
-                if (width) this.width = Integer.parseInt(editable.toString()) else length = Integer.parseInt(editable.toString())
-                square.text = java.lang.Double.toString(Math.ceil((length * this.width).toDouble() / squareCentimetersInSquareMeters)) +
-                        getString(R.string.square_meter_symbol)
-            } catch (e: Exception) {
-                LogUtil.logException(e)
-            }
+            compute(width, editable.toString(), square)
         }
     }
 
+    private fun compute(width: Boolean, str: String, square: TextView) {
+        try {
+            val input = Integer.parseInt(str)
+            if (width) this.width = input else this.length = input
+            formatSquareInputAndSetToTextView(square)
+        } catch (e: Exception) {
+            LogUtil.logException(e)
+        }
+    }
+    
+    private fun formatSquareInputAndSetToTextView(square: TextView) {
+        square.text = DecimalFormat(format).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
+                getString(R.string.square_meter_symbol)
+    }
+
     private fun finishActivity() {
-        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) OrderList.removeCurrent()
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+            OrderList.removeCurrent()
+        }
         finish()
     }
 
@@ -185,15 +207,26 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun openActivity() {
-        if (isTreatmentsSelected()) processSelectedTreatments()
-        else showNothingSelectedError()
+        if (isTreatmentsSelected()) {
+            processSelectedTreatments()
+        } else {
+            showNothingSelectedError()
+        }
     }
 
     private fun processSelectedTreatments() {
         OrderList.changeColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
 
-        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) addTreatments()
-        else editTreatments()
+        val size = (findViewById(R.id.square_text) as TextView).text.toString()
+        if (size != getString(R.string.zero_size)) {
+            OrderList.setSize(size.split(" ")[0].toDouble())
+        }
+
+        if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
+            addTreatments()
+        } else {
+            editTreatments()
+        }
 
         finish()
     }
@@ -226,8 +259,11 @@ class SelectServiceActivity : BaseActivity() {
         ServerApi.get(this).api().getTreatments(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 layout!!.isRefreshing = false
-                if (response.isSuccessful) parseAnswer(response.body())
-                else onInternetConnectionError()
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                } else {
+                    onInternetConnectionError()
+                }
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
@@ -266,6 +302,6 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun sort(collection: ArrayList<Treatment>) {
-        Collections.sort(collection) { treatment, t1 -> treatment.name.compareTo(t1.name) }
+        Collections.sort(collection) { treatment1, treatment2 -> treatment1.name.compareTo(treatment2.name) }
     }
 }

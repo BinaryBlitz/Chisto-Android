@@ -30,7 +30,6 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     val EXTRA_USE_AREA = "userArea"
 
     init {
-        Image.init(context)
         categories = ArrayList<CategoryItem>()
     }
 
@@ -42,15 +41,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         this.categories = categories
     }
 
-    @SuppressWarnings("unused")
-    fun clear() {
-        categories!!.clear()
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_category_item, parent, false)
-
         return ViewHolder(itemView)
     }
 
@@ -62,7 +54,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.name.text = item.name
         holder.description.text = item.description
 
-        Image.loadPhoto(item.icon, holder.icon)
+        Image.loadPhoto(context, item.icon, holder.icon)
         holder.icon.setColorFilter(color)
 
         holder.itemView.setOnClickListener {
@@ -101,15 +93,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        internal var name: TextView
-        internal var description: TextView
-        internal var icon: ImageView
-
-        init {
-            name = itemView.findViewById(R.id.name) as TextView
-            description = itemView.findViewById(R.id.description) as TextView
-            icon = itemView.findViewById(R.id.category_icon) as ImageView
-        }
+        internal var name = itemView.findViewById(R.id.name) as TextView
+        internal var description = itemView.findViewById(R.id.description) as TextView
+        internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
     }
 }

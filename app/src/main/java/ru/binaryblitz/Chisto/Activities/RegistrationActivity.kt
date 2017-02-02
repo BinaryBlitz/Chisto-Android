@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -28,13 +27,17 @@ import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 import ru.binaryblitz.Chisto.Utils.AnimationStartListener
+import ru.binaryblitz.Chisto.Utils.AppConfig
+import ru.binaryblitz.Chisto.Utils.CustomPhoneNumberTextWatcher
 
 class RegistrationActivity : BaseActivity() {
 
     val EXTRA_PHONE = "phone"
+    val EXTRA_SELECTED = "selected"
+    val SELECTED_CONTACT_INFO_ACTIVITY = 2
 
     private var code = false
-    private var cost = 0
+    private var price = 0
     private var phoneEditText: MaterialEditText? = null
     private var codeEditText: MaterialEditText? = null
     private var continueButton: Button? = null
@@ -46,7 +49,7 @@ class RegistrationActivity : BaseActivity() {
         initElements()
         setOnClickListeners()
 
-        cost = intent.getIntExtra(EXTRA_PRICE, 0)
+        price = intent.getIntExtra(EXTRA_PRICE, 0)
 
         Handler().post { phoneEditText!!.requestFocus() }
     }
@@ -64,17 +67,17 @@ class RegistrationActivity : BaseActivity() {
         continueButton = findViewById(R.id.button) as Button
         phoneEditText = findViewById(R.id.phone) as MaterialEditText
         codeEditText = findViewById(R.id.code_field) as MaterialEditText
-        phoneEditText!!.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+        phoneEditText!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
 
         codeEditText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
-            }
+            override fun afterTextChanged(s: Editable?) {}
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (p0!!.length == 5) verifyRequest()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (s!!.length == 5) {
+                    verifyRequest()
+                }
             }
         })
     }
@@ -121,6 +124,12 @@ class RegistrationActivity : BaseActivity() {
             processPhoneInput()
         }
 
+        findViewById(R.id.browse).setOnClickListener {
+            val intent = Intent(this@RegistrationActivity, WebActivity::class.java)
+            intent.putExtra("url", AppConfig.terms)
+            startActivity(intent)
+        }
+
         findViewById(R.id.left_btn).setOnClickListener {
             if (!code)
                 super.onBackPressed()
@@ -141,7 +150,9 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun verifyRequest() {
-        if (!checkCodeInput()) return
+        if (!checkCodeInput()) {
+            return
+        }
         executeVerifyRequest()
     }
 
@@ -154,13 +165,56 @@ class RegistrationActivity : BaseActivity() {
 
     private fun saveToken(obj: JsonObject) {
         val token = obj.get("api_token")
-        if (!token.isJsonNull) DeviceInfoStore.saveToken(this, token.asString)
+        if (!token.isJsonNull) {
+            DeviceInfoStore.saveToken(this, token.asString)
+        }
+    }
+
+    private fun continueRegistration(phone: String) {
+        if (DeviceInfoStore.getToken(this) == "null") {
+            openContactInfo(phone)
+        } else {
+            openSelectedActivity(phone)
+        }
+    }
+
+    private fun openSelectedActivity(phone: String) {
+        val choice = intent.getIntExtra(EXTRA_SELECTED, 0)
+
+        if (choice == SELECTED_CONTACT_INFO_ACTIVITY) {
+            openContactInfo(phone)
+        } else {
+            openMyOrders()
+        }
     }
 
     private fun finishActivity(phone: String) {
+        if (price == 0) {
+            continueRegistration(phone)
+        } else {
+            openOrderScreen(phone)
+        }
+    }
+
+    private fun openOrderScreen(phone: String) {
         val intent = Intent(this@RegistrationActivity, PersonalInfoActivity::class.java)
         intent.putExtra(EXTRA_PHONE, phone)
-        intent.putExtra(EXTRA_PRICE, cost)
+        intent.putExtra(EXTRA_PRICE, price)
+        intent.putExtra(EXTRA_TOKEN, token)
+        intent.putExtra(EXTRA_PROMO_CODE_ID, intent.getIntExtra(EXTRA_PROMO_CODE_ID, 0))
+        startActivity(intent)
+        finish()
+    }
+
+    private fun openMyOrders() {
+        val intent = Intent(this@RegistrationActivity, MyOrdersActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun openContactInfo(phone: String) {
+        val intent = Intent(this@RegistrationActivity, ContactInfoActivity::class.java)
+        intent.putExtra(EXTRA_PHONE, phone)
         intent.putExtra(EXTRA_TOKEN, token)
         startActivity(intent)
         finish()
@@ -174,8 +228,11 @@ class RegistrationActivity : BaseActivity() {
                 object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
-                        if (!response.isSuccessful) showCodeError()
-                        else parseVerifyAnswer(response.body())
+                        if (response.isSuccessful) {
+                            parseVerifyAnswer(response.body())
+                        } else {
+                            showCodeError()
+                        }
                     }
 
                     override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -211,7 +268,7 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun authRequest(animate: Boolean) {
-        if(!AndroidUtilities.validatePhone(phoneEditText!!.text.toString())) {
+        if (!AndroidUtilities.validatePhone(phoneEditText!!.text.toString())) {
             Snackbar.make(findViewById(R.id.main), getString(R.string.wrong_phone), Snackbar.LENGTH_SHORT).show()
             return
         }
@@ -298,10 +355,10 @@ class RegistrationActivity : BaseActivity() {
 
     companion object {
         private val ANIMATION_DURATION = 700
-        private var token: String? = null
+        private var token: String? = ""
         private val EXTRA_PRICE = "price"
         private val EXTRA_TOKEN = "token"
+        private val EXTRA_PROMO_CODE_ID = "promoCodeId"
         private var phoneFromServer: String? = null
     }
 }
-

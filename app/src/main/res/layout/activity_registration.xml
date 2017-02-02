@@ -6,6 +6,16 @@
              android:layout_height="match_parent"
              android:id="@+id/main">
 
+    <TextView android:layout_width="match_parent"
+              android:id="@+id/browse"
+              android:text="@string/registration_browse"
+              android:layout_gravity="bottom"
+              android:layout_margin="36dp"
+              android:textColor="#727272"
+              android:gravity="center"
+              android:textSize="16sp"
+              android:layout_height="wrap_content"/>
+
     <LinearLayout
             android:id="@+id/l1"
             android:layout_width="match_parent"
@@ -24,10 +34,10 @@
                 android:textColor="#212121"
                 android:inputType="phone"
                 android:textSize="22sp"
-                android:hint="+7 (900) 000-00-00"
+                android:hint="+7 900 000-00-00"
                 android:lines="1"
                 android:gravity="center"
-                android:maxLength="16"
+                android:maxLength="25"
                 android:letterSpacing="0.04"
                 android:paddingLeft="12dp"
                 android:paddingStart="12dp"

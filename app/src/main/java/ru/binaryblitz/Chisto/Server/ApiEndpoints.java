@@ -13,7 +13,6 @@ import retrofit2.http.Query;
 
 public interface ApiEndpoints {
 
-
     @GET("cities")
     Call<JsonArray> getCitiesList();
 
@@ -61,4 +60,13 @@ public interface ApiEndpoints {
 
     @POST("laundries/{id}/ratings")
     Call<JsonObject> sendReview(@Path("id") int id, @Body JsonObject object, @Query("api_token") String token);
+
+    @PATCH("ratings/{id}")
+    Call<JsonObject> updateReview(@Path("id") int id, @Body JsonObject object, @Query("api_token") String token);
+
+    @POST("subscriptions")
+    Call<JsonObject> sendSubscription(@Body JsonObject object);
+
+    @GET("promo_codes/{code}")
+    Call<JsonObject> getPromoCode(@Path("code") String code, @Query("api_token") String token);
 }

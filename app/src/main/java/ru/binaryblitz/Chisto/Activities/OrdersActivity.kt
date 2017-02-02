@@ -1,5 +1,6 @@
 package ru.binaryblitz.Chisto.Activities
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.os.Handler
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.widget.EditText
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,7 +27,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.*
-import ru.binaryblitz.Chisto.Utils.Animations.Animations
+import ru.binaryblitz.Chisto.Utils.Animations
 
 class OrdersActivity : BaseActivity() {
 
@@ -42,13 +44,21 @@ class OrdersActivity : BaseActivity() {
         initRecyclerView()
         setOnClickListeners()
 
-        Handler().post { getUser() }
+        Handler().post {
+            if (newOrderId != 0) {
+                showOrderDialog(newOrderId)
+            } else {
+                getUser()
+            }
+        }
     }
 
     private fun getUser() {
         ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
-                if (response.isSuccessful) parseAnswer(response.body())
+                if (response.isSuccessful) {
+                    parseAnswer(response.body())
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -56,7 +66,17 @@ class OrdersActivity : BaseActivity() {
         })
     }
 
+    private fun showOrderDialog(id: Int) {
+        Handler().post {
+            dialogOpened = true
+            (findViewById(R.id.order_name) as TextView).text = getString(R.string.number_sign) + id.toString()
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog_new_order), this@OrdersActivity)
+            newOrderId = 0
+        }
+    }
+
     private fun parseAnswer(obj: JsonObject) {
+        LogUtil.logError(obj.toString())
         val order = obj.get("order")
         if (order == null || obj.get("order").isJsonNull) return
 
@@ -76,14 +96,17 @@ class OrdersActivity : BaseActivity() {
         ServerApi.get(this).api().sendReview(laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
-                if (response.isSuccessful) parseReviewResponse()
-                else onServerError(response)
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+                if (response.isSuccessful) {
+                    parseReviewResponse()
+                } else {
+                    onServerError(response)
+                }
             }
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 dialog.dismiss()
-                Animations.animateRevealHide(findViewById(R.id.dialog))
+                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
                 onInternetConnectionError()
             }
         })
@@ -91,7 +114,7 @@ class OrdersActivity : BaseActivity() {
 
     private fun showErrorDialog() {
         MaterialDialog.Builder(this)
-                .title(R.string.app_name)
+                .title(getString(R.string.error))
                 .content(getString(R.string.wrong_review_code))
                 .positiveText(R.string.ok_code)
                 .onPositive { dialog, which -> dialog.dismiss() }
@@ -99,8 +122,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun checkReview(): Boolean {
-        return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0 &&
-        !(findViewById(R.id.review_text) as EditText).text.toString().isEmpty()
+        return (findViewById(R.id.ratingBar) as SimpleRatingBar).rating.toInt() != 0
     }
 
     private fun generateJson(): JsonObject {
@@ -116,7 +138,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun parseReviewResponse() {
-        Animations.animateRevealHide(findViewById(R.id.dialog))
+        ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
     }
 
     private fun showReviewDialog(id: Int) {
@@ -124,7 +146,7 @@ class OrdersActivity : BaseActivity() {
             dialogOpened = true
             (findViewById(R.id.order_name_completed) as TextView).text =
                     getString(R.string.order) + " № " + id.toString() + getString(R.string.completed)
-            Animations.animateRevealShow(findViewById(R.id.dialog), this@OrdersActivity)
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealShow(findViewById(R.id.dialog), this@OrdersActivity)
         }
     }
 
@@ -143,30 +165,41 @@ class OrdersActivity : BaseActivity() {
         view.addItemDecoration(SwipeItemDecoration())
     }
 
+    private fun openActivity(activity: Class<out Activity>) {
+        val intent = Intent(this@OrdersActivity, activity)
+        startActivity(intent)
+    }
+
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener {
-            val intent = Intent(this@OrdersActivity, ProfileActivity::class.java)
-            startActivity(intent)
+            openActivity(ProfileActivity::class.java)
         }
 
         findViewById(R.id.right_btn).setOnClickListener {
-            val intent = Intent(this@OrdersActivity, SelectCategoryActivity::class.java)
-            startActivity(intent)
+            openActivity(SelectCategoryActivity::class.java)
         }
 
         findViewById(R.id.add_btn).setOnClickListener {
-            val intent = Intent(this@OrdersActivity, SelectCategoryActivity::class.java)
-            startActivity(intent)
+            openActivity(SelectCategoryActivity::class.java)
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
-            if (!checkReview()) showErrorDialog()
-            else sendReview()
+            if (!checkReview()) {
+                showErrorDialog()
+            } else {
+                sendReview()
+            }
         }
 
-        findViewById(R.id.dialog).setOnClickListener {
-            Animations.animateRevealHide(findViewById(R.id.dialog))
+        findViewById(R.id.new_order_dialog_btn).setOnClickListener {
+            ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog_new_order))
+            getUser()
         }
+    }
+
+    override fun onBackPressed() {
+        if (dialogOpened) return
+        super.onBackPressed()
     }
 
     override fun onResume() {
@@ -180,8 +213,11 @@ class OrdersActivity : BaseActivity() {
         adapter!!.setCollection(OrderList.get()!!)
         adapter!!.notifyDataSetChanged()
 
-        if (adapter!!.itemCount != 0) setContinueButtonEnabled()
-        else setContinueButtonDisabled()
+        if (adapter!!.itemCount != 0) {
+            setContinueButtonEnabled()
+        } else {
+            setContinueButtonDisabled()
+        }
     }
 
     private fun setContinueButtonEnabled() {
@@ -199,6 +235,7 @@ class OrdersActivity : BaseActivity() {
     }
 
     companion object {
-        var laundryId: Int = 0
+        var laundryId = 0
+        var newOrderId = 0
     }
 }

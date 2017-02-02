@@ -90,6 +90,7 @@
                     android:inputType="phone"
                     android:textColor="@color/greyColor"
                     android:textSize="16sp"
+                    android:maxLength="25"
                     android:lines="1"
                     android:hint="@string/phone"
                     android:layout_marginRight="24dp"
@@ -178,29 +179,38 @@
                     android:textColorHint="@color/greyColor"
                     android:layout_gravity="bottom" />
 
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/street_text"
-                    android:textColor="@color/greyColor"
-                    android:inputType="textCapWords"
-                    android:textSize="16sp"
-                    android:lines="1"
-                    android:hint="@string/street"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginLeft="56dp"
-                    android:layout_marginTop="12dp"
-                    app:met_underlineColor="@color/greyColor"
-                    app:met_baseColor="@color/blackColor"
-                    app:met_textColor="@color/blackColor"
-                    app:met_errorColor="@color/blackColor"
-                    app:met_floatingLabel="normal"
-                    app:met_helperTextColor="@color/greyColor"
-                    app:met_primaryColor="@color/blackColor"
-                    android:textColorHint="@color/greyColor"
-                    android:layout_gravity="bottom" />
+            <FrameLayout android:layout_width="match_parent"
+                         android:layout_marginRight="24dp"
+                         android:layout_marginEnd="24dp"
+                         android:layout_marginStart="56dp"
+                         android:layout_marginLeft="56dp"
+                         android:layout_marginTop="12dp"
+                         android:layout_height="wrap_content">
+                <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/street_text"
+                        android:textColor="@color/greyColor"
+                        android:inputType="textCapWords"
+                        android:textSize="16sp"
+                        android:lines="1"
+                        android:hint="@string/street"
+                        app:met_underlineColor="@color/greyColor"
+                        app:met_baseColor="@color/blackColor"
+                        app:met_textColor="@color/blackColor"
+                        app:met_errorColor="@color/blackColor"
+                        app:met_floatingLabel="normal"
+                        app:met_helperTextColor="@color/greyColor"
+                        app:met_primaryColor="@color/blackColor"
+                        android:textColorHint="@color/greyColor"
+                        android:layout_gravity="bottom" />
+                <FrameLayout android:layout_width="match_parent"
+                             android:clickable="true"
+                             android:id="@+id/street_btn"
+                             android:layout_height="match_parent">
+
+                </FrameLayout>
+            </FrameLayout>
 
             <LinearLayout
                     android:layout_width="match_parent"

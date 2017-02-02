@@ -106,8 +106,11 @@ public class MapActivity extends BaseActivity
 
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
-                    if (results != null && results.count > 0) notifyDataSetChanged();
-                    else notifyDataSetInvalidated();
+                    if (results != null && results.count > 0) {
+                        notifyDataSetChanged();
+                    } else {
+                        notifyDataSetInvalidated();
+                    }
                 }
             };
         }
@@ -172,9 +175,13 @@ public class MapActivity extends BaseActivity
             while ((read = in.read(buff)) != -1) {
                 jsonResults.append(buff, 0, read);
             }
-        } catch (MalformedURLException e) { return null; }
-        catch (IOException e) { return null; }
-        finally { if (conn != null) conn.disconnect(); }
+        } catch (MalformedURLException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        } finally {
+            if (conn != null) conn.disconnect();
+        }
 
         return parseAnswer(jsonResults);
     }
@@ -189,7 +196,9 @@ public class MapActivity extends BaseActivity
             for (int i = 0; i < prevJsonArray.length(); i++) {
                 resultList.add(prevJsonArray.getJSONObject(i).getString("description"));
             }
-        } catch (JSONException ignored) {}
+        } catch (JSONException e) {
+            LogUtil.logException(e);
+        }
 
         return resultList;
     }
@@ -268,8 +277,7 @@ public class MapActivity extends BaseActivity
         this.googleMap = googleMap;
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkPermission()) {
-                ActivityCompat.requestPermissions(MapActivity.this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION);
+                ActivityCompat.requestPermissions(MapActivity.this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, LOCATION_PERMISSION);
             } else {
                 setUpMap();
             }
@@ -280,13 +288,11 @@ public class MapActivity extends BaseActivity
 
     @SuppressLint("NewApi")
     private boolean checkPermission() {
-        return checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        return checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
     }
 
     private void setUpMap() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         googleMap.setMyLocationEnabled(false);
@@ -316,8 +322,7 @@ public class MapActivity extends BaseActivity
     @Override
     public void onUpdateMapAfterUserInteraction() {
         try {
-            String res = getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
-                    googleMap.getCameraPosition().target.longitude);
+            String res = getCompleteAddressString(googleMap.getCameraPosition().target.latitude, googleMap.getCameraPosition().target.longitude);
             searchBox.setText(res);
             searchBox.dismissDropDown();
         } catch (Exception e) {
@@ -331,8 +336,11 @@ public class MapActivity extends BaseActivity
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (mGoogleApiClient.isConnected()) getLocation();
-                else mGoogleApiClient.connect();
+                if (mGoogleApiClient.isConnected()) {
+                    getLocation();
+                } else {
+                    mGoogleApiClient.connect();
+                }
             }
         }, 50);
     }
@@ -341,11 +349,8 @@ public class MapActivity extends BaseActivity
     public void onConnected(Bundle bundle) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             try {
-                if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, LOCATION_PERMISSION);
                 } else {
                     getLocation();
                 }
@@ -358,9 +363,7 @@ public class MapActivity extends BaseActivity
     }
 
     private void getLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             onLocationError();
             return;
         }
@@ -390,8 +393,7 @@ public class MapActivity extends BaseActivity
                     @Override
                     public void run() {
                         if (setText) {
-                            getCompleteAddressString(googleMap.getCameraPosition().target.latitude,
-                                    googleMap.getCameraPosition().target.longitude);
+                            getCompleteAddressString(googleMap.getCameraPosition().target.latitude, googleMap.getCameraPosition().target.longitude);
                             searchBox.setText(selected);
                         }
                         searchBox.dismissDropDown();

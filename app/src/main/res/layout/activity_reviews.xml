@@ -107,10 +107,11 @@
                 android:layout_height="wrap_content"
                 app:srb_starSize="12dp"
                 app:srb_numberOfStars="5"
-                app:srb_rating="3"
+                app:srb_rating="0"
                 app:srb_stepSize="0.5"
                 app:srb_starBorderWidth="3"
                 app:srb_starCornerRadius="2"
+                app:srb_isIndicator="true"
                 android:id="@+id/ratingBar"
                 android:layout_marginTop="104dp"
                 android:layout_marginStart="12dp"
@@ -119,13 +120,12 @@
                 app:srb_fillColor="#ffffff"/>
 
         <TextView
-                android:layout_marginTop="98dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
+                android:layout_marginTop="88dp"
+                android:padding="10dp"
                 android:layout_gravity="end"
                 android:textColor="#ffffff"
                 android:id="@+id/count"
-                android:text="Отзывы"
+                android:text="@string/review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </FrameLayout>

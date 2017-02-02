@@ -16,7 +16,13 @@ open class BaseActivity : AppCompatActivity() {
 
     protected fun onServerError(response: Response<*>) {
         val error = ServerErrorHandler.parseError(response)
-        if (error.status() == 500) Snackbar.make(findViewById(R.id.main), getString(R.string.server_error), Snackbar.LENGTH_SHORT).show()
+        if (error.status() == 500) {
+            Snackbar.make(
+                    findViewById(R.id.main),
+                    getString(R.string.server_error),
+                    Snackbar.LENGTH_SHORT
+            ).show()
+        }
         else Snackbar.make(findViewById(R.id.main), error.message(), Snackbar.LENGTH_SHORT).show()
     }
 

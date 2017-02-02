@@ -48,7 +48,7 @@
     <string name="ok_code">OK</string>
     <string name="cancel">Отмена</string>
 
-    <string name="select_part">Выбор вещи</string>
+    <string name="select_part">Выберите вещь</string>
 
     <string name="service_select">Выбор услуг</string>
     <string name="what_need_to_do">Что нужно сделать с вещью?</string>
@@ -73,14 +73,14 @@
     <string name="call_us">Позвонить нам</string>
     <string name="email">Написать письмо</string>
 
-    <string name="cost">Стоимость</string>
-    <string name="courier">Курьер</string>
+    <string name="price">Стоимость</string>
+    <string name="courier">Сбор вещей</string>
 
     <string name="delete_from_order">Вы хотите удалить эту вещь из заказа?</string>
     <string name="decoration_question">Eсть ли у вещи декоративная отделка?</string>
 
     <string name="laundries">Химчистки</string>
-    <string name="title">Фильтр</string>
+    <string name="title">Сортировка химчисток</string>
     <string name="choose">Выбрать</string>
     <string name="cost_filter">По цене</string>
     <string name="speed_filter">По скорости</string>
@@ -135,16 +135,16 @@
     <string name="notifications_help">Желаете ли вы получать обновления по вашему заказу?</string>
 
     <string name="my_order_code">Заказ №</string>
-    <string name="order_questions">Есть вопросы по заказу?</string>
+    <string name="order_questions">Есть вопросы по заказу? Звоните</string>
 
     <string name="result_order">Итого</string>
 
-    <string name="ready_code">Выполняется</string>
-    <string name="process_code">Выполнен</string>
+    <string name="completed_code">Выполнен</string>
+    <string name="processing_code">На рассмотрении</string>
     <string name="canceled_code">Отменен</string>
     <string name="cleaning_code">В чистке</string>
-    <string name="dispatched_code">Вещи едут к вам</string>
-    <string name="confirmed_code">Согласован забор вещей</string>
+    <string name="dispatched_code">Доставка</string>
+    <string name="confirmed_code">Согласован</string>
 
     <string name="premium">Премиум</string>
     <string name="fast">Быстрая</string>
@@ -159,10 +159,9 @@
     <string name="from_code">"с "</string>
     <string name="end_bound_code">" до "</string>
 
-    <string name="empty_orders">Вы еще ничего не заказывали</string>
+    <string name="empty_orders">Нет заказов</string>
     <string name="empty_reviews">Нет отзывов</string>
-    <string name="decoration_help">К декоративной отделке относятся стразы, бисер, пайетки, сложные кружевные композиции и прочие украшения одежды, нуждающиеся в особом уходе и внимании со стороны
-        химчистки</string>
+    <string name="decoration_help">Стразы, бисер, пайетки, кружева и прочие украшения, требующие особого внимания</string>
     <string name="city_not_found_helper">Оставьте контактные данные и мы оповестим вас, когда сервис станет доступен в вашем городе</string>
 
     <string name="select_size">Укажите размеры сторон вещи в сантиметрах</string>
@@ -180,10 +179,29 @@
 
     <string name="review_help">Мы надеемся, что вы остались довольны. Оставьте пожалуйста отзыв, чтобы помочь другим пользователям</string>
     <string name="your_review">Ваш отзыв</string>
-    <string name="completed">" исполнен!"</string>
+    <string name="completed">" выполнен!"</string>
 
     <string name="status_changed">Статус заказа изменен</string>
     <string name="default_notification_text">Просмотрите информацию о заказе</string>
+    <string name="error">Ошибка</string>
+    <string name="number_sign">№</string>
+    <string name="registration_browse">Регистрируясь в приложении, вы принимаете условия <u>Пользовательского соглашения</u></string>
+    <string name="log_out">Выйти</string>
+    <string name="payment_type">Способ оплаты</string>
+    <string name="cash">Наличными</string>
+    <string name="card">Банковской картой</string>
+    <string name="order_price">Стоимость заказа</string>
+    <string name="promo">Промокод</string>
+    <string name="minimum_order_price">Минимальная сумма заказа</string>
+    <string name="registration_not_completed_error">Регистрация не завершена. Выйти?</string>
+    <string name="final_price">Итого к оплате</string>
+    <string name="support_phone_number"><u>+7 (495) 766-78-49</u></string>
+    <string name="review_btn">Оставить отзыв</string>
+    <string name="promo_hint">Введите промокод</string>
+    <string name="promo_help">Распространяется на все услуги</string>
+    <string name="promo_error">Промокод не действителен или уже использован</string>
+    <string name="minus_sign">-</string>
+    <string name="zero_size">0 м²</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
