@@ -178,14 +178,14 @@ public class OrderList {
         }
     }
 
-    private static void setDecorationPriceForOrder(int i) {
-        if (orders.get(i).getTreatments() == null) {
+    private static void setDecorationPriceForOrder(int index) {
+        if (orders.get(index).getTreatments() == null) {
             return;
         }
 
-        for (int i = 0; i < orders.get(i).getTreatments().size(); i++) {
-            if (orders.get(i).getTreatments().get(i).getId() == AppConfig.decorationId) {
-                orders.get(i).getTreatments().get(i).setPrice(orders.get(i).getDecorationPrice());
+        for (int i = 0; i < orders.get(index).getTreatments().size(); i++) {
+            if (orders.get(index).getTreatments().get(i).getId() == AppConfig.decorationId) {
+                orders.get(index).getTreatments().get(i).setPrice(orders.get(index).getDecorationPrice());
             }
         }
     }
