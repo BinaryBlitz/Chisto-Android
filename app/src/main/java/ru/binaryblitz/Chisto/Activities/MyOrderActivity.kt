@@ -9,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Pair
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -126,6 +127,8 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun parsePromo(obj: JsonObject) {
+        findViewById(R.id.promocode_discount_view).visibility = View.VISIBLE
+        findViewById(R.id.promocode_name_view).visibility = View.VISIBLE
         (findViewById(R.id.promo_name) as TextView).text = AndroidUtilities.getStringFieldFromJson(obj.get("code"))
         (findViewById(R.id.promo_price_difference) as TextView).text =
                 getString(R.string.minus_sign) +
@@ -156,6 +159,8 @@ class MyOrderActivity : BaseActivity() {
 
         if (obj.get("promo_code") != null && !obj.get("promo_code").isJsonNull) {
             parsePromo(obj.get("promo_code").asJsonObject)
+        } else {
+            hidePromoCodeInformation()
         }
 
         orderId = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
@@ -163,6 +168,11 @@ class MyOrderActivity : BaseActivity() {
         if (!isRated && isOpenedFromPush) {
             showReviewDialog()
         }
+    }
+
+    private fun hidePromoCodeInformation() {
+        findViewById(R.id.promocode_discount_view).visibility = View.GONE
+        findViewById(R.id.promocode_name_view).visibility = View.GONE
     }
 
     private fun generateJson(): JsonObject {
