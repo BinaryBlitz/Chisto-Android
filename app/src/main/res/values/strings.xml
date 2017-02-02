@@ -201,6 +201,7 @@
     <string name="promo_help">Распространяется на все услуги</string>
     <string name="promo_error">Промокод введен неверно</string>
     <string name="minus_sign">-</string>
+    <string name="zero_size">0 м²</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

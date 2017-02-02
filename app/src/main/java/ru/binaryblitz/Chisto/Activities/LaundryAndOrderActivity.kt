@@ -55,7 +55,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     private fun showPromoCodeDialog() {
         Handler().post {
             dialogOpened = true
-            Animations.animateRevealShow(findViewById(ru.binaryblitz.Chisto.R.id.dialog), this@LaundryAndOrderActivity)
+            Animations.animateRevealShow(findViewById(R.id.dialog), this@LaundryAndOrderActivity)
         }
     }
 

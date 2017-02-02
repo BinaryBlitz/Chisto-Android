@@ -93,7 +93,11 @@ class PersonalInfoActivity : BaseActivity() {
 
     private fun parseUserResponse(obj: JsonObject) {
         var user = DeviceInfoStore.getUserObject(this)
-        if (user == null) user = User.createDefault()
+
+        if (user == null) {
+            user = User.createDefault()
+        }
+
         user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
         user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
         user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
@@ -103,6 +107,7 @@ class PersonalInfoActivity : BaseActivity() {
         user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
         user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
         DeviceInfoStore.saveUser(this, user)
+
         setInfo()
     }
 
@@ -182,6 +187,8 @@ class PersonalInfoActivity : BaseActivity() {
 
         val toSend = JsonObject()
         toSend.add("order", obj)
+
+        LogUtil.logError(toSend.toString())
 
         return toSend
     }
