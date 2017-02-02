@@ -188,8 +188,8 @@
     <string name="registration_browse">Регистрируясь в приложении, вы принимаете условия <u>Пользовательского соглашения</u></string>
     <string name="log_out">Выйти</string>
     <string name="payment_type">Способ оплаты</string>
-    <string name="cash">Наличные</string>
-    <string name="card">Картой онлайн</string>
+    <string name="cash">Наличными</string>
+    <string name="card">Банковской картой</string>
     <string name="order_price">Стоимость заказа</string>
     <string name="promo">Промокод</string>
     <string name="minimum_order_price">Минимальная сумма заказа</string>
@@ -199,7 +199,7 @@
     <string name="review_btn">Оставить отзыв</string>
     <string name="promo_hint">Введите промокод</string>
     <string name="promo_help">Распространяется на все услуги</string>
-    <string name="promo_error">Промокод введен неверно</string>
+    <string name="promo_error">Промокод не действителен или уже использован</string>
     <string name="minus_sign">-</string>
     <string name="zero_size">0 м²</string>
 
