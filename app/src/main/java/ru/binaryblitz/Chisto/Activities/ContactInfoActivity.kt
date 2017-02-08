@@ -61,8 +61,6 @@ class ContactInfoActivity : BaseActivity() {
                         dialog.dismiss()
                         if (response.isSuccessful) {
                             parseUserResponse(response.body())
-                        } else {
-                            onServerError(response)
                         }
                     }
 
