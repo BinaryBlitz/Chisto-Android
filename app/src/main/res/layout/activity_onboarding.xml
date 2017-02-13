@@ -203,41 +203,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                    <TextView
-                            android:text="5"
-                            android:layout_width="34dp"
-                            android:layout_height="34dp"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:background="@drawable/grey_circle"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
-                            android:textColor="#727272"
-                            android:textSize="18sp"
-                            android:layout_gravity="center_vertical"
-                            android:gravity="center"/>
-
-                    <TextView
-                            android:text="@string/board5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="8dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="8dp"
-                            android:textColor="#727272"
-                            android:textSize="14sp"/>
-
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
