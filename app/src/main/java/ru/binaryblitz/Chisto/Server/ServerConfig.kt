@@ -1,7 +1,7 @@
 package ru.binaryblitz.Chisto.Server
 
 object ServerConfig {
-    val baseUrl = "https://chis.to"
+    val baseUrl = "https://chisto.xyz"
     val apiURL = baseUrl + "/api/"
 
     val imageUrl: String
