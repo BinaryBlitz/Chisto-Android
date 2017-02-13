@@ -27,6 +27,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
 import ru.binaryblitz.Chisto.Utils.*
 import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*
 
@@ -175,7 +176,8 @@ class SelectServiceActivity : BaseActivity() {
     }
     
     private fun formatSquareInputAndSetToTextView(square: TextView) {
-        square.text = DecimalFormat(format).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
+        val defaultSymbols = DecimalFormatSymbols(Locale.getDefault())
+        square.text = DecimalFormat(format, defaultSymbols).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
                 getString(R.string.square_meter_symbol)
     }
 
