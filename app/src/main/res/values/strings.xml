@@ -21,11 +21,10 @@
     <string name="start">Начать</string>
     <string name="simple">Все очень просто:</string>
     <string name="chisto">С Chisto Вам больше не нужно\nтратить время на походы\nв химчистку</string>
-    <string name="board1">Добавьте в список вещи, которые хотите сдать в чистку</string>
-    <string name="board2">Ознакомтесь с ценой и сроками выполнения вашего заказа</string>
-    <string name="board3">Выберите подходящего Вам исполнителя</string>
-    <string name="board4">Оплатите заказ удобным для Вас способом</string>
-    <string name="board5">Ожидайте звонка. Оператор позвонит Вам и согласует время забора и доставки вещей.</string>
+    <string name="board1">Добавьте вещи для чистки</string>
+    <string name="board2">Выберите подходящего исполнителя по цене и срокам выполнения заказа</string>
+    <string name="board3">Оплатите заказ банковской картой в приложении или наличными курьеру</string>
+    <string name="board4">Курьер заберёт вещи в согласованное время и вернёт их чистыми</string>
 
     <string name="city_select">Выбор города</string>
     <string name="location_error">Невозможно получить текущее местоположение.</string>
