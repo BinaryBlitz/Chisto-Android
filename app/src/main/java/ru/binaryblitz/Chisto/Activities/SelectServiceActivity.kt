@@ -25,15 +25,10 @@ import ru.binaryblitz.Chisto.Custom.RecyclerListView
 import ru.binaryblitz.Chisto.Model.Treatment
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.Server.ServerApi
-import ru.binaryblitz.Chisto.Utils.AndroidUtilities
-import ru.binaryblitz.Chisto.Utils.Animations
-import ru.binaryblitz.Chisto.Utils.AppConfig
-import ru.binaryblitz.Chisto.Utils.LogUtil
-import ru.binaryblitz.Chisto.Utils.OrderList
+import ru.binaryblitz.Chisto.Utils.*
 import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
 import java.util.*
-
 
 class SelectServiceActivity : BaseActivity() {
 
@@ -180,10 +175,7 @@ class SelectServiceActivity : BaseActivity() {
     }
     
     private fun formatSquareInputAndSetToTextView(square: TextView) {
-        val formatSymbols = DecimalFormatSymbols(Locale.getDefault())
-        formatSymbols.decimalSeparator = '.'
-        formatSymbols.groupingSeparator = '.'
-        square.text = DecimalFormat(format, formatSymbols).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
+        square.text = DecimalFormat(format).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
                 getString(R.string.square_meter_symbol)
     }
 
@@ -223,7 +215,7 @@ class SelectServiceActivity : BaseActivity() {
 
         val size = (findViewById(R.id.square_text) as TextView).text.toString()
         if (size != getString(R.string.zero_size)) {
-            OrderList.setSize(size.split(" ")[0].toDouble())
+            OrderList.setSize(getDoubleFromTextView(size.split(" ")[0]))
         }
 
         if (!intent.getBooleanExtra(EXTRA_EDIT, false)) {
@@ -233,6 +225,12 @@ class SelectServiceActivity : BaseActivity() {
         }
 
         finish()
+    }
+
+    private fun getDoubleFromTextView(text: String): Double {
+        val format = NumberFormat.getInstance(Locale.getDefault())
+        val number = format.parse(text)
+        return number.toDouble()
     }
 
     private fun showNothingSelectedError() {
