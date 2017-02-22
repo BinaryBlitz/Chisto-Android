@@ -62,6 +62,8 @@
                         android:gravity="center_vertical"
                         android:typeface="sans"
                         android:textSize="22sp"
+                        android:layout_marginRight="-32dp"
+                        android:layout_marginEnd="-32dp"
                         android:textColor="#ffffff" />
 
                 </FrameLayout>

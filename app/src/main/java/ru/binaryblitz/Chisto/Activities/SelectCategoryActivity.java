@@ -55,17 +55,8 @@ public class SelectCategoryActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_select_category);
 
-        findViewById(ru.binaryblitz.Chisto.R.id.left_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finishActivity();
-            }
-        });
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setTitle(null);
-
+        initToolbar();
+        setOnCLickListeners();
         initList();
         initSearchView();
 
@@ -76,6 +67,21 @@ public class SelectCategoryActivity extends BaseActivity {
                 load();
             }
         });
+    }
+
+    private void setOnCLickListeners() {
+        findViewById(ru.binaryblitz.Chisto.R.id.left_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finishActivity();
+            }
+        });
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        setTitle(null);
     }
 
     @Override
