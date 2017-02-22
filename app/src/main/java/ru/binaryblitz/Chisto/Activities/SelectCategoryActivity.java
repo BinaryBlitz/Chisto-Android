@@ -47,7 +47,7 @@ public class SelectCategoryActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
-        setContentView(ru.binaryblitz.Chisto.R.layout.activity_select_category);
+        setContentView(R.layout.activity_select_category);
 
         findViewById(ru.binaryblitz.Chisto.R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override

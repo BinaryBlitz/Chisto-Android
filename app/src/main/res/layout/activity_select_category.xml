@@ -21,7 +21,11 @@
     <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-        <android.support.v7.widget.Toolbar
+        <FrameLayout
+            android:id="@+id/toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
@@ -31,13 +35,13 @@
                 app:contentInsetStart="0dp"
                 android:background="@color/colorPrimary"
                 android:minHeight="?attr/actionBarSize">
-            <FrameLayout
+                <FrameLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/action_bar">
 
-                <ImageView
+                    <ImageView
                         android:id="@+id/left_btn"
                         android:layout_width="56dp"
                         android:layout_height="match_parent"
@@ -46,9 +50,9 @@
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:padding="13dp"
                         android:layout_gravity="start"
-                />
+                        />
 
-                <TextView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -60,7 +64,13 @@
                         android:textSize="22sp"
                         android:textColor="#ffffff" />
 
-            </FrameLayout>
-        </android.support.v7.widget.Toolbar>
+                </FrameLayout>
+            </android.support.v7.widget.Toolbar>
+
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
     </android.support.design.widget.AppBarLayout>
 </FrameLayout>
