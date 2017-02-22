@@ -70,7 +70,7 @@ public class SelectCategoryActivity extends BaseActivity {
     }
 
     private void setOnCLickListeners() {
-        findViewById(ru.binaryblitz.Chisto.R.id.left_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.left_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finishActivity();
@@ -121,7 +121,7 @@ public class SelectCategoryActivity extends BaseActivity {
             }
         });
 
-        searchView.setVoiceSearch(true);
+        searchView.setVoiceSearch(false);
     }
 
     @Override
