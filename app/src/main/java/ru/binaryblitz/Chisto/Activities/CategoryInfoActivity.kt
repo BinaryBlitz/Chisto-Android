@@ -27,17 +27,17 @@ class CategoryInfoActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
 
     private val EXTRA_COLOR = "color"
+    private val EXTRA_ID = "id"
+
+    private var color: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_category_info)
 
-        findViewById(ru.binaryblitz.Chisto.R.id.toolbar).setBackgroundColor(intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121")))
-        AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121")))
-
-        findViewById(R.id.left_btn).setOnClickListener { finish() }
-
+        initActivity()
+        setOnClickListeners()
         initList()
 
         Handler().post {
@@ -46,8 +46,19 @@ class CategoryInfoActivity : BaseActivity() {
         }
     }
 
+    private fun initActivity() {
+        color = intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121"))
+
+        findViewById(R.id.toolbar).setBackgroundColor(color)
+        AndroidUtilities.colorAndroidBar(this, color)
+    }
+
+    private fun setOnClickListeners() {
+        findViewById(R.id.left_btn).setOnClickListener { finish() }
+    }
+
     private fun initList() {
-        val view = findViewById(ru.binaryblitz.Chisto.R.id.recyclerView) as RecyclerListView
+        val view = findViewById(R.id.recyclerView) as RecyclerListView
         view.layoutManager = LinearLayoutManager(this)
         view.itemAnimator = DefaultItemAnimator()
         view.setHasFixedSize(true)
@@ -55,17 +66,17 @@ class CategoryInfoActivity : BaseActivity() {
         view.adapter = adapter
 
         layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout!!.setOnRefreshListener(null)
-        layout!!.isEnabled = false
-        layout!!.setColorSchemeResources(R.color.colorAccent)
+        layout?.setOnRefreshListener(null)
+        layout?.isEnabled = false
+        layout?.setColorSchemeResources(R.color.colorAccent)
 
-        adapter!!.setColor(intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121")))
+        adapter?.setColor(intent.getIntExtra(EXTRA_COLOR, Color.parseColor("#212121")))
     }
 
     private fun load() {
-        ServerApi.get(this).api().getItems(intent.getIntExtra("id", 0)).enqueue(object : Callback<JsonArray> {
+        ServerApi.get(this).api().getItems(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                layout!!.isRefreshing = false
+                layout?.isRefreshing = false
                 if (response.isSuccessful) {
                     parseAnswer(response.body())
                 } else {
@@ -74,7 +85,7 @@ class CategoryInfoActivity : BaseActivity() {
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                layout!!.isRefreshing = false
+                layout?.isRefreshing = false
                 onInternetConnectionError()
             }
         })
@@ -89,14 +100,15 @@ class CategoryInfoActivity : BaseActivity() {
                             ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(it.get("icon_url")),
                             AndroidUtilities.getStringFieldFromJson(it.get("name")),
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
-                            AndroidUtilities.getBooleanFieldFromJson(it.get("use_area"))
+                            AndroidUtilities.getBooleanFieldFromJson(it.get("use_area")),
+                            color
                     )
                 }
 
         sort(collection)
 
-        adapter!!.setCategories(collection)
-        adapter!!.notifyDataSetChanged()
+        adapter?.setCategories(collection)
+        adapter?.notifyDataSetChanged()
     }
 
     private fun sort(collection: ArrayList<CategoryItem>) {

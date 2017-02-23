@@ -55,7 +55,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.description.text = item.description
 
         Image.loadPhoto(context, item.icon, holder.icon)
-        holder.icon.setColorFilter(color)
+        holder.icon.setColorFilter(item.color)
 
         holder.itemView.setOnClickListener {
             showDialog(item)

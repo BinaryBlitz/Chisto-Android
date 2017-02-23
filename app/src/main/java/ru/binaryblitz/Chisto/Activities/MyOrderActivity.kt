@@ -302,7 +302,7 @@ class MyOrderActivity : BaseActivity() {
                 AndroidUtilities.getIntFieldFromJson(obj.get("id")),
                 AndroidUtilities.getStringFieldFromJson(obj.get("icon_url")),
                 AndroidUtilities.getStringFieldFromJson(obj.get("name")),
-                "", false)
+                "", false, 0)
     }
 
     private fun calculatePrices(obj: JsonObject, order: Order) {
