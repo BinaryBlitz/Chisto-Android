@@ -41,6 +41,7 @@ class SelectCategoryActivity : BaseActivity() {
     private var layout: SwipeRefreshLayout? = null
     private var searchView: MaterialSearchView? = null
     private var listView: RecyclerListView? = null
+    private var allItemsList: ArrayList<CategoryItem>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +57,20 @@ class SelectCategoryActivity : BaseActivity() {
             layout!!.isRefreshing = true
             load()
         }
+    }
+
+    private fun nameEqualsTo(item: CategoryItem, query: String): Boolean {
+        return item.name.toLowerCase().contains(query)
+    }
+
+    private fun searchForItems(query: String) {
+        if (allItemsAdapter?.getCategories() == null) {
+            return
+        }
+
+        val foundItems = allItemsAdapter?.getCategories()!!.filter { nameEqualsTo(it, query) }
+        allItemsAdapter?.setCategories(foundItems)
+        allItemsAdapter?.notifyDataSetChanged()
     }
 
     private fun getAllItems() {
@@ -79,7 +94,7 @@ class SelectCategoryActivity : BaseActivity() {
     private fun parseAllItems(array: JsonArray) {
         ColorsList.load(this)
 
-        val collection = (0..array.size() - 1)
+        allItemsList = (0..array.size() - 1)
                 .map { array.get(it).asJsonObject }
                 .mapTo(ArrayList<CategoryItem>()) {
                     CategoryItem(
@@ -92,12 +107,12 @@ class SelectCategoryActivity : BaseActivity() {
                     )
                 }
 
-        sortAllItems(collection)
+        sortAllItems(allItemsList!!)
 
         allItemsAdapter = CategoryItemsAdapter(this)
         listView?.adapter = allItemsAdapter
 
-        allItemsAdapter!!.setCategories(collection)
+        allItemsAdapter!!.setCategories(allItemsList!!)
         allItemsAdapter!!.notifyDataSetChanged()
     }
 
@@ -135,6 +150,13 @@ class SelectCategoryActivity : BaseActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isEmpty() && allItemsList != null) {
+                    allItemsAdapter?.setCategories(allItemsList!!)
+                    allItemsAdapter?.notifyDataSetChanged()
+                    return false
+                }
+
+                searchForItems(newText)
                 return false
             }
         })

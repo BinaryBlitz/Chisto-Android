@@ -20,7 +20,7 @@ import java.util.*
 
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var categories: ArrayList<CategoryItem>? = null
+    private var categories: List<CategoryItem>? = null
     private var color: Int = Color.parseColor("#212121")
 
     val EXTRA_DECORATION = "decoration"
@@ -37,8 +37,12 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         this.color = color
     }
 
-    fun setCategories(categories: ArrayList<CategoryItem>) {
+    fun setCategories(categories: List<CategoryItem>) {
         this.categories = categories
+    }
+
+    fun getCategories(): List<CategoryItem>? {
+        return categories
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
