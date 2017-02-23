@@ -131,8 +131,11 @@ class SelectCategoryActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
+        if (searchView == null) {
+            return
+        }
         if (searchView!!.isSearchOpen) {
-            searchView!!.closeSearch()
+            searchView?.closeSearch()
         } else {
             finishActivity()
         }
@@ -144,7 +147,7 @@ class SelectCategoryActivity : BaseActivity() {
 
     private fun initSearchView() {
         searchView = findViewById(R.id.search_view) as MaterialSearchView
-        searchView!!.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+        searchView?.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
@@ -161,7 +164,7 @@ class SelectCategoryActivity : BaseActivity() {
             }
         })
 
-        searchView!!.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
+        searchView?.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewShown() {
                 getAllItems()
             }
@@ -171,14 +174,14 @@ class SelectCategoryActivity : BaseActivity() {
             }
         })
 
-        searchView!!.setVoiceSearch(false)
+        searchView?.setVoiceSearch(false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
         val item = menu.findItem(R.id.action_search)
-        searchView!!.setMenuItem(item)
+        searchView?.setMenuItem(item)
 
         return true
     }
@@ -201,7 +204,7 @@ class SelectCategoryActivity : BaseActivity() {
     private fun load() {
         ServerApi.get(this).api().categories.enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                layout!!.isRefreshing = false
+                layout?.isRefreshing = false
                 if (response.isSuccessful) {
                     parseAnswer(response.body())
                 } else {
@@ -210,7 +213,7 @@ class SelectCategoryActivity : BaseActivity() {
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                layout!!.isRefreshing = false
+                layout?.isRefreshing = false
                 onInternetConnectionError()
             }
         })
