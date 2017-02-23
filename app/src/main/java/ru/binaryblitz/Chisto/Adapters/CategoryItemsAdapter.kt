@@ -86,9 +86,9 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         intent.putExtra(EXTRA_DECORATION, decor)
         intent.putExtra(EXTRA_ID, item.id)
         intent.putExtra(EXTRA_NAME, item.name)
-        intent.putExtra(EXTRA_COLOR, color)
+        intent.putExtra(EXTRA_COLOR, item.color)
         intent.putExtra(EXTRA_USE_AREA, item.userArea)
-        OrderList.add(Order(item, null, 1, color, decor, 0, null))
+        OrderList.add(Order(item, null, 1, item.color, decor, 0, null))
         context.startActivity(intent)
     }
 
