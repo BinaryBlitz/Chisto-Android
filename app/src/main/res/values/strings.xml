@@ -201,6 +201,7 @@
     <string name="promo_error">Промокод не действителен или уже использован</string>
     <string name="minus_sign">-</string>
     <string name="zero_size">0 м²</string>
+    <string name="items_search">Поиск вещей</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

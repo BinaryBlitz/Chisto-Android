@@ -20,7 +20,7 @@ import java.util.*
 
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var categories: ArrayList<CategoryItem>? = null
+    private var categories: List<CategoryItem>? = null
     private var color: Int = Color.parseColor("#212121")
 
     val EXTRA_DECORATION = "decoration"
@@ -37,8 +37,12 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         this.color = color
     }
 
-    fun setCategories(categories: ArrayList<CategoryItem>) {
+    fun setCategories(categories: List<CategoryItem>) {
         this.categories = categories
+    }
+
+    fun getCategories(): List<CategoryItem>? {
+        return categories
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -55,7 +59,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.description.text = item.description
 
         Image.loadPhoto(context, item.icon, holder.icon)
-        holder.icon.setColorFilter(color)
+        holder.icon.setColorFilter(item.color)
 
         holder.itemView.setOnClickListener {
             showDialog(item)
@@ -82,9 +86,9 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         intent.putExtra(EXTRA_DECORATION, decor)
         intent.putExtra(EXTRA_ID, item.id)
         intent.putExtra(EXTRA_NAME, item.name)
-        intent.putExtra(EXTRA_COLOR, color)
+        intent.putExtra(EXTRA_COLOR, item.color)
         intent.putExtra(EXTRA_USE_AREA, item.userArea)
-        OrderList.add(Order(item, null, 1, color, decor, 0, null))
+        OrderList.add(Order(item, null, 1, item.color, decor, 0, null))
         context.startActivity(intent)
     }
 
