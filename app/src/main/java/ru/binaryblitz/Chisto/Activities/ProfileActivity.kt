@@ -24,6 +24,7 @@ import ru.binaryblitz.Chisto.Utils.AndroidUtilities
 class ProfileActivity : BaseActivity() {
     val EXTRA_PHONE = "phone"
     val EXTRA_SELECTED = "selected"
+    val EXTRA_URL = "url"
     val SELECTED_CONTACT_INFO_ACTIVITY = 2
     val SELECTED_ORDERS_ACTIVITY = 1
 
@@ -89,7 +90,7 @@ class ProfileActivity : BaseActivity() {
 
         findViewById(R.id.rules_btn).setOnClickListener {
             val intent = Intent(this@ProfileActivity, WebActivity::class.java)
-            intent.putExtra("url", AppConfig.terms)
+            intent.putExtra(EXTRA_URL, AppConfig.terms)
             startActivity(intent)
         }
     }
@@ -127,6 +128,7 @@ class ProfileActivity : BaseActivity() {
         OrdersActivity.laundryId = 0
         DeviceInfoStore.resetToken(this)
         DeviceInfoStore.resetUser(this)
+        DeviceInfoStore.resetShowDialogFlag(this)
         updateUser()
     }
 

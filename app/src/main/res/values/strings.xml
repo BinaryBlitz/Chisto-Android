@@ -198,6 +198,7 @@
     <string name="minus_sign">-</string>
     <string name="zero_size">0 m²</string>
     <string name="items_search">Search items</string>
+    <string name="dont_ask_again">Don't show again</string>
 
     <plurals name="review">
         <item quantity="zero">0 reviews</item>
