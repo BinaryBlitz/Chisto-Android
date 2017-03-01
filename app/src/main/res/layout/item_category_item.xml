@@ -42,14 +42,21 @@
                   android:layout_marginTop="4dp"/>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="26dp"
+    <FrameLayout
+        android:layout_width="56dp"
+        android:id="@+id/slowItemIndicator"
         android:layout_gravity="end|center_vertical"
-        android:layout_marginEnd="12dp"
-        android:src="@drawable/ic_slow_item"
-        android:layout_marginRight="12dp"
-        android:visibility="gone"
-        android:layout_height="26dp" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="12dp"
+            android:id="@+id/slowItemIndicatorAnchorImageView"
+            android:src="@drawable/ic_slow_item"
+            android:layout_marginRight="12dp"
+            android:visibility="visible"
+            android:layout_height="26dp" />
+    </FrameLayout>
 
     <View android:layout_width="match_parent"
           android:layout_gravity="bottom"

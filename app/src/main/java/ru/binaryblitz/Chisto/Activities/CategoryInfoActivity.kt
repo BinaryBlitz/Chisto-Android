@@ -101,7 +101,8 @@ class CategoryInfoActivity : BaseActivity() {
                             AndroidUtilities.getStringFieldFromJson(it.get("name")),
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
                             AndroidUtilities.getBooleanFieldFromJson(it.get("use_area")),
-                            color
+                            color,
+                            true
                     )
                 }
 

@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
+import it.sephiroth.android.library.tooltip.Tooltip
+import it.sephiroth.android.library.tooltip.Tooltip.ClosePolicy
 import ru.binaryblitz.Chisto.Activities.SelectServiceActivity
 import ru.binaryblitz.Chisto.Model.CategoryItem
 import ru.binaryblitz.Chisto.Model.Order
@@ -19,9 +21,10 @@ import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
 
+
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var categories: List<CategoryItem>? = null
+    private var categories: List<CategoryItem> = ArrayList()
     private var color: Int = Color.parseColor("#212121")
 
     val EXTRA_DECORATION = "decoration"
@@ -29,10 +32,6 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     val EXTRA_NAME = "name"
     val EXTRA_COLOR = "color"
     val EXTRA_USE_AREA = "userArea"
-
-    init {
-        categories = ArrayList<CategoryItem>()
-    }
 
     fun setColor(color: Int) {
         this.color = color
@@ -54,7 +53,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        val item = categories!![position]
+        val item = categories[position]
 
         holder.name.text = item.name
         holder.description.text = item.description
@@ -62,9 +61,34 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         Image.loadPhoto(context, item.icon, holder.icon)
         holder.icon.setColorFilter(item.color)
 
+        holder.slowItemIndicator.visibility = if (item.isSlowItem) View.VISIBLE else View.GONE
+
         holder.itemView.setOnClickListener {
             showDialog(item)
         }
+
+        holder.slowItemIndicator.setOnClickListener {
+            showToolTip(holder.itemView.findViewById(R.id.slowItemIndicatorAnchorImageView))
+        }
+    }
+
+    private fun showToolTip(anchorView: View) {
+        Tooltip.make(context,
+                Tooltip.Builder(101)
+                        .anchor(anchorView, Tooltip.Gravity.TOP)
+                        .closePolicy(ClosePolicy()
+                                .insidePolicy(true, false)
+                                .outsidePolicy(true, false), 3000)
+                        .activateDelay(500)
+                        .showDelay(100)
+                        .text(context.getString(R.string.slow_item_tooltip))
+                        .maxWidth(500)
+                        .withStyleId(R.style.ToolTipLayoutDefaultStyle)
+                        .withArrow(true)
+                        .withOverlay(true)
+                        .floatingAnimation(Tooltip.AnimationBuilder.DEFAULT)
+                        .build()
+        ).show()
     }
 
     private fun showDialog(item: CategoryItem) {
@@ -107,16 +131,13 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     }
 
     override fun getItemCount(): Int {
-        if (categories == null) {
-            return 0
-        } else {
-            return categories!!.size
-        }
+        return categories.size
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var name = itemView.findViewById(R.id.name) as TextView
         internal var description = itemView.findViewById(R.id.description) as TextView
         internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
+        internal var slowItemIndicator = itemView.findViewById(R.id.slowItemIndicator) as View
     }
 }
