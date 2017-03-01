@@ -104,7 +104,7 @@ class SelectCategoryActivity : BaseActivity() {
                             AndroidUtilities.getStringFieldFromJson(it.get("description")),
                             AndroidUtilities.getBooleanFieldFromJson(it.get("use_area")),
                             ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(it.get("category_id"))),
-                            false
+                            AndroidUtilities.getBooleanFieldFromJson(it.get("long_treatment"))
                     )
                 }
 

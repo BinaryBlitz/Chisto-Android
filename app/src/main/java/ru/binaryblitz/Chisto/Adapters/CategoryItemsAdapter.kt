@@ -61,14 +61,14 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         Image.loadPhoto(context, item.icon, holder.icon)
         holder.icon.setColorFilter(item.color)
 
-        holder.slowItemIndicator.visibility = if (item.isSlowItem) View.VISIBLE else View.GONE
+        holder.longTreatmentIndicator.visibility = if (item.isLongTreatment) View.VISIBLE else View.GONE
 
         holder.itemView.setOnClickListener {
             showDialog(item)
         }
 
-        holder.slowItemIndicator.setOnClickListener {
-            showToolTip(holder.itemView.findViewById(R.id.slowItemIndicatorAnchorImageView))
+        holder.longTreatmentIndicator.setOnClickListener {
+            showToolTip(holder.itemView.findViewById(R.id.longTreatmentIndicatorAnchorImageView))
         }
     }
 
@@ -138,6 +138,6 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         internal var name = itemView.findViewById(R.id.name) as TextView
         internal var description = itemView.findViewById(R.id.description) as TextView
         internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
-        internal var slowItemIndicator = itemView.findViewById(R.id.slowItemIndicator) as View
+        internal var longTreatmentIndicator = itemView.findViewById(R.id.longTreatmentIndicator)
     }
 }
