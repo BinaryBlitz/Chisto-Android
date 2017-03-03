@@ -3,7 +3,7 @@
 
     <string name="lost_connection">Lost internet connection.</string>
     <string name="nothing_selected">Nothing is chosen</string>
-    <string name="empty_field">Field can't be empty</string>
+    <string name="empty_field">Field can not be empty</string>
     <string name="wrong_data">Wrong data</string>
     <string name="no_comment">No review</string>
     <string name="payment_error">Payment error</string>
@@ -165,10 +165,9 @@
     <string name="width">Width, cm</string>
     <string name="length">Length, cm</string>
 
-
     <string name="decoration">Decoration</string>
 
-    <string name="splitter_code">" и еще "</string>
+    <string name="splitter_code">" and "</string>
     <string name="square_meter_symbol">" m²"</string>
 
     <string name="ruble_sign">" ₽"</string>
