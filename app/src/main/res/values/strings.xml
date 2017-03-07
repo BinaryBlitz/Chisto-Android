@@ -18,8 +18,8 @@
     <string name="wrong_review_code">Review can not be empty</string>
 
     <string name="start">Start</string>
-    <string name="simple">It is very simple:</string>
-    <string name="chisto">With Chisto you no longer need to\nspend time to go\nto laundries</string>
+    <string name="simple">It is simple:</string>
+    <string name="chisto">No need to waste time going to dry cleaners</string>
     <string name="board1">Add items for cleaning</string>
     <string name="board2">Choose a cleaning service from our list of offers by price and speed</string>
     <string name="board3">Pay with credit card in the app or in cash</string>
@@ -31,7 +31,7 @@
     <string name="city_not_found">"Didn't find your city?"</string>
 
     <string name="order">Order</string>
-    <string name="item_help">What is the item\nyou need help with?</string>
+    <string name="item_help">What items need to be cleaned?</string>
 
     <string name="continue_btn">Next</string>
     <string name="ready">Ready</string>
@@ -53,7 +53,7 @@
     <string name="count">Quantity</string>
 
     <string name="last_order">Last time you ordered in</string>
-    <string name="view_all">View all offers</string>
+    <string name="view_all">See all offers</string>
 
     <string name="contact_us">Contact</string>
     <string name="about">About</string>
@@ -86,7 +86,7 @@
 
     <string name="reg">Registration</string>
     <string name="sign_in">Registration</string>
-    <string name="send">Send</string>
+    <string name="send">Apply</string>
     <string name="code">Verification code</string>
     <string name="send_code_after">"Send again after "</string>
     <string name="send_again">Send again</string>
@@ -126,14 +126,14 @@
     <string name="address_select">Select address</string>
     <string name="success_order">Order successfully created</string>
 
-    <string name="wait">Please, wait. An operator will call you shortly</string>
-    <string name="your_order_help"> You can see the information about your order in the profile</string>
+    <string name="wait">Expect to be contacted by an operator</string>
+    <string name="your_order_help">Order information is available in your profile</string>
     <string name="notifications_help">Would you like to receive notifications about your order?</string>
 
     <string name="my_order_code">Order №</string>
     <string name="order_questions">Have any questions? Call us</string>
 
-    <string name="result_order">Total</string>
+    <string name="result_order">Total price</string>
 
     <string name="completed_code">Completed</string>
     <string name="processing_code">Processing</string>
@@ -189,7 +189,7 @@
     <string name="promo">Promo code</string>
     <string name="minimum_order_price">Minimum order price</string>
     <string name="registration_not_completed_error">Registration is not completed. Leave screen?</string>
-    <string name="final_price">Total</string>
+    <string name="final_price">Total price</string>
     <string name="support_phone_number"><u>+7 (495) 766-78-49</u></string>
     <string name="review_btn">Review</string>
     <string name="promo_hint">Promo code</string>
