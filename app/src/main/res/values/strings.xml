@@ -7,8 +7,8 @@
     <string name="wrong_data">Wrong data</string>
     <string name="no_comment">No review</string>
     <string name="payment_error">Payment error</string>
-    <string name="removal_error">You must leave at least one treatment.</string>
-    <string name="removal">You must leave at least one treatment.</string>
+    <string name="removal_error">You must leave at least one treatment</string>
+    <string name="removal">You must leave at least one treatment</string>
     <string name="wrong_phone">Wrong phone number</string>
     <string name="profile_wrong_fields">Not all fields are filled in correctly. Do you want to exit without saving the entered data?</string>
     <string name="server_error">Server error</string>
@@ -28,7 +28,7 @@
     <string name="city_select">Choose Your City</string>
     <string name="location_error">Unable to obtain the current location</string>
     <string name="city_error">Your city is not listed</string>
-    <string name="city_not_found">Do not see your city?</string>
+    <string name="city_not_found">"Didn't find your city?"</string>
 
     <string name="order">Order</string>
     <string name="item_help">What is the item\nyou need help with?</string>
@@ -44,28 +44,28 @@
     <string name="free">Free</string>
     <string name="ok_code">OK</string>
 
-    <string name="select_part">Select category</string>
+    <string name="select_part">Categories</string>
 
-    <string name="service_select">Select treatments</string>
-    <string name="what_need_to_do">What to do with the item?</string>
+    <string name="service_select">Services</string>
+    <string name="what_need_to_do">How your item should be cleaned?</string>
 
-    <string name="selected_tr">Selected treatments</string>
-    <string name="count">Items count</string>
+    <string name="selected_tr">Treatments</string>
+    <string name="count">Quantity</string>
 
     <string name="last_order">Last time you ordered in</string>
     <string name="view_all">View all offers</string>
 
-    <string name="contact_us">How to contact us?</string>
-    <string name="about">About the application</string>
-    <string name="about_social">Social networks</string>
-    <string name="rate">Send review</string>
-    <string name="about_bottom">Are you a laundry employee?</string>
-    <string name="write_bottom">Email to us for cooperation</string>
+    <string name="contact_us">Contact</string>
+    <string name="about">About</string>
+    <string name="about_social">Follow us</string>
+    <string name="rate">Rate us</string>
+    <string name="about_bottom">Want to partner with us?</string>
+    <string name="write_bottom">Leave us a message</string>
 
     <string name="profile">Profile</string>
     <string name="rules">Terms of Use</string>
     <string name="my_orders">My orders</string>
-    <string name="contact_data">Contact information</string>
+    <string name="contact_data">Edit profile</string>
     <string name="call_us">Call</string>
     <string name="email">Email</string>
 
@@ -75,7 +75,7 @@
     <string name="delete_from_order">Do you want to remove this item out of order?</string>
     <string name="decoration_question">Does your item have any decorations?</string>
 
-    <string name="laundries">Laundries</string>
+    <string name="laundries">Offers</string>
     <string name="title">Sort offers:</string>
     <string name="choose">Select</string>
     <string name="cost_filter">By price</string>
@@ -87,18 +87,18 @@
     <string name="reg">Registration</string>
     <string name="sign_in">Registration</string>
     <string name="send">Send</string>
-    <string name="code">Confirmation code</string>
+    <string name="code">Verification code</string>
     <string name="send_code_after">"Send again after "</string>
     <string name="send_again">Send again</string>
-    <string name="code_send">A 5-digit confirmation code will be sent to this phone number</string>
-    <string name="number_code">We have sent a confirmation code to</string>
+    <string name="code_send">We will send a 5-digit verification code</string>
+    <string name="number_code">A code has been sent to</string>
     <string name="code_sent">""</string>
-    <string name="type_phone">Type your phone number</string>
-    <string name="code_title">Type confirmation code</string>
+    <string name="type_phone">Enter your phone number</string>
+    <string name="code_title">Enter confirmation code</string>
 
-    <string name="delivery">Delivery</string>
+    <string name="delivery">Delivery Fee</string>
     <string name="your_order">Your order</string>
-    <string name="order_help">The next dates are specified. You will be able to agree on the exact time with the employee of a laundry</string>
+    <string name="order_help">Closest dates are displayed. Negotiate the exact delivery time with an operator</string>
 
     <string name="name">First name</string>
     <string name="lastname">Last name</string>
@@ -131,7 +131,7 @@
     <string name="notifications_help">Would you like to receive notifications about your order?</string>
 
     <string name="my_order_code">Order №</string>
-    <string name="order_questions">Have questions about the order? Call us</string>
+    <string name="order_questions">Have any questions? Call us</string>
 
     <string name="result_order">Total</string>
 
@@ -160,7 +160,7 @@
     <string name="decoration_help">Rhinestones, beads, sequins, lace or any other decorations that require special treatment</string>
     <string name="city_not_found_helper">Leave us your contact information and we will notify you when the service will be available in your city</string>
 
-    <string name="select_size">Specify the dimensions in centimeters</string>
+    <string name="select_size">Specify item size</string>
     <string name="square">Area</string>
     <string name="width">Width, cm</string>
     <string name="length">Length, cm</string>
@@ -173,7 +173,7 @@
     <string name="ruble_sign">" ₽"</string>
 
     <string name="review_help">We hope that you are satisfied. Please leave a review to help other users</string>
-    <string name="your_review">Your review</string>
+    <string name="your_review">Review</string>
     <string name="completed">" completed!"</string>
 
     <string name="status_changed">Order status has changed</string>
@@ -191,14 +191,14 @@
     <string name="registration_not_completed_error">Registration is not completed. Leave screen?</string>
     <string name="final_price">Total</string>
     <string name="support_phone_number"><u>+7 (495) 766-78-49</u></string>
-    <string name="review_btn">Feedback</string>
+    <string name="review_btn">Review</string>
     <string name="promo_hint">Promo code</string>
-    <string name="promo_help">It applies to all treatments</string>
+    <string name="promo_help">Valid for all treatments</string>
     <string name="promo_error">Promo code is invalid or has been already used</string>
     <string name="minus_sign">-</string>
     <string name="zero_size">0 m²</string>
-    <string name="items_search">Search items</string>
-    <string name="dont_ask_again">Do not show again</string>
+    <string name="items_search">Search</string>
+    <string name="dont_ask_again">"Don't show again"</string>
 
     <plurals name="review">
         <item quantity="zero">0 reviews</item>
