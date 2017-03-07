@@ -68,6 +68,25 @@ public class DeviceInfoStore {
         prefs.edit().putString(ServerConfig.INSTANCE.getCityEntity(), "null").apply();
     }
 
+    public static void saveShowDialogFlag(Context context, boolean isShow) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                ServerConfig.INSTANCE.getPrefsName(), Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(ServerConfig.INSTANCE.getShowDialogEntity(), isShow).apply();
+    }
+
+
+    public static boolean getShowDialogFlag(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                ServerConfig.INSTANCE.getPrefsName(), Context.MODE_PRIVATE);
+        return prefs.getBoolean(ServerConfig.INSTANCE.getShowDialogEntity(), true);
+    }
+
+    public static void resetShowDialogFlag(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                ServerConfig.INSTANCE.getPrefsName(), Context.MODE_PRIVATE);
+        prefs.edit().putBoolean(ServerConfig.INSTANCE.getShowDialogEntity(), true).apply();
+    }
+
     public static String getUser(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(
                 ServerConfig.INSTANCE.getPrefsName(), Context.MODE_PRIVATE);

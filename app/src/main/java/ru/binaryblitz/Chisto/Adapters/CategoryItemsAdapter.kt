@@ -14,6 +14,7 @@ import ru.binaryblitz.Chisto.Activities.SelectServiceActivity
 import ru.binaryblitz.Chisto.Model.CategoryItem
 import ru.binaryblitz.Chisto.Model.Order
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.Server.DeviceInfoStore
 import ru.binaryblitz.Chisto.Utils.Image
 import ru.binaryblitz.Chisto.Utils.OrderList
 import java.util.*
@@ -67,18 +68,31 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     }
 
     private fun showDialog(item: CategoryItem) {
+        if (!DeviceInfoStore.getShowDialogFlag(context)) {
+            openActivity(item, false)
+            return
+        }
+
         MaterialDialog.Builder(context)
                 .title(R.string.decoration_question)
                 .content(context.getString(R.string.decoration_help))
                 .positiveText(R.string.yes_code)
                 .negativeText(R.string.no_code)
+                .checkBoxPromptRes(R.string.dont_ask_again, false, null)
                 .onPositive { dialog, action ->
                     run { openActivity(item, true) }
                 }
                 .onNegative { dialog, action ->
                     run { openActivity(item, false) }
                 }
+                .onAny { dialog, action ->
+                    run { saveShowDialogFlag(!dialog.isPromptCheckBoxChecked) }
+                }
                 .show()
+    }
+
+    private fun saveShowDialogFlag(isShow: Boolean) {
+        DeviceInfoStore.saveShowDialogFlag(context, isShow)
     }
 
     private fun openActivity(item: CategoryItem, decor: Boolean) {
@@ -93,7 +107,11 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     }
 
     override fun getItemCount(): Int {
-        return categories!!.size
+        if (categories == null) {
+            return 0
+        } else {
+            return categories!!.size
+        }
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
