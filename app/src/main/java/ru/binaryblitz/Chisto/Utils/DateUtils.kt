@@ -21,6 +21,9 @@ object DateUtils {
     }
 
     fun parse(input: String): Date {
+        if (input.isEmpty()) {
+            return Date()
+        }
         return DateTime(input, DateTimeZone.getDefault()).toDate()
     }
 }
