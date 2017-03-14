@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Pair
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -45,6 +46,7 @@ class MyOrderActivity : BaseActivity() {
     private var freeDeliveryFrom: Int = 0
     private var isRated = false
     private var orderId = 0
+    private var ratingId = 0
 
     val CASH = "cash"
     val CARD = "card"
@@ -168,6 +170,13 @@ class MyOrderActivity : BaseActivity() {
         if (!isRated && isOpenedFromPush) {
             showReviewDialog()
         }
+
+        if (isRated) {
+            ratingId = obj.get("rating").asJsonObject.get("id").asInt
+            (findViewById(R.id.review_btn) as Button).text = getString(R.string.edit_review)
+        } else {
+            (findViewById(R.id.review_btn) as Button).text = getString(R.string.review_btn)
+        }
     }
 
     private fun hidePromoCodeInformation() {
@@ -190,6 +199,7 @@ class MyOrderActivity : BaseActivity() {
     private fun parseReviewResponse() {
         isRated = true
         Animations.animateRevealHide(findViewById(R.id.dialog))
+        (findViewById(R.id.review_btn) as Button).text = getString(R.string.edit_review)
     }
 
     private fun showReviewDialog() {
@@ -206,7 +216,7 @@ class MyOrderActivity : BaseActivity() {
                 .title(getString(R.string.error))
                 .content(getString(R.string.wrong_review_code))
                 .positiveText(R.string.ok_code)
-                .onPositive { dialog, which -> dialog.dismiss() }
+                .onPositive { dialog, _ -> dialog.dismiss() }
                 .show()
     }
 
@@ -241,10 +251,10 @@ class MyOrderActivity : BaseActivity() {
     private fun updateRating() {
         val dialog = ProgressDialog(this)
         dialog.show()
-        ServerApi.get(this).api().updateReview(OrdersActivity.laundryId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
+        ServerApi.get(this).api().updateReview(ratingId, generateJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>) {
                 dialog.dismiss()
-                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
+                Animations.animateRevealHide(findViewById(R.id.dialog))
                 if (response.isSuccessful) {
                     parseReviewResponse()
                 } else {
@@ -254,8 +264,7 @@ class MyOrderActivity : BaseActivity() {
 
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 dialog.dismiss()
-                ru.binaryblitz.Chisto.Utils.Animations.animateRevealHide(findViewById(R.id.dialog))
-                onInternetConnectionError()
+                Animations.animateRevealHide(findViewById(R.id.dialog))
             }
         })
     }
