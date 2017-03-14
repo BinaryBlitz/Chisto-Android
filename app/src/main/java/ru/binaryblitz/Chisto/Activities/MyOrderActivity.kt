@@ -290,7 +290,7 @@ class MyOrderActivity : BaseActivity() {
                 getTreatments(obj.get("order_treatments").asJsonArray),
                 AndroidUtilities.getIntFieldFromJson(obj.get("quantity")),
                 ColorsList.findColor(AndroidUtilities.getIntFieldFromJson(categoryJson.get("category_id"))),
-                AndroidUtilities.getBooleanFieldFromJson(obj.get("has_decoration")), 0, null)
+                AndroidUtilities.getBooleanFieldFromJson(obj.get("has_decoration")), 0, null, false)
 
         calculatePrices(obj, order)
 
