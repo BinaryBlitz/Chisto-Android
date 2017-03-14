@@ -33,6 +33,10 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         return ViewHolder(itemView)
     }
 
+    fun isLongTreatmentsExist(): Boolean {
+        return collection.any { it.longTreatments }
+    }
+
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
@@ -51,7 +55,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         }
 
         holder.description.text = description
-        holder.count.text = "\u00D7" + order.count + " шт"
+        holder.count.text = "\u00D7" + order.count + context.getString(R.string.count_postfix)
 
         Image.loadPhoto(context, order.category.icon, holder.icon)
         holder.icon.setColorFilter(order.color)

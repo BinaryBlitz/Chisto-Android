@@ -38,8 +38,6 @@ class LaundriesActivity : BaseActivity() {
     private var adapter: LaundriesAdapter? = null
     private var layout: SwipeRefreshLayout? = null
 
-    val longTreatment = false
-
     private var selectedIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -453,6 +451,7 @@ class LaundriesActivity : BaseActivity() {
         private var array: JsonArray? = null
         private var laundry: Laundry? = null
         private var laundryObject: JsonObject? = null
+        var longTreatment = false
         private val EXTRA_ID = "id"
         private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
         private val EXTRA_DELIVERY_FEE = "deliveryFee"
