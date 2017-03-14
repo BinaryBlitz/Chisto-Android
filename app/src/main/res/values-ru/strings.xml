@@ -204,6 +204,7 @@
     <string name="zero_size">0 м²</string>
     <string name="items_search">Поиск вещей</string>
     <string name="slow_item_tooltip">Эта вещь чистится долго</string>
+    <string name="count_postfix">" шт"</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>
