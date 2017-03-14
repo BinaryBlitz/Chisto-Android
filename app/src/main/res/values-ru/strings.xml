@@ -206,7 +206,7 @@
     <string name="slow_item_tooltip">Эта вещь чистится долго</string>
     <string name="count_postfix">" шт"</string>
     <string name="dont_ask_again">"Больше не показывать"</string>
-    <string name="change_review">Изменить отзыв</string>
+    <string name="edit_review">Изменить отзыв</string>
 
     <plurals name="review">
         <item quantity="zero">0 отзывов</item>

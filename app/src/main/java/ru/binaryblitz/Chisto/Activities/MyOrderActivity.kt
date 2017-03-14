@@ -173,7 +173,7 @@ class MyOrderActivity : BaseActivity() {
 
         if (isRated) {
             ratingId = obj.get("rating").asJsonObject.get("id").asInt
-            (findViewById(R.id.review_btn) as Button).text = getString(R.string.change_review)
+            (findViewById(R.id.review_btn) as Button).text = getString(R.string.edit_review)
         } else {
             (findViewById(R.id.review_btn) as Button).text = getString(R.string.review_btn)
         }
@@ -199,7 +199,7 @@ class MyOrderActivity : BaseActivity() {
     private fun parseReviewResponse() {
         isRated = true
         Animations.animateRevealHide(findViewById(R.id.dialog))
-        (findViewById(R.id.review_btn) as Button).text = getString(R.string.change_review)
+        (findViewById(R.id.review_btn) as Button).text = getString(R.string.edit_review)
     }
 
     private fun showReviewDialog() {
