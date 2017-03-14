@@ -33,8 +33,8 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         return ViewHolder(itemView)
     }
 
-    fun isLongTreatmentsExist(): Boolean {
-        return collection.any { it.longTreatments }
+    fun hasItemsWithLongTreatment(): Boolean {
+        return collection.any { it.hasItemsWithLongTreatment }
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {

@@ -230,7 +230,7 @@ class OrdersActivity : BaseActivity() {
     private fun setContinueButtonEnabled() {
         continueBtn!!.setText(R.string.continue_btn)
         continueBtn!!.setOnClickListener {
-            LaundriesActivity.longTreatment = adapter!!.isLongTreatmentsExist()
+            LaundriesActivity.longTreatment = adapter!!.hasItemsWithLongTreatment()
             val intent = Intent(this@OrdersActivity, LaundriesActivity::class.java)
             startActivity(intent)
         }
