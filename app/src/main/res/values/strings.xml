@@ -203,18 +203,12 @@
     <plurals name="review">
         <item quantity="zero">0 reviews</item>
         <item quantity="one">%1$d review</item>
-        <item quantity="two">%1$d reviews</item>
-        <item quantity="few">%1$d reviews</item>
-        <item quantity="many">%1$d reviews</item>
         <item quantity="other">%1$d reviews</item>
     </plurals>
 
     <plurals name="items">
         <item quantity="zero">0 items</item>
         <item quantity="one">%1$d item</item>
-        <item quantity="two">%1$d items</item>
-        <item quantity="few">%1$d items</item>
-        <item quantity="many">%1$d items</item>
         <item quantity="other">%1$d items</item>
     </plurals>
     <string name="add">Add</string>
