@@ -103,13 +103,13 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
                 .positiveText(R.string.yes_code)
                 .negativeText(R.string.no_code)
                 .checkBoxPromptRes(R.string.dont_ask_again, false, null)
-                .onPositive { dialog, action ->
+                .onPositive { _, _ ->
                     run { openActivity(item, true) }
                 }
-                .onNegative { dialog, action ->
+                .onNegative { _, _ ->
                     run { openActivity(item, false) }
                 }
-                .onAny { dialog, action ->
+                .onAny { dialog, _ ->
                     run { saveShowDialogFlag(!dialog.isPromptCheckBoxChecked) }
                 }
                 .show()
@@ -126,7 +126,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         intent.putExtra(EXTRA_NAME, item.name)
         intent.putExtra(EXTRA_COLOR, item.color)
         intent.putExtra(EXTRA_USE_AREA, item.userArea)
-        OrderList.add(Order(item, null, 1, item.color, decor, 0, null))
+        OrderList.add(Order(item, null, 1, item.color, decor, 0, null, item.isLongTreatment))
         context.startActivity(intent)
     }
 
