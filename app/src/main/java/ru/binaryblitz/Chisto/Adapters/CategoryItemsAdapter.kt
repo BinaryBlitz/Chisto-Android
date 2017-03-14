@@ -33,6 +33,8 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     val EXTRA_COLOR = "color"
     val EXTRA_USE_AREA = "userArea"
 
+    private var tooltip: Tooltip.TooltipView? = null
+
     fun setColor(color: Int) {
         this.color = color
     }
@@ -73,8 +75,12 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
     }
 
     private fun showToolTip(anchorView: View) {
-        Tooltip.make(context,
-                Tooltip.Builder(101)
+        if (tooltip != null && tooltip!!.isShown) {
+            return
+        }
+
+        tooltip = Tooltip.make(context,
+                    Tooltip.Builder(101)
                         .anchor(anchorView, Tooltip.Gravity.TOP)
                         .closePolicy(ClosePolicy()
                                 .insidePolicy(true, false)
@@ -86,9 +92,9 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
                         .withStyleId(R.style.ToolTipLayoutDefaultStyle)
                         .withArrow(true)
                         .withOverlay(true)
-                        .floatingAnimation(Tooltip.AnimationBuilder.DEFAULT)
-                        .build()
-        ).show()
+                        .build())
+
+        tooltip?.show()
     }
 
     private fun showDialog(item: CategoryItem) {
