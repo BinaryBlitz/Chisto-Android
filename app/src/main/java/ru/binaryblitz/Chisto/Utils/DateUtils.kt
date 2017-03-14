@@ -21,6 +21,10 @@ object DateUtils {
     }
 
     fun parse(input: String): Date {
-        return DateTime(input, DateTimeZone.getDefault()).toDate()
+        try {
+            return DateTime(input, DateTimeZone.getDefault()).toDate()
+        } catch (e: Exception) {
+            return Date()
+        }
     }
 }
