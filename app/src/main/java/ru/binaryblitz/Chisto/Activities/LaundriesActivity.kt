@@ -226,16 +226,17 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseLaundry(index: Int, obj: JsonObject): Laundry {
+        LogUtil.logError(obj.toString())
         return Laundry(
                 AndroidUtilities.getIntFieldFromJson(obj.get("id")),
                 ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
                 AndroidUtilities.getStringFieldFromJson(obj.get("name")),
                 AndroidUtilities.getStringFieldFromJson(obj.get("description")),
                 AndroidUtilities.getDoubleFieldFromJson(obj.get("rating")).toFloat(),
-                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_date"))),
-                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_date"))),
-                parseDate(obj, "delivery_date_opens_at", "HH:mm"),
-                parseDate(obj, "delivery_date_closes_at", "HH:mm"),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_to"))),
                 totalPrice,
                 index,
                 getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
@@ -243,8 +244,8 @@ class LaundriesActivity : BaseActivity() {
                 AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from")),
                 true,
                 0,
-                parseDate(obj, "collection_date_opens_at", "HH:mm"),
-                parseDate(obj, "collection_date_closes_at", "HH:mm")
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_to")))
         )
     }
 
