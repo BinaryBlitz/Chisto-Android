@@ -20,7 +20,7 @@ public interface ApiEndpoints {
     Call<JsonArray> getCategories();
 
     @GET("cities/{id}/laundries")
-    Call<JsonArray> getLaundries(@Path("id") int id, @Path("long_treatment") Boolean... longTreatment);
+    Call<JsonArray> getLaundries(@Path("id") int id, @Query("long_treatment") Boolean... longTreatment);
 
     @GET("categories/{id}/items")
     Call<JsonArray> getItems(@Path("id") int id);

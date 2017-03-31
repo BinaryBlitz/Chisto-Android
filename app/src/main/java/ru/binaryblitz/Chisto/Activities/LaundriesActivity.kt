@@ -231,7 +231,6 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun parseLaundry(index: Int, obj: JsonObject): Laundry {
-        LogUtil.logError(obj.toString())
         return Laundry(
                 AndroidUtilities.getIntFieldFromJson(obj.get("id")),
                 ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(obj.get("logo_url")),
