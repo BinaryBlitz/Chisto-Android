@@ -2,7 +2,7 @@ package ru.binaryblitz.Chisto.Utils;
 
 public class AppConfig {
     public static final String LogTag = "Chisto";
-    public static final String phone = "+74957667849";
+    public static final String phone = "+74950054328";
 
     public static final String baseEmail = "info@chis.to";
     public static final String partnerEmail = "partner@chis.to";

@@ -63,19 +63,19 @@
 
 
     <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:theme="@style/PromoButtonStyle"
-            android:text="@string/send"
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:layout_marginRight="-12dp"
-            android:layout_marginLeft="-12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="-8dp"
-            android:id="@+id/promo_btn"
-            android:textColor="#ffffff"
-            android:textSize="14sp"
-            android:layout_gravity="bottom"
-            android:backgroundTint="@color/canceledColor"
-            android:gravity="center"/>
+        android:id="@+id/promo_btn"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="-8dp"
+        android:layout_marginLeft="-12dp"
+        android:layout_marginRight="-12dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/canceledColor"
+        android:gravity="center"
+        android:text="@string/send"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        android:theme="@style/PromoButtonStyle" />
 </LinearLayout>

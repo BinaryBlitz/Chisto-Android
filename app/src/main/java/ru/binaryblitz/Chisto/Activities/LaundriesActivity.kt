@@ -119,7 +119,7 @@ class LaundriesActivity : BaseActivity() {
         MaterialDialog.Builder(this)
                 .title(R.string.title)
                 .items(items)
-                .itemsCallbackSingleChoice(selectedIndex) { dialog, view, which, text ->
+                .itemsCallbackSingleChoice(selectedIndex) { _, _, which, _ ->
                     selectedIndex = which
                     sort(which)
                     true
@@ -129,7 +129,6 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun sort(which: Int) {
-        LogUtil.logError(which)
         when (which) {
             0 -> adapter!!.sortByRating()
             1 -> adapter!!.sortByCost()
@@ -140,7 +139,10 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun load() {
-        ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id).enqueue(object : Callback<JsonArray> {
+        val request = if (longTreatment) ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id, true)
+            else ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id)
+
+        request.enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 layout!!.isRefreshing = false
                 if (response.isSuccessful) {
@@ -159,13 +161,14 @@ class LaundriesActivity : BaseActivity() {
 
     fun setLaundryTreatmentsIds(index: Int) {
         val laundryTreatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
-        if (laundryTreatments.size() == 0) return
+        if (laundryTreatments.size() == 0) {
+            return
+        }
 
-        for ((category, treatments) in OrderList.get()!!) {
-            for (treatment in treatments!!) {
-                if (treatment.id == AppConfig.decorationId) continue
-                treatment.laundryTreatmentId = findId(treatment.id, laundryTreatments)
-            }
+        for ((_, treatments) in OrderList.get()!!) {
+            treatments!!
+                    .filter { it.id != AppConfig.decorationId }
+                    .forEach { it.laundryTreatmentId = findId(it.id, laundryTreatments) }
         }
     }
 
@@ -195,7 +198,9 @@ class LaundriesActivity : BaseActivity() {
 
     private fun processOrderForLaundry(i: Int, obj: JsonObject, collection: ArrayList<Laundry>) {
         val laundry = parseLaundry(i, obj)
-        if (!checkTreatments(obj)) return
+        if (!checkTreatments(obj)) {
+            return
+        }
         OrderList.resetDecorationPrices()
         OrderList.setLaundry(laundry)
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
@@ -232,10 +237,10 @@ class LaundriesActivity : BaseActivity() {
                 AndroidUtilities.getStringFieldFromJson(obj.get("name")),
                 AndroidUtilities.getStringFieldFromJson(obj.get("description")),
                 AndroidUtilities.getDoubleFieldFromJson(obj.get("rating")).toFloat(),
-                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_date"))),
-                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_date"))),
-                parseDate(obj, "delivery_date_opens_at", "HH:mm"),
-                parseDate(obj, "delivery_date_closes_at", "HH:mm"),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("delivery_to"))),
                 totalPrice,
                 index,
                 getDecorationMultipliers(obj.get("laundry_items").asJsonArray),
@@ -243,8 +248,8 @@ class LaundriesActivity : BaseActivity() {
                 AndroidUtilities.getIntFieldFromJson(obj.get("free_delivery_from")),
                 true,
                 0,
-                parseDate(obj, "collection_date_opens_at", "HH:mm"),
-                parseDate(obj, "collection_date_closes_at", "HH:mm")
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_from"))),
+                DateUtils.parse(AndroidUtilities.getStringFieldFromJson(obj.get("collection_to")))
         )
     }
 
@@ -262,9 +267,13 @@ class LaundriesActivity : BaseActivity() {
         }
 
     private fun checkTreatments(obj: JsonObject): Boolean {
-        if (obj.get("laundry_treatments") == null || obj.get("laundry_treatments").isJsonNull) return false
+        if (obj.get("laundry_treatments") == null || obj.get("laundry_treatments").isJsonNull) {
+            return false
+        }
         val treatments = obj.get("laundry_treatments").asJsonArray
-        if (treatments.size() == 0) return false
+        if (treatments.size() == 0) {
+            return false
+        }
 
         val laundryTreatments = fillLaundryTreatments(treatments)
         val orderTreatments = OrderList.getAllTreatments()
@@ -286,8 +295,13 @@ class LaundriesActivity : BaseActivity() {
 
     private fun checkTreatmentAvailability(treatment: Treatment, laundryTreatments: ArrayList<Int>): Boolean {
         for (j in laundryTreatments.indices) {
-            if (treatment.id == laundryTreatments[j]) return true
-            if (j == laundryTreatments.size - 1) return false
+            if (treatment.id == laundryTreatments[j]) {
+                return true
+            }
+
+            if (j == laundryTreatments.size - 1) {
+                return false
+            }
         }
 
         return true
@@ -295,7 +309,9 @@ class LaundriesActivity : BaseActivity() {
 
     fun countSums(index: Int) {
         val treatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
-        if (treatments.size() == 0) return
+        if (treatments.size() == 0) {
+            return
+        }
 
         val laundryTreatments = fillPrices(treatments)
         val orderTreatments = OrderList.getAllTreatments()
@@ -304,7 +320,9 @@ class LaundriesActivity : BaseActivity() {
     }
 
     fun countSums(treatments: JsonArray) {
-        if (treatments.size() == 0) return
+        if (treatments.size() == 0) {
+            return
+        }
 
         val laundryTreatments = fillPrices(treatments)
         val orderTreatments = OrderList.getAllTreatments()
@@ -346,7 +364,9 @@ class LaundriesActivity : BaseActivity() {
                 break
             }
 
-            if (i == array!!.size() - 1) dialog.dismiss()
+            if (i == array!!.size() - 1) {
+                dialog.dismiss()
+            }
         }
     }
 
@@ -430,6 +450,7 @@ class LaundriesActivity : BaseActivity() {
         private var array: JsonArray? = null
         private var laundry: Laundry? = null
         private var laundryObject: JsonObject? = null
+        var longTreatment = false
         private val EXTRA_ID = "id"
         private val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
         private val EXTRA_DELIVERY_FEE = "deliveryFee"
