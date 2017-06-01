@@ -38,16 +38,15 @@ captures/
 
 # Intellij
 *.iml
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/libraries
+/.idea/
 
 # Keystore files
 *.jks
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
+/app/google-services.json
 /SmoothCheckBox/build.gradle
 /SmoothCheckBox/proguard-rules.pro
 /SmoothCheckBox/
-/.idea/
+
