@@ -89,7 +89,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_marginTop="112dp"
-              android:name="ru.binaryblitz.Chisto.Custom.MyMapFragment$MySupportMapFragment"/>
+              android:name="ru.binaryblitz.Chisto.views.MyMapFragment$MySupportMapFragment"/>
     <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:theme="@style/BrandButtonStyle"
