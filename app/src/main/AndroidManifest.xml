@@ -13,7 +13,7 @@
                  android:label="@string/app_name"
                  android:icon="@mipmap/ic_launcher"
                  android:supportsRtl="true"
-                 android:name=".Base.BaseApplication"
+                 android:name=".BaseApplication"
                  android:theme="@style/AppTheme">
 
         <meta-data
@@ -29,7 +29,7 @@
                 android:resource="@color/colorAccent" />
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SplashActivity"
+                android:name=".ui.start.SplashActivity"
                 android:label="@string/app_name"
                 android:screenOrientation="portrait"
                 android:theme="@style/AppTheme">
@@ -40,7 +40,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.MapActivity"
+                android:name=".ui.map.MapActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -51,7 +51,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.StartActivity"
+                android:name=".ui.start.StartActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -62,7 +62,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.WebActivity"
+                android:name=".ui.order.WebActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -74,7 +74,7 @@
 
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.OrdersActivity"
+                android:name=".ui.order.OrdersActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -85,7 +85,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.MyOrderActivity"
+                android:name=".ui.order.MyOrderActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -96,7 +96,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.PersonalInfoActivity"
+                android:name=".ui.profile.PersonalInfoActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -107,7 +107,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ReviewsActivity"
+                android:name=".ui.order.ReviewsActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -118,7 +118,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.LaundriesActivity"
+                android:name=".ui.laundries.LaundriesActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -129,7 +129,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.RegistrationActivity"
+                android:name=".ui.profile.RegistrationActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:windowSoftInputMode="stateAlwaysVisible"
                 android:screenOrientation="portrait" >
@@ -140,7 +140,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ContactInfoActivity"
+                android:name=".ui.profile.ContactInfoActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -151,7 +151,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.LaundryAndOrderActivity"
+                android:name=".ui.laundries.LaundryAndOrderActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -162,7 +162,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.MyOrdersActivity"
+                android:name=".ui.order.MyOrdersActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -173,7 +173,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ProfileActivity"
+                android:name=".ui.profile.ProfileActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -184,7 +184,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.AboutActivity"
+                android:name=".ui.about.AboutActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -195,7 +195,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ItemInfoActivity"
+                android:name=".ui.order.ItemInfoActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -206,7 +206,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SelectServiceActivity"
+                android:name=".ui.order.SelectServiceActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -217,7 +217,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SelectCategoryActivity"
+                android:name=".ui.categories.SelectCategoryActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -228,7 +228,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.CategoryInfoActivity"
+                android:name=".ui.categories.CategoryInfoActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -239,7 +239,7 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SelectCityActivity"
+                android:name=".ui.start.SelectCityActivity"
                 android:configChanges="orientation|keyboardHidden|screenSize"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan" >
@@ -250,14 +250,14 @@
         </activity>
 
         <service
-                android:name=".Push.MyGcmListenerService" android:exported="false" android:priority="500">
+                android:name=".push.MyGcmListenerService" android:exported="false" android:priority="500">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
         <service
-                android:name=".Push.MyInstanceIDListenerService" android:exported="false">
+                android:name=".push.MyInstanceIDListenerService" android:exported="false">
             <intent-filter android:priority="1000">
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
