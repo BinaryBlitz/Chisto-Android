@@ -368,7 +368,7 @@
                       android:background="#ffffff"
                       android:layout_height="12dp" />
 
-                <ru.binaryblitz.Chisto.Custom.RecyclerListView
+                <ru.binaryblitz.Chisto.views.RecyclerListView
                         android:layout_width="match_parent"
                         android:id="@+id/recyclerView"
                         android:background="#f5f5f5"
