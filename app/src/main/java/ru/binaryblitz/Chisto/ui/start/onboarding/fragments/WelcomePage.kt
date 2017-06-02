@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingFragment
-import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingLayout
+import ru.binaryblitz.Chisto.utils.OnBoardingLayout
 
 
 
@@ -45,5 +45,4 @@ class WelcomePage : OnBoardingFragment() {
         }
     }
 }
-
 

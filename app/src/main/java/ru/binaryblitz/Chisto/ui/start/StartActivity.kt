@@ -14,20 +14,41 @@ import com.rd.animation.type.AnimationType
 import io.fabric.sdk.android.Fabric
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.ui.BaseActivity
-import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingLayout
+import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingFragment
+import ru.binaryblitz.Chisto.utils.OnBoardingLayout
 import ru.binaryblitz.Chisto.ui.start.onboarding.fragments.DefaultOnboardingPage
 import ru.binaryblitz.Chisto.ui.start.onboarding.fragments.WelcomePage
 
 class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnClickListener {
     lateinit var pageIndicatorView: PageIndicatorView
-    lateinit var nextBtn: Button
-    lateinit var skipBtn: ImageView
+    lateinit var nextButton: Button
+    lateinit var skipButton: ImageView
+    val PAGES_COUNT = 4;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_onboarding)
 
+        val viewPager = initOnBoardingPages()
+        initViewElements(viewPager)
+    }
+
+    private fun initViewElements(viewPager: ViewPager) {
+        nextButton = findViewById(R.id.nextBtn) as Button
+        skipButton = findViewById(R.id.skip_onboarding) as ImageView
+        pageIndicatorView = findViewById(R.id.pageIndicatorView) as PageIndicatorView
+        pageIndicatorView.setViewPager(viewPager)
+        pageIndicatorView.radius = 4
+        pageIndicatorView.setAnimationType(AnimationType.SLIDE)
+        pageIndicatorView.selectedColor = resources.getColor(R.color.colorPrimary)
+        pageIndicatorView.unselectedColor = resources.getColor(R.color.textColor)
+
+        nextButton.setOnClickListener(this)
+        skipButton.setOnClickListener(this)
+    }
+
+    private fun initOnBoardingPages(): ViewPager {
         val pages = arrayOf(
                 WelcomePage.newInstance(),
 
@@ -44,6 +65,10 @@ class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnCli
                         OnBoardingLayout.DEFAULT_SPEED))
 
 
+        return initViewPager(pages)
+    }
+
+    private fun initViewPager(pages: Array<OnBoardingFragment>): ViewPager {
         val viewPager = findViewById(R.id.view_pager) as ViewPager
         viewPager.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
             override fun getItem(position: Int): Fragment? {
@@ -57,27 +82,14 @@ class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnCli
             }
 
             override fun getCount(): Int {
-                return 4
+                return PAGES_COUNT
             }
         }
-
         for (page in pages) {
             viewPager.addOnPageChangeListener(page)
         }
         viewPager.addOnPageChangeListener(this)
-
-        nextBtn = findViewById(R.id.nextBtn) as Button
-        skipBtn = findViewById(R.id.skip_onboarding) as ImageView
-        pageIndicatorView = findViewById(R.id.pageIndicatorView) as PageIndicatorView
-        pageIndicatorView.setViewPager(viewPager)
-        pageIndicatorView.radius = 4
-        pageIndicatorView.setAnimationType(AnimationType.SLIDE)
-        pageIndicatorView.selectedColor = resources.getColor(R.color.colorPrimary)
-        pageIndicatorView.unselectedColor = resources.getColor(R.color.textColor)
-
-        nextBtn.setOnClickListener(this)
-        skipBtn.setOnClickListener(this)
-
+        return viewPager
     }
 
     private fun openSelectCityScreen() {
@@ -89,16 +101,14 @@ class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnCli
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
 
     override fun onPageSelected(position: Int) {
-        if (position == 3) {
+        if (position == PAGES_COUNT - 1) {
             pageIndicatorView.visibility = View.GONE
-            nextBtn.visibility = View.VISIBLE
+            nextButton.visibility = View.VISIBLE
             return
         }
         pageIndicatorView.visibility = View.VISIBLE
-        nextBtn.visibility = View.GONE
-
+        nextButton.visibility = View.GONE
     }
-
 
     override fun onPageScrollStateChanged(state: Int) {}
 
@@ -107,4 +117,3 @@ class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnCli
             openSelectCityScreen()
     }
 }
-

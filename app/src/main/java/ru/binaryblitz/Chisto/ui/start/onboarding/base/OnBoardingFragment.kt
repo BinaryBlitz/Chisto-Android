@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.utils.OnBoardingLayout
 
 
 abstract class OnBoardingFragment : Fragment(), ViewPager.OnPageChangeListener {
@@ -30,7 +31,6 @@ abstract class OnBoardingFragment : Fragment(), ViewPager.OnPageChangeListener {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.base_onboarding_screen, container, false)
-
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -53,15 +53,12 @@ abstract class OnBoardingFragment : Fragment(), ViewPager.OnPageChangeListener {
 
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        val layout = onBoarding
-        if (layout != null) {
-            val pagePosition = pagePosition
-            if (position >= pagePosition) {
-                layout.selectAnim(1.0f - positionOffset, OnBoardingLayout.Direction.Right)
-            } else if (position < pagePosition) {
-                layout.selectAnim(positionOffset, OnBoardingLayout.Direction.Left)
-            }
+        val layout = onBoarding ?: return
+        val pagePosition = pagePosition
+        if (position >= pagePosition) {
+            layout.selectAnim(1.0f - positionOffset, OnBoardingLayout.Direction.Right)
+        } else if (position < pagePosition) {
+            layout.selectAnim(positionOffset, OnBoardingLayout.Direction.Left)
         }
     }
-
 }

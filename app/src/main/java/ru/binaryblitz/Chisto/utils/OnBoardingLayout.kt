@@ -1,4 +1,4 @@
-package ru.binaryblitz.Chisto.ui.start.onboarding.base
+package ru.binaryblitz.Chisto.utils
 
 import android.content.Context
 import android.graphics.PointF
@@ -32,13 +32,13 @@ class OnBoardingLayout : RelativeLayout {
     fun selectAnim(offset: Float, direction: Direction) {
         for (i in childSpeeds!!.indices) {
             when (animationType) {
-                OnBoardingLayout.AnimationType.Linear -> animationLinear(i, offset, direction)
+                AnimationType.Linear -> animationLinear(i, offset, direction)
 
-                OnBoardingLayout.AnimationType.Zoom -> animationZoom(i, offset, direction)
+                AnimationType.Zoom -> animationZoom(i, offset, direction)
 
-                OnBoardingLayout.AnimationType.Curve -> animationCurve(i, offset, direction)
+                AnimationType.Curve -> animationCurve(i, offset, direction)
 
-                OnBoardingLayout.AnimationType.InOut -> animationInOut(i, offset, direction)
+                AnimationType.InOut -> animationInOut(i, offset, direction)
             }
 
             if (isEnableAlphaAnimation) {
@@ -51,7 +51,6 @@ class OnBoardingLayout : RelativeLayout {
         val view = getChildAt(index)
         val tag = view.tag.toString()
         view.alpha = offset
-
     }
 
     private fun animationCurve(index: Int, offset: Float, direction: Direction) {
@@ -61,11 +60,11 @@ class OnBoardingLayout : RelativeLayout {
         var dx = 0.0f
         var dy = (1.0f - offset) * 10
         when (direction) {
-            OnBoardingLayout.Direction.Left -> {
+            Direction.Left -> {
                 dx = (1.0f - offset) * 10
                 dy = (1.0f - offset) * 10
             }
-            OnBoardingLayout.Direction.Right -> {
+            Direction.Right -> {
                 dx = (offset - 1.0f) * 10
                 dy = (offset - 1.0f) * 10
             }
@@ -86,8 +85,8 @@ class OnBoardingLayout : RelativeLayout {
         var dx = 0.0f
         val dy = (1.0f - offset) * 100
         when (direction) {
-            OnBoardingLayout.Direction.Left -> dx = (1.0f - offset) * 100
-            OnBoardingLayout.Direction.Right -> dx = (offset - 1.0f) * 100
+            Direction.Left -> dx = (1.0f - offset) * 100
+            Direction.Right -> dx = (offset - 1.0f) * 100
         }
         translation(index, dx * childSpeeds!![index]!!.x, dy * childSpeeds!![index]!!.y)
     }
@@ -99,8 +98,8 @@ class OnBoardingLayout : RelativeLayout {
         var dx = 0.0f
         val dy = 1.0f - offset
         when (direction) {
-            OnBoardingLayout.Direction.Left -> dx = 1.0f - offset
-            OnBoardingLayout.Direction.Right -> dx = offset - 1.0f
+            Direction.Left -> dx = 1.0f - offset
+            Direction.Right -> dx = offset - 1.0f
         }
         translation(index, dx * childSpeeds!![index]!!.x * 100f, dy * childSpeeds!![index]!!.y * 100f)
     }
@@ -109,14 +108,12 @@ class OnBoardingLayout : RelativeLayout {
         val view = getChildAt(index)
         view.scaleX = scaleX
         view.scaleY = scaleY
-
     }
 
     fun translation(index: Int, translationX: Float, translationY: Float) {
         val view = getChildAt(index)
         view.translationX = translationX
         view.translationY = translationY
-
     }
 
     enum class Direction {
@@ -140,5 +137,4 @@ class OnBoardingLayout : RelativeLayout {
     companion object {
         var DEFAULT_SPEED = PointF(0.0f, 2.0f)
     }
-
 }
