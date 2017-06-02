@@ -31,15 +31,15 @@ class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnCli
         val pages = arrayOf(
                 WelcomePage.newInstance(),
 
-                DefaultOnboardingPage(1, "Добавьте вещи в корзину,\nвоспользуйтесь поиском\nпо названию вещи.",
+                DefaultOnboardingPage(1, getString(R.string.page_one_text),
                         R.drawable.scene_one, OnBoardingLayout.AnimationType.InOut,
                         OnBoardingLayout.DEFAULT_SPEED),
 
-                DefaultOnboardingPage(2, "Выберите подходящую химчистку\nпо цене и рейтингу.",
+                DefaultOnboardingPage(2, getString(R.string.page_two_text),
                         R.drawable.scene_two, OnBoardingLayout.AnimationType.InOut,
                         OnBoardingLayout.DEFAULT_SPEED),
 
-                DefaultOnboardingPage(3, "Оплатите заказ картой,\nс помощью Android Pay или наличными\nкурьеру химчистки.",
+                DefaultOnboardingPage(3, getString(R.string.page_three_text),
                         R.drawable.scene_three, OnBoardingLayout.AnimationType.InOut,
                         OnBoardingLayout.DEFAULT_SPEED))
 

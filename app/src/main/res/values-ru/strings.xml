@@ -225,4 +225,8 @@
         <item quantity="many">%1$d вещей</item>
         <item quantity="other">%1$d вещей</item>
     </plurals>
+    <string name="page_one_text">Добавьте вещи в корзину, воспользуйтесь поиском по названию вещи.</string>
+    <string name="page_three_text">Оплатите заказ картой, с помощью Android Pay или наличными курьеру химчистки.</string>
+    <string name="page_two_text">Выберите подходящую химчистку по цене и рейтингу.</string>
+    <string name="page_welcome_text">Больше не нужно тратить время на походы в химчистку.    Курьер заберёт вещи и вернёт их чистыми.</string>
 </resources>
