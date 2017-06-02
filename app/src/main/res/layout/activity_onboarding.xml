@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:attrs="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:attrs="http://schemas.android.com/apk/res-auto"
+    android:animateLayoutChanges="true"
     tools:context=".ui.start.StartActivity">
 
     <android.support.v4.view.ViewPager
@@ -12,13 +13,38 @@
         android:layout_height="match_parent" />
 
     <com.rd.PageIndicatorView
-        android:alpha="0.5"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="48dp"
         android:id="@+id/pageIndicatorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        attrs:piv_viewPager="@id/view_pager"/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="48dp"
+        android:alpha="0.5"
+        attrs:piv_viewPager="@id/view_pager" />
+
+    <Button
+        android:visibility="gone"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/BrandButtonStyle"
+        android:text="Начать"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/nextBtn"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:layout_gravity="bottom"
+        android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/skip_onboarding"
+        android:src="@drawable/ic_close24"
+        android:layout_margin="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
 </RelativeLayout>
