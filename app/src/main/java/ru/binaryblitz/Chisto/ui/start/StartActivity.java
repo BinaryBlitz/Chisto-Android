@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.ImageView;
 
 import com.crashlytics.android.Crashlytics;
+import com.rd.PageIndicatorView;
+import com.rd.animation.type.AnimationType;
 
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.R;
@@ -20,11 +20,6 @@ import ru.binaryblitz.Chisto.ui.start.onboarding.WelcomePageFragment;
 import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingFragment;
 
 public class StartActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
-    private int currentPosition;
-    private ImageView leftButton;
-    private ImageView rightButton;
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,22 +61,13 @@ public class StartActivity extends BaseActivity implements ViewPager.OnPageChang
         viewPager.addOnPageChangeListener(thirdPageFragment);
         viewPager.addOnPageChangeListener(this);
 
-        currentPosition = FirstPageFragment.PAGE_POSITION;
-        leftButton = (ImageView) findViewById(R.id.left);
-        leftButton.setVisibility(View.GONE);
-        rightButton = (ImageView) findViewById(R.id.right);
-        leftButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(currentPosition - 1, true);
-            }
-        });
-        rightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewPager.setCurrentItem(currentPosition + 1, true);
-            }
-        });
+        PageIndicatorView pageIndicatorView = (PageIndicatorView) findViewById(R.id.pageIndicatorView);
+        pageIndicatorView.setViewPager(viewPager);
+        pageIndicatorView.setRadius(4);
+        pageIndicatorView.setAnimationType(AnimationType.SLIDE);
+        pageIndicatorView.setSelectedColor(getResources().getColor(R.color.colorPrimary));
+        pageIndicatorView.setUnselectedColor(getResources().getColor(R.color.textColor));
+
     }
 
     @Override
@@ -90,21 +76,9 @@ public class StartActivity extends BaseActivity implements ViewPager.OnPageChang
 
     @Override
     public void onPageSelected(int position) {
-        currentPosition = position;
-        switch (currentPosition) {
-            case FirstPageFragment.PAGE_POSITION:
-                leftButton.setVisibility(View.GONE);
-                rightButton.setVisibility(View.VISIBLE);
-                break;
-            default:
-                leftButton.setVisibility(View.VISIBLE);
-                rightButton.setVisibility(View.VISIBLE);
-                break;
-        }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
-
     }
 }
