@@ -1,6 +1,8 @@
 package ru.binaryblitz.Chisto.ui.categories
 
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -8,6 +10,7 @@ import android.support.v4.util.Pair
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.Spannable
 import android.text.SpannableString
@@ -18,30 +21,44 @@ import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.mikepenz.materialdrawer.AccountHeader
+import com.mikepenz.materialdrawer.AccountHeaderBuilder
+import com.mikepenz.materialdrawer.DrawerBuilder
+import com.mikepenz.materialdrawer.model.DividerDrawerItem
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import io.fabric.sdk.android.Fabric
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.binaryblitz.Chisto.ui.categories.adapters.CategoriesAdapter
-import ru.binaryblitz.Chisto.ui.categories.adapters.CategoryItemsAdapter
-import ru.binaryblitz.Chisto.ui.BaseActivity
-import ru.binaryblitz.Chisto.views.RecyclerListView
+import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
-import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.network.ServerConfig
+import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.about.AboutActivity
+import ru.binaryblitz.Chisto.ui.categories.adapters.CategoriesAdapter
+import ru.binaryblitz.Chisto.ui.categories.adapters.CategoryItemsAdapter
+import ru.binaryblitz.Chisto.ui.order.OrdersActivity
+import ru.binaryblitz.Chisto.ui.order.WebActivity
+import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
+import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.*
 
 class SelectCategoryActivity : BaseActivity() {
+    val EXTRA_URL = "url"
+
     private var adapter: CategoriesAdapter? = null
     private var allItemsAdapter: CategoryItemsAdapter? = null
-    private var layout: SwipeRefreshLayout? = null
-    private var searchView: MaterialSearchView? = null
-    private var listView: RecyclerListView? = null
     private var allItemsList: ArrayList<CategoryItem>? = null
+
+    private lateinit var layout: SwipeRefreshLayout
+    private lateinit var searchView: MaterialSearchView
+    private lateinit var listView: RecyclerListView
+    private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +66,13 @@ class SelectCategoryActivity : BaseActivity() {
         setContentView(R.layout.activity_select_category)
 
         initToolbar()
+        initDrawer(toolbar, this)
         setOnCLickListeners()
         initList()
         initSearchView()
 
         Handler().post {
-            layout!!.isRefreshing = true
+            layout.isRefreshing = true
             load()
         }
     }
@@ -111,7 +129,7 @@ class SelectCategoryActivity : BaseActivity() {
         sortAllItems(allItemsList!!)
 
         allItemsAdapter = CategoryItemsAdapter(this)
-        listView?.adapter = allItemsAdapter
+        listView.adapter = allItemsAdapter
 
         allItemsAdapter!!.setCategories(allItemsList!!)
         allItemsAdapter!!.notifyDataSetChanged()
@@ -122,21 +140,20 @@ class SelectCategoryActivity : BaseActivity() {
     }
 
     private fun setOnCLickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
     }
 
     private fun initToolbar() {
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        toolbar = findViewById(R.id.toolbar) as Toolbar
+        toolbar.title = getString(R.string.select_part)
         setSupportActionBar(toolbar)
-        title = null
     }
 
     override fun onBackPressed() {
         if (searchView == null) {
             return
         }
-        if (searchView!!.isSearchOpen) {
-            searchView?.closeSearch()
+        if (searchView.isSearchOpen) {
+            searchView.closeSearch()
         } else {
             finishActivity()
         }
@@ -148,7 +165,7 @@ class SelectCategoryActivity : BaseActivity() {
 
     private fun initSearchView() {
         searchView = findViewById(R.id.search_view) as MaterialSearchView
-        searchView?.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
+        searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 return false
             }
@@ -165,41 +182,41 @@ class SelectCategoryActivity : BaseActivity() {
             }
         })
 
-        searchView?.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
+        searchView.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewShown() {
                 getAllItems()
             }
 
             override fun onSearchViewClosed() {
-                listView?.adapter = adapter
+                listView.adapter = adapter
             }
         })
 
-        searchView?.setVoiceSearch(false)
+        searchView.setVoiceSearch(false)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
         val item = menu.findItem(R.id.action_search)
-        searchView?.setMenuItem(item)
+        searchView.setMenuItem(item)
 
         return true
     }
 
     private fun initList() {
         listView = findViewById(R.id.recyclerView) as RecyclerListView
-        listView?.layoutManager = LinearLayoutManager(this)
-        listView?.itemAnimator = DefaultItemAnimator()
-        listView?.setHasFixedSize(true)
+        listView.layoutManager = LinearLayoutManager(this)
+        listView.itemAnimator = DefaultItemAnimator() as RecyclerView.ItemAnimator?
+        listView.setHasFixedSize(true)
 
         layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout?.setOnRefreshListener(null)
-        layout?.isEnabled = false
-        layout?.setColorSchemeResources(R.color.colorAccent)
+        layout.setOnRefreshListener(null)
+        layout.isEnabled = false
+        layout.setColorSchemeResources(R.color.colorAccent)
 
         adapter = CategoriesAdapter(this)
-        listView?.adapter = adapter
+        listView.adapter = adapter
     }
 
     private fun load() {
@@ -303,4 +320,64 @@ class SelectCategoryActivity : BaseActivity() {
             }
         }
     }
+
+    fun initDrawer(toolbar: android.support.v7.widget.Toolbar, activity: Activity) {
+        val itemMain =  PrimaryDrawerItem().withName(getString(R.string.select_part)).withIcon(R.drawable.ic_app_mini_logo)
+        val itemContactData = PrimaryDrawerItem().withName(getString(R.string.contact_data)).withIcon(R.drawable.ic_user_blue)
+        val itemOrders = PrimaryDrawerItem().withName(getString(R.string.my_orders)).withIcon(R.drawable.ic_my_orders)
+        val itemAbout = PrimaryDrawerItem().withName(getString(R.string.about)).withIcon(R.drawable.ic_app_mini_logo)
+        val itemRules = PrimaryDrawerItem().withName(getString(R.string.rules)).withIcon(R.drawable.ic_help)
+
+        val headerResult: AccountHeader = AccountHeaderBuilder()
+                .withActivity(this)
+                //TODO Add image with Chisto logo in primary color background
+                .withHeaderBackground(R.color.primary)
+                .build()
+
+        val result = DrawerBuilder()
+                .withActivity(activity)
+                .withToolbar(toolbar)
+                .withDisplayBelowStatusBar(false)
+                .withTranslucentStatusBar(false)
+                .withAccountHeader(headerResult)
+                .withSelectedItem(-1)
+                .addDrawerItems(
+                        itemMain,
+                        itemContactData,
+                        itemOrders,
+                        DividerDrawerItem(),
+                        itemAbout,
+                        itemRules
+                )
+                .withOnDrawerItemClickListener { view, position, drawerItem ->
+                    when (drawerItem) {
+                        itemMain -> {
+                            openActivity(SelectCategoryActivity::class.java)
+                        }
+                        itemContactData -> {
+                            openActivity(ContactInfoActivity::class.java)
+                        }
+                        itemOrders -> {
+                            openActivity(OrdersActivity::class.java)
+                        }
+                        itemAbout -> {
+                            openActivity(AboutActivity::class.java)
+                        }
+                        itemRules -> {
+                            val intent = Intent(this@SelectCategoryActivity, WebActivity::class.java)
+                            intent.putExtra(EXTRA_URL, AppConfig.terms)
+                            startActivity(intent)
+                        }
+                    }
+                    false
+                }
+                .build()
+
+    }
+
+    private fun openActivity(activity: Class<out Activity>) {
+        val intent = Intent(this@SelectCategoryActivity, activity)
+        startActivity(intent)
+    }
+
 }
