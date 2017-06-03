@@ -322,13 +322,13 @@ class SelectCategoryActivity : BaseActivity() {
     }
 
     fun initDrawer(toolbar: android.support.v7.widget.Toolbar, activity: Activity) {
-        val itemMain =  PrimaryDrawerItem().withName(getString(R.string.select_part)).withIcon(R.drawable.ic_app_mini_logo)
+        val itemMain = PrimaryDrawerItem().withName(getString(R.string.select_part)).withIcon(R.drawable.ic_app_mini_logo)
         val itemContactData = PrimaryDrawerItem().withName(getString(R.string.contact_data)).withIcon(R.drawable.ic_user_blue)
         val itemOrders = PrimaryDrawerItem().withName(getString(R.string.my_orders)).withIcon(R.drawable.ic_my_orders)
         val itemAbout = PrimaryDrawerItem().withName(getString(R.string.about)).withIcon(R.drawable.ic_app_mini_logo)
         val itemRules = PrimaryDrawerItem().withName(getString(R.string.rules)).withIcon(R.drawable.ic_help)
 
-        val headerResult: AccountHeader = AccountHeaderBuilder()
+        val accountHeader: AccountHeader = AccountHeaderBuilder()
                 .withActivity(this)
                 //TODO Add image with Chisto logo in primary color background
                 .withHeaderBackground(R.color.primary)
@@ -339,7 +339,7 @@ class SelectCategoryActivity : BaseActivity() {
                 .withToolbar(toolbar)
                 .withDisplayBelowStatusBar(false)
                 .withTranslucentStatusBar(false)
-                .withAccountHeader(headerResult)
+                .withAccountHeader(accountHeader)
                 .withSelectedItem(-1)
                 .addDrawerItems(
                         itemMain,
@@ -351,18 +351,10 @@ class SelectCategoryActivity : BaseActivity() {
                 )
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
                     when (drawerItem) {
-                        itemMain -> {
-                            openActivity(SelectCategoryActivity::class.java)
-                        }
-                        itemContactData -> {
-                            openActivity(ContactInfoActivity::class.java)
-                        }
-                        itemOrders -> {
-                            openActivity(OrdersActivity::class.java)
-                        }
-                        itemAbout -> {
-                            openActivity(AboutActivity::class.java)
-                        }
+                        itemMain -> openActivity(SelectCategoryActivity::class.java)
+                        itemContactData -> openActivity(ContactInfoActivity::class.java)
+                        itemOrders -> openActivity(OrdersActivity::class.java)
+                        itemAbout -> openActivity(AboutActivity::class.java)
                         itemRules -> {
                             val intent = Intent(this@SelectCategoryActivity, WebActivity::class.java)
                             intent.putExtra(EXTRA_URL, AppConfig.terms)
