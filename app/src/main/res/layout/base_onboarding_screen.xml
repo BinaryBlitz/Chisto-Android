@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ru.binaryblitz.Chisto.utils.OnBoardingLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ru.binaryblitz.Chisto.utils.AnimatedChildViewsLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/onBoardingView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,4 +28,4 @@
         android:scaleType="centerCrop"
         />
 
-</ru.binaryblitz.Chisto.utils.OnBoardingLayout>
+</ru.binaryblitz.Chisto.utils.AnimatedChildViewsLayout>

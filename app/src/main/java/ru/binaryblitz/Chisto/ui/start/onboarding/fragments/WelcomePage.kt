@@ -1,18 +1,17 @@
 package ru.binaryblitz.Chisto.ui.start.onboarding.fragments
 
-import android.graphics.PointF
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingFragment
-import ru.binaryblitz.Chisto.utils.OnBoardingLayout
+import ru.binaryblitz.Chisto.utils.AnimatedChildViewsLayout
 
 
 
 class WelcomePage : OnBoardingFragment() {
-    private var onBoardLayout: OnBoardingLayout? = null
+    private var animatedOnBoardViewsLayout: AnimatedChildViewsLayout? = null
         private set
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -20,11 +19,9 @@ class WelcomePage : OnBoardingFragment() {
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        onBoardLayout = view!!.findViewById(R.id.onBoardingView) as OnBoardingLayout
-        onBoardLayout!!.speed = PointF(1.0f, 0.0f)
-        onBoardLayout!!.speedVariance = PointF(1.2f, 0.0f)
-        onBoardLayout!!.isEnableAlphaAnimation = true
-        onBoardLayout!!.setup()
+        animatedOnBoardViewsLayout = view!!.findViewById(R.id.onBoardingView) as AnimatedChildViewsLayout
+        animatedOnBoardViewsLayout!!.isEnableAlphaAnimation = true
+        animatedOnBoardViewsLayout!!.setup()
     }
 
     override var pagePosition: Int

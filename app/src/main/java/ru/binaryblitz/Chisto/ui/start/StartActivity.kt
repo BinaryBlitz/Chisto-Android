@@ -15,15 +15,15 @@ import io.fabric.sdk.android.Fabric
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.ui.BaseActivity
 import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingFragment
-import ru.binaryblitz.Chisto.utils.OnBoardingLayout
 import ru.binaryblitz.Chisto.ui.start.onboarding.fragments.DefaultOnboardingPage
 import ru.binaryblitz.Chisto.ui.start.onboarding.fragments.WelcomePage
+import ru.binaryblitz.Chisto.utils.AnimatedChildViewsLayout
 
 class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnClickListener {
     lateinit var pageIndicatorView: PageIndicatorView
     lateinit var nextButton: Button
     lateinit var skipButton: ImageView
-    val PAGES_COUNT = 4;
+    val PAGES_COUNT = 4
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,20 +51,12 @@ class StartActivity : BaseActivity(), ViewPager.OnPageChangeListener, View.OnCli
     private fun initOnBoardingPages(): ViewPager {
         val pages = arrayOf(
                 WelcomePage.newInstance(),
-
                 DefaultOnboardingPage(1, getString(R.string.page_one_text),
-                        R.drawable.scene_one, OnBoardingLayout.AnimationType.InOut,
-                        OnBoardingLayout.DEFAULT_SPEED),
-
+                        R.drawable.scene_one, AnimatedChildViewsLayout.AnimationType.InOut),
                 DefaultOnboardingPage(2, getString(R.string.page_two_text),
-                        R.drawable.scene_two, OnBoardingLayout.AnimationType.InOut,
-                        OnBoardingLayout.DEFAULT_SPEED),
-
+                        R.drawable.scene_two, AnimatedChildViewsLayout.AnimationType.InOut),
                 DefaultOnboardingPage(3, getString(R.string.page_three_text),
-                        R.drawable.scene_three, OnBoardingLayout.AnimationType.InOut,
-                        OnBoardingLayout.DEFAULT_SPEED))
-
-
+                        R.drawable.scene_three, AnimatedChildViewsLayout.AnimationType.InOut))
         return initViewPager(pages)
     }
 

@@ -1,6 +1,5 @@
 package ru.binaryblitz.Chisto.ui.start.onboarding.base
 
-import android.graphics.PointF
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
@@ -10,19 +9,18 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import ru.binaryblitz.Chisto.R
-import ru.binaryblitz.Chisto.utils.OnBoardingLayout
+import ru.binaryblitz.Chisto.utils.AnimatedChildViewsLayout
 
 
 abstract class OnBoardingFragment : Fragment(), ViewPager.OnPageChangeListener {
     open var pagePosition: Int = 0
 
-    var onBoarding: OnBoardingLayout? = null
+    var pageContainer: AnimatedChildViewsLayout? = null
     var pageImageView: ImageView? = null
     var pageTextView: TextView? = null
     var pageText: String? = null
     var pageImage: Int? = null
-    var animType: OnBoardingLayout.AnimationType? = null
-    var animSpeed: PointF? = null
+    var animType: AnimatedChildViewsLayout.AnimationType? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,14 +34,13 @@ abstract class OnBoardingFragment : Fragment(), ViewPager.OnPageChangeListener {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        onBoarding = view!!.findViewById(R.id.onBoardingView) as OnBoardingLayout
+        pageContainer = view!!.findViewById(R.id.onBoardingView) as AnimatedChildViewsLayout
         pageImageView = view.findViewById(R.id.img) as ImageView
         pageTextView = view.findViewById(R.id.title) as TextView
         pageTextView!!.text = pageText
         pageImageView!!.setImageResource(pageImage!!)
-        onBoarding!!.animationType = animType!!
-        onBoarding!!.speedVariance = animSpeed!!
-        onBoarding!!.setup()
+        pageContainer!!.animationType = animType!!
+        pageContainer!!.setup()
 
     }
 
@@ -53,12 +50,12 @@ abstract class OnBoardingFragment : Fragment(), ViewPager.OnPageChangeListener {
 
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        val layout = onBoarding ?: return
+        val layout = pageContainer ?: return
         val pagePosition = pagePosition
         if (position >= pagePosition) {
-            layout.selectAnim(1.0f - positionOffset, OnBoardingLayout.Direction.Right)
+            layout.selectAnimationType(1.0f - positionOffset, AnimatedChildViewsLayout.Direction.Right)
         } else if (position < pagePosition) {
-            layout.selectAnim(positionOffset, OnBoardingLayout.Direction.Left)
+            layout.selectAnimationType(positionOffset, AnimatedChildViewsLayout.Direction.Left)
         }
     }
 }
