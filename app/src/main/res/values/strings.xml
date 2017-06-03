@@ -217,4 +217,9 @@
     <string name="slow_item_tooltip">This item is cleaned for a long time</string>
     <string name="count_postfix">" "</string>
     <string name="edit_review">Edit Review</string>
+
+    <string name="page_welcome_text">Do not waste your time on dry cleaning \n \nThe courier will pick up things\nand return them clean.</string>
+    <string name="page_one_text">Add things to wash in the shopping cart,\nuse the search for the name\nof the thing</string>
+    <string name="page_two_text">Select the right dry cleaners\nfor the price and rating..</string>
+    <string name="page_three_text">Pay by card, using Android Pay\nor cash to the courier</string>
 </resources>

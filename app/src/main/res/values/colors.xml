@@ -14,4 +14,8 @@
     <color name="confirmedColor">#60dfea</color>
     <color name="dispatchedColor">#f9c232</color>
     <color name="cleaningColor">#4ac2f8</color>
+
+    <color name="textColor">#656C73</color>
+
+
 </resources>
