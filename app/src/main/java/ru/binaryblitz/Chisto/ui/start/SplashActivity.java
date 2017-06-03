@@ -8,10 +8,10 @@ import android.support.annotation.Nullable;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
-import ru.binaryblitz.Chisto.ui.BaseActivity;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.network.DeviceInfoStore;
-import ru.binaryblitz.Chisto.ui.order.OrdersActivity;
+import ru.binaryblitz.Chisto.ui.BaseActivity;
+import ru.binaryblitz.Chisto.ui.categories.SelectCategoryActivity;
 
 public class SplashActivity extends BaseActivity {
 
@@ -24,7 +24,7 @@ public class SplashActivity extends BaseActivity {
         if (DeviceInfoStore.getCityObject(this) == null) {
             openActivity(StartActivity.class);
         } else {
-            openActivity(OrdersActivity.class);
+            openActivity(SelectCategoryActivity.class);
         }
     }
 
