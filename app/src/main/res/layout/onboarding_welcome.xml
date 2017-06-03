@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ru.binaryblitz.Chisto.utils.AnimatedChildViewsLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/onBoardingView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/onboarding_clothes" />
+
+
+    <ImageView
+        android:layout_margin="32dp"
+        android:id="@+id/onboarding_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:src="@drawable/blue_logo"
+        android:layout_below="@+id/img"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/onboarding_logo"
+        android:layout_centerHorizontal="true"
+        android:tag="1"
+        android:text="Больше не нужно тратить время\nна походы в химчистку. \n \nКурьер заберёт вещи и\nвернёт их чистыми"
+        android:textAlignment="center"
+        android:textColor="@color/textColor"
+        android:textSize="14sp" />
+
+
+</ru.binaryblitz.Chisto.utils.AnimatedChildViewsLayout>
