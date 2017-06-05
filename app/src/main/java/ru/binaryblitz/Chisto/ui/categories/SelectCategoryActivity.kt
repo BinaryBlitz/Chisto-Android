@@ -5,12 +5,8 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.util.Pair
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.text.Spannable
 import android.text.SpannableString
@@ -45,19 +41,25 @@ import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
+import ru.binaryblitz.Chisto.utils.LogUtil
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.*
 
 class SelectCategoryActivity : BaseActivity() {
     val EXTRA_URL = "url"
+    val EXTRA_ID = "id"
+    private var color: Int = 0
+    private var id: Int = 0
 
-    private var adapter: CategoriesAdapter? = null
+    private lateinit var categoryAdapter: CategoriesAdapter
+    private lateinit var categoryInfoAdapter: CategoryItemsAdapter
     private var allItemsAdapter: CategoryItemsAdapter? = null
     private var allItemsList: ArrayList<CategoryItem>? = null
 
-    private lateinit var layout: SwipeRefreshLayout
     private lateinit var searchView: MaterialSearchView
-    private lateinit var listView: RecyclerListView
+    private lateinit var categoriesListView: RecyclerListView
+    private lateinit var categoryItemsListView: RecyclerListView
+
     private lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,14 +73,46 @@ class SelectCategoryActivity : BaseActivity() {
         initList()
         initSearchView()
 
-        Handler().post {
-            layout.isRefreshing = true
-            load()
-        }
+        load()
     }
 
-    private fun nameEqualsTo(item: CategoryItem, query: String): Boolean {
-        return item.name.toLowerCase().contains(query)
+    private fun getAllItems(forSearch: Boolean) {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().allItems.enqueue(object : Callback<JsonArray> {
+            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
+                dialog.dismiss()
+                if (response.isSuccessful) {
+                    parseAllItems(response.body(), forSearch)
+                }
+            }
+
+            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+                dialog.dismiss()
+            }
+        })
+    }
+
+    private fun getCategoriesInfo() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
+        ServerApi.get(this).api().getItems(id).enqueue(object : Callback<JsonArray> {
+            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
+                if (response.isSuccessful) {
+                    dialog.dismiss()
+                    parseItems(response.body())
+                } else {
+                    dialog.dismiss()
+                    onServerError(response)
+                }
+            }
+
+            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
+                onInternetConnectionError()
+            }
+        })
     }
 
     private fun searchForItems(query: String) {
@@ -91,25 +125,8 @@ class SelectCategoryActivity : BaseActivity() {
         allItemsAdapter?.notifyDataSetChanged()
     }
 
-    private fun getAllItems() {
-        val dialog = ProgressDialog(this)
-        dialog.show()
 
-        ServerApi.get(this).api().allItems.enqueue(object : Callback<JsonArray> {
-            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                dialog.dismiss()
-                if (response.isSuccessful) {
-                    parseAllItems(response.body())
-                }
-            }
-
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                dialog.dismiss()
-            }
-        })
-    }
-
-    private fun parseAllItems(array: JsonArray) {
+    private fun parseAllItems(array: JsonArray, forSearch: Boolean) {
         ColorsList.load(this)
 
         allItemsList = (0..array.size() - 1)
@@ -126,17 +143,27 @@ class SelectCategoryActivity : BaseActivity() {
                     )
                 }
 
+        if (forSearch) {
+            allItemsAdapter = CategoryItemsAdapter(this@SelectCategoryActivity)
+            categoriesListView.adapter = allItemsAdapter
+            allItemsAdapter!!.setCategories(allItemsList!!)
+            allItemsAdapter!!.notifyDataSetChanged()
+        } else {
+            categoryInfoAdapter.setCategories(allItemsList!!)
+            categoryInfoAdapter.notifyDataSetChanged()
+        }
+
         sortAllItems(allItemsList!!)
 
-        allItemsAdapter = CategoryItemsAdapter(this)
-        listView.adapter = allItemsAdapter
-
-        allItemsAdapter!!.setCategories(allItemsList!!)
-        allItemsAdapter!!.notifyDataSetChanged()
     }
 
     private fun sortAllItems(collection: ArrayList<CategoryItem>) {
         Collections.sort(collection) { categoryItem, t1 -> categoryItem.name.compareTo(t1.name) }
+    }
+
+
+    private fun nameEqualsTo(item: CategoryItem, query: String): Boolean {
+        return item.name.toLowerCase().contains(query)
     }
 
     private fun setOnCLickListeners() {
@@ -184,11 +211,11 @@ class SelectCategoryActivity : BaseActivity() {
 
         searchView.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewShown() {
-                getAllItems()
+                getAllItems(true)
             }
 
             override fun onSearchViewClosed() {
-                listView.adapter = adapter
+                categoriesListView.adapter = categoryAdapter
             }
         })
 
@@ -205,24 +232,37 @@ class SelectCategoryActivity : BaseActivity() {
     }
 
     private fun initList() {
-        listView = findViewById(R.id.recyclerView) as RecyclerListView
-        listView.layoutManager = LinearLayoutManager(this)
-        listView.itemAnimator = DefaultItemAnimator() as RecyclerView.ItemAnimator?
-        listView.setHasFixedSize(true)
+        categoriesListView = findViewById(R.id.recyclerView) as RecyclerListView
+        categoryItemsListView = findViewById(R.id.categoriesItems) as RecyclerListView
 
-        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout.setOnRefreshListener(null)
-        layout.isEnabled = false
-        layout.setColorSchemeResources(R.color.colorAccent)
+        categoriesListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        categoriesListView.setHasFixedSize(true)
 
-        adapter = CategoriesAdapter(this)
-        listView.adapter = adapter
+        categoryItemsListView.layoutManager = LinearLayoutManager(this)
+        categoriesListView.setHasFixedSize(true)
+
+        categoryAdapter = CategoriesAdapter(this)
+        categoryInfoAdapter = CategoryItemsAdapter(this)
+        categoryAdapter.onCategoryClickAction.subscribe { category ->
+            color = category.color
+            id = category.id
+            if (id == 0)
+                getAllItems(false)
+            else
+                getCategoriesInfo()
+
+        }
+        categoriesListView.adapter = categoryAdapter
+        categoryItemsListView.adapter = categoryInfoAdapter
     }
 
     private fun load() {
+        val dialog = ProgressDialog(this)
+        dialog.show()
+
         ServerApi.get(this).api().categories.enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                layout?.isRefreshing = false
+                dialog.dismiss()
                 if (response.isSuccessful) {
                     parseAnswer(response.body())
                 } else {
@@ -231,7 +271,7 @@ class SelectCategoryActivity : BaseActivity() {
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                layout?.isRefreshing = false
+                dialog.dismiss()
                 onInternetConnectionError()
             }
         })
@@ -249,12 +289,17 @@ class SelectCategoryActivity : BaseActivity() {
                         collection.add(parseCategory(it))
                     }
                 }
+        sortCategories(collection)
 
-        sort(collection)
+        collection.add(0, Category(0,
+                "https://chisto-staging.s3.amazonaws.com/uploads/category/icon/2/2b192e163d524db18d3b0d3abfdd3a2d.png",
+                getString(R.string.all_categories),
+                SpannableString("empty"), R.color.greyColor, false))
+
         save(collection)
 
-        adapter?.setCategories(collection)
-        adapter?.notifyDataSetChanged()
+        categoryAdapter.setCategories(collection)
+        categoryAdapter.notifyDataSetChanged()
     }
 
     private fun save(collection: ArrayList<Category>) {
@@ -309,7 +354,7 @@ class SelectCategoryActivity : BaseActivity() {
         return span
     }
 
-    private fun sort(collection: ArrayList<Category>) {
+    private fun sortCategories(collection: ArrayList<Category>) {
         Collections.sort(collection) { category, t ->
             if (category.featured && !t.featured) {
                 -1
@@ -370,6 +415,33 @@ class SelectCategoryActivity : BaseActivity() {
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@SelectCategoryActivity, activity)
         startActivity(intent)
+    }
+
+
+    private fun parseItems(array: JsonArray) {
+        LogUtil.logError(array.toString())
+        val collection = (0..array.size() - 1)
+                .map { array.get(it).asJsonObject }
+                .mapTo(ArrayList<CategoryItem>()) {
+                    CategoryItem(
+                            AndroidUtilities.getIntFieldFromJson(it.get("id")),
+                            ServerConfig.imageUrl + AndroidUtilities.getStringFieldFromJson(it.get("icon_url")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("name")),
+                            AndroidUtilities.getStringFieldFromJson(it.get("description")),
+                            AndroidUtilities.getBooleanFieldFromJson(it.get("use_area")),
+                            color,
+                            AndroidUtilities.getBooleanFieldFromJson(it.get("long_treatment"))
+                    )
+                }
+
+        sortCategoryItems(collection)
+
+        categoryInfoAdapter.setCategories(collection)
+        categoryInfoAdapter.notifyDataSetChanged()
+    }
+
+    private fun sortCategoryItems(collection: ArrayList<CategoryItem>) {
+        Collections.sort(collection) { categoryItem, t1 -> categoryItem.name.compareTo(t1.name) }
     }
 
 }

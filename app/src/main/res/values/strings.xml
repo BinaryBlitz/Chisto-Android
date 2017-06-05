@@ -2,6 +2,7 @@
     <string name="app_name">Chisto</string>
 
     <string name="lost_connection">Lost internet connection.</string>
+    <string name="loading">Loading</string>
     <string name="nothing_selected">Nothing is chosen</string>
     <string name="empty_field">Field can not be empty</string>
     <string name="wrong_data">Wrong data</string>
@@ -222,4 +223,5 @@
     <string name="page_one_text">Add things to wash in the shopping cart,\nuse the search for the name\nof the thing</string>
     <string name="page_two_text">Select the right dry cleaners\nfor the price and rating..</string>
     <string name="page_three_text">Pay by card, using Android Pay\nor cash to the courier</string>
+    <string name="all_categories">All items</string>
 </resources>
