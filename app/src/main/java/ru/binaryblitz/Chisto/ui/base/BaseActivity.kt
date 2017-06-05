@@ -1,4 +1,4 @@
-package ru.binaryblitz.Chisto.ui
+package ru.binaryblitz.Chisto.ui.base
 
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity

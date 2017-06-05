@@ -22,7 +22,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.MyOrder
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.categories.SelectCategoryActivity
 import ru.binaryblitz.Chisto.ui.laundries.LaundriesActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.OrdersAdapter

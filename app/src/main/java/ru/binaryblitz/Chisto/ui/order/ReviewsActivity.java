@@ -27,7 +27,7 @@ import ru.binaryblitz.Chisto.entities.Review;
 import ru.binaryblitz.Chisto.network.DeviceInfoStore;
 import ru.binaryblitz.Chisto.network.ServerApi;
 import ru.binaryblitz.Chisto.network.ServerConfig;
-import ru.binaryblitz.Chisto.ui.BaseActivity;
+import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.ui.order.adapters.ReviewsAdapter;
 import ru.binaryblitz.Chisto.utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.utils.DateUtils;

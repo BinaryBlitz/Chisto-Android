@@ -38,7 +38,7 @@ import io.fabric.sdk.android.Fabric;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ru.binaryblitz.Chisto.ui.BaseActivity;
+import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.ui.start.adapters.CitiesAdapter;
 import ru.binaryblitz.Chisto.views.RecyclerListView;
 import ru.binaryblitz.Chisto.entities.City;

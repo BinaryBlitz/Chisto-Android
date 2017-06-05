@@ -31,7 +31,7 @@ import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.network.ServerConfig
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.about.AboutActivity
 import ru.binaryblitz.Chisto.ui.categories.adapters.CategoriesAdapter
 import ru.binaryblitz.Chisto.ui.categories.adapters.CategoryItemsAdapter

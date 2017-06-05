@@ -24,7 +24,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.ui.order.adapters.OrderContentAdapter
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.R

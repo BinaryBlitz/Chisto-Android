@@ -25,7 +25,7 @@ import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.network.ServerConfig
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.laundries.adapters.LaundriesAdapter
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.utils.*

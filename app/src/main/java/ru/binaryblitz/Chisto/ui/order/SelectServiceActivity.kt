@@ -22,9 +22,8 @@ import retrofit2.Response
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.network.ServerApi
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter
-import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.utils.*
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.text.DecimalFormat

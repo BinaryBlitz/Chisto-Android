@@ -13,7 +13,7 @@ import com.rd.PageIndicatorView
 import com.rd.animation.type.AnimationType
 import io.fabric.sdk.android.Fabric
 import ru.binaryblitz.Chisto.R
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.start.onboarding.base.OnBoardingFragment
 import ru.binaryblitz.Chisto.ui.start.onboarding.fragments.DefaultOnboardingPage
 import ru.binaryblitz.Chisto.ui.start.onboarding.fragments.WelcomePage

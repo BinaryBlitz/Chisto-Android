@@ -24,7 +24,7 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.entities.MyOrder;
 import ru.binaryblitz.Chisto.network.DeviceInfoStore;
 import ru.binaryblitz.Chisto.network.ServerApi;
-import ru.binaryblitz.Chisto.ui.BaseActivity;
+import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.ui.order.adapters.MyOrdersAdapter;
 import ru.binaryblitz.Chisto.utils.LogUtil;
 import ru.binaryblitz.Chisto.views.RecyclerListView;
