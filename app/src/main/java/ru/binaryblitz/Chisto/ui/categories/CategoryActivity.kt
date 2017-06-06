@@ -1,6 +1,7 @@
 package ru.binaryblitz.Chisto.ui.categories
 
 import android.app.Activity
+import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
@@ -27,6 +28,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.R.string.save
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.network.ServerApi
@@ -44,8 +46,10 @@ import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.utils.LogUtil
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.*
+import javax.inject.Inject
 
-class SelectCategoryActivity : BaseActivity() {
+class CategoryActivity : BaseActivity(), CategoryView {
+    lateinit var categoryPresenter: CategoryPresenter
     val EXTRA_URL = "url"
     val EXTRA_ID = "id"
     private var color: Int = 0
@@ -61,6 +65,7 @@ class SelectCategoryActivity : BaseActivity() {
     private lateinit var categoryItemsListView: RecyclerListView
 
     private lateinit var toolbar: Toolbar
+    private lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +80,32 @@ class SelectCategoryActivity : BaseActivity() {
 
         load()
     }
+
+
+    override fun showProgress() {
+        dialog.show()
+    }
+
+    override fun hideProgress() {
+        dialog.dismiss()
+    }
+
+    override fun showError(appErrorMessage: String?) {
+        onInternetConnectionError()
+    }
+
+    override fun showCategories(categories: List<Category>) {
+
+    }
+
+    override fun showCategoryInfo(categoryItems: List<CategoryItem>) {
+    }
+
+    override fun setCategorySelected() {
+    }
+
+
+
 
     private fun getAllItems(forSearch: Boolean) {
         val dialog = ProgressDialog(this)
@@ -144,7 +175,7 @@ class SelectCategoryActivity : BaseActivity() {
                 }
 
         if (forSearch) {
-            allItemsAdapter = CategoryItemsAdapter(this@SelectCategoryActivity)
+            allItemsAdapter = CategoryItemsAdapter(this@CategoryActivity)
             categoriesListView.adapter = allItemsAdapter
             allItemsAdapter!!.setCategories(allItemsList!!)
             allItemsAdapter!!.notifyDataSetChanged()
@@ -260,7 +291,7 @@ class SelectCategoryActivity : BaseActivity() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        ServerApi.get(this).api().categories.enqueue(object : Callback<JsonArray> {
+        ServerApi.get(this).api().categories.enqueue(object : Callback<List<Category>> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 dialog.dismiss()
                 if (response.isSuccessful) {
@@ -289,12 +320,7 @@ class SelectCategoryActivity : BaseActivity() {
                         collection.add(parseCategory(it))
                     }
                 }
-        sortCategories(collection)
 
-        collection.add(0, Category(0,
-                "https://chisto-staging.s3.amazonaws.com/uploads/category/icon/2/2b192e163d524db18d3b0d3abfdd3a2d.png",
-                getString(R.string.all_categories),
-                SpannableString("empty"), R.color.greyColor, false))
 
         save(collection)
 
@@ -302,14 +328,6 @@ class SelectCategoryActivity : BaseActivity() {
         categoryAdapter.notifyDataSetChanged()
     }
 
-    private fun save(collection: ArrayList<Category>) {
-        for (i in collection.indices) {
-            val (id, icon, name, description, color) = collection[i]
-            ColorsList.add(Pair(id, color))
-        }
-
-        ColorsList.saveColors(this)
-    }
 
     private fun parseCategory(obj: JsonObject): Category {
         return Category(
@@ -354,17 +372,6 @@ class SelectCategoryActivity : BaseActivity() {
         return span
     }
 
-    private fun sortCategories(collection: ArrayList<Category>) {
-        Collections.sort(collection) { category, t ->
-            if (category.featured && !t.featured) {
-                -1
-            } else if (!category.featured && t.featured) {
-                1
-            } else {
-                category.name.compareTo(t.name)
-            }
-        }
-    }
 
     fun initDrawer(toolbar: android.support.v7.widget.Toolbar, activity: Activity) {
         val itemMain = PrimaryDrawerItem().withName(getString(R.string.select_part)).withIcon(R.drawable.ic_app_mini_logo)
@@ -396,12 +403,12 @@ class SelectCategoryActivity : BaseActivity() {
                 )
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
                     when (drawerItem) {
-                        itemMain -> openActivity(SelectCategoryActivity::class.java)
+                        itemMain -> openActivity(CategoryActivity::class.java)
                         itemContactData -> openActivity(ContactInfoActivity::class.java)
                         itemOrders -> openActivity(OrdersActivity::class.java)
                         itemAbout -> openActivity(AboutActivity::class.java)
                         itemRules -> {
-                            val intent = Intent(this@SelectCategoryActivity, WebActivity::class.java)
+                            val intent = Intent(this@CategoryActivity, WebActivity::class.java)
                             intent.putExtra(EXTRA_URL, AppConfig.terms)
                             startActivity(intent)
                         }
@@ -413,7 +420,7 @@ class SelectCategoryActivity : BaseActivity() {
     }
 
     private fun openActivity(activity: Class<out Activity>) {
-        val intent = Intent(this@SelectCategoryActivity, activity)
+        val intent = Intent(this@CategoryActivity, activity)
         startActivity(intent)
     }
 

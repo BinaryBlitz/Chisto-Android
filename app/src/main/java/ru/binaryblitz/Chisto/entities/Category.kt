@@ -1,5 +1,23 @@
 package ru.binaryblitz.Chisto.entities
 
-import android.text.Spannable
+import com.google.gson.annotations.SerializedName
 
-data class Category(val id: Int, val icon: String, val name: String, val description: Spannable, val color: Int, val featured: Boolean)
+
+data class Category(@SerializedName("id")
+                       var id: Int,
+                    @SerializedName("name")
+                       var name: String,
+                    @SerializedName("description")
+                       var description: String,
+                    @SerializedName("icon_url")
+                       var iconUrl: String,
+                    @SerializedName("color")
+                       var color: String,
+                    @SerializedName("featured")
+                       var featured: Boolean,
+                    @SerializedName("items_count")
+                       var itemsCount: Int,
+                    @SerializedName("items_preview")
+                       var itemsPreview: List<String>
+)
+

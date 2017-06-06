@@ -13,7 +13,7 @@ import android.widget.TextView
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.User
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
-import ru.binaryblitz.Chisto.ui.categories.SelectCategoryActivity
+import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
 import java.util.*
 
 class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -39,7 +39,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         }
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, SelectCategoryActivity::class.java)
+            val intent = Intent(context, CategoryActivity::class.java)
             DeviceInfoStore.saveCity(context, city)
             if (DeviceInfoStore.getToken(context) == "null") {
                 saveUser(city)

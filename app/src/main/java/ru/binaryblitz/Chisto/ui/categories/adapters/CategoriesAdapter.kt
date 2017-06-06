@@ -42,7 +42,7 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         holder.name.text = category.name
 
         Picasso.with(context)
-                .load(category.icon)
+                .load(category.iconUrl)
                 .fit()
                 .into(holder.icon)
 

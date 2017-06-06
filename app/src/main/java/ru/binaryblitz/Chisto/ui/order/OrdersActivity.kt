@@ -23,7 +23,7 @@ import ru.binaryblitz.Chisto.entities.MyOrder
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
-import ru.binaryblitz.Chisto.ui.categories.SelectCategoryActivity
+import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
 import ru.binaryblitz.Chisto.ui.laundries.LaundriesActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.OrdersAdapter
 import ru.binaryblitz.Chisto.ui.profile.ProfileActivity
@@ -182,11 +182,11 @@ class OrdersActivity : BaseActivity() {
         }
 
         findViewById(R.id.right_btn).setOnClickListener {
-            openActivity(SelectCategoryActivity::class.java)
+            openActivity(CategoryActivity::class.java)
         }
 
         findViewById(R.id.add_btn).setOnClickListener {
-            openActivity(SelectCategoryActivity::class.java)
+            openActivity(CategoryActivity::class.java)
         }
 
         findViewById(R.id.cont_btn).setOnClickListener {
