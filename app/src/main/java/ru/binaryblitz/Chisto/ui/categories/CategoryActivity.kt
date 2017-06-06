@@ -94,6 +94,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
     override fun showAllItems(categoryItems: List<CategoryItem>) {
         categoriesListView.visibility = View.GONE
         categoryItemsListView.adapter = allItemsAdapter
+        allItemsAdapter.setColor(color)
         allItemsAdapter.setCategories(categoryItems)
         allItemsAdapter.notifyDataSetChanged()
     }
@@ -182,7 +183,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.action_my_orders -> {
-                categoriesListView.visibility = View.GONE
                 openActivity(OrdersActivity::class.java)}
         }
         return super.onOptionsItemSelected(item)
@@ -199,6 +199,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
         categoryItemsListView.layoutManager = LinearLayoutManager(this)
         categoriesListView.setHasFixedSize(true)
 
+        allItemsAdapter = CategoryItemsAdapter(this)
         categoryAdapter = CategoriesAdapter(this)
         categoryInfoAdapter = CategoryItemsAdapter(this)
         categoryAdapter.onCategoryClickAction.subscribe { category ->
@@ -273,7 +274,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
             val (id, icon, name, description, color) = collection[i]
             ColorsList.add(Pair(id, Color.parseColor(color)))
         }
-
         ColorsList.saveColors(this)
     }
 

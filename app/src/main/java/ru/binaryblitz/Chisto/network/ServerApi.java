@@ -32,11 +32,10 @@ public class ServerApi {
     }
 
     public static ServerApi get(Context context) {
-        if (api == null) {
-            synchronized (ServerApi.class) {
-                if (api == null) api = new ServerApi(context);
-            }
+        synchronized (ServerApi.class) {
+            if (api == null) api = new ServerApi(context);
         }
+
         return api;
     }
 

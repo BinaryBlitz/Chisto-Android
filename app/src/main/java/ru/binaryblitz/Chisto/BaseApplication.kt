@@ -35,10 +35,11 @@ class BaseApplication : Application() {
         Locale.setDefault(locale)
         val config = Configuration()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             setSystemLocale(config, locale)
-        else
+        } else {
             setSystemLocaleLegacy(config, locale)
+        }
 
         context.applicationContext.resources.updateConfiguration(config,
                 context.resources.displayMetrics)

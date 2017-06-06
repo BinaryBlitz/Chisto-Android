@@ -59,7 +59,6 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
                 })
     }
 
-
     private fun sortCategories(collection: ArrayList<Category>) {
         Collections.sort(collection) { category, t ->
             if (category.featured && !t.featured) {
@@ -79,6 +78,5 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
     private fun sortAllItems(collection: ArrayList<CategoryItem>) {
         Collections.sort(collection) { categoryItem, t1 -> categoryItem.name.compareTo(t1.name) }
     }
-
 
 }
