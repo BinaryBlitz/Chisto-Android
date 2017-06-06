@@ -7,4 +7,5 @@ import ru.binaryblitz.Chisto.ui.base.BaseLCEView
 interface CategoryView : BaseLCEView {
     fun showCategories(categories: List<Category>)
     fun showCategoryInfo(categoryItems: List<CategoryItem>)
+    fun showAllItems(categoryItems: List<CategoryItem>)
 }

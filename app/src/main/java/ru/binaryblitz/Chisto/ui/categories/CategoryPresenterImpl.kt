@@ -52,7 +52,7 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
                 .subscribe({ categoriesItems ->
                     categoryView?.hideProgress()
                     ColorsList.load(context)
-                    categoryView?.showCategoryInfo(categoriesItems)
+                    categoryView?.showAllItems(categoriesItems)
                 }, { error ->
                     categoryView?.hideProgress()
                     categoryView?.showError(error.toString())

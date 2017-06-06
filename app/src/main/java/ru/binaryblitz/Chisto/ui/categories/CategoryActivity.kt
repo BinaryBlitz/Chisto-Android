@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.crashlytics.android.Crashlytics
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.mikepenz.materialdrawer.AccountHeader
@@ -44,7 +45,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private lateinit var categoryAdapter: CategoriesAdapter
     private lateinit var categoryInfoAdapter: CategoryItemsAdapter
     private lateinit var allItemsAdapter: CategoryItemsAdapter
-    private lateinit var allItemsList: ArrayList<CategoryItem>
 
     private lateinit var searchView: MaterialSearchView
     private lateinit var categoriesListView: RecyclerListView
@@ -91,7 +91,16 @@ class CategoryActivity : BaseActivity(), CategoryView {
         categoryPresenter.getCategoriesItems(categories[0].id)
     }
 
+    override fun showAllItems(categoryItems: List<CategoryItem>) {
+        categoriesListView.visibility = View.GONE
+        categoryItemsListView.adapter = allItemsAdapter
+        allItemsAdapter.setCategories(categoryItems)
+        allItemsAdapter.notifyDataSetChanged()
+    }
+
+
     override fun showCategoryInfo(categoryItems: List<CategoryItem>) {
+        categoryItemsListView.adapter = categoryInfoAdapter
         categoryInfoAdapter.setCategories(categoryItems)
         categoryInfoAdapter.notifyDataSetChanged()
     }
@@ -109,13 +118,13 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
 
     private fun searchForItems(query: String) {
-        if (allItemsAdapter?.getCategories() == null) {
+        if (allItemsAdapter.getCategories() == null) {
             return
         }
 
-        val foundItems = allItemsAdapter?.getCategories()!!.filter { nameEqualsTo(it, query) }
-        allItemsAdapter?.setCategories(foundItems)
-        allItemsAdapter?.notifyDataSetChanged()
+        val foundItems = allItemsAdapter.getCategories()!!.filter { nameEqualsTo(it, query) }
+        allItemsAdapter.setCategories(foundItems)
+        allItemsAdapter.notifyDataSetChanged()
     }
 
     private fun nameEqualsTo(item: CategoryItem, query: String): Boolean {
@@ -136,9 +145,8 @@ class CategoryActivity : BaseActivity(), CategoryView {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isEmpty() && allItemsList != null) {
-                    allItemsAdapter?.setCategories(allItemsList!!)
-                    allItemsAdapter?.notifyDataSetChanged()
+                if (newText.isEmpty()) {
+                    categoryPresenter.getAllItems()
                     return false
                 }
 
@@ -153,6 +161,8 @@ class CategoryActivity : BaseActivity(), CategoryView {
             }
 
             override fun onSearchViewClosed() {
+                categoryPresenter.getCategories()
+                categoriesListView.visibility = View.VISIBLE
                 categoriesListView.adapter = categoryAdapter
             }
         })
@@ -171,7 +181,9 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            R.id.action_my_orders -> {openActivity(OrdersActivity::class.java)}
+            R.id.action_my_orders -> {
+                categoriesListView.visibility = View.GONE
+                openActivity(OrdersActivity::class.java)}
         }
         return super.onOptionsItemSelected(item)
     }
