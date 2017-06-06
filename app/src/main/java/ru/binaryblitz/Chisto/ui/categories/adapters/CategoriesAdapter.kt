@@ -47,8 +47,10 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
                 .into(holder.icon)
 
         if (selectedPosition == holder.adapterPosition) {
+            holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary))
             holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary))
         } else {
+            holder.name.setTextColor(ContextCompat.getColor(context, R.color.greyColor))
             holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.greyColor))
         }
 

@@ -9,6 +9,7 @@ import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import com.crashlytics.android.Crashlytics
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.mikepenz.materialdrawer.AccountHeader
@@ -85,15 +86,14 @@ class CategoryActivity : BaseActivity(), CategoryView {
         save(categories)
         categoryAdapter.setCategories(categories as ArrayList<Category>)
         categoryAdapter.notifyDataSetChanged()
+        color = categories[0].color
+        categoryInfoAdapter.setColor(color)
+        categoryPresenter.getCategoriesItems(categories[0].id)
     }
 
     override fun showCategoryInfo(categoryItems: List<CategoryItem>) {
         categoryInfoAdapter.setCategories(categoryItems)
         categoryInfoAdapter.notifyDataSetChanged()
-    }
-
-    override fun setCategorySelected() {
-        //TODO Implement
     }
 
     override fun onBackPressed() {
@@ -167,6 +167,13 @@ class CategoryActivity : BaseActivity(), CategoryView {
         searchView.setMenuItem(item)
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.action_my_orders -> {openActivity(OrdersActivity::class.java)}
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initList() {
