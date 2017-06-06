@@ -1,6 +1,7 @@
 package ru.binaryblitz.Chisto.ui.order
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -68,8 +69,9 @@ class SelectServiceActivity : BaseActivity() {
     }
 
     private fun initElements() {
-        findViewById(R.id.appbar).setBackgroundColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
-        AndroidUtilities.colorAndroidBar(this, intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+        val color = intent.getStringExtra(EXTRA_COLOR)
+        findViewById(R.id.appbar).setBackgroundColor(Color.parseColor(color))
+        AndroidUtilities.colorAndroidBar(this, Color.parseColor(color))
         (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
     }
 

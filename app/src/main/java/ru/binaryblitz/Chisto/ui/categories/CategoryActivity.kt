@@ -3,7 +3,9 @@ package ru.binaryblitz.Chisto.ui.categories
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -27,6 +29,7 @@ import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
 import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.utils.AppConfig
+import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.*
 
@@ -79,6 +82,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
     }
 
     override fun showCategories(categories: List<Category>) {
+        save(categories)
         categoryAdapter.setCategories(categories as ArrayList<Category>)
         categoryAdapter.notifyDataSetChanged()
     }
@@ -181,6 +185,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
         categoryAdapter.onCategoryClickAction.subscribe { category ->
             color = category.color
             id = category.id
+            categoryInfoAdapter.setColor(color)
             if (id == 0)
                 categoryPresenter.getAllItems()
             else
@@ -241,6 +246,16 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@CategoryActivity, activity)
         startActivity(intent)
+    }
+
+
+    private fun save(collection: List<Category>) {
+        for (i in collection.indices) {
+            val (id, icon, name, description, color) = collection[i]
+            ColorsList.add(Pair(id, Color.parseColor(color)))
+        }
+
+        ColorsList.saveColors(this)
     }
 
 }

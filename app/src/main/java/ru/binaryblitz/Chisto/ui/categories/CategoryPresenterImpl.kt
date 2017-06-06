@@ -1,7 +1,6 @@
 package ru.binaryblitz.Chisto.ui.categories
 
 import android.content.Context
-import android.support.v4.util.Pair
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.binaryblitz.Chisto.entities.Category
@@ -25,12 +24,10 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
                 .subscribe({ categoryList ->
                     categoryView?.hideProgress()
                     categoryView?.showCategories(categoryList)
-                    save(categoryList)
                 }, { error ->
                     categoryView?.hideProgress()
                     categoryView?.showError(error.toString())
-                }
-                )
+                })
     }
 
     fun getCategoriesItems(id: Int) {
@@ -44,8 +41,7 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
                 }, { error ->
                     categoryView?.hideProgress()
                     categoryView?.showError(error.toString())
-                }
-                )
+                })
     }
 
     fun getAllItems() {
@@ -60,19 +56,9 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
                 }, { error ->
                     categoryView?.hideProgress()
                     categoryView?.showError(error.toString())
-                }
-                )
+                })
     }
 
-
-    private fun save(collection: List<Category>) {
-        for (i in collection.indices) {
-            val (id, icon, name, description, color) = collection[i]
-            ColorsList.add(Pair(id, color.toInt()))
-        }
-
-        ColorsList.saveColors(context)
-    }
 
     private fun sortCategories(collection: ArrayList<Category>) {
         Collections.sort(collection) { category, t ->
