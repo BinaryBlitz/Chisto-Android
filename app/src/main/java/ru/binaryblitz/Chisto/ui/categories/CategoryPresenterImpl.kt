@@ -19,21 +19,17 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
 
     fun getCategories() {
         categoryView?.showProgress()
-
         interactor.getCategories()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { categoryList ->
-                            categoryView?.hideProgress()
-                            categoryView?.showCategories(categoryList)
-                            save(categoryList)
-
-                        },
-                        { error ->
-                            categoryView?.hideProgress()
-                            categoryView?.showError(error.toString())
-                        }
+                .subscribe({ categoryList ->
+                    categoryView?.hideProgress()
+                    categoryView?.showCategories(categoryList)
+                    save(categoryList)
+                }, { error ->
+                    categoryView?.hideProgress()
+                    categoryView?.showError(error.toString())
+                }
                 )
     }
 
@@ -42,14 +38,13 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
         interactor.getCategoriesItems(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { categoriesItems ->
-                            categoryView?.hideProgress()
-                            categoryView?.showCategoryInfo(categoriesItems) },
-                        { error ->
-                            categoryView?.hideProgress()
-                            categoryView?.showError(error.toString())
-                        }
+                .subscribe({ categoriesItems ->
+                    categoryView?.hideProgress()
+                    categoryView?.showCategoryInfo(categoriesItems)
+                }, { error ->
+                    categoryView?.hideProgress()
+                    categoryView?.showError(error.toString())
+                }
                 )
     }
 
@@ -58,16 +53,14 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
         interactor.getAllItems()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { categoriesItems ->
-                            categoryView?.hideProgress()
-                            ColorsList.load(context)
-                            categoryView?.showCategoryInfo(categoriesItems)
-                        },
-                        { error ->
-                            categoryView?.hideProgress()
-                            categoryView?.showError(error.toString())
-                        }
+                .subscribe({ categoriesItems ->
+                    categoryView?.hideProgress()
+                    ColorsList.load(context)
+                    categoryView?.showCategoryInfo(categoriesItems)
+                }, { error ->
+                    categoryView?.hideProgress()
+                    categoryView?.showError(error.toString())
+                }
                 )
     }
 

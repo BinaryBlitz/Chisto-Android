@@ -243,5 +243,4 @@ class CategoryActivity : BaseActivity(), CategoryView {
         startActivity(intent)
     }
 
-
 }

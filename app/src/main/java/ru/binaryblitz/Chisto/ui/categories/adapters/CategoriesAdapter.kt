@@ -18,7 +18,7 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
     private var categories: ArrayList<Category>
     val onCategoryClickAction: PublishSubject<Category> = PublishSubject.create()
-
+    private var selectedPosition = 0
 
     init {
         categories = ArrayList<Category>()
@@ -46,9 +46,16 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
                 .fit()
                 .into(holder.icon)
 
-        holder.icon.setColorFilter(ContextCompat.getColor(context,R.color.greyColor))
+        if (selectedPosition == holder.adapterPosition) {
+            holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary))
+        } else {
+            holder.icon.setColorFilter(ContextCompat.getColor(context, R.color.greyColor))
+        }
 
         holder.itemView.setOnClickListener {
+            notifyItemChanged(selectedPosition)
+            selectedPosition = holder.adapterPosition
+            notifyItemChanged(selectedPosition)
             onCategoryClickAction.onNext(categories[position])
         }
     }
