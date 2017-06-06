@@ -6,8 +6,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import net.danlew.android.joda.JodaTimeAndroid
-import ru.binaryblitz.Chisto.ui.categories.CategoryComponent
-import ru.binaryblitz.Chisto.ui.categories.CategoryModule
 import java.util.*
 
 class BaseApplication : Application() {

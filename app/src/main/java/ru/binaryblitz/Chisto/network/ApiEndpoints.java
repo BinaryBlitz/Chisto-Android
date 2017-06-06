@@ -14,6 +14,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import ru.binaryblitz.Chisto.entities.Category;
+import ru.binaryblitz.Chisto.entities.CategoryItem;
 
 public interface ApiEndpoints {
     @GET("cities")
@@ -26,10 +27,10 @@ public interface ApiEndpoints {
     Call<JsonArray> getLaundries(@Path("id") int id, @Query("long_treatment") Boolean... longTreatment);
 
     @GET("categories/{id}/items")
-    Call<JsonArray> getItems(@Path("id") int id);
+    Observable<List<CategoryItem>> getItems(@Path("id") int id);
 
     @GET("items")
-    Call<JsonArray> getAllItems();
+    Observable<List<CategoryItem>> getAllItems();
 
     @GET("items/{id}/treatments")
     Call<JsonArray> getTreatments(@Path("id") int id);

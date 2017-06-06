@@ -17,6 +17,8 @@ import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.utils.Image
 import ru.binaryblitz.Chisto.utils.OrderList
 import java.util.*
@@ -61,7 +63,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.description.text = item.description
 
         Image.loadPhoto(context, item.icon, holder.icon)
-        holder.icon.setColorFilter(item.color)
+        holder.icon.setColorFilter(ColorsList.findColor(item.id))
 
         holder.longTreatmentIndicator.visibility = if (item.isLongTreatment) View.VISIBLE else View.GONE
 
