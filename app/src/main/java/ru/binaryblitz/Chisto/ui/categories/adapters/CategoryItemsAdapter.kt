@@ -16,7 +16,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
-import ru.binaryblitz.Chisto.ui.order.SelectServiceActivity
+import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity
 import ru.binaryblitz.Chisto.utils.Image
 import ru.binaryblitz.Chisto.utils.OrderList
 import java.util.*

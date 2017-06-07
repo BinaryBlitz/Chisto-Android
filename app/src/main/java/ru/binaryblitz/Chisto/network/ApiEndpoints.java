@@ -15,6 +15,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 import ru.binaryblitz.Chisto.entities.Category;
 import ru.binaryblitz.Chisto.entities.CategoryItem;
+import ru.binaryblitz.Chisto.entities.Treatment;
 
 public interface ApiEndpoints {
     @GET("cities")
@@ -33,7 +34,7 @@ public interface ApiEndpoints {
     Observable<List<CategoryItem>> getAllItems();
 
     @GET("items/{id}/treatments")
-    Call<JsonArray> getTreatments(@Path("id") int id);
+    Observable<List<Treatment>> getTreatments(@Path("id") int id);
 
     @GET("laundries/{id}?api_token=foobar")
     Call<JsonObject> getLaundry(@Path("id") int id);

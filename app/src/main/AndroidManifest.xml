@@ -207,7 +207,7 @@
         </activity>
 
         <activity
-            android:name=".ui.order.SelectServiceActivity"
+            android:name=".ui.order.select_service.SelectServiceActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">

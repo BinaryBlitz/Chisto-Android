@@ -1,4 +1,4 @@
-package ru.binaryblitz.Chisto.ui.order
+package ru.binaryblitz.Chisto.ui.order.select_service
 
 import android.content.Intent
 import android.graphics.Color
@@ -15,15 +15,12 @@ import android.widget.EditText
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
-import com.google.gson.JsonArray
 import io.fabric.sdk.android.Fabric
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
+import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter
 import ru.binaryblitz.Chisto.utils.*
 import ru.binaryblitz.Chisto.views.RecyclerListView
@@ -32,8 +29,7 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*
 
-class SelectServiceActivity : BaseActivity() {
-
+class SelectServiceActivity : BaseActivity(), TreatmentsView {
     private var adapter: TreatmentsAdapter? = null
     private var layout: SwipeRefreshLayout? = null
 
@@ -51,6 +47,7 @@ class SelectServiceActivity : BaseActivity() {
     private var width: Int = 0
     private var length: Int = 0
     private var dialogOpened = false
+    private lateinit var presenter: TreatmentsPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,10 +59,33 @@ class SelectServiceActivity : BaseActivity() {
         initSizeDialog()
         initList()
 
-        Handler().post({
-            layout!!.isRefreshing = true
-            load()
-        })
+        presenter = TreatmentsPresenterImpl(this, TreatmentsInteractorImpl(ServerApi.get(this).api()), this)
+        presenter.setView(this)
+        presenter.getTreatments(intent.getIntExtra(EXTRA_ID, 0))
+    }
+
+    override fun showProgress() {
+    }
+
+    override fun hideProgress() {
+    }
+
+    override fun showError(appErrorMessage: String?) {
+    }
+
+    override fun showTreatments(treatments: List<Treatment>) {
+        sort(treatments as ArrayList<Treatment>)
+        adapter!!.setCollection(treatments)
+        adapter!!.notifyDataSetChanged()
+
+        adapter!!.add(Treatment(
+                AppConfig.decorationId,
+                getString(R.string.decoration),
+                getString(R.string.decoration_help),
+                0,
+                intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
+
+        adapter!!.notifyDataSetChanged()
     }
 
     private fun initElements() {
@@ -259,52 +279,6 @@ class SelectServiceActivity : BaseActivity() {
     private fun isTreatmentsSelected(): Boolean {
         return adapter!!.getSelected().size != 0 &&
                 !(adapter!!.getSelected().size == 1 && adapter!!.getSelected()[0].id == AppConfig.decorationId)
-    }
-
-    private fun load() {
-        ServerApi.get(this).api().getTreatments(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
-            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                layout!!.isRefreshing = false
-                if (response.isSuccessful) {
-                    parseAnswer(response.body())
-                } else {
-                    onInternetConnectionError()
-                }
-            }
-
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                layout!!.isRefreshing = false
-                onInternetConnectionError()
-            }
-        })
-    }
-
-    private fun parseAnswer(array: JsonArray) {
-        val collection = ArrayList<Treatment>()
-
-        (0..array.size() - 1)
-                .map { array.get(it).asJsonObject }
-                .mapTo(collection) {
-                    Treatment(
-                            AndroidUtilities.getIntFieldFromJson(it.get("id")),
-                            AndroidUtilities.getStringFieldFromJson(it.get("name")),
-                            AndroidUtilities.getStringFieldFromJson(it.get("description")),
-                            0, false, 0)
-                }
-
-        sort(collection)
-
-        adapter!!.setCollection(collection)
-        adapter!!.notifyDataSetChanged()
-
-        adapter!!.add(Treatment(
-                AppConfig.decorationId,
-                getString(R.string.decoration),
-                getString(R.string.decoration_help),
-                0,
-                intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
-
-        adapter!!.notifyDataSetChanged()
     }
 
     private fun sort(collection: ArrayList<Treatment>) {
