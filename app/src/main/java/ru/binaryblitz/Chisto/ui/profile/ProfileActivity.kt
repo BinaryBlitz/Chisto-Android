@@ -17,7 +17,7 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.User
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.about.AboutActivity
 import ru.binaryblitz.Chisto.ui.order.MyOrdersActivity
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity

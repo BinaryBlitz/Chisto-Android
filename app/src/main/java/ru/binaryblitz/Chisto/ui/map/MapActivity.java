@@ -48,7 +48,7 @@ import java.util.Locale;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.entities.User;
 import ru.binaryblitz.Chisto.network.DeviceInfoStore;
-import ru.binaryblitz.Chisto.ui.BaseActivity;
+import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.utils.LogUtil;
 import ru.binaryblitz.Chisto.views.MyMapFragment;

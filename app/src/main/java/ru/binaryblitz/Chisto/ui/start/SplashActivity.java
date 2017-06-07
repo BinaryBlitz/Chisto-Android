@@ -10,8 +10,8 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.network.DeviceInfoStore;
-import ru.binaryblitz.Chisto.ui.BaseActivity;
-import ru.binaryblitz.Chisto.ui.categories.SelectCategoryActivity;
+import ru.binaryblitz.Chisto.ui.base.BaseActivity;
+import ru.binaryblitz.Chisto.ui.categories.CategoryActivity;
 
 public class SplashActivity extends BaseActivity {
 
@@ -24,7 +24,7 @@ public class SplashActivity extends BaseActivity {
         if (DeviceInfoStore.getCityObject(this) == null) {
             openActivity(StartActivity.class);
         } else {
-            openActivity(SelectCategoryActivity.class);
+            openActivity(CategoryActivity.class);
         }
     }
 

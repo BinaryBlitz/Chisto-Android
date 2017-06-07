@@ -3,6 +3,9 @@ package ru.binaryblitz.Chisto.network;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.List;
+
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -10,23 +13,24 @@ import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import ru.binaryblitz.Chisto.entities.Category;
+import ru.binaryblitz.Chisto.entities.CategoryItem;
 
 public interface ApiEndpoints {
-
     @GET("cities")
     Call<JsonArray> getCitiesList();
 
     @GET("categories")
-    Call<JsonArray> getCategories();
+    Observable<List<Category>> getCategories();
 
     @GET("cities/{id}/laundries")
     Call<JsonArray> getLaundries(@Path("id") int id, @Query("long_treatment") Boolean... longTreatment);
 
     @GET("categories/{id}/items")
-    Call<JsonArray> getItems(@Path("id") int id);
+    Observable<List<CategoryItem>> getItems(@Path("id") int id);
 
     @GET("items")
-    Call<JsonArray> getAllItems();
+    Observable<List<CategoryItem>> getAllItems();
 
     @GET("items/{id}/treatments")
     Call<JsonArray> getTreatments(@Path("id") int id);

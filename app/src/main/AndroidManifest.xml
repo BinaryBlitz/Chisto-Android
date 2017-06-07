@@ -218,7 +218,7 @@
         </activity>
 
         <activity
-            android:name=".ui.categories.SelectCategoryActivity"
+            android:name=".ui.categories.CategoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"

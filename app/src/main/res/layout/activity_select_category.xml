@@ -4,20 +4,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eaeaea"
+    android:background="#F7F7F7"
     android:orientation="vertical">
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="56dp">
-
-        <ru.binaryblitz.Chisto.views.RecyclerListView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></ru.binaryblitz.Chisto.views.RecyclerListView>
-    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -34,8 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways"
-                >
+                app:layout_scrollFlags="scroll|enterAlways">
 
             </android.support.v7.widget.Toolbar>
 
@@ -45,4 +32,24 @@
                 android:layout_height="wrap_content" />
         </FrameLayout>
     </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <ru.binaryblitz.Chisto.views.RecyclerListView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F7F7F7"></ru.binaryblitz.Chisto.views.RecyclerListView>
+
+        <ru.binaryblitz.Chisto.views.RecyclerListView
+            android:id="@+id/categoriesItems"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </ru.binaryblitz.Chisto.views.RecyclerListView>
+
+    </LinearLayout>
 </FrameLayout>

@@ -21,14 +21,12 @@ import com.rengwuxian.materialedittext.MaterialEditText
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.binaryblitz.Chisto.ui.BaseActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.order.MyOrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
-import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
-import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.AnimationStartListener
 import ru.binaryblitz.Chisto.utils.AppConfig

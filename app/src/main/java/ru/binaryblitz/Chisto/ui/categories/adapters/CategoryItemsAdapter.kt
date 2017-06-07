@@ -12,11 +12,11 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import it.sephiroth.android.library.tooltip.Tooltip
 import it.sephiroth.android.library.tooltip.Tooltip.ClosePolicy
-import ru.binaryblitz.Chisto.ui.order.SelectServiceActivity
+import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.entities.Order
-import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
+import ru.binaryblitz.Chisto.ui.order.SelectServiceActivity
 import ru.binaryblitz.Chisto.utils.Image
 import ru.binaryblitz.Chisto.utils.OrderList
 import java.util.*
@@ -25,7 +25,7 @@ import java.util.*
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var categories: List<CategoryItem> = ArrayList()
-    private var color: Int = Color.parseColor("#212121")
+    private var color: String = Color.parseColor("#212121").toString()
 
     val EXTRA_DECORATION = "decoration"
     val EXTRA_ID = "id"
@@ -35,7 +35,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
 
     private var tooltip: Tooltip.TooltipView? = null
 
-    fun setColor(color: Int) {
+    fun setColor(color: String) {
         this.color = color
     }
 
@@ -61,7 +61,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.description.text = item.description
 
         Image.loadPhoto(context, item.icon, holder.icon)
-        holder.icon.setColorFilter(item.color)
+        holder.icon.setColorFilter(Color.parseColor(color))
 
         holder.longTreatmentIndicator.visibility = if (item.isLongTreatment) View.VISIBLE else View.GONE
 
@@ -130,7 +130,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         intent.putExtra(EXTRA_DECORATION, decor)
         intent.putExtra(EXTRA_ID, item.id)
         intent.putExtra(EXTRA_NAME, item.name)
-        intent.putExtra(EXTRA_COLOR, item.color)
+        intent.putExtra(EXTRA_COLOR, color)
         intent.putExtra(EXTRA_USE_AREA, item.userArea)
         OrderList.add(Order(item, null, 1, item.color, decor, 0, null, item.isLongTreatment))
         context.startActivity(intent)

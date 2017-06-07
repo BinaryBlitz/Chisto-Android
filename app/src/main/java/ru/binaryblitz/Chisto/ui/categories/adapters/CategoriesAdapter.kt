@@ -1,25 +1,24 @@
 package ru.binaryblitz.Chisto.ui.categories.adapters
 
 import android.app.Activity
-import android.content.Intent
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import ru.binaryblitz.Chisto.ui.categories.CategoryInfoActivity
-import ru.binaryblitz.Chisto.entities.Category
+import com.squareup.picasso.Picasso
+import io.reactivex.subjects.PublishSubject
 import ru.binaryblitz.Chisto.R
-import ru.binaryblitz.Chisto.utils.Image
+import ru.binaryblitz.Chisto.entities.Category
 import java.util.*
 
 class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var categories: ArrayList<Category>? = null
-
-    val EXTRA_COLOR = "color"
-    val EXTRA_ID = "id"
+    private var categories: ArrayList<Category>
+    val onCategoryClickAction: PublishSubject<Category> = PublishSubject.create()
+    private var selectedPosition = 0
 
     init {
         categories = ArrayList<Category>()
@@ -38,29 +37,34 @@ class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<Re
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
 
-        val category = categories!![position]
+        val category = categories[position]
 
         holder.name.text = category.name
-        holder.description.text = category.description
 
-        Image.loadPhoto(context, category.icon, holder.icon)
-        holder.icon.setColorFilter(category.color)
+        Picasso.with(context)
+                .load(category.iconUrl)
+                .fit()
+                .into(holder.icon)
+
+        val color = if (selectedPosition == holder.adapterPosition) R.color.colorPrimary else R.color.greyColor
+        val contextColor = ContextCompat.getColor(context, color)
+        holder.name.setTextColor(contextColor)
+        holder.icon.setColorFilter(contextColor)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, CategoryInfoActivity::class.java)
-            intent.putExtra(EXTRA_ID, category.id)
-            intent.putExtra(EXTRA_COLOR, category.color)
-            context.startActivity(intent)
+            notifyItemChanged(selectedPosition)
+            selectedPosition = holder.adapterPosition
+            notifyItemChanged(selectedPosition)
+            onCategoryClickAction.onNext(categories[position])
         }
     }
 
     override fun getItemCount(): Int {
-        return categories!!.size
+        return categories.size
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         internal var name = itemView.findViewById(R.id.name) as TextView
-        internal var description = itemView.findViewById(R.id.description) as TextView
         internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
     }
 }

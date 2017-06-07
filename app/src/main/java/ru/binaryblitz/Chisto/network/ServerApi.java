@@ -12,20 +12,36 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.binaryblitz.Chisto.BuildConfig;
 import ru.binaryblitz.Chisto.utils.AndroidUtilities;
 
 public class ServerApi {
 
-    private static ServerApi api;
-    private static ApiEndpoints apiService;
-    private static Retrofit retrofit;
     private final static HttpLoggingInterceptor.Level LOG_LEVEL = BuildConfig.DEBUG
             ? HttpLoggingInterceptor.Level.BODY
             : HttpLoggingInterceptor.Level.BASIC;
-
     private static final int TIME_OUT = 10;
+    public static ApiEndpoints apiService;
+    private static ServerApi api;
+    private static Retrofit retrofit;
+
+    private ServerApi(Context context) {
+        initRetrofit(context);
+    }
+
+    public static ServerApi get(Context context) {
+        synchronized (ServerApi.class) {
+            if (api == null) api = new ServerApi(context);
+        }
+
+        return api;
+    }
+
+    public static Retrofit retrofit() {
+        return retrofit;
+    }
 
     private void initRetrofit(final Context context) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -55,28 +71,12 @@ public class ServerApi {
 
         retrofit = new Retrofit.Builder()
                 .client(client)
-                .baseUrl(ServerConfig.INSTANCE.getApiURL())
+                .baseUrl(ServerConfig.INSTANCE.getApiURL()).
+                        addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         apiService = retrofit.create(ApiEndpoints.class);
-    }
-
-    public static ServerApi get(Context context) {
-        if (api == null) {
-            synchronized (ServerApi.class) {
-                if (api == null) api = new ServerApi(context);
-            }
-        }
-        return api;
-    }
-
-    public static Retrofit retrofit() {
-        return retrofit;
-    }
-
-    private ServerApi(Context context) {
-        initRetrofit(context);
     }
 
     public ApiEndpoints api() {

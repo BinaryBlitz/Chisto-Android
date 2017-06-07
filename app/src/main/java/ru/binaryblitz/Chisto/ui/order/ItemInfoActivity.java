@@ -20,7 +20,7 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.entities.Order;
-import ru.binaryblitz.Chisto.ui.BaseActivity;
+import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.ui.order.adapters.EditTreatmentsAdapter;
 import ru.binaryblitz.Chisto.utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.utils.OrderList;
