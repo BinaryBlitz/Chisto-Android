@@ -22,6 +22,7 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.entities.Order;
 import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.ui.order.adapters.EditTreatmentsAdapter;
+import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity;
 import ru.binaryblitz.Chisto.utils.AndroidUtilities;
 import ru.binaryblitz.Chisto.utils.OrderList;
 import ru.binaryblitz.Chisto.utils.SwipeItemDecoration;

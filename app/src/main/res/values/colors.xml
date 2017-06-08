@@ -6,6 +6,7 @@
     <color name="greyColor">#727272</color>
     <color name="blackColor">#212121</color>
     <color name="whiteColor">#ffffff</color>
+    <color name="defaultBackgroundColor">#F7F7F7</color>
 
     <color name="processColor">#4bc2f7</color>
     <color name="completedColor">#6ce19d</color>

@@ -1,4 +1,4 @@
-package ru.binaryblitz.Chisto.ui.order
+package ru.binaryblitz.Chisto.ui.order.select_service
 
 import android.content.Intent
 import android.graphics.Color
@@ -15,34 +15,26 @@ import android.widget.EditText
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
-import com.google.gson.JsonArray
 import io.fabric.sdk.android.Fabric
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
+import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity.EXTRA_EDIT
+import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter
 import ru.binaryblitz.Chisto.utils.*
+import ru.binaryblitz.Chisto.utils.Extras.*
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.util.*
 
-class SelectServiceActivity : BaseActivity() {
+class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
     private var adapter: TreatmentsAdapter? = null
     private var layout: SwipeRefreshLayout? = null
-
-    val EXTRA_COLOR = "color"
-    val EXTRA_DECORATION = "decoration"
-    val EXTRA_EDIT = "edit"
-    val EXTRA_ID = "id"
-    val EXTRA_NAME = "name"
-    val EXTRA_USE_AREA = "userArea"
 
     val format = "#.#"
 
@@ -51,6 +43,7 @@ class SelectServiceActivity : BaseActivity() {
     private var width: Int = 0
     private var length: Int = 0
     private var dialogOpened = false
+    private lateinit var presenter: TreatmentsPresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,17 +55,37 @@ class SelectServiceActivity : BaseActivity() {
         initSizeDialog()
         initList()
 
-        Handler().post({
-            layout!!.isRefreshing = true
-            load()
-        })
+        presenter = TreatmentsPresenterImpl(this, TreatmentsInteractorImpl(ServerApi.get(this).api()), this)
+        presenter.setView(this)
+        presenter.setCurrentOrder(intent.getParcelableExtra(EXTRA_CURRENT_ORDER))
+        presenter.getTreatments(intent.getIntExtra(EXTRA_ID, 0))
+    }
+
+    override fun showProgress() {
+    }
+
+    override fun hideProgress() {
+    }
+
+    override fun showError(appErrorMessage: String?) {
+    }
+
+    override fun showTreatments(treatments: List<Treatment>) {
+        sort(treatments as ArrayList<Treatment>)
+        adapter!!.setCollection(treatments)
+        adapter!!.notifyDataSetChanged()
+    }
+
+    override fun updateOrderAmount(amount: Int) {
+        (findViewById(R.id.orderAmountText) as TextView).text = amount.toString()
     }
 
     private fun initElements() {
         val color = intent.getStringExtra(EXTRA_COLOR)
         findViewById(R.id.appbar).setBackgroundColor(Color.parseColor(color))
         AndroidUtilities.colorAndroidBar(this, Color.parseColor(color))
-        (findViewById(R.id.main_title) as TextView).text = intent.getStringExtra(EXTRA_NAME)
+        (findViewById(R.id.date_text_view) as TextView).text = intent.getStringExtra(EXTRA_NAME)
+        (findViewById(R.id.item_description) as TextView).text = intent.getStringExtra(EXTRA_DESCRIPTION)
     }
 
     private fun setOnClickListeners() {
@@ -96,6 +109,10 @@ class SelectServiceActivity : BaseActivity() {
             closeDialog()
             openActivity()
         }
+
+        findViewById(R.id.plus_btn).setOnClickListener { presenter.increaseOrderAmount() }
+
+        findViewById(R.id.minus).setOnClickListener { presenter.decreaseOrderAmount() }
 
         findViewById(R.id.dialog).setOnClickListener {
             closeDialog()
@@ -142,7 +159,9 @@ class SelectServiceActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable) { recomputeSquare(false, s, square) }
+            override fun afterTextChanged(s: Editable) {
+                recomputeSquare(false, s, square)
+            }
         })
 
         widthEditText.addTextChangedListener(object : TextWatcher {
@@ -150,7 +169,9 @@ class SelectServiceActivity : BaseActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable) { recomputeSquare(true, s, square) }
+            override fun afterTextChanged(s: Editable) {
+                recomputeSquare(true, s, square)
+            }
         })
     }
 
@@ -176,7 +197,7 @@ class SelectServiceActivity : BaseActivity() {
             LogUtil.logException(e)
         }
     }
-    
+
     private fun formatSquareInputAndSetToTextView(square: TextView) {
         val defaultSymbols = DecimalFormatSymbols(Locale.getDefault())
         square.text = DecimalFormat(format, defaultSymbols).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
@@ -208,6 +229,7 @@ class SelectServiceActivity : BaseActivity() {
 
     private fun openActivity() {
         if (isTreatmentsSelected()) {
+            presenter.proceedOrder()
             processSelectedTreatments()
         } else {
             showNothingSelectedError()
@@ -259,52 +281,6 @@ class SelectServiceActivity : BaseActivity() {
     private fun isTreatmentsSelected(): Boolean {
         return adapter!!.getSelected().size != 0 &&
                 !(adapter!!.getSelected().size == 1 && adapter!!.getSelected()[0].id == AppConfig.decorationId)
-    }
-
-    private fun load() {
-        ServerApi.get(this).api().getTreatments(intent.getIntExtra(EXTRA_ID, 0)).enqueue(object : Callback<JsonArray> {
-            override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                layout!!.isRefreshing = false
-                if (response.isSuccessful) {
-                    parseAnswer(response.body())
-                } else {
-                    onInternetConnectionError()
-                }
-            }
-
-            override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                layout!!.isRefreshing = false
-                onInternetConnectionError()
-            }
-        })
-    }
-
-    private fun parseAnswer(array: JsonArray) {
-        val collection = ArrayList<Treatment>()
-
-        (0..array.size() - 1)
-                .map { array.get(it).asJsonObject }
-                .mapTo(collection) {
-                    Treatment(
-                            AndroidUtilities.getIntFieldFromJson(it.get("id")),
-                            AndroidUtilities.getStringFieldFromJson(it.get("name")),
-                            AndroidUtilities.getStringFieldFromJson(it.get("description")),
-                            0, false, 0)
-                }
-
-        sort(collection)
-
-        adapter!!.setCollection(collection)
-        adapter!!.notifyDataSetChanged()
-
-        adapter!!.add(Treatment(
-                AppConfig.decorationId,
-                getString(R.string.decoration),
-                getString(R.string.decoration_help),
-                0,
-                intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
-
-        adapter!!.notifyDataSetChanged()
     }
 
     private fun sort(collection: ArrayList<Treatment>) {

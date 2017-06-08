@@ -231,4 +231,5 @@
     <string name="page_welcome_text">Больше не нужно тратить время на походы в химчистку.    Курьер заберёт вещи и вернёт их чистыми.</string>
     <string name="all_categories">Все</string>
     <string name="loading">Загрузка</string>
+    <string name="order_material">Материал вещи</string>
 </resources>
