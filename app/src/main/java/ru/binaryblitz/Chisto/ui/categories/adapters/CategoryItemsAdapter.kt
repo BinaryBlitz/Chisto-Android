@@ -17,8 +17,8 @@ import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity
+import ru.binaryblitz.Chisto.utils.Extras.*
 import ru.binaryblitz.Chisto.utils.Image
-import ru.binaryblitz.Chisto.utils.OrderList
 import java.util.*
 
 
@@ -26,12 +26,6 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
 
     private var categories: List<CategoryItem> = ArrayList()
     private var color: String = Color.parseColor("#212121").toString()
-
-    val EXTRA_DECORATION = "decoration"
-    val EXTRA_ID = "id"
-    val EXTRA_NAME = "name"
-    val EXTRA_COLOR = "color"
-    val EXTRA_USE_AREA = "userArea"
 
     private var tooltip: Tooltip.TooltipView? = null
 
@@ -130,9 +124,10 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         intent.putExtra(EXTRA_DECORATION, decor)
         intent.putExtra(EXTRA_ID, item.id)
         intent.putExtra(EXTRA_NAME, item.name)
+        intent.putExtra(EXTRA_DESCRIPTION, item.description)
         intent.putExtra(EXTRA_COLOR, color)
         intent.putExtra(EXTRA_USE_AREA, item.userArea)
-        OrderList.add(Order(item, null, 1, item.color, decor, 0, null, item.isLongTreatment))
+        intent.putExtra(EXTRA_CURRENT_ORDER, Order(item, null, 1, item.color, decor, 0, null, item.isLongTreatment))
         context.startActivity(intent)
     }
 

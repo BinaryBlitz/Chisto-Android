@@ -16,7 +16,7 @@ import java.util.*
 class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var collection = ArrayList<Treatment>()
-    private var color: Int = Color.parseColor("#212121")
+    private var color: Int = Color.parseColor("#4bc2f7")
     private var greyColor: Int = Color.parseColor("#CFCFCF")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -55,7 +55,6 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
 
         val treatment = collection[position]
 
-        holder.name.text = treatment.name
         holder.description.text = treatment.description
         setColorForCheckBox(holder.checkBox, color)
 
@@ -88,7 +87,6 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name = itemView.findViewById(R.id.name) as TextView
         val description = itemView.findViewById(R.id.description) as TextView
         val checkBox = itemView.findViewById(R.id.checkBox) as SmoothCheckBox
     }
