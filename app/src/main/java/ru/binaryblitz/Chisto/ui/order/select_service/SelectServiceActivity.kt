@@ -74,15 +74,6 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         sort(treatments as ArrayList<Treatment>)
         adapter!!.setCollection(treatments)
         adapter!!.notifyDataSetChanged()
-//
-//        adapter!!.add(Treatment(
-//                AppConfig.decorationId,
-//                getString(R.string.decoration),
-//                getString(R.string.decoration_help),
-//                0,
-//                intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
-//
-//        adapter!!.notifyDataSetChanged()
     }
 
     override fun updateOrderAmount(amount: Int) {
@@ -168,7 +159,9 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable) { recomputeSquare(false, s, square) }
+            override fun afterTextChanged(s: Editable) {
+                recomputeSquare(false, s, square)
+            }
         })
 
         widthEditText.addTextChangedListener(object : TextWatcher {
@@ -176,7 +169,9 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
-            override fun afterTextChanged(s: Editable) { recomputeSquare(true, s, square) }
+            override fun afterTextChanged(s: Editable) {
+                recomputeSquare(true, s, square)
+            }
         })
     }
 
@@ -202,7 +197,7 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
             LogUtil.logException(e)
         }
     }
-    
+
     private fun formatSquareInputAndSetToTextView(square: TextView) {
         val defaultSymbols = DecimalFormatSymbols(Locale.getDefault())
         square.text = DecimalFormat(format, defaultSymbols).format((this.length * this.width).toDouble() / squareCentimetersInSquareMeters) +
