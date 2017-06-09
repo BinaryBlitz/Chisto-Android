@@ -33,6 +33,7 @@ import ru.binaryblitz.Chisto.ui.order.WebActivity
 import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.ArrayList
 
@@ -184,7 +185,9 @@ class CategoryActivity : BaseActivity(), CategoryView {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
             R.id.action_my_orders -> {
-                openActivity(OrdersActivity::class.java)}
+                val intent = Intent(this@CategoryActivity, OrdersActivity::class.java)
+                intent.putExtra(EXTRA_COLOR, color)
+                startActivity(intent)}
         }
         return super.onOptionsItemSelected(item)
     }
