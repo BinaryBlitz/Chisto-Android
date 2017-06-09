@@ -5,9 +5,11 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -37,6 +39,7 @@ class OrdersActivity : BaseActivity() {
 
     private var adapter: OrdersAdapter? = null
     private var continueBtn: TextView? = null
+    private var addItemButton: FloatingActionButton? = null
     private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -181,7 +184,7 @@ class OrdersActivity : BaseActivity() {
 
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener {
-            openActivity(CategoryActivity::class.java)
+            finish()
         }
 
         findViewById(R.id.add_btn).setOnClickListener {
@@ -200,6 +203,9 @@ class OrdersActivity : BaseActivity() {
             Animations.animateRevealHide(findViewById(R.id.dialog_new_order))
             getUser()
         }
+
+        addItemButton = findViewById(R.id.add_item) as FloatingActionButton
+        addItemButton?.setOnClickListener { openActivity(CategoryActivity::class.java)}
     }
 
     override fun onBackPressed() {
@@ -223,8 +229,10 @@ class OrdersActivity : BaseActivity() {
         adapter!!.notifyDataSetChanged()
 
         if (adapter!!.itemCount != 0) {
+            addItemButton?.visibility = View.VISIBLE
             setContinueButtonEnabled()
         } else {
+            addItemButton?.visibility = View.GONE
             setContinueButtonDisabled()
         }
     }
