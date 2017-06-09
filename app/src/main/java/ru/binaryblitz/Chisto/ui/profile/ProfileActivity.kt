@@ -17,8 +17,8 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.User
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
-import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.about.AboutActivity
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.order.MyOrdersActivity
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
@@ -132,7 +132,6 @@ class ProfileActivity : BaseActivity() {
         OrdersActivity.laundryId = 0
         DeviceInfoStore.resetToken(this)
         DeviceInfoStore.resetUser(this)
-        DeviceInfoStore.resetShowDialogFlag(this)
         updateUser()
     }
 
