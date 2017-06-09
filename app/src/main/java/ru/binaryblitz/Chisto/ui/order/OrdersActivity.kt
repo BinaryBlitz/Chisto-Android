@@ -5,9 +5,11 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -26,14 +28,18 @@ import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
 import ru.binaryblitz.Chisto.ui.laundries.LaundriesActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.OrdersAdapter
-import ru.binaryblitz.Chisto.ui.profile.ProfileActivity
-import ru.binaryblitz.Chisto.utils.*
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.OrderList
+import ru.binaryblitz.Chisto.utils.SwipeItemDecoration
+import ru.binaryblitz.Chisto.utils.TouchHelper
 import ru.binaryblitz.Chisto.views.RecyclerListView
 
 class OrdersActivity : BaseActivity() {
 
     private var adapter: OrdersAdapter? = null
     private var continueBtn: TextView? = null
+    private var addItemButton: FloatingActionButton? = null
     private var dialogOpened = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -178,11 +184,7 @@ class OrdersActivity : BaseActivity() {
 
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener {
-            openActivity(ProfileActivity::class.java)
-        }
-
-        findViewById(R.id.right_btn).setOnClickListener {
-            openActivity(CategoryActivity::class.java)
+            finish()
         }
 
         findViewById(R.id.add_btn).setOnClickListener {
@@ -201,6 +203,9 @@ class OrdersActivity : BaseActivity() {
             Animations.animateRevealHide(findViewById(R.id.dialog_new_order))
             getUser()
         }
+
+        addItemButton = findViewById(R.id.add_item) as FloatingActionButton
+        addItemButton?.setOnClickListener { openActivity(CategoryActivity::class.java)}
     }
 
     override fun onBackPressed() {
@@ -224,8 +229,10 @@ class OrdersActivity : BaseActivity() {
         adapter!!.notifyDataSetChanged()
 
         if (adapter!!.itemCount != 0) {
+            addItemButton?.visibility = View.VISIBLE
             setContinueButtonEnabled()
         } else {
+            addItemButton?.visibility = View.GONE
             setContinueButtonDisabled()
         }
     }
