@@ -1,17 +1,21 @@
 package ru.binaryblitz.Chisto.ui.order.adapters
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import cn.refactor.library.SmoothCheckBox
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.R.color.greyColor
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity
 import ru.binaryblitz.Chisto.utils.SwipeToDeleteAdapter
-import java.util.*
+import java.util.ArrayList
+import java.util.HashMap
 
 class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SwipeToDeleteAdapter {
 
@@ -19,12 +23,13 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     private val PENDING_REMOVAL_TIMEOUT: Long = 2000
     var itemsPendingRemoval: ArrayList<Treatment>? = ArrayList()
     var undoOn: Boolean = false
+    private var color: Int = Color.parseColor("#4bc2f7")
 
     private val handler = Handler()
     var pendingRunnables: HashMap<Treatment, Runnable> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_treatment_info, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_service, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -33,9 +38,16 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
         val treatment = collection[position]
 
-        holder.name.text = treatment.name
+        setColorForCheckBox(holder.checkBox, color)
+
         holder.description.text = treatment.description
-        holder.index.text = (position + 1).toString()
+        holder.checkBox.isChecked = treatment.select
+
+        holder.itemView.setOnClickListener {
+            setCheckedTreatment(treatment, holder)
+        }
+
+        holder.checkBox.setOnCheckedChangeListener { compoundButton, b -> collection[holder.adapterPosition].select = b }
     }
 
     override fun getItemCount(): Int {
@@ -48,6 +60,33 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
 
     fun getCollection(): ArrayList<Treatment> {
         return collection
+    }
+
+    fun getSelected(): ArrayList<Treatment> {
+        val selected = collection.indices
+                .filter { collection[it].select }
+                .mapTo(ArrayList <Treatment>()) { collection[it] }
+
+        return selected
+    }
+
+    fun setColor(color: Int) {
+        this.color = color
+    }
+
+    private fun setCheckedTreatment(treatment: Treatment, holder: ViewHolder) {
+        treatment.select = !treatment.select
+        holder.checkBox.isChecked = treatment.select
+    }
+
+    private fun setColorForCheckBox(checkBox: SmoothCheckBox, color: Int) {
+        val checkedColor = SmoothCheckBox::class.java.getDeclaredField("mCheckedColor")
+        checkedColor.isAccessible = true
+        checkedColor.set(checkBox, color)
+
+        val unCheckedColor = SmoothCheckBox::class.java.getDeclaredField("mUnCheckedColor")
+        unCheckedColor.isAccessible = true
+        unCheckedColor.set(checkBox, greyColor)
     }
 
     override fun pendingRemoval(position: Int) {
@@ -88,8 +127,7 @@ class EditTreatmentsAdapter(private val context: Activity) : RecyclerView.Adapte
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val name = itemView.findViewById(R.id.name) as TextView
         val description = itemView.findViewById(R.id.description) as TextView
-        val index = itemView.findViewById(R.id.index) as TextView
+        val checkBox = itemView.findViewById(R.id.checkBox) as SmoothCheckBox
     }
 }

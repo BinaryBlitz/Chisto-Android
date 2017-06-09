@@ -12,11 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.TextView;
-
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.crashlytics.android.Crashlytics;
-
 import io.fabric.sdk.android.Fabric;
 import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.entities.Order;
@@ -24,6 +22,7 @@ import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.ui.order.adapters.EditTreatmentsAdapter;
 import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity;
 import ru.binaryblitz.Chisto.utils.AndroidUtilities;
+import ru.binaryblitz.Chisto.utils.Extras;
 import ru.binaryblitz.Chisto.utils.OrderList;
 import ru.binaryblitz.Chisto.utils.SwipeItemDecoration;
 import ru.binaryblitz.Chisto.utils.TouchHelper;
@@ -47,9 +46,9 @@ public class ItemInfoActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
-        setContentView(R.layout.activity_item_info);
+        setContentView(R.layout.activity_select_service);
 
-        count = (TextView) findViewById(R.id.textView);
+        count = (TextView) findViewById(R.id.orderAmountText);
 
         initRecyclerView();
 
@@ -70,6 +69,7 @@ public class ItemInfoActivity extends BaseActivity {
         view.setEmptyView(null);
 
         adapter = new EditTreatmentsAdapter(this);
+        adapter.setColor(getIntent().getIntExtra(Extras.EXTRA_COLOR, 0));
         view.setAdapter(adapter);
 
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new TouchHelper(0, ItemTouchHelper.LEFT, this, view));
@@ -82,9 +82,10 @@ public class ItemInfoActivity extends BaseActivity {
         AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra(EXTRA_COLOR, DEFAULT_COLOR));
 
         if (order != null) {
-            ((TextView) findViewById(R.id.title)).setText(order.getCategory().getName());
-            ((TextView) findViewById(R.id.textView12)).setText(order.getCategory().getDescription());
-            ((TextView) findViewById(R.id.textView)).setText(Integer.toString(order.getCount()));
+            ((TextView) findViewById(R.id.date_text_view)).setText(order.getCategory().getName());
+            ((TextView) findViewById(R.id.item_description)).setText(order.getCategory().getDescription());
+            ((TextView) findViewById(R.id.orderAmountText)).setText(Integer.toString(order.getCount()));
+            (findViewById(R.id.decoration_container)).setVisibility(View.GONE);
         }
     }
 
@@ -96,7 +97,7 @@ public class ItemInfoActivity extends BaseActivity {
             }
         });
 
-        findViewById(R.id.plus).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.cont_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openActivity(order);

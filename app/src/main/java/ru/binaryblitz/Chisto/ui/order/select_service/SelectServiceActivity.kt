@@ -287,7 +287,6 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
     private fun goToOrdersActivity() {
         val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra(EXTRA_COLOR, color)
         startActivity(intent)
     }
