@@ -9,17 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import com.afollestad.materialdialogs.MaterialDialog
 import it.sephiroth.android.library.tooltip.Tooltip
 import it.sephiroth.android.library.tooltip.Tooltip.ClosePolicy
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.entities.Order
-import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity
-import ru.binaryblitz.Chisto.utils.Extras.*
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_CURRENT_ORDER
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DECORATION
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DESCRIPTION
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_ID
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_NAME
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_USE_AREA
 import ru.binaryblitz.Chisto.utils.Image
-import java.util.*
+import java.util.ArrayList
 
 
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -60,7 +64,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.longTreatmentIndicator.visibility = if (item.isLongTreatment) View.VISIBLE else View.GONE
 
         holder.itemView.setOnClickListener {
-            showDialog(item)
+            openSelectServiceScreen(item, true)
         }
 
         holder.longTreatmentIndicator.setOnClickListener {
@@ -74,7 +78,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         }
 
         tooltip = Tooltip.make(context,
-                    Tooltip.Builder(101)
+                Tooltip.Builder(101)
                         .anchor(anchorView, Tooltip.Gravity.TOP)
                         .closePolicy(ClosePolicy()
                                 .insidePolicy(true, false)
@@ -91,35 +95,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         tooltip?.show()
     }
 
-    private fun showDialog(item: CategoryItem) {
-        if (!DeviceInfoStore.getShowDialogFlag(context)) {
-            openActivity(item, false)
-            return
-        }
-
-        MaterialDialog.Builder(context)
-                .title(R.string.decoration_question)
-                .content(context.getString(R.string.decoration_help))
-                .positiveText(R.string.yes_code)
-                .negativeText(R.string.no_code)
-                .checkBoxPromptRes(R.string.dont_ask_again, false, null)
-                .onPositive { _, _ ->
-                    run { openActivity(item, true) }
-                }
-                .onNegative { _, _ ->
-                    run { openActivity(item, false) }
-                }
-                .onAny { dialog, _ ->
-                    run { saveShowDialogFlag(!dialog.isPromptCheckBoxChecked) }
-                }
-                .show()
-    }
-
-    private fun saveShowDialogFlag(isShow: Boolean) {
-        DeviceInfoStore.saveShowDialogFlag(context, isShow)
-    }
-
-    private fun openActivity(item: CategoryItem, decor: Boolean) {
+    private fun openSelectServiceScreen(item: CategoryItem, decor: Boolean) {
         val intent = Intent(context, SelectServiceActivity::class.java)
         intent.putExtra(EXTRA_DECORATION, decor)
         intent.putExtra(EXTRA_ID, item.id)
