@@ -45,7 +45,7 @@ import java.util.Locale
 
 class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
-    private var adapter: TreatmentsAdapter? = null
+    private lateinit var adapter: TreatmentsAdapter
 
     val format = "#.#"
 
@@ -84,8 +84,8 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
     override fun showTreatments(treatments: List<Treatment>) {
         sort(treatments as ArrayList<Treatment>)
-        adapter!!.setCollection(treatments)
-        adapter!!.notifyDataSetChanged()
+        adapter.setCollection(treatments)
+        adapter.notifyDataSetChanged()
     }
 
     override fun updateOrderAmount(amount: Int) {
@@ -228,9 +228,9 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         view.layoutManager = LinearLayoutManager(this)
         view.itemAnimator = DefaultItemAnimator()
         view.setHasFixedSize(true)
-
+        color = intent.getStringExtra(EXTRA_COLOR)
         adapter = TreatmentsAdapter()
-        adapter!!.setColor(intent.getStringExtra(EXTRA_COLOR))
+        adapter.setColor(color)
         view.adapter = adapter
     }
 
@@ -273,7 +273,7 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     private fun addTreatments() {
         val decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
         if (decorationCheckBox.isChecked) {
-            adapter!!.add(Treatment(
+            adapter.add(Treatment(
                     AppConfig.decorationId,
                     getString(R.string.decoration),
                     getString(R.string.decoration_help),
@@ -281,23 +281,24 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
                     intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
         }
 
-        OrderList.addTreatments(adapter!!.getSelected())
+        OrderList.addTreatments(adapter.getSelected())
         goToOrdersActivity()
     }
 
     private fun goToOrdersActivity() {
         val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra(EXTRA_COLOR, color)
         startActivity(intent)
     }
 
     private fun editTreatments() {
-        OrderList.addTreatmentsForEditing(adapter!!.getSelected())
+        OrderList.addTreatmentsForEditing(adapter.getSelected())
     }
 
     private fun isTreatmentsSelected(): Boolean {
-        return adapter!!.getSelected().size != 0 &&
-                !(adapter!!.getSelected().size == 1 && adapter!!.getSelected()[0].id == AppConfig.decorationId)
+        return adapter.getSelected().size != 0 &&
+                !(adapter.getSelected().size == 1 && adapter.getSelected()[0].id == AppConfig.decorationId)
     }
 
     private fun sort(collection: ArrayList<Treatment>) {

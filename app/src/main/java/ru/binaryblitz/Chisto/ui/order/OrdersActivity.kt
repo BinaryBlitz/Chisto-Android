@@ -30,6 +30,7 @@ import ru.binaryblitz.Chisto.ui.laundries.LaundriesActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.OrdersAdapter
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
 import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.utils.SwipeItemDecoration
 import ru.binaryblitz.Chisto.utils.TouchHelper
@@ -37,10 +38,11 @@ import ru.binaryblitz.Chisto.views.RecyclerListView
 
 class OrdersActivity : BaseActivity() {
 
-    private var adapter: OrdersAdapter? = null
-    private var continueBtn: TextView? = null
-    private var addItemButton: FloatingActionButton? = null
+    private lateinit var adapter: OrdersAdapter
+    private lateinit var continueBtn: TextView
+    private lateinit var addItemButton: FloatingActionButton
     private var dialogOpened = false
+    private lateinit var itemColor: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -170,6 +172,8 @@ class OrdersActivity : BaseActivity() {
         view.emptyView = findViewById(R.id.empty_orders)
 
         adapter = OrdersAdapter(this)
+        itemColor = intent.getStringExtra(EXTRA_COLOR)
+        adapter.setItemColor(itemColor)
         view.adapter = adapter
 
         val mItemTouchHelper = ItemTouchHelper(TouchHelper(0, ItemTouchHelper.LEFT, this, view))
@@ -225,10 +229,10 @@ class OrdersActivity : BaseActivity() {
             return
         }
 
-        adapter!!.setCollection(OrderList.get()!!)
-        adapter!!.notifyDataSetChanged()
+        adapter.setCollection(OrderList.get()!!)
+        adapter.notifyDataSetChanged()
 
-        if (adapter!!.itemCount != 0) {
+        if (adapter.itemCount != 0) {
             addItemButton?.visibility = View.VISIBLE
             setContinueButtonEnabled()
         } else {
@@ -238,8 +242,8 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun setContinueButtonEnabled() {
-        continueBtn!!.setText(R.string.continue_btn)
-        continueBtn!!.setOnClickListener {
+        continueBtn.setText(R.string.continue_btn)
+        continueBtn.setOnClickListener {
             LaundriesActivity.longTreatment = adapter!!.hasItemsWithLongTreatment()
             val intent = Intent(this@OrdersActivity, LaundriesActivity::class.java)
             startActivity(intent)
@@ -247,9 +251,9 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun setContinueButtonDisabled() {
-        continueBtn!!.setText(R.string.nothing_selected)
-        continueBtn!!.isEnabled = false
-        continueBtn!!.setOnClickListener(null)
+        continueBtn.setText(R.string.nothing_selected)
+        continueBtn.isEnabled = false
+        continueBtn.setOnClickListener(null)
     }
 
     companion object {
