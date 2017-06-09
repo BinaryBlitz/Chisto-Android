@@ -2,6 +2,7 @@ package ru.binaryblitz.Chisto.ui.order.adapters
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,14 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-
-import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity
-import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.entities.Order
+import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity
 import ru.binaryblitz.Chisto.utils.Image
 import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.utils.SwipeToDeleteAdapter
-import java.util.*
+import java.util.ArrayList
+import java.util.HashMap
 
 class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SwipeToDeleteAdapter {
     private var collection = ArrayList<Order>()
@@ -27,6 +28,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     val EXTRA_INDEX = "index"
     private val handler = Handler()
     var pendingRunnables: HashMap<Order, Runnable> = HashMap()
+    private var color = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_order, parent, false)
@@ -58,15 +60,20 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.count.text = "\u00D7" + order.count + context.getString(R.string.count_postfix)
 
         Image.loadPhoto(context, order.category.icon, holder.icon)
-        holder.icon.setColorFilter(order.color)
+        holder.icon.setColorFilter(color)
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ItemInfoActivity::class.java)
             OrderList.edit(holder.adapterPosition)
-            intent.putExtra(EXTRA_COLOR, order.color)
+            intent.putExtra(EXTRA_COLOR, color)
             intent.putExtra(EXTRA_INDEX, holder.adapterPosition)
             context.startActivity(intent)
         }
+    }
+
+    fun setItemColor(color: String) {
+        if (color.isEmpty()) return
+        this.color = Color.parseColor(color)
     }
 
     override fun getItemCount(): Int {
