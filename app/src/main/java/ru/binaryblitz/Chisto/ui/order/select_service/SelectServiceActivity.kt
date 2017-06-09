@@ -12,6 +12,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import cn.refactor.library.SmoothCheckBox
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
@@ -27,6 +28,7 @@ import ru.binaryblitz.Chisto.utils.Animations
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
 import ru.binaryblitz.Chisto.utils.Extras.EXTRA_CURRENT_ORDER
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DECORATION
 import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DESCRIPTION
 import ru.binaryblitz.Chisto.utils.Extras.EXTRA_ID
 import ru.binaryblitz.Chisto.utils.Extras.EXTRA_NAME
@@ -51,6 +53,7 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
     private var width: Int = 0
     private var length: Int = 0
+    private var color: String = ""
     private var dialogOpened = false
     private lateinit var presenter: TreatmentsPresenterImpl
 
@@ -226,8 +229,8 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         view.itemAnimator = DefaultItemAnimator()
         view.setHasFixedSize(true)
 
-        adapter = TreatmentsAdapter(this)
-        adapter!!.setColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+        adapter = TreatmentsAdapter()
+        adapter!!.setColor(intent.getStringExtra(EXTRA_COLOR))
         view.adapter = adapter
     }
 
@@ -268,6 +271,16 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     }
 
     private fun addTreatments() {
+        val decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
+        if (decorationCheckBox.isChecked) {
+            adapter!!.add(Treatment(
+                    AppConfig.decorationId,
+                    getString(R.string.decoration),
+                    getString(R.string.decoration_help),
+                    0,
+                    intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
+        }
+
         OrderList.addTreatments(adapter!!.getSelected())
         goToOrdersActivity()
     }

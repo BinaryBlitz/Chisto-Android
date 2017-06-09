@@ -135,36 +135,111 @@
         </android.support.design.widget.AppBarLayout>
 
         <ScrollView
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:background="@color/defaultBackgroundColor"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="56dp"
-            >
+            android:background="@color/defaultBackgroundColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/materials"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/order_material"
-                    android:textColor="@color/greyColor"
-                    android:textSize="12sp" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <ru.binaryblitz.Chisto.views.RecyclerListView
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"></ru.binaryblitz.Chisto.views.RecyclerListView>
+                    <TextView
+                        android:id="@+id/materials"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/order_material"
+                        android:textColor="@color/greyColor"
+                        android:textSize="12sp" />
+
+                    <ru.binaryblitz.Chisto.views.RecyclerListView
+                        android:id="@+id/recyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior"></ru.binaryblitz.Chisto.views.RecyclerListView>
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_gravity="center_vertical"
+                            android:text="@string/decoration"
+                            android:textColor="@color/greyColor"
+                            android:textSize="12sp" />
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/whiteColor"
+                            android:foreground="?attr/selectableItemBackground">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginEnd="64dp"
+                                android:layout_marginLeft="8dp"
+                                android:layout_marginRight="64dp"
+                                android:layout_gravity="center_vertical"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/description"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="@string/decoration_help"
+                                    android:textColor="#727272"
+                                    android:textSize="14sp" />
+                            </LinearLayout>
+
+                            <cn.refactor.library.SmoothCheckBox
+                                android:id="@+id/decor_treatment_checkbox"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginBottom="24dp"
+                                android:layout_marginEnd="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_gravity="center_vertical|end"
+                                app:color_checked="@color/accent"
+                                app:color_unchecked="#CFCFCF" />
+
+                        </FrameLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1px"
+                            android:layout_gravity="bottom"
+                            android:background="#b6b6b6" />
+
+                    </LinearLayout>
+                </LinearLayout>
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -173,57 +248,45 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="16dp"
                         android:layout_marginBottom="8dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="16dp"
-                        android:text="@string/decoration"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/note"
                         android:textColor="@color/greyColor"
                         android:textSize="12sp" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/whiteColor">
+                        android:layout_height="match_parent"
+                        android:background="@color/whiteColor"
+                        android:foreground="?attr/selectableItemBackground">
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="8dp"
-                            android:layout_marginEnd="64dp"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginRight="64dp"
-                            android:layout_marginStart="16dp"
+                            android:layout_height="match_parent"
                             android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_gravity="center_vertical"
                             android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/description"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
                                 android:layout_marginTop="4dp"
-                                android:text="@string/decoration_help"
+                                android:layout_gravity="center_vertical"
+                                android:text="@string/note_text"
                                 android:textColor="#727272"
-                                android:textSize="14sp" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
-                        <cn.refactor.library.SmoothCheckBox
-                            android:id="@+id/checkBox"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_gravity="center_vertical|end"
-                            android:layout_marginBottom="24dp"
-                            android:layout_marginEnd="12dp"
-                            android:layout_marginRight="12dp"
-                            android:layout_marginTop="24dp"
-                            app:color_unchecked_stroke="#CFCFCF"
-                            app:stroke_width="0dp" />
 
                     </FrameLayout>
 
@@ -234,6 +297,7 @@
                         android:background="#b6b6b6" />
 
                 </LinearLayout>
+
             </LinearLayout>
         </ScrollView>
 
@@ -242,10 +306,10 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="68dp"
-            android:layout_gravity="bottom"
             android:layout_marginBottom="-8dp"
             android:layout_marginLeft="-12dp"
             android:layout_marginRight="-12dp"
+            android:layout_gravity="bottom"
             android:gravity="center"
             android:text="@string/ready"
             android:textColor="#ffffff"

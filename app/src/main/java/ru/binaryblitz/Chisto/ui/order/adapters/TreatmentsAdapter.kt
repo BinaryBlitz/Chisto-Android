@@ -1,6 +1,5 @@
 package ru.binaryblitz.Chisto.ui.order.adapters
 
-import android.app.Activity
 import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -11,9 +10,9 @@ import cn.refactor.library.SmoothCheckBox
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.utils.OrderList
-import java.util.*
+import java.util.ArrayList
 
-class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TreatmentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var collection = ArrayList<Treatment>()
     private var color: Int = Color.parseColor("#4bc2f7")
@@ -25,8 +24,9 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         return ViewHolder(itemView)
     }
 
-    fun setColor(color: Int) {
-        this.color = color
+    fun setColor(color: String) {
+        if (color.isEmpty()) return
+        this.color = Color.parseColor(color)
     }
 
     fun add(treatment: Treatment) {
@@ -61,11 +61,19 @@ class TreatmentsAdapter(private val context: Activity) : RecyclerView.Adapter<Re
         holder.checkBox.isChecked = treatment.select
 
         holder.itemView.setOnClickListener {
-            treatment.select = !treatment.select
-            holder.checkBox.isChecked = treatment.select
+            setCheckedTreatment(treatment, holder)
+        }
+
+        if (position == 0) {
+            setCheckedTreatment(treatment, holder)
         }
 
         holder.checkBox.setOnCheckedChangeListener { compoundButton, b -> collection[holder.adapterPosition].select = b }
+    }
+
+    private fun setCheckedTreatment(treatment: Treatment, holder: ViewHolder) {
+        treatment.select = !treatment.select
+        holder.checkBox.isChecked = treatment.select
     }
 
     private fun setColorForCheckBox(checkBox: SmoothCheckBox, color: Int) {
