@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import cn.refactor.library.SmoothCheckBox
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
@@ -23,18 +23,29 @@ import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity.EXTRA_EDIT
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter
-import ru.binaryblitz.Chisto.utils.*
-import ru.binaryblitz.Chisto.utils.Extras.*
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.AppConfig
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_CURRENT_ORDER
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DECORATION
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DESCRIPTION
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_ID
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_NAME
+import ru.binaryblitz.Chisto.utils.Extras.EXTRA_USE_AREA
+import ru.binaryblitz.Chisto.utils.LogUtil
+import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
-import java.util.*
+import java.util.ArrayList
+import java.util.Collections
+import java.util.Locale
 
 class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
     private var adapter: TreatmentsAdapter? = null
-    private var layout: SwipeRefreshLayout? = null
 
     val format = "#.#"
 
@@ -42,6 +53,7 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
     private var width: Int = 0
     private var length: Int = 0
+    private var color: String = ""
     private var dialogOpened = false
     private lateinit var presenter: TreatmentsPresenterImpl
 
@@ -217,13 +229,8 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         view.itemAnimator = DefaultItemAnimator()
         view.setHasFixedSize(true)
 
-        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout!!.setOnRefreshListener(null)
-        layout!!.isEnabled = false
-        layout!!.setColorSchemeResources(R.color.colorAccent)
-
-        adapter = TreatmentsAdapter(this)
-        adapter!!.setColor(intent.getIntExtra(EXTRA_COLOR, ContextCompat.getColor(this, R.color.blackColor)))
+        adapter = TreatmentsAdapter()
+        adapter!!.setColor(intent.getStringExtra(EXTRA_COLOR))
         view.adapter = adapter
     }
 
@@ -264,6 +271,16 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     }
 
     private fun addTreatments() {
+        val decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
+        if (decorationCheckBox.isChecked) {
+            adapter!!.add(Treatment(
+                    AppConfig.decorationId,
+                    getString(R.string.decoration),
+                    getString(R.string.decoration_help),
+                    0,
+                    intent.getBooleanExtra(EXTRA_DECORATION, false), AppConfig.decorationId))
+        }
+
         OrderList.addTreatments(adapter!!.getSelected())
         goToOrdersActivity()
     }
