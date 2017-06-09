@@ -27,13 +27,14 @@ import ru.binaryblitz.Chisto.ui.about.AboutActivity
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.categories.adapters.CategoriesAdapter
 import ru.binaryblitz.Chisto.ui.categories.adapters.CategoryItemsAdapter
+import ru.binaryblitz.Chisto.ui.order.MyOrdersActivity
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
 import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.views.RecyclerListView
-import java.util.*
+import java.util.ArrayList
 
 class CategoryActivity : BaseActivity(), CategoryView {
     val EXTRA_URL = "url"
@@ -218,11 +219,11 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
 
     fun initDrawer(toolbar: android.support.v7.widget.Toolbar, activity: Activity) {
-        val itemMain = PrimaryDrawerItem().withName(getString(R.string.select_part)).withIcon(R.drawable.ic_app_mini_logo)
-        val itemContactData = PrimaryDrawerItem().withName(getString(R.string.contact_data)).withIcon(R.drawable.ic_user_blue)
-        val itemOrders = PrimaryDrawerItem().withName(getString(R.string.my_orders)).withIcon(R.drawable.ic_my_orders)
-        val itemAbout = PrimaryDrawerItem().withName(getString(R.string.about)).withIcon(R.drawable.ic_app_mini_logo)
-        val itemRules = PrimaryDrawerItem().withName(getString(R.string.rules)).withIcon(R.drawable.ic_help)
+        val itemMain = PrimaryDrawerItem().withName(getString(R.string.select_part)).withIcon(R.drawable.ic_app_mini_logo).withSelectable(false)
+        val itemContactData = PrimaryDrawerItem().withName(getString(R.string.contact_data)).withIcon(R.drawable.ic_user_blue).withSelectable(false)
+        val itemOrders = PrimaryDrawerItem().withName(getString(R.string.my_orders)).withIcon(R.drawable.ic_my_orders).withSelectable(false)
+        val itemAbout = PrimaryDrawerItem().withName(getString(R.string.about)).withIcon(R.drawable.ic_app_mini_logo).withSelectable(false)
+        val itemRules = PrimaryDrawerItem().withName(getString(R.string.rules)).withIcon(R.drawable.ic_help).withSelectable(false)
 
         val accountHeader: AccountHeader = AccountHeaderBuilder()
                 .withActivity(this)
@@ -249,7 +250,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
                     when (drawerItem) {
                         itemMain -> openActivity(CategoryActivity::class.java)
                         itemContactData -> openActivity(ContactInfoActivity::class.java)
-                        itemOrders -> openActivity(OrdersActivity::class.java)
+                        itemOrders -> openActivity(MyOrdersActivity::class.java)
                         itemAbout -> openActivity(AboutActivity::class.java)
                         itemRules -> {
                             val intent = Intent(this@CategoryActivity, WebActivity::class.java)

@@ -26,8 +26,11 @@ import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
 import ru.binaryblitz.Chisto.ui.laundries.LaundriesActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.OrdersAdapter
-import ru.binaryblitz.Chisto.ui.profile.ProfileActivity
-import ru.binaryblitz.Chisto.utils.*
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.OrderList
+import ru.binaryblitz.Chisto.utils.SwipeItemDecoration
+import ru.binaryblitz.Chisto.utils.TouchHelper
 import ru.binaryblitz.Chisto.views.RecyclerListView
 
 class OrdersActivity : BaseActivity() {
@@ -178,10 +181,6 @@ class OrdersActivity : BaseActivity() {
 
     private fun setOnClickListeners() {
         findViewById(R.id.left_btn).setOnClickListener {
-            openActivity(ProfileActivity::class.java)
-        }
-
-        findViewById(R.id.right_btn).setOnClickListener {
             openActivity(CategoryActivity::class.java)
         }
 

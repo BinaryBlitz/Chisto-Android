@@ -41,20 +41,9 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerInside"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_user_white"
+                        android:src="@drawable/ic_back"
                         android:padding="13dp"
                         android:layout_gravity="start"
-                />
-
-                <ImageView
-                        android:id="@+id/right_btn"
-                        android:layout_width="56dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_plus"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="13dp"
-                        android:layout_gravity="end"
                 />
 
                 <TextView
