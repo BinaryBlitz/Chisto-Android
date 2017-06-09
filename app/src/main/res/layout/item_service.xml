@@ -38,10 +38,10 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center_vertical|end"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="24dp"
             android:layout_marginEnd="12dp"
             android:layout_marginRight="12dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="24dp"
             app:color_unchecked_stroke="#CFCFCF"
             app:stroke_width="0dp" />
 
