@@ -34,10 +34,10 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize">
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical">
 
         <ru.binaryblitz.Chisto.views.RecyclerListView
             android:id="@+id/recyclerView"
@@ -45,11 +45,16 @@
             android:layout_height="wrap_content"
             android:background="#F7F7F7"></ru.binaryblitz.Chisto.views.RecyclerListView>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_gravity="bottom"
+            android:background="#b6b6b6" />
+
         <ru.binaryblitz.Chisto.views.RecyclerListView
             android:id="@+id/categoriesItems"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ru.binaryblitz.Chisto.views.RecyclerListView>
+            android:layout_height="match_parent"></ru.binaryblitz.Chisto.views.RecyclerListView>
 
     </LinearLayout>
 </FrameLayout>
