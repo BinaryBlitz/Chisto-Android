@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import cn.refactor.library.SmoothCheckBox
@@ -56,6 +57,8 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     private var color: String = ""
     private var dialogOpened = false
     private lateinit var presenter: TreatmentsPresenterImpl
+    private lateinit var decorationView: ViewGroup
+    private lateinit var decorationCheckBox: SmoothCheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +101,16 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         AndroidUtilities.colorAndroidBar(this, Color.parseColor(color))
         (findViewById(R.id.date_text_view) as TextView).text = intent.getStringExtra(EXTRA_NAME)
         (findViewById(R.id.item_description) as TextView).text = intent.getStringExtra(EXTRA_DESCRIPTION)
+        decorationView = findViewById(R.id.decoration_view) as ViewGroup
+        decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
+        decorationView.setOnClickListener {
+            if (!decorationCheckBox.isChecked) {
+                decorationCheckBox.setChecked(true, true)
+            }
+            else {
+                decorationCheckBox.setChecked(false, true)
+            }
+        }
     }
 
     private fun setOnClickListeners() {
@@ -271,7 +284,6 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     }
 
     private fun addTreatments() {
-        val decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
         if (decorationCheckBox.isChecked) {
             adapter.add(Treatment(
                     AppConfig.decorationId,

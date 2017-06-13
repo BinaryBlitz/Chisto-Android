@@ -73,7 +73,7 @@ class TreatmentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private fun setCheckedTreatment(treatment: Treatment, holder: ViewHolder) {
         treatment.select = !treatment.select
-        holder.checkBox.isChecked = treatment.select
+        holder.checkBox.setChecked(treatment.select, true)
     }
 
     private fun setColorForCheckBox(checkBox: SmoothCheckBox, color: Int) {
