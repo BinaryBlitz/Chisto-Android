@@ -8,7 +8,9 @@ import android.os.Handler
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
+import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -21,6 +23,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.R.string
 import ru.binaryblitz.Chisto.entities.MyOrder
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
@@ -32,15 +35,16 @@ import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.Animations
 import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
 import ru.binaryblitz.Chisto.utils.OrderList
-import ru.binaryblitz.Chisto.utils.SwipeItemDecoration
-import ru.binaryblitz.Chisto.utils.TouchHelper
 import ru.binaryblitz.Chisto.views.RecyclerListView
 
 class OrdersActivity : BaseActivity() {
 
     private lateinit var adapter: OrdersAdapter
     private lateinit var continueBtn: TextView
+    private lateinit var titleText: TextView
     private lateinit var addItemButton: FloatingActionButton
+    private lateinit var toolbar: Toolbar
+    private lateinit var removeBtn: MenuItem
     private var dialogOpened = false
     private lateinit var itemColor: String
 
@@ -50,7 +54,7 @@ class OrdersActivity : BaseActivity() {
         setContentView(R.layout.activity_orders)
 
         continueBtn = findViewById(R.id.textView2) as TextView
-        initRecyclerView()
+        initViewElements()
         setOnClickListeners()
 
         Handler().post {
@@ -164,7 +168,7 @@ class OrdersActivity : BaseActivity() {
         }
     }
 
-    private fun initRecyclerView() {
+    private fun initViewElements() {
         val view = findViewById(R.id.recyclerView) as RecyclerListView
         view.layoutManager = LinearLayoutManager(this)
         view.itemAnimator = DefaultItemAnimator()
@@ -175,10 +179,24 @@ class OrdersActivity : BaseActivity() {
         itemColor = intent.getStringExtra(EXTRA_COLOR)
         adapter.setItemColor(itemColor)
         view.adapter = adapter
+        adapter.onItemSelectAction.subscribe { isSelected -> showSelection(isSelected) }
 
-        val mItemTouchHelper = ItemTouchHelper(TouchHelper(0, ItemTouchHelper.LEFT, this, view))
-        mItemTouchHelper.attachToRecyclerView(view)
-        view.addItemDecoration(SwipeItemDecoration())
+        toolbar = findViewById(R.id.toolbar) as Toolbar
+        setSupportActionBar(toolbar)
+        titleText = findViewById(R.id.date_text_view) as TextView
+    }
+
+    private fun showSelection(selected: Boolean) {
+        setToolbarTitle(selected)
+        removeBtn.isVisible = selected
+    }
+
+    private fun setToolbarTitle(selected: Boolean) {
+        if (selected) {
+            titleText.text = getString(string.select_order)
+        } else {
+            titleText.text = getString(string.order)
+        }
     }
 
     private fun openActivity(activity: Class<out Activity>) {
@@ -209,7 +227,7 @@ class OrdersActivity : BaseActivity() {
         }
 
         addItemButton = findViewById(R.id.add_item) as FloatingActionButton
-        addItemButton?.setOnClickListener { openActivity(CategoryActivity::class.java)}
+        addItemButton.setOnClickListener { openActivity(CategoryActivity::class.java) }
     }
 
     override fun onBackPressed() {
@@ -233,10 +251,10 @@ class OrdersActivity : BaseActivity() {
         adapter.notifyDataSetChanged()
 
         if (adapter.itemCount != 0) {
-            addItemButton?.visibility = View.VISIBLE
+            addItemButton.visibility = View.VISIBLE
             setContinueButtonEnabled()
         } else {
-            addItemButton?.visibility = View.GONE
+            addItemButton.visibility = View.GONE
             setContinueButtonDisabled()
         }
     }
@@ -254,6 +272,23 @@ class OrdersActivity : BaseActivity() {
         continueBtn.setText(R.string.nothing_selected)
         continueBtn.isEnabled = false
         continueBtn.setOnClickListener(null)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_order, menu)
+
+        removeBtn = menu.findItem(R.id.action_remove)
+        removeBtn.isVisible = false
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_remove -> {
+                adapter.removeSelectedOrders()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     companion object {

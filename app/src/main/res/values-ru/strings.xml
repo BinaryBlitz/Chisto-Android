@@ -234,4 +234,5 @@
     <string name="order_material">Материал вещи</string>
     <string name="note_text">В зависимости от ваших загрязнений и материала вещи, технолог химчистки применит к ней аквачистку, либо химчистку, а для рубашек или постельного белья бережную стирку</string>
     <string name="note">Примечание</string>
+    <string name="select_order">Выбор</string>
 </resources>
