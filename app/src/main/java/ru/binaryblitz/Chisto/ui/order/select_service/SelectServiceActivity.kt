@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import cn.refactor.library.SmoothCheckBox
@@ -20,8 +21,8 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
+import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
 import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity.EXTRA_EDIT
-import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.Animations
@@ -56,6 +57,8 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     private var color: String = ""
     private var dialogOpened = false
     private lateinit var presenter: TreatmentsPresenterImpl
+    private lateinit var decorationView: ViewGroup
+    private lateinit var decorationCheckBox: SmoothCheckBox
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +101,15 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         AndroidUtilities.colorAndroidBar(this, Color.parseColor(color))
         (findViewById(R.id.date_text_view) as TextView).text = intent.getStringExtra(EXTRA_NAME)
         (findViewById(R.id.item_description) as TextView).text = intent.getStringExtra(EXTRA_DESCRIPTION)
+        decorationView = findViewById(R.id.decoration_view) as ViewGroup
+        decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
+        val checkedColor = SmoothCheckBox::class.java.getDeclaredField("mCheckedColor")
+        checkedColor.isAccessible = true
+        checkedColor.set(decorationCheckBox, Color.parseColor(color))
+
+        decorationView.setOnClickListener {
+            decorationCheckBox.setChecked(decorationCheckBox.isChecked, true)
+        }
     }
 
     private fun setOnClickListeners() {
@@ -271,7 +283,6 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     }
 
     private fun addTreatments() {
-        val decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
         if (decorationCheckBox.isChecked) {
             adapter.add(Treatment(
                     AppConfig.decorationId,
@@ -282,12 +293,13 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         }
 
         OrderList.addTreatments(adapter.getSelected())
-        goToOrdersActivity()
+        openSelectCategoriesScreen()
     }
 
-    private fun goToOrdersActivity() {
-        val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
+    private fun openSelectCategoriesScreen() {
+        val intent = Intent(this@SelectServiceActivity, CategoryActivity::class.java)
         intent.putExtra(EXTRA_COLOR, color)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
 
