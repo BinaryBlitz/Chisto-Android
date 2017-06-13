@@ -222,7 +222,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
 
     fun initDrawer(toolbar: android.support.v7.widget.Toolbar, activity: Activity) {
-        val itemMain = PrimaryDrawerItem().withName(getString(R.string.select_part)).withIcon(R.drawable.ic_app_mini_logo).withSelectable(false)
         val itemContactData = PrimaryDrawerItem().withName(getString(R.string.contact_data)).withIcon(R.drawable.ic_user_blue).withSelectable(false)
         val itemOrders = PrimaryDrawerItem().withName(getString(R.string.my_orders)).withIcon(R.drawable.ic_my_orders).withSelectable(false)
         val itemAbout = PrimaryDrawerItem().withName(getString(R.string.about)).withIcon(R.drawable.ic_app_mini_logo).withSelectable(false)
@@ -242,7 +241,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
                 .withAccountHeader(accountHeader)
                 .withSelectedItem(-1)
                 .addDrawerItems(
-                        itemMain,
                         itemContactData,
                         itemOrders,
                         DividerDrawerItem(),
@@ -251,7 +249,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
                 )
                 .withOnDrawerItemClickListener { view, position, drawerItem ->
                     when (drawerItem) {
-                        itemMain -> openActivity(CategoryActivity::class.java)
                         itemContactData -> openActivity(ContactInfoActivity::class.java)
                         itemOrders -> openActivity(MyOrdersActivity::class.java)
                         itemAbout -> openActivity(AboutActivity::class.java)
