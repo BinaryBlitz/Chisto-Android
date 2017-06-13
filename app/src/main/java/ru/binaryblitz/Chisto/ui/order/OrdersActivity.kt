@@ -189,6 +189,7 @@ class OrdersActivity : BaseActivity() {
     private fun showSelection(selected: Boolean) {
         setToolbarTitle(selected)
         removeBtn.isVisible = selected
+        update()
     }
 
     private fun setToolbarTitle(selected: Boolean) {
