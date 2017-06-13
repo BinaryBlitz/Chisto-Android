@@ -21,8 +21,8 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
+import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
 import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity.EXTRA_EDIT
-import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.Animations
@@ -298,12 +298,13 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         }
 
         OrderList.addTreatments(adapter.getSelected())
-        goToOrdersActivity()
+        openSelectCategoriesScreen()
     }
 
-    private fun goToOrdersActivity() {
-        val intent = Intent(this@SelectServiceActivity, OrdersActivity::class.java)
+    private fun openSelectCategoriesScreen() {
+        val intent = Intent(this@SelectServiceActivity, CategoryActivity::class.java)
         intent.putExtra(EXTRA_COLOR, color)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(intent)
     }
 
