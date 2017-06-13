@@ -108,12 +108,7 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         checkedColor.set(decorationCheckBox, Color.parseColor(color))
 
         decorationView.setOnClickListener {
-            if (!decorationCheckBox.isChecked) {
-                decorationCheckBox.setChecked(true, true)
-            }
-            else {
-                decorationCheckBox.setChecked(false, true)
-            }
+            decorationCheckBox.setChecked(decorationCheckBox.isChecked, true)
         }
     }
 
