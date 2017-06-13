@@ -103,6 +103,10 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
         (findViewById(R.id.item_description) as TextView).text = intent.getStringExtra(EXTRA_DESCRIPTION)
         decorationView = findViewById(R.id.decoration_view) as ViewGroup
         decorationCheckBox = findViewById(R.id.decor_treatment_checkbox) as SmoothCheckBox
+        val checkedColor = SmoothCheckBox::class.java.getDeclaredField("mCheckedColor")
+        checkedColor.isAccessible = true
+        checkedColor.set(decorationCheckBox, Color.parseColor(color))
+
         decorationView.setOnClickListener {
             if (!decorationCheckBox.isChecked) {
                 decorationCheckBox.setChecked(true, true)
