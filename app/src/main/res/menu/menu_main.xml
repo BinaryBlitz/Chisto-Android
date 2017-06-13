@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
+        app:actionLayout="@layout/menu_action_item_badge"
         android:icon="@drawable/ic_shopping_cart"
         android:id="@+id/action_my_orders"
         android:orderInCategory="100"

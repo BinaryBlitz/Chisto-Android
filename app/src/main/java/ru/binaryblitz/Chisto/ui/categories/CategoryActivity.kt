@@ -13,6 +13,8 @@ import android.view.MenuItem
 import android.view.View
 import com.crashlytics.android.Crashlytics
 import com.miguelcatalan.materialsearchview.MaterialSearchView
+import com.mikepenz.actionitembadge.library.ActionItemBadge
+import com.mikepenz.actionitembadge.library.ActionItemBadge.BadgeStyles.RED
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -20,6 +22,7 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import io.fabric.sdk.android.Fabric
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.R.drawable
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.network.ServerApi
@@ -34,6 +37,7 @@ import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
+import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.ArrayList
 
@@ -53,6 +57,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private lateinit var categoryItemsListView: RecyclerListView
 
     private lateinit var toolbar: Toolbar
+    private var cartMenuItem: MenuItem? = null
     private lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -173,8 +178,15 @@ class CategoryActivity : BaseActivity(), CategoryView {
         searchView.setVoiceSearch(false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        cartMenuItem?.let { updateMenuBadge() }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        cartMenuItem = menu.findItem(R.id.action_my_orders)
+        updateMenuBadge()
 
         val item = menu.findItem(R.id.action_search)
         searchView.setMenuItem(item)
@@ -182,12 +194,18 @@ class CategoryActivity : BaseActivity(), CategoryView {
         return true
     }
 
+    private fun updateMenuBadge() {
+        ActionItemBadge.update(this, cartMenuItem, resources.getDrawable(drawable.ic_shopping_cart),
+                RED, OrderList.get()!!.size)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             R.id.action_my_orders -> {
                 val intent = Intent(this@CategoryActivity, OrdersActivity::class.java)
                 intent.putExtra(EXTRA_COLOR, color)
-                startActivity(intent)}
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
