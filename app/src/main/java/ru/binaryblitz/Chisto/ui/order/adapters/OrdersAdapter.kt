@@ -50,7 +50,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
                 description += order.treatments!![i].name + " \u2022 "
             }
 
-            description += order.treatments!![order.treatments!!.size - 1].name
+            description += order.treatments!![order.treatments!!.size - 1].description
         }
 
         holder.description.text = description
