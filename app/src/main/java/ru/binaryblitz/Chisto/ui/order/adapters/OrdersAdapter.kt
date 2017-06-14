@@ -63,7 +63,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.itemView.setOnClickListener {
             if (!isSelectionEnabled) {
                 openItemInfoScreen(holder)
-                return
+                return@setOnClickListener
             }
 
             if (holder.itemView.isSelected) {
