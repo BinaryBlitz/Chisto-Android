@@ -3,31 +3,28 @@ package ru.binaryblitz.Chisto.ui.order.adapters
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
-import android.os.Handler
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import io.reactivex.subjects.PublishSubject
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity
 import ru.binaryblitz.Chisto.utils.Image
 import ru.binaryblitz.Chisto.utils.OrderList
-import ru.binaryblitz.Chisto.utils.SwipeToDeleteAdapter
 import java.util.ArrayList
-import java.util.HashMap
 
-class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), SwipeToDeleteAdapter {
+class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var collection = ArrayList<Order>()
-    private val PENDING_REMOVAL_TIMEOUT: Long = 2000
-    var itemsPendingRemoval: ArrayList<Order> = ArrayList()
-    var undoOn = false
+    private var selectedPositions = ArrayList<Order>()
+    val onItemSelectAction: PublishSubject<Boolean> = PublishSubject.create()
+
     val EXTRA_COLOR = "color"
     val EXTRA_INDEX = "index"
-    private val handler = Handler()
-    var pendingRunnables: HashMap<Order, Runnable> = HashMap()
+    private var isSelectionEnabled: Boolean = false
     private var color = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -53,7 +50,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
                 description += order.treatments!![i].name + " \u2022 "
             }
 
-            description += order.treatments!![order.treatments!!.size - 1].name
+            description += order.treatments!![order.treatments!!.size - 1].description
         }
 
         holder.description.text = description
@@ -61,19 +58,86 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
         Image.loadPhoto(context, order.category.icon, holder.icon)
         holder.icon.setColorFilter(color)
+        setItemViewColor(holder.itemView)
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, ItemInfoActivity::class.java)
-            OrderList.edit(holder.adapterPosition)
-            intent.putExtra(EXTRA_COLOR, color)
-            intent.putExtra(EXTRA_INDEX, holder.adapterPosition)
-            context.startActivity(intent)
+            if (!isSelectionEnabled) {
+                openItemInfoScreen(holder)
+                return@setOnClickListener
+            }
+
+            if (holder.itemView.isSelected) {
+                removeSelectedItem(holder.itemView, collection[position].category.id)
+            } else {
+                addSelectedItem(viewHolder.itemView, position)
+            }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            if (isSelectionEnabled) {
+                removeSelectedItem(viewHolder.itemView, position)
+            } else {
+                addSelectedItem(viewHolder.itemView, position)
+            }
+        }
+
+    }
+
+    private fun openItemInfoScreen(holder: ViewHolder) {
+        val intent = Intent(context, ItemInfoActivity::class.java)
+        OrderList.edit(holder.adapterPosition)
+        intent.putExtra(EXTRA_COLOR, color)
+        intent.putExtra(EXTRA_INDEX, holder.adapterPosition)
+        context.startActivity(intent)
+    }
+
+    private fun setItemViewColor(itemView: View) {
+        if (itemView.isSelected) {
+            itemView.setBackgroundColor(context.resources.getColor(R.color.primary_light))
+        } else {
+            itemView.setBackgroundColor(Color.TRANSPARENT)
         }
     }
 
     fun setItemColor(color: String) {
         if (color.isEmpty()) return
         this.color = Color.parseColor(color)
+    }
+
+    private fun addSelectedItem(itemView: View, position: Int): Boolean {
+        selectItemView(itemView, true)
+        selectedPositions.add(collection[position])
+        onItemSelectAction.onNext(!selectedPositions.isEmpty())
+        isSelectionEnabled = true
+        return true
+    }
+
+    private fun removeSelectedItem(itemView: View, categoryId: Int): Boolean {
+        selectItemView(itemView, false)
+        selectedPositions = ArrayList(selectedPositions.filter { it.category.id != categoryId })
+        onItemSelectAction.onNext(!selectedPositions.isEmpty())
+        if (selectedPositions.isEmpty()) {
+            isSelectionEnabled = false
+        }
+        return false
+    }
+
+    private fun selectItemView(itemView: View, isSelected: Boolean) {
+        itemView.isSelected = isSelected
+        setItemViewColor(itemView)
+    }
+
+    fun removeSelectedOrders() {
+        if (collection.removeAll(selectedPositions)) {
+            OrderList.get()!!.removeAll(selectedPositions)
+            selectedPositions.clear()
+            notifyDataSetChanged()
+            clearSelections()
+        }
+    }
+
+    private fun clearSelections() {
+        onItemSelectAction.onNext(false)
     }
 
     override fun getItemCount(): Int {
@@ -84,35 +148,14 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         this.collection = collection
     }
 
-    override fun pendingRemoval(position: Int) {
+    fun remove(position: Int): Boolean {
         val item = collection[position]
-        if (!itemsPendingRemoval.contains(item)) {
-            itemsPendingRemoval.add(item)
-            notifyItemChanged(position)
-            val pendingRemovalRunnable = Runnable { remove(collection.indexOf(item)) }
-            handler.postDelayed(pendingRemovalRunnable, PENDING_REMOVAL_TIMEOUT)
-            pendingRunnables.put(item, pendingRemovalRunnable)
-        }
-    }
 
-    override fun isUndo(): Boolean {
-        return undoOn
-    }
+        if (!collection.contains(item)) return false
 
-    override fun remove(position: Int) {
-        val item = collection[position]
-        if (itemsPendingRemoval.contains(item)) {
-            itemsPendingRemoval.remove(item)
-        }
-        if (collection.contains(item)) {
-            OrderList.remove(position)
-            notifyItemRemoved(position)
-        }
-    }
-
-    override fun isPendingRemoval(position: Int): Boolean {
-        val item = collection[position]
-        return itemsPendingRemoval.contains(item)
+        OrderList.remove(position)
+        notifyItemRemoved(position)
+        return true
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
