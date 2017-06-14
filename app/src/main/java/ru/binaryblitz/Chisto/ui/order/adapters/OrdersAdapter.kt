@@ -61,14 +61,15 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         setItemViewColor(holder.itemView)
 
         holder.itemView.setOnClickListener {
-            if (isSelectionEnabled) {
-                if (holder.itemView.isSelected) {
-                    removeSelectedItem(holder.itemView, collection[position].category.id)
-                } else {
-                    addSelectedItem(viewHolder.itemView, position)
-                }
-            } else {
+            if (!isSelectionEnabled) {
                 openItemInfoScreen(holder)
+                return
+            }
+
+            if (holder.itemView.isSelected) {
+                removeSelectedItem(holder.itemView, collection[position].category.id)
+            } else {
+                addSelectedItem(viewHolder.itemView, position)
             }
         }
 
