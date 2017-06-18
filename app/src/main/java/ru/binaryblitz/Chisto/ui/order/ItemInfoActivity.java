@@ -6,11 +6,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -20,12 +19,10 @@ import ru.binaryblitz.Chisto.R;
 import ru.binaryblitz.Chisto.entities.Order;
 import ru.binaryblitz.Chisto.ui.base.BaseActivity;
 import ru.binaryblitz.Chisto.ui.order.adapters.EditTreatmentsAdapter;
+import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter;
 import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity;
 import ru.binaryblitz.Chisto.utils.AndroidUtilities;
-import ru.binaryblitz.Chisto.utils.Extras;
 import ru.binaryblitz.Chisto.utils.OrderList;
-import ru.binaryblitz.Chisto.utils.SwipeItemDecoration;
-import ru.binaryblitz.Chisto.utils.TouchHelper;
 import ru.binaryblitz.Chisto.views.RecyclerListView;
 
 public class ItemInfoActivity extends BaseActivity {
@@ -39,6 +36,7 @@ public class ItemInfoActivity extends BaseActivity {
     public static final String EXTRA_EDIT = "edit";
     public static final String EXTRA_ID = "id";
     public static final String EXTRA_NAME = "name";
+    private String color = "";
 
     public static final int DEFAULT_COLOR = Color.parseColor("#212121");
 
@@ -58,27 +56,20 @@ public class ItemInfoActivity extends BaseActivity {
         setOnClickListeners(order);
     }
 
-    public void onRemovalError() {
-        Snackbar.make(findViewById(R.id.main), R.string.removal, Snackbar.LENGTH_SHORT).show();
-    }
-
     private void initRecyclerView() {
         RecyclerListView view = (RecyclerListView) findViewById(R.id.recyclerView);
         view.setLayoutManager(new LinearLayoutManager(this));
         view.setItemAnimator(new DefaultItemAnimator());
         view.setEmptyView(null);
 
-        adapter = new EditTreatmentsAdapter(this);
-        adapter.setColor(getIntent().getIntExtra(Extras.EXTRA_COLOR, 0));
+        adapter = new EditTreatmentsAdapter();
+        color = getIntent().getStringExtra(EXTRA_COLOR);
+        adapter.setColor(color);
         view.setAdapter(adapter);
-
-        ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(new TouchHelper(0, ItemTouchHelper.LEFT, this, view));
-        mItemTouchHelper.attachToRecyclerView(view);
-        view.addItemDecoration(new SwipeItemDecoration());
     }
 
     private void setInfo(final Order order) {
-        findViewById(R.id.appbar).setBackgroundColor(getIntent().getIntExtra(EXTRA_COLOR, DEFAULT_COLOR));
+        findViewById(R.id.appbar).setBackgroundColor(Color.parseColor(color));
         AndroidUtilities.INSTANCE.colorAndroidBar(this, getIntent().getIntExtra(EXTRA_COLOR, DEFAULT_COLOR));
 
         if (order != null) {
@@ -126,7 +117,7 @@ public class ItemInfoActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (adapter.getItemCount() == 0) return;
-                OrderList.saveTreatments(adapter.getCollection());
+                OrderList.saveTreatments(adapter.getSelected());
                 OrderList.changeCount(Integer.parseInt(count.getText().toString()));
                 finish();
             }
