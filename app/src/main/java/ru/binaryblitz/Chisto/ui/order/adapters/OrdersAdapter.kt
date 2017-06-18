@@ -57,8 +57,9 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.count.text = "\u00D7" + order.count + context.getString(R.string.count_postfix)
 
         Image.loadPhoto(context, order.category.icon, holder.icon)
+
         holder.icon.setColorFilter(Color.parseColor(color))
-        setItemViewColor(holder.itemView)
+        setItemViewSelection(holder, holder.itemView)
 
         holder.itemView.setOnClickListener {
             if (!isSelectionEnabled) {
@@ -67,17 +68,17 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
             }
 
             if (holder.itemView.isSelected) {
-                removeSelectedItem(holder.itemView, collection[position].category.id)
+                removeSelectedItem(holder, holder.itemView, collection[position].category.id)
             } else {
-                addSelectedItem(viewHolder.itemView, position)
+                addSelectedItem(viewHolder, viewHolder.itemView, position)
             }
         }
 
         holder.itemView.setOnLongClickListener {
             if (isSelectionEnabled) {
-                removeSelectedItem(viewHolder.itemView, position)
+                removeSelectedItem(viewHolder, viewHolder.itemView, position)
             } else {
-                addSelectedItem(viewHolder.itemView, position)
+                addSelectedItem(viewHolder, viewHolder.itemView, position)
             }
         }
 
@@ -91,11 +92,13 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         context.startActivity(intent)
     }
 
-    private fun setItemViewColor(itemView: View) {
+    private fun setItemViewSelection(holder: ViewHolder, itemView: View) {
         if (itemView.isSelected) {
-            itemView.setBackgroundColor(context.resources.getColor(R.color.primary_light))
+            holder.selectionIcon.visibility = View.VISIBLE
+            holder.icon.visibility = View.GONE
         } else {
-            itemView.setBackgroundColor(Color.TRANSPARENT)
+            holder.icon.visibility = View.VISIBLE
+            holder.selectionIcon.visibility = View.GONE
         }
     }
 
@@ -104,16 +107,16 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         this.color = color
     }
 
-    private fun addSelectedItem(itemView: View, position: Int): Boolean {
-        selectItemView(itemView, true)
+    private fun addSelectedItem(holder: ViewHolder, itemView: View, position: Int): Boolean {
+        selectItemView(holder, itemView, true)
         selectedPositions.add(collection[position])
         onItemSelectAction.onNext(!selectedPositions.isEmpty())
         isSelectionEnabled = true
         return true
     }
 
-    private fun removeSelectedItem(itemView: View, categoryId: Int): Boolean {
-        selectItemView(itemView, false)
+    private fun removeSelectedItem(holder: ViewHolder, itemView: View, categoryId: Int): Boolean {
+        selectItemView(holder, itemView, false)
         selectedPositions = ArrayList(selectedPositions.filter { it.category.id != categoryId })
         onItemSelectAction.onNext(!selectedPositions.isEmpty())
         if (selectedPositions.isEmpty()) {
@@ -122,9 +125,9 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         return false
     }
 
-    private fun selectItemView(itemView: View, isSelected: Boolean) {
+    private fun selectItemView(holder: ViewHolder, itemView: View, isSelected: Boolean) {
         itemView.isSelected = isSelected
-        setItemViewColor(itemView)
+        setItemViewSelection(holder, itemView)
     }
 
     fun removeSelectedOrders() {
@@ -163,5 +166,6 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         val description = itemView.findViewById(R.id.description) as TextView
         val count = itemView.findViewById(R.id.count) as TextView
         val icon = itemView.findViewById(R.id.category_icon) as ImageView
+        val selectionIcon = itemView.findViewById(R.id.selection_icon) as ImageView
     }
 }

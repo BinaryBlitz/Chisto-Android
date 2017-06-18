@@ -11,10 +11,10 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import com.miguelcatalan.materialsearchview.MaterialSearchView
-import com.mikepenz.actionitembadge.library.ActionItemBadge
-import com.mikepenz.actionitembadge.library.ActionItemBadge.BadgeStyles.RED
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -22,7 +22,6 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import io.fabric.sdk.android.Fabric
 import ru.binaryblitz.Chisto.R
-import ru.binaryblitz.Chisto.R.drawable
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.network.ServerApi
@@ -55,6 +54,8 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private lateinit var searchView: MaterialSearchView
     private lateinit var categoriesListView: RecyclerListView
     private lateinit var categoryItemsListView: RecyclerListView
+    private lateinit var cartBadgeTextView: TextView
+    private lateinit var cartView: ViewGroup
 
     private lateinit var toolbar: Toolbar
     private var cartMenuItem: MenuItem? = null
@@ -180,34 +181,25 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
     override fun onResume() {
         super.onResume()
-        cartMenuItem?.let { updateMenuBadge() }
+        cartMenuItem?.let { updateCartBadgeCount(OrderList.get()!!.size) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         cartMenuItem = menu.findItem(R.id.action_my_orders)
-        updateMenuBadge()
 
         val item = menu.findItem(R.id.action_search)
+        cartBadgeTextView = cartMenuItem!!.actionView.findViewById(R.id.badge_count_text) as TextView
+        cartView = cartMenuItem!!.actionView.findViewById(R.id.cart_view_layout) as ViewGroup
+        cartView.setOnClickListener {
+            val intent = Intent(this@CategoryActivity, OrdersActivity::class.java)
+            intent.putExtra(EXTRA_COLOR, color)
+            startActivity(intent)
+        }
+        updateCartBadgeCount(OrderList.get()!!.size)
         searchView.setMenuItem(item)
 
         return true
-    }
-
-    private fun updateMenuBadge() {
-        ActionItemBadge.update(this, cartMenuItem, resources.getDrawable(drawable.ic_shopping_cart),
-                RED, OrderList.get()!!.size)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_my_orders -> {
-                val intent = Intent(this@CategoryActivity, OrdersActivity::class.java)
-                intent.putExtra(EXTRA_COLOR, color)
-                startActivity(intent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun initList() {
@@ -294,6 +286,17 @@ class CategoryActivity : BaseActivity(), CategoryView {
             ColorsList.add(Pair(id, Color.parseColor(color)))
         }
         ColorsList.saveColors(this)
+    }
+
+    fun updateCartBadgeCount(count: Int) {
+        runOnUiThread {
+            if (count == 0) {
+                cartBadgeTextView.visibility = View.INVISIBLE
+            } else {
+                cartBadgeTextView.visibility = View.VISIBLE
+                cartBadgeTextView.text = Integer.toString(count)
+            }
+        }
     }
 
 }
