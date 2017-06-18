@@ -132,7 +132,7 @@
     <string name="notifications_help">Would you like to receive notifications about your order?</string>
 
     <string name="my_order_code">Order №</string>
-    <string name="order_questions">Have any questions? Call us</string>
+    <string name="order_questions">Have any questions? Contact us.</string>
 
     <string name="result_order">Total price</string>
 
@@ -159,7 +159,7 @@
     <string name="empty_orders">No orders</string>
     <string name="empty_reviews">No reviews</string>
     <string name="decoration_help">Rhinestones, beads, sequins, lace or any other decorations that require special treatment</string>
-    <string name="city_not_found_helper">Leave us your contact information and we will notify you when the service will be available in your city</string>
+    <string name="city_not_found_helper">Leave your contact information and we will notify you once our services are available in your city</string>
 
     <string name="select_size">Specify item size</string>
     <string name="square">Area</string>
@@ -173,7 +173,7 @@
 
     <string name="ruble_sign">" ₽"</string>
 
-    <string name="review_help">We hope that you are satisfied. Please leave a review to help other users</string>
+    <string name="review_help">We hope that you are satisfied. Please write a review to help other users.</string>
     <string name="your_review">Review</string>
     <string name="completed">" completed!"</string>
 
