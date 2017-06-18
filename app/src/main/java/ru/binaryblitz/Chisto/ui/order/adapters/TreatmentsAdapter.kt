@@ -1,12 +1,13 @@
 package ru.binaryblitz.Chisto.ui.order.adapters
 
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.support.v7.widget.AppCompatRadioButton
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import cn.refactor.library.SmoothCheckBox
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.utils.OrderList
@@ -16,7 +17,8 @@ class TreatmentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var collection = ArrayList<Treatment>()
     private var color: Int = Color.parseColor("#4bc2f7")
-    private var greyColor: Int = Color.parseColor("#CFCFCF")
+    private var lastCheckedPosition = 0
+    private var isFirstSelection: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_service, parent, false)
@@ -24,8 +26,8 @@ class TreatmentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return ViewHolder(itemView)
     }
 
-    fun setColor(color: String) {
-        if (color.isEmpty()) return
+    fun setColor(color: String?) {
+        if (color!!.isEmpty()) return
         this.color = Color.parseColor(color)
     }
 
@@ -56,34 +58,25 @@ class TreatmentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         val treatment = collection[position]
 
         holder.description.text = treatment.description
-        setColorForCheckBox(holder.checkBox, color)
+        setColorForRadioButton(holder.radioButton, color)
 
-        holder.checkBox.isChecked = treatment.select
-
-        holder.itemView.setOnClickListener {
-            setCheckedTreatment(treatment, holder)
+        holder.radioButton.isChecked = position == lastCheckedPosition
+        if (position == 0 && isFirstSelection) {
+            setCheckedTreatment(position)
+            isFirstSelection = false
         }
-
-        if (position == 0) {
-            setCheckedTreatment(treatment, holder)
-        }
-
-        holder.checkBox.setOnCheckedChangeListener { compoundButton, b -> collection[holder.adapterPosition].select = b }
     }
 
-    private fun setCheckedTreatment(treatment: Treatment, holder: ViewHolder) {
-        treatment.select = !treatment.select
-        holder.checkBox.setChecked(treatment.select, true)
+    private fun setCheckedTreatment(position: Int) {
+        for (i in 0..collection.size - 1) {
+            collection[i].select = false
+        }
+        collection[position].select = true
+        val a: Int
     }
 
-    private fun setColorForCheckBox(checkBox: SmoothCheckBox, color: Int) {
-        val checkedColor = SmoothCheckBox::class.java.getDeclaredField("mCheckedColor")
-        checkedColor.isAccessible = true
-        checkedColor.set(checkBox, color)
-
-        val unCheckedColor = SmoothCheckBox::class.java.getDeclaredField("mUnCheckedColor")
-        unCheckedColor.isAccessible = true
-        unCheckedColor.set(checkBox, greyColor)
+    private fun setColorForRadioButton(radioButton: AppCompatRadioButton, color: Int) {
+        radioButton.supportButtonTintList = ColorStateList.valueOf(color)
     }
 
     override fun getItemCount(): Int {
@@ -96,6 +89,23 @@ class TreatmentsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val description = itemView.findViewById(R.id.description) as TextView
-        val checkBox = itemView.findViewById(R.id.checkBox) as SmoothCheckBox
+        val radioButton = itemView.findViewById(R.id.radioButton) as AppCompatRadioButton
+
+        init {
+            radioButton.supportButtonTintMode
+            radioButton.supportButtonTintList
+            itemView.setOnClickListener {
+                selectTreatment()
+            }
+            radioButton.setOnClickListener {
+                selectTreatment()
+            }
+        }
+    }
+
+    private fun ViewHolder.selectTreatment() {
+        setCheckedTreatment(adapterPosition)
+        lastCheckedPosition = adapterPosition
+        notifyItemRangeChanged(0, collection.size)
     }
 }

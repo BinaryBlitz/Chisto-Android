@@ -200,8 +200,8 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:layout_marginBottom="8dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginBottom="16dp"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginEnd="64dp"
                                 android:layout_marginLeft="8dp"
@@ -222,12 +222,11 @@
 
                             <cn.refactor.library.SmoothCheckBox
                                 android:id="@+id/decor_treatment_checkbox"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
                                 android:layout_marginTop="24dp"
                                 android:layout_marginBottom="24dp"
-                                android:layout_marginEnd="12dp"
-                                android:layout_marginRight="12dp"
+                                android:layout_marginRight="22dp"
                                 android:layout_gravity="center_vertical|end"
                                 app:color_checked="@color/accent"
                                 app:color_unchecked="#CFCFCF" />
@@ -247,6 +246,7 @@
                     xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="36dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -291,12 +291,6 @@
 
 
                     </FrameLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1px"
-                        android:layout_gravity="bottom"
-                        android:background="#b6b6b6" />
 
                 </LinearLayout>
 

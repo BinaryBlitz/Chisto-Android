@@ -25,7 +25,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     val EXTRA_COLOR = "color"
     val EXTRA_INDEX = "index"
     private var isSelectionEnabled: Boolean = false
-    private var color = 0
+    private var color = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_order, parent, false)
@@ -57,7 +57,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         holder.count.text = "\u00D7" + order.count + context.getString(R.string.count_postfix)
 
         Image.loadPhoto(context, order.category.icon, holder.icon)
-        holder.icon.setColorFilter(color)
+        holder.icon.setColorFilter(Color.parseColor(color))
         setItemViewColor(holder.itemView)
 
         holder.itemView.setOnClickListener {
@@ -101,7 +101,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
     fun setItemColor(color: String) {
         if (color.isEmpty()) return
-        this.color = Color.parseColor(color)
+        this.color = color
     }
 
     private fun addSelectedItem(itemView: View, position: Int): Boolean {
