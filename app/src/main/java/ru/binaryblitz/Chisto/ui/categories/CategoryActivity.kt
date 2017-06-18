@@ -35,7 +35,7 @@ import ru.binaryblitz.Chisto.ui.order.WebActivity
 import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
+import ru.binaryblitz.Chisto.utils.Extras
 import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.ArrayList
@@ -144,6 +144,14 @@ class CategoryActivity : BaseActivity(), CategoryView {
         toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.title = getString(R.string.select_part)
         setSupportActionBar(toolbar)
+        cartBadgeTextView = findViewById(R.id.badge_count_text) as TextView
+        cartView = findViewById(R.id.cart_view_layout) as ViewGroup
+        cartView.setOnClickListener {
+            val intent = Intent(this@CategoryActivity, OrdersActivity::class.java)
+            intent.putExtra(Extras.EXTRA_COLOR, color)
+            startActivity(intent)
+        }
+        updateCartBadgeCount(OrderList.get()!!.size)
     }
 
     private fun initSearchView() {
@@ -166,10 +174,12 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
         searchView.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
             override fun onSearchViewShown() {
+                cartView.visibility = View.INVISIBLE
                 categoryPresenter.getAllItems()
             }
 
             override fun onSearchViewClosed() {
+                cartView.visibility = View.VISIBLE
                 categoryPresenter.getCategories()
                 categoriesListView.visibility = View.VISIBLE
                 categoriesListView.adapter = categoryAdapter
@@ -181,22 +191,13 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
     override fun onResume() {
         super.onResume()
-        cartMenuItem?.let { updateCartBadgeCount(OrderList.get()!!.size) }
+        updateCartBadgeCount(OrderList.get()!!.size)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        cartMenuItem = menu.findItem(R.id.action_my_orders)
 
         val item = menu.findItem(R.id.action_search)
-        cartBadgeTextView = cartMenuItem!!.actionView.findViewById(R.id.badge_count_text) as TextView
-        cartView = cartMenuItem!!.actionView.findViewById(R.id.cart_view_layout) as ViewGroup
-        cartView.setOnClickListener {
-            val intent = Intent(this@CategoryActivity, OrdersActivity::class.java)
-            intent.putExtra(EXTRA_COLOR, color)
-            startActivity(intent)
-        }
-        updateCartBadgeCount(OrderList.get()!!.size)
         searchView.setMenuItem(item)
 
         return true
