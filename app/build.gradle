@@ -20,8 +20,8 @@ android {
         applicationId "ru.binaryblitz.Chisto"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 53
-        versionName "1.0.1"
+        versionCode 54
+        versionName "1.1"
         multiDexEnabled = true
     }
     buildTypes {
