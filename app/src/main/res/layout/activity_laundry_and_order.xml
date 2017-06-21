@@ -311,11 +311,11 @@
                         android:layout_gravity="bottom"
                         android:background="#ffffff"
                         android:layout_height="12dp"/>
-                <ru.binaryblitz.Chisto.Custom.RecyclerListView
+                <ru.binaryblitz.Chisto.views.RecyclerListView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                </ru.binaryblitz.Chisto.Custom.RecyclerListView>
+                </ru.binaryblitz.Chisto.views.RecyclerListView>
 
                 <View android:layout_width="match_parent"
                       android:layout_height="8dp" />

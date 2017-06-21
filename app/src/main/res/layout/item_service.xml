@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:background="?attr/selectableItemBackground"
-             android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/defaultBackgroundColor"
+    android:orientation="vertical">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:orientation="vertical"
-                  android:layout_marginLeft="12dp"
-                  android:layout_marginTop="8dp"
-                  android:layout_marginBottom="8dp"
-                  android:layout_marginStart="12dp"
-                  android:layout_gravity="center_vertical"
-                  android:layout_marginRight="64dp"
-                  android:layout_marginEnd="64dp"
-                  android:layout_height="wrap_content">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/whiteColor"
+        android:foreground="?attr/selectableItemBackground">
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/name"
-                  android:textSize="18sp"
-                  android:textColor="#212121"
-                  android:layout_gravity="center_vertical"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="64dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/description"
-                  android:textSize="14sp"
-                  android:textColor="#727272"
-                  android:layout_gravity="center_vertical"
-                  android:layout_marginTop="4dp"/>
-    </LinearLayout>
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_gravity="center_vertical"
+                android:textColor="#727272"
+                android:textSize="14sp" />
+        </LinearLayout>
 
-    <cn.refactor.library.SmoothCheckBox
-            android:layout_width="30dp"
-            android:layout_gravity="center_vertical|end"
-            android:layout_marginEnd="12dp"
-            android:id="@+id/checkBox"
-            android:layout_marginBottom="35dp"
-            app:stroke_width="0dp"
-            app:color_unchecked_stroke="#CFCFCF"
-            android:layout_marginTop="35dp"
-            android:layout_marginRight="12dp"
-            android:layout_height="30dp"/>
+        <android.support.v7.widget.AppCompatRadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_gravity="center_vertical|end" />
 
-    <View android:layout_width="match_parent"
-          android:layout_gravity="bottom"
-          android:background="#b6b6b6"
-          android:layout_height="1px"/>
+    </FrameLayout>
 
-</FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_gravity="bottom"
+        android:background="#b6b6b6" />
+
+</LinearLayout>

@@ -1,38 +1,41 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ru.binaryblitz.Chisto">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="ru.binaryblitz.Chisto">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" tools:node="remove" />
 
     <uses-feature
-            android:glEsVersion="0x00020000"
-            android:required="true"/>
+        android:glEsVersion="0x00020000"
+        android:required="true" />
 
-    <application android:allowBackup="true"
-                 android:label="@string/app_name"
-                 android:icon="@mipmap/ic_launcher"
-                 android:supportsRtl="true"
-                 android:name=".Base.BaseApplication"
-                 android:theme="@style/AppTheme">
-
-        <meta-data
-                android:name="com.google.android.geo.API_KEY"
-                android:value="AIzaSyC48bjEMes05K8RgTG6PrwVSKicZqXZ7WY"/>
+    <application
+        android:name=".BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
         <meta-data
-                android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/ic_plus" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC48bjEMes05K8RgTG6PrwVSKicZqXZ7WY" />
 
         <meta-data
-                android:name="com.google.firebase.messaging.default_notification_color"
-                android:resource="@color/colorAccent" />
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_plus" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SplashActivity"
-                android:label="@string/app_name"
-                android:screenOrientation="portrait"
-                android:theme="@style/AppTheme">
+            android:name=".ui.start.SplashActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -40,10 +43,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.MapActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.map.MapActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -51,10 +54,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.StartActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.start.StartActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -62,10 +65,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.WebActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.order.WebActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -74,10 +77,10 @@
 
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.OrdersActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.order.OrdersActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -85,10 +88,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.MyOrderActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.order.MyOrderActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -96,10 +99,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.PersonalInfoActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.profile.PersonalInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -107,10 +110,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ReviewsActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.order.ReviewsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -118,10 +121,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.LaundriesActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.laundries.LaundriesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -129,10 +132,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.RegistrationActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:windowSoftInputMode="stateAlwaysVisible"
-                android:screenOrientation="portrait" >
+            android:name=".ui.profile.RegistrationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysVisible">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -140,10 +143,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ContactInfoActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.profile.ContactInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -151,10 +154,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.LaundryAndOrderActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.laundries.LaundryAndOrderActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -162,10 +165,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.MyOrdersActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.order.MyOrdersActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -173,10 +176,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ProfileActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.profile.ProfileActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -184,10 +187,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.AboutActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.about.AboutActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -195,10 +198,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.ItemInfoActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.order.ItemInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -206,10 +209,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SelectServiceActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.order.select_service.SelectServiceActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -217,10 +220,11 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SelectCategoryActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.categories.CategoryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -228,10 +232,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.CategoryInfoActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.categories.CategoryInfoActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -239,10 +243,10 @@
         </activity>
 
         <activity
-                android:name="ru.binaryblitz.Chisto.Activities.SelectCityActivity"
-                android:configChanges="orientation|keyboardHidden|screenSize"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="adjustPan" >
+            android:name=".ui.start.SelectCityActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -250,16 +254,19 @@
         </activity>
 
         <service
-                android:name=".Push.MyGcmListenerService" android:exported="false" android:priority="500">
+            android:name=".push.MyGcmListenerService"
+            android:exported="false"
+            android:priority="500">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
         <service
-                android:name=".Push.MyInstanceIDListenerService" android:exported="false">
+            android:name=".push.MyInstanceIDListenerService"
+            android:exported="false">
             <intent-filter android:priority="1000">
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 

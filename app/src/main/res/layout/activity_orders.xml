@@ -1,116 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:orientation="vertical"
-             android:id="@+id/main"
-             android:layout_width="match_parent"
-             android:background="#eaeaea"
-             android:layout_height="match_parent">
+<io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eaeaea"
+    android:orientation="vertical">
 
     <include layout="@layout/fragment_empty_order_list" />
 
-    <ru.binaryblitz.Chisto.Custom.RecyclerListView
-            android:id="@+id/recyclerView"
-            android:layout_marginBottom="56dp"
-            android:layout_marginTop="56dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </ru.binaryblitz.Chisto.Custom.RecyclerListView>
+    <ru.binaryblitz.Chisto.views.RecyclerListView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="56dp"></ru.binaryblitz.Chisto.views.RecyclerListView>
 
     <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/colorPrimary"
+            android:contentInsetLeft="0dp"
+            android:contentInsetStart="0dp"
+            android:minHeight="?attr/actionBarSize"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp">
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/action_bar"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:contentInsetStart="0dp"
-                android:contentInsetLeft="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                android:background="@color/colorPrimary"
-                android:minHeight="?attr/actionBarSize">
-            <FrameLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/left_btn"
+                    android:layout_width="56dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/action_bar">
-
-                <ImageView
-                        android:id="@+id/left_btn"
-                        android:layout_width="56dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerInside"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_user_white"
-                        android:padding="13dp"
-                        android:layout_gravity="start"
-                />
-
-                <ImageView
-                        android:id="@+id/right_btn"
-                        android:layout_width="56dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_plus"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="13dp"
-                        android:layout_gravity="end"
-                />
+                    android:layout_gravity="start"
+                    android:padding="13dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_back" />
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/order"
-                        android:layout_gravity="center"
-                        android:id="@+id/date_text_view"
-                        android:gravity="center_vertical"
-                        android:typeface="sans"
-                        android:textSize="22sp"
-                        android:textColor="#ffffff" />
+                    android:layout_marginStart="64dp"
+                    android:id="@+id/date_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/order"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="#ffffff"
+                    android:textSize="22sp"
+                    android:typeface="sans" />
 
             </FrameLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="70dp"
+        android:layout_marginRight="16dp"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_add"
+        android:visibility="gone" />
+
     <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:theme="@style/BrandButtonStyle"
-            android:text="@string/nothing_selected"
-            android:layout_width="match_parent"
-            android:layout_height="68dp"
-            android:id="@+id/textView2"
-            android:layout_marginRight="-12dp"
-            android:layout_marginLeft="-12dp"
-            android:layout_marginBottom="-8dp"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:layout_gravity="bottom"
-            android:gravity="center"/>
+        android:id="@+id/textView2"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_marginBottom="-8dp"
+        android:layout_marginLeft="-12dp"
+        android:layout_marginRight="-12dp"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:text="@string/nothing_selected"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:theme="@style/BrandButtonStyle" />
 
     <FrameLayout
-            android:layout_width="match_parent"
-            android:background="#99000000"
-            android:elevation="8dp"
-            android:clickable="true"
-            android:id="@+id/dialog"
-            android:visibility="gone"
-            android:layout_height="match_parent">
+        android:id="@+id/dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:clickable="true"
+        android:elevation="8dp"
+        android:visibility="gone">
 
         <include layout="@layout/dialog_review" />
 
     </FrameLayout>
 
     <FrameLayout
-            android:layout_width="match_parent"
-            android:background="#99000000"
-            android:id="@+id/dialog_new_order"
-            android:visibility="gone"
-            android:elevation="8dp"
-            android:clickable="true"
-            android:layout_height="match_parent">
+        android:id="@+id/dialog_new_order"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:clickable="true"
+        android:elevation="8dp"
+        android:visibility="gone">
 
         <include layout="@layout/popup_your_order" />
 
     </FrameLayout>
+
 </io.codetail.widget.RevealFrameLayout>
