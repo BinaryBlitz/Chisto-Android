@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonObject
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_profile.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -47,9 +48,9 @@ class ProfileActivity : BaseActivity() {
 
     private fun initElements() {
         if (DeviceInfoStore.getToken(this) == "null") {
-            findViewById(R.id.quit_btn).visibility = View.GONE
+            findViewById<View>(R.id.quit_btn).visibility = View.GONE
         } else {
-            findViewById(R.id.quit_btn).visibility = View.VISIBLE
+            findViewById<View>(R.id.quit_btn).visibility = View.VISIBLE
         }
     }
 
@@ -65,34 +66,27 @@ class ProfileActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.back_btn).setOnClickListener { finish() }
-
-        findViewById(R.id.contact_data_btn).setOnClickListener {
+        back_btn.setOnClickListener { finish() }
+        contact_data_btn.setOnClickListener {
             if (DeviceInfoStore.getToken(this) == "null") {
                 openActivity(SELECTED_CONTACT_INFO_ACTIVITY, RegistrationActivity::class.java)
             } else {
                 openActivity(ContactInfoActivity::class.java)
             }
         }
-
-        findViewById(R.id.my_orders_btn).setOnClickListener {
+        my_orders_btn.setOnClickListener {
             if (DeviceInfoStore.getToken(this) == "null") {
                 openActivity(SELECTED_ORDERS_ACTIVITY, RegistrationActivity::class.java)
             } else {
                 openActivity(MyOrdersActivity::class.java)
             }
         }
-
-        findViewById(R.id.about_btn).setOnClickListener {
+        about_btn.setOnClickListener {
             val intent = Intent(this@ProfileActivity, AboutActivity::class.java)
             startActivity(intent)
         }
-
-        findViewById(R.id.quit_btn).setOnClickListener {
-            logOut()
-        }
-
-        findViewById(R.id.rules_btn).setOnClickListener {
+        quit_btn.setOnClickListener { logOut() }
+        rules_btn.setOnClickListener {
             val intent = Intent(this@ProfileActivity, WebActivity::class.java)
             intent.putExtra(EXTRA_URL, AppConfig.terms)
             startActivity(intent)
@@ -140,7 +134,7 @@ class ProfileActivity : BaseActivity() {
                 .enqueue(object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         if (response.isSuccessful) {
-                            parseUserResponse(response.body())
+                            parseUserResponse(response.body()!!)
                         } else {
                             onServerError(response)
                         }

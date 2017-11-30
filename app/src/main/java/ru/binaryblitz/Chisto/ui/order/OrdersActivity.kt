@@ -19,6 +19,10 @@ import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonObject
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_orders.*
+import kotlinx.android.synthetic.main.dialog_review.*
+import kotlinx.android.synthetic.main.fragment_empty_order_list.*
+import kotlinx.android.synthetic.main.popup_your_order.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,7 +74,7 @@ class OrdersActivity : BaseActivity() {
         ServerApi.get(this).api().getUser(DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 if (response.isSuccessful) {
-                    parseAnswer(response.body())
+                    parseAnswer(response.body()!!)
                 }
             }
 
@@ -206,23 +210,16 @@ class OrdersActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener {
-            finish()
-        }
-
-        findViewById(R.id.add_btn).setOnClickListener {
-            openActivity(CategoryActivity::class.java)
-        }
-
-        findViewById(R.id.cont_btn).setOnClickListener {
+        left_btn.setOnClickListener { finish() }
+        add_btn.setOnClickListener { openActivity(CategoryActivity::class.java) }
+        cont_btn.setOnClickListener {
             if (!checkReview()) {
                 showErrorDialog()
             } else {
                 sendReview()
             }
         }
-
-        findViewById(R.id.new_order_dialog_btn).setOnClickListener {
+        new_order_dialog_btn.setOnClickListener {
             Animations.animateRevealHide(findViewById(R.id.dialog_new_order))
             getUser()
         }

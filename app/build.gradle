@@ -1,28 +1,20 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.+'
-    }
-}
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.neenbedankt.android-apt'
-
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion '27.0.1'
     defaultConfig {
         applicationId "ru.binaryblitz.Chisto"
         minSdkVersion 15
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 53
         versionName "1.0.1"
-        multiDexEnabled = true
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -33,59 +25,70 @@ android {
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
-
 }
 
-
-kapt {
-    generateStubs = true
+androidExtensions {
+    experimental = true
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
-    compile 'com.android.support:cardview-v7:25.3.1'
-    compile 'com.squareup.okhttp3:okhttp:3.8.0'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
-    compile 'com.google.code.gson:gson:2.7'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
-    compile 'com.google.firebase:firebase-messaging:10.2.6'
-    compile 'com.daimajia.easing:library:1.0.1@aar'
-    compile 'com.daimajia.androidanimations:library:1.1.3@aar'
-    compile 'net.danlew:android.joda:2.9.5.1'
-    compile 'com.google.android.gms:play-services-maps:10.2.6'
-    compile 'com.google.android.gms:play-services-location:10.2.6'
-    compile 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    compile 'com.iarcuschin:simpleratingbar:0.1.3'
-    compile 'com.miguelcatalan:materialsearchview:1.4.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.afollestad.material-dialogs:core:0.9.0.2'
-    compile 'com.github.andyxialm:SmoothCheckBox:-SNAPSHOT'
-    compile 'com.googlecode.libphonenumber:libphonenumber:8.0.1'
-    compile 'it.sephiroth.android.library.targettooltip:target-tooltip-library:1.3.15'
-    compile('com.mikepenz:materialdrawer:5.9.2@aar') {
+    implementation 'com.android.support:multidex:1.0.2'
+
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    //Android support
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation "com.android.support:design:$android_support_version"
+    implementation "com.android.support:recyclerview-v7:$android_support_version"
+    implementation "com.android.support:cardview-v7:$android_support_version"
+
+    //Firebase
+    implementation "com.google.firebase:firebase-messaging:$firebase_version"
+
+    //Android play services
+    implementation "com.google.android.gms:play-services-maps:$android_play_services_version"
+    implementation "com.google.android.gms:play-services-location:$android_play_services_version"
+
+    //OkHttp3
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+
+    //Retrofit2
+    implementation "com.squareup.retrofit2:retrofit:$retroft2_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retroft2_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retroft2_version"
+
+    //RxJava2
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.5'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    //Other
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.daimajia.easing:library:1.0.1@aar'
+    implementation 'com.daimajia.androidanimations:library:1.1.3@aar'
+    implementation 'net.danlew:android.joda:2.9.5.1'
+    implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'com.iarcuschin:simpleratingbar:0.1.3'
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.afollestad.material-dialogs:core:0.9.0.2'
+    implementation 'com.github.andyxialm:SmoothCheckBox:-SNAPSHOT'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.8.6'
+    implementation 'it.sephiroth.android.library.targettooltip:target-tooltip-library:1.3.15'
+    implementation('com.mikepenz:materialdrawer:5.9.2@aar') {
         transitive = true
     }
-    compile ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
-        transitive = true;
+    implementation('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
+        transitive = true
     }
-    compile 'com.romandanylyk:pageindicatorview:0.2.0'
-
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true;
+    implementation 'com.romandanylyk:pageindicatorview:0.2.0'
+    implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
     }
-    compile "io.reactivex.rxjava2:rxjava:2.1.0"
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
 }
-
 
 apply plugin: 'com.google.gms.google-services'

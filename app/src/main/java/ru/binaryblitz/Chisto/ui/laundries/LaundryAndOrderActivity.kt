@@ -20,21 +20,26 @@ import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonObject
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_laundry_and_order.*
+import kotlinx.android.synthetic.main.dialog_promocode.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.binaryblitz.Chisto.ui.order.adapters.OrderContentAdapter
-import ru.binaryblitz.Chisto.ui.base.BaseActivity
-import ru.binaryblitz.Chisto.views.RecyclerListView
-import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.network.ServerConfig
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.order.ReviewsActivity
+import ru.binaryblitz.Chisto.ui.order.adapters.OrderContentAdapter
 import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity
 import ru.binaryblitz.Chisto.ui.profile.RegistrationActivity
-import ru.binaryblitz.Chisto.utils.*
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.Image
+import ru.binaryblitz.Chisto.utils.OrderList
+import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
@@ -69,8 +74,8 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun hidePromoCodeButton() {
-        findViewById(R.id.add_btn).visibility = View.GONE
-        findViewById(R.id.promo_discount).visibility = View.VISIBLE
+        add_btn.visibility = View.GONE
+        promo_discount.visibility = View.VISIBLE
     }
 
     private fun parsePromoInformationFromJson(obj: JsonObject) {
@@ -104,7 +109,7 @@ class LaundryAndOrderActivity : BaseActivity() {
                 dialog.dismiss()
                 AndroidUtilities.hideKeyboard(findViewById(R.id.main))
                 if (response.isSuccessful) {
-                    parsePromoCode(response.body())
+                    parsePromoCode(response.body()!!)
                 } else {
                     showPromoError()
                 }
@@ -131,19 +136,19 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun checkPromoCode(): Boolean {
-        if ((findViewById(R.id.promo_text) as EditText).text.toString().isEmpty()) {
-            findViewById(R.id.promo_btn)!!.isEnabled = false
+        if (promo_text.text.toString().isEmpty()) {
+            promo_btn.isEnabled = false
             return false
         }
 
-        findViewById(R.id.promo_btn)!!.isEnabled = true
+        promo_btn.isEnabled = true
         return true
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener { finish() }
+        left_btn.setOnClickListener { finish() }
 
-        findViewById(R.id.cont_btn).setOnClickListener {
+        cont_btn.setOnClickListener {
             if (DeviceInfoStore.getToken(this@LaundryAndOrderActivity) == "null") {
                 openActivity(RegistrationActivity::class.java)
             } else {
@@ -151,24 +156,24 @@ class LaundryAndOrderActivity : BaseActivity() {
             }
         }
 
-        findViewById(R.id.promo_btn).setOnClickListener {
+        promo_btn.setOnClickListener {
             if (checkPromoCode()) {
                 getPromoCode()
             }
         }
 
 
-        findViewById(R.id.add_btn).setOnClickListener {
+        add_btn.setOnClickListener {
             showPromoCodeDialog()
         }
 
-        findViewById(R.id.reviews_btn).setOnClickListener {
+        reviews_btn.setOnClickListener {
             val intent = Intent(this@LaundryAndOrderActivity, ReviewsActivity::class.java)
             intent.putExtra(EXTRA_ID, getIntent().getIntExtra(EXTRA_ID, 1))
             startActivity(intent)
         }
 
-        findViewById(R.id.ratingBarBtn).setOnClickListener {
+        ratingBarBtn.setOnClickListener {
             val intent = Intent(this@LaundryAndOrderActivity, ReviewsActivity::class.java)
             intent.putExtra(EXTRA_ID, getIntent().getIntExtra(EXTRA_ID, 1))
             startActivity(intent)
@@ -176,13 +181,13 @@ class LaundryAndOrderActivity : BaseActivity() {
     }
 
     private fun initElements() {
-        findViewById(R.id.promo_btn)!!.isEnabled = false
+        promo_btn.isEnabled = false
 
         load()
         initList()
         createOrderListView()
 
-        (findViewById(R.id.promo_text) as EditText).addTextChangedListener(object : TextWatcher {
+        promo_text.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -280,7 +285,7 @@ class LaundryAndOrderActivity : BaseActivity() {
         ServerApi.get(this@LaundryAndOrderActivity).api().getLaundry(intent.getIntExtra(EXTRA_ID, 1)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 if (response.isSuccessful) {
-                    parseAnswer(response.body())
+                    parseAnswer(response.body()!!)
                 } else {
                     onServerError(response)
                 }

@@ -20,20 +20,26 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_my_order.*
+import kotlinx.android.synthetic.main.dialog_review.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.binaryblitz.Chisto.ui.order.adapters.OrderContentAdapter
-import ru.binaryblitz.Chisto.ui.base.BaseActivity
-import ru.binaryblitz.Chisto.views.RecyclerListView
+import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.entities.Treatment
-import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
-import ru.binaryblitz.Chisto.utils.*
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
+import ru.binaryblitz.Chisto.ui.order.adapters.OrderContentAdapter
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.AppConfig
+import ru.binaryblitz.Chisto.utils.ColorsList
+import ru.binaryblitz.Chisto.utils.Image
+import ru.binaryblitz.Chisto.utils.LogUtil
+import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -89,19 +95,16 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener { finish() }
-
-        findViewById(R.id.phone_call).setOnClickListener { AndroidUtilities.call(this@MyOrderActivity, AppConfig.phone) }
-
-        findViewById(R.id.cont_btn).setOnClickListener {
+        left_btn.setOnClickListener { finish() }
+        phone_call.setOnClickListener { AndroidUtilities.call(this@MyOrderActivity, AppConfig.phone) }
+        cont_btn.setOnClickListener {
             if (!checkRating()) {
                 showErrorDialog()
             } else {
                 executeRatingRequest()
             }
         }
-
-        findViewById(R.id.review_btn).setOnClickListener {
+        review_btn.setOnClickListener {
             showReviewDialog()
         }
     }
@@ -118,7 +121,7 @@ class MyOrderActivity : BaseActivity() {
         ServerApi.get(this).api().getOrder(intent.getIntExtra(EXTRA_ID, 1), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 layout!!.isRefreshing = false
-                parseAnswer(response.body())
+                parseAnswer(response.body()!!)
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
@@ -129,8 +132,8 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun parsePromo(obj: JsonObject) {
-        findViewById(R.id.promocode_discount_view).visibility = View.VISIBLE
-        findViewById(R.id.promocode_name_view).visibility = View.VISIBLE
+        findViewById<View>(R.id.promocode_discount_view).visibility = View.VISIBLE
+        findViewById<View>(R.id.promocode_name_view).visibility = View.VISIBLE
         (findViewById(R.id.promo_name) as TextView).text = AndroidUtilities.getStringFieldFromJson(obj.get("code"))
         (findViewById(R.id.promo_price_difference) as TextView).text =
                 getString(R.string.minus_sign) +
@@ -180,8 +183,8 @@ class MyOrderActivity : BaseActivity() {
     }
 
     private fun hidePromoCodeInformation() {
-        findViewById(R.id.promocode_discount_view).visibility = View.GONE
-        findViewById(R.id.promocode_name_view).visibility = View.GONE
+        findViewById<View>(R.id.promocode_discount_view).visibility = View.GONE
+        findViewById<View>(R.id.promocode_name_view).visibility = View.GONE
     }
 
     private fun generateJson(): JsonObject {
