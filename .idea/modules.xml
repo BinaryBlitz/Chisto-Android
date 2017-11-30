@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Chisto-Android.iml" filepath="$PROJECT_DIR$/Chisto-Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Chisto-SELECT-SERVICE-UI.iml" filepath="$PROJECT_DIR$/Chisto-SELECT-SERVICE-UI.iml" />
+      <module fileurl="file://C:\Users\eugenetereshkov\Desktop\Chisto\Chisto-Android\Chisto-SELECT-SERVICE-UI.iml" filepath="C:\Users\eugenetereshkov\Desktop\Chisto\Chisto-Android\Chisto-SELECT-SERVICE-UI.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
