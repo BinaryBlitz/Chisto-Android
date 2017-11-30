@@ -15,6 +15,8 @@ import com.crashlytics.android.Crashlytics
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_laundries.*
+import kotlinx.android.synthetic.main.old_order_popup.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,7 +30,13 @@ import ru.binaryblitz.Chisto.network.ServerConfig
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.laundries.adapters.LaundriesAdapter
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
-import ru.binaryblitz.Chisto.utils.*
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.AppConfig
+import ru.binaryblitz.Chisto.utils.DateUtils
+import ru.binaryblitz.Chisto.utils.Image
+import ru.binaryblitz.Chisto.utils.LogUtil
+import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -52,13 +60,10 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener { finish() }
-
-        findViewById(R.id.right_btn).setOnClickListener { showDialog() }
-
-        findViewById(R.id.order_current_btn).setOnClickListener { clickCurrentBtn() }
-
-        findViewById(R.id.cont_btn).setOnClickListener {
+        left_btn.setOnClickListener { finish() }
+        right_btn.setOnClickListener { showDialog() }
+        order_current_btn.setOnClickListener { clickCurrentBtn() }
+        cont_btn.setOnClickListener {
             if (dialogOpened) {
                 Handler().post {
                     dialogOpened = false
@@ -146,7 +151,7 @@ class LaundriesActivity : BaseActivity() {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
                 layout!!.isRefreshing = false
                 if (response.isSuccessful) {
-                    parseAnswer(response.body())
+                    parseAnswer(response.body()!!)
                 } else {
                     onServerError(response)
                 }
@@ -339,7 +344,7 @@ class LaundriesActivity : BaseActivity() {
     private fun setPriceForTreatment(treatment: Treatment, laundryTreatments: ArrayList<Pair<Int, Int>>) {
         laundryTreatments.indices
                 .filter { treatment.id == laundryTreatments[it].first }
-                .forEach { OrderList.setPrice(treatment.id, laundryTreatments[it].second) }
+                .forEach { OrderList.setPrice(treatment.id, laundryTreatments[it].second!!) }
     }
 
     private fun fillPrices(treatments: JsonArray): ArrayList<Pair<Int, Int>> {

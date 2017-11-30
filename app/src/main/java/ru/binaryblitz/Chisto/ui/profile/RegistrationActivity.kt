@@ -18,13 +18,14 @@ import com.daimajia.androidanimations.library.YoYo
 import com.google.gson.JsonObject
 import com.nineoldandroids.animation.Animator
 import com.rengwuxian.materialedittext.MaterialEditText
+import kotlinx.android.synthetic.main.activity_registration.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.order.MyOrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
@@ -89,7 +90,7 @@ class RegistrationActivity : BaseActivity() {
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        findViewById(R.id.l1).visibility = View.VISIBLE
+                        findViewById<View>(R.id.l1).visibility = View.VISIBLE
 
                         YoYo.with(Techniques.SlideInLeft)
                                 .duration(ANIMATION_DURATION.toLong())
@@ -126,13 +127,13 @@ class RegistrationActivity : BaseActivity() {
             processPhoneInput()
         }
 
-        findViewById(R.id.browse).setOnClickListener {
+        browse.setOnClickListener {
             val intent = Intent(this@RegistrationActivity, WebActivity::class.java)
             intent.putExtra("url", AppConfig.terms)
             startActivity(intent)
         }
 
-        findViewById(R.id.left_btn).setOnClickListener {
+        left_btn.setOnClickListener {
             if (!code)
                 super.onBackPressed()
             else {
@@ -231,7 +232,7 @@ class RegistrationActivity : BaseActivity() {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
                         if (response.isSuccessful) {
-                            parseVerifyAnswer(response.body())
+                            parseVerifyAnswer(response.body()!!)
                         } else {
                             showCodeError()
                         }
@@ -283,7 +284,7 @@ class RegistrationActivity : BaseActivity() {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
                         if (response.isSuccessful && response.body() != null) {
-                            parseAuthRequestAnswer(response.body())
+                            parseAuthRequestAnswer(response.body()!!)
                             if (animate) {
                                 playOutAnimation(findViewById(R.id.l1), findViewById(R.id.textView2))
                             }
@@ -328,7 +329,7 @@ class RegistrationActivity : BaseActivity() {
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        findViewById(R.id.l2).visibility = View.VISIBLE
+                        findViewById<View>(R.id.l2).visibility = View.VISIBLE
                         YoYo.with(Techniques.SlideInRight)
                                 .duration(ANIMATION_DURATION.toLong())
                                 .playOn(findViewById(R.id.l2))

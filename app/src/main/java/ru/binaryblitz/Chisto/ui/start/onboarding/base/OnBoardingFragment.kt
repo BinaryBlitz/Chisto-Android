@@ -27,14 +27,14 @@ abstract class OnBoardingFragment : Fragment(), ViewPager.OnPageChangeListener {
         retainInstance = true
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.base_onboarding_screen, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.base_onboarding_screen, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pageContainer = view!!.findViewById(R.id.onBoardingView) as AnimatedChildViewsLayout
+        pageContainer = view.findViewById(R.id.onBoardingView) as AnimatedChildViewsLayout
         pageImageView = view.findViewById(R.id.img) as ImageView
         pageTextView = view.findViewById(R.id.title) as TextView
         pageTextView!!.text = pageText

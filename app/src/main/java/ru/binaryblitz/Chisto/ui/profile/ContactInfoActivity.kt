@@ -11,15 +11,16 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_profile_contact_info.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.binaryblitz.Chisto.ui.base.BaseActivity
-import ru.binaryblitz.Chisto.entities.User
-import ru.binaryblitz.Chisto.push.MyInstanceIDListenerService
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.entities.User
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
+import ru.binaryblitz.Chisto.push.MyInstanceIDListenerService
+import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.map.MapActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.CustomPhoneNumberTextWatcher
@@ -61,7 +62,7 @@ class ContactInfoActivity : BaseActivity() {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
                         if (response.isSuccessful) {
-                            parseUserResponse(response.body())
+                            parseUserResponse(response.body()!!)
                         }
                     }
 
@@ -121,7 +122,7 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener {
+        left_btn.setOnClickListener {
             if (!validateFields()) {
                 showDialog()
             } else {
@@ -129,11 +130,11 @@ class ContactInfoActivity : BaseActivity() {
             }
         }
 
-        findViewById(R.id.address_btn).setOnClickListener {
+        address_btn.setOnClickListener {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
 
-        findViewById(R.id.street_btn).setOnClickListener {
+        street_btn.setOnClickListener {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
     }
@@ -214,7 +215,7 @@ class ContactInfoActivity : BaseActivity() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
                 if (response.isSuccessful) {
-                    parseUserAnswer(response.body())
+                    parseUserAnswer(response.body()!!)
                 } else {
                     onServerError(response)
                 }

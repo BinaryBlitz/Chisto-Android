@@ -14,6 +14,7 @@ android {
         versionCode 53
         versionName "1.0.1"
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -32,6 +33,8 @@ androidExtensions {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation 'com.android.support:multidex:1.0.2'
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

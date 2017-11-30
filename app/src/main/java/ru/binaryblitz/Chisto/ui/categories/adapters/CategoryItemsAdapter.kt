@@ -15,15 +15,9 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_CURRENT_ORDER
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DECORATION
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DESCRIPTION
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_ID
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_NAME
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_USE_AREA
+import ru.binaryblitz.Chisto.utils.Extras.*
 import ru.binaryblitz.Chisto.utils.Image
-import java.util.ArrayList
+import java.util.*
 
 
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -115,6 +109,6 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         internal var name = itemView.findViewById(R.id.name) as TextView
         internal var description = itemView.findViewById(R.id.description) as TextView
         internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
-        internal var longTreatmentIndicator = itemView.findViewById(R.id.longTreatmentIndicator)
+        internal var longTreatmentIndicator = itemView.findViewById(R.id.longTreatmentIndicator) as View
     }
 }

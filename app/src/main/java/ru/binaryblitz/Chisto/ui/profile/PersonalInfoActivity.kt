@@ -16,6 +16,7 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_contact_info.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -29,7 +30,12 @@ import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.map.MapActivity
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
-import ru.binaryblitz.Chisto.utils.*
+import ru.binaryblitz.Chisto.utils.AndroidUtilities
+import ru.binaryblitz.Chisto.utils.Animations
+import ru.binaryblitz.Chisto.utils.AppConfig
+import ru.binaryblitz.Chisto.utils.CustomPhoneNumberTextWatcher
+import ru.binaryblitz.Chisto.utils.LogUtil
+import ru.binaryblitz.Chisto.utils.OrderList
 import java.util.*
 import java.util.regex.Pattern
 
@@ -81,7 +87,7 @@ class PersonalInfoActivity : BaseActivity() {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
                         if (response.isSuccessful) {
-                            parseUserResponse(response.body())
+                            parseUserResponse(response.body()!!)
                         } else {
                             onServerError(response)
                         }
@@ -207,7 +213,7 @@ class PersonalInfoActivity : BaseActivity() {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
                         if (response.isSuccessful) {
-                            parseAnswer(response.body(), payWithCard)
+                            parseAnswer(response.body()!!, payWithCard)
                         } else {
                             onServerError(response)
                         }
@@ -268,23 +274,17 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener { finishActivity() }
-
-        findViewById(R.id.bank_btn).setOnClickListener { selectBankCard() }
-
-        findViewById(R.id.money_btn).setOnClickListener { selectCash() }
-
-        findViewById(R.id.continue_btn).setOnClickListener { process(selectedPaymentType == CARD) }
-
-        findViewById(R.id.address_btn).setOnClickListener {
+        left_btn.setOnClickListener { finishActivity() }
+        bank_btn.setOnClickListener { selectBankCard() }
+        money_btn.setOnClickListener { selectCash() }
+        continue_btn.setOnClickListener { process(selectedPaymentType == CARD) }
+        address_btn.setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
         }
-
-        findViewById(R.id.street_btn).setOnClickListener {
+        street_btn.setOnClickListener {
             startActivity(Intent(this@PersonalInfoActivity, MapActivity::class.java))
         }
-
-        findViewById(R.id.dialog).setOnClickListener {
+        dialog.setOnClickListener {
             Animations.animateRevealHide(findViewById(R.id.dialog))
         }
     }
@@ -430,7 +430,7 @@ class PersonalInfoActivity : BaseActivity() {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
                 if (response.isSuccessful) {
-                    parseUserAnswer(payWithCard, response.body())
+                    parseUserAnswer(payWithCard, response.body()!!)
                 } else {
                     onServerError(response)
                 }

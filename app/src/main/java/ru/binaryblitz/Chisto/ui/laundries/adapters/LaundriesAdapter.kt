@@ -2,7 +2,7 @@ package ru.binaryblitz.Chisto.ui.laundries.adapters
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.*
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.iarcuschin.simpleratingbar.SimpleRatingBar
+import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.entities.Laundry
 import ru.binaryblitz.Chisto.ui.laundries.LaundriesActivity
 import ru.binaryblitz.Chisto.ui.laundries.LaundryAndOrderActivity
-import ru.binaryblitz.Chisto.entities.Laundry
-import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.utils.DateUtils
 import ru.binaryblitz.Chisto.utils.Image
 import ru.binaryblitz.Chisto.utils.OrderList
@@ -85,8 +85,8 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.collectionTitle.setTextColor(blueColor)
         holder.price.setTextColor(greenColor)
 
-        holder.itemView.findViewById(R.id.basic_price_layout).visibility = View.VISIBLE
-        holder.itemView.findViewById(R.id.minimum_price_layout).visibility = View.GONE
+        holder.itemView.findViewById<View>(R.id.basic_price_layout).visibility = View.VISIBLE
+        holder.itemView.findViewById<View>(R.id.minimum_price_layout).visibility = View.GONE
     }
 
     private fun setDisabledColors(holder: ViewHolder) {
@@ -103,8 +103,8 @@ class LaundriesAdapter(private val context: Activity) : RecyclerView.Adapter<Rec
         holder.collectionTitle.setTextColor(color)
         holder.price.setTextColor(color)
 
-        holder.itemView.findViewById(R.id.basic_price_layout).visibility = View.GONE
-        holder.itemView.findViewById(R.id.minimum_price_layout).visibility = View.VISIBLE
+        holder.itemView.findViewById<View>(R.id.basic_price_layout).visibility = View.GONE
+        holder.itemView.findViewById<View>(R.id.minimum_price_layout).visibility = View.VISIBLE
     }
 
     private fun selectLaundry(laundry: Laundry) {

@@ -14,12 +14,12 @@ class WelcomePage : OnBoardingFragment() {
     private var animatedOnBoardViewsLayout: AnimatedChildViewsLayout? = null
         private set
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater!!.inflate(R.layout.onboarding_welcome, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.onboarding_welcome, container, false)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        animatedOnBoardViewsLayout = view!!.findViewById(R.id.onBoardingView) as AnimatedChildViewsLayout
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        animatedOnBoardViewsLayout = view.findViewById(R.id.onBoardingView) as AnimatedChildViewsLayout
         animatedOnBoardViewsLayout!!.isEnableAlphaAnimation = true
         animatedOnBoardViewsLayout!!.setup()
     }

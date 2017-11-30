@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
@@ -17,6 +18,8 @@ import cn.refactor.library.SmoothCheckBox
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_select_service.*
+import kotlinx.android.synthetic.main.dialog_size.*
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Treatment
 import ru.binaryblitz.Chisto.network.ServerApi
@@ -27,22 +30,14 @@ import ru.binaryblitz.Chisto.ui.order.adapters.TreatmentsAdapter
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.Animations
 import ru.binaryblitz.Chisto.utils.AppConfig
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_COLOR
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_CURRENT_ORDER
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DECORATION
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_DESCRIPTION
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_ID
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_NAME
-import ru.binaryblitz.Chisto.utils.Extras.EXTRA_USE_AREA
+import ru.binaryblitz.Chisto.utils.Extras.*
 import ru.binaryblitz.Chisto.utils.LogUtil
 import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.views.RecyclerListView
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
-import java.util.ArrayList
-import java.util.Collections
-import java.util.Locale
+import java.util.*
 
 class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
@@ -97,7 +92,7 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
 
     private fun initElements() {
         val color = intent.getStringExtra(EXTRA_COLOR)
-        findViewById(R.id.appbar).setBackgroundColor(Color.parseColor(color))
+        findViewById<View>(R.id.appbar).setBackgroundColor(Color.parseColor(color))
         AndroidUtilities.colorAndroidBar(this, Color.parseColor(color))
         (findViewById(R.id.date_text_view) as TextView).text = intent.getStringExtra(EXTRA_NAME)
         (findViewById(R.id.item_description) as TextView).text = intent.getStringExtra(EXTRA_DESCRIPTION)
@@ -113,19 +108,15 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
     }
 
     private fun setOnClickListeners() {
-        findViewById(R.id.left_btn).setOnClickListener {
-            finishActivity()
-        }
-
-        findViewById(R.id.cont_btn).setOnClickListener {
+        left_btn.setOnClickListener { finishActivity() }
+        cont_btn.setOnClickListener {
             if (intent.getBooleanExtra(EXTRA_USE_AREA, false)) {
                 showSizeDialog()
             } else {
                 openActivity()
             }
         }
-
-        findViewById(R.id.size_ok_btn).setOnClickListener {
+        size_ok_btn.setOnClickListener {
             if (!checkSizes()) {
                 showErrorDialog()
                 return@setOnClickListener
@@ -134,17 +125,10 @@ class SelectServiceActivity : BaseActivity(), TreatmentsView {
             openActivity()
         }
 
-        findViewById(R.id.plus_btn).setOnClickListener { presenter.increaseOrderAmount() }
-
-        findViewById(R.id.minus).setOnClickListener { presenter.decreaseOrderAmount() }
-
-        findViewById(R.id.dialog).setOnClickListener {
-            closeDialog()
-        }
-
-        findViewById(R.id.cancel_btn).setOnClickListener {
-            closeDialog()
-        }
+        plus_btn.setOnClickListener { presenter.increaseOrderAmount() }
+        minus.setOnClickListener { presenter.decreaseOrderAmount() }
+        dialog.setOnClickListener { closeDialog() }
+        cancel_btn.setOnClickListener { closeDialog() }
     }
 
     private fun checkSizes(): Boolean {
