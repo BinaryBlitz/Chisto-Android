@@ -1,9 +1,9 @@
 package ru.binaryblitz.Chisto.network
 
-import ru.binaryblitz.Chisto.BuildConfig
-
 object ServerConfig {
-    val baseUrl = if (BuildConfig.DEBUG) "https://chisto.xyz" else  "https://chis.to"
+    //TODO https://chisto.xyz don't work. Revert later
+//    val baseUrl = if (BuildConfig.DEBUG) "https://chisto.xyz" else  "https://chis.to"
+    val baseUrl = "https://chis.to"
     val apiURL = baseUrl + "/api/"
 
     val imageUrl: String

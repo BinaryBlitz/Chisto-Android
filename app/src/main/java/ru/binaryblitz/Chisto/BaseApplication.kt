@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.os.Build
 import android.support.multidex.MultiDex
 import net.danlew.android.joda.JodaTimeAndroid
+import timber.log.Timber
 import java.util.*
 
 class BaseApplication : Application() {
@@ -25,6 +26,7 @@ class BaseApplication : Application() {
         super.onCreate()
         JodaTimeAndroid.init(this)
         setLanguage(this, "ru")
+        if (BuildConfig.DEBUG) Timber.DebugTree()
     }
 
     fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
