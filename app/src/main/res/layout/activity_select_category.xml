@@ -53,7 +53,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F7F7F7"></ru.binaryblitz.Chisto.views.RecyclerListView>
+            android:background="#F7F7F7" />
 
         <View
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         <ru.binaryblitz.Chisto.views.RecyclerListView
             android:id="@+id/categoriesItems"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ru.binaryblitz.Chisto.views.RecyclerListView>
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </FrameLayout>

@@ -21,6 +21,7 @@ import com.mikepenz.materialdrawer.DrawerBuilder
 import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import io.fabric.sdk.android.Fabric
+import kotlinx.android.synthetic.main.activity_select_category.*
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
@@ -38,7 +39,7 @@ import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.utils.Extras
 import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.views.RecyclerListView
-import java.util.ArrayList
+import java.util.*
 
 class CategoryActivity : BaseActivity(), CategoryView {
     val EXTRA_URL = "url"
@@ -57,7 +58,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private lateinit var cartBadgeTextView: TextView
     private lateinit var cartView: ViewGroup
 
-    private lateinit var toolbar: Toolbar
     private var cartMenuItem: MenuItem? = null
     private lateinit var dialog: ProgressDialog
 
@@ -141,7 +141,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
     }
 
     private fun initToolbar() {
-        toolbar = findViewById(R.id.toolbar) as Toolbar
         toolbar.title = getString(R.string.select_part)
         setSupportActionBar(toolbar)
         cartBadgeTextView = findViewById(R.id.badge_count_text) as TextView
@@ -231,8 +230,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
         categoryItemsListView.adapter = categoryInfoAdapter
     }
 
-
-    fun initDrawer(toolbar: android.support.v7.widget.Toolbar, activity: Activity) {
+    private fun initDrawer(toolbar: Toolbar, activity: Activity) {
         val itemContactData = PrimaryDrawerItem().withName(getString(R.string.contact_data)).withIcon(R.drawable.ic_user_blue).withSelectable(false)
         val itemOrders = PrimaryDrawerItem().withName(getString(R.string.my_orders)).withIcon(R.drawable.ic_my_orders).withSelectable(false)
         val itemAbout = PrimaryDrawerItem().withName(getString(R.string.about)).withIcon(R.drawable.ic_app_mini_logo).withSelectable(false)
@@ -240,11 +238,10 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
         val accountHeader: AccountHeader = AccountHeaderBuilder()
                 .withActivity(this)
-                //TODO Add image with Chisto logo in primary color background
-                .withHeaderBackground(R.color.primary)
+                .withAccountHeader(R.layout.header_drawer_layout)
                 .build()
 
-        val result = DrawerBuilder()
+        DrawerBuilder()
                 .withActivity(activity)
                 .withToolbar(toolbar)
                 .withDisplayBelowStatusBar(false)
@@ -258,7 +255,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
                         itemAbout,
                         itemRules
                 )
-                .withOnDrawerItemClickListener { view, position, drawerItem ->
+                .withOnDrawerItemClickListener { _, _, drawerItem ->
                     when (drawerItem) {
                         itemContactData -> openActivity(ContactInfoActivity::class.java)
                         itemOrders -> openActivity(MyOrdersActivity::class.java)
@@ -280,24 +277,22 @@ class CategoryActivity : BaseActivity(), CategoryView {
         startActivity(intent)
     }
 
-
     private fun save(collection: List<Category>) {
         for (i in collection.indices) {
-            val (id, icon, name, description, color) = collection[i]
+            val (id, _, _, _, color) = collection[i]
             ColorsList.add(Pair(id, Color.parseColor(color)))
         }
         ColorsList.saveColors(this)
     }
 
-    fun updateCartBadgeCount(count: Int) {
+    private fun updateCartBadgeCount(count: Int) {
         runOnUiThread {
             if (count == 0) {
                 cartBadgeTextView.visibility = View.INVISIBLE
             } else {
                 cartBadgeTextView.visibility = View.VISIBLE
-                cartBadgeTextView.text = Integer.toString(count)
+                cartBadgeTextView.text = count.toString()
             }
         }
     }
-
 }
