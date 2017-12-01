@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -20,7 +21,6 @@ import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_select_category.*
 import kotlinx.android.synthetic.main.toolbar_cart_icon.*
 import ru.binaryblitz.Chisto.EMPTY_STRING
-import kotlinx.android.synthetic.main.activity_select_category.*
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
