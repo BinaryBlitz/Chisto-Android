@@ -24,7 +24,7 @@ open class BaseActivity : AppCompatActivity() {
         else Snackbar.make(findViewById(R.id.main), error.message(), Snackbar.LENGTH_SHORT).show()
     }
 
-    fun onLocationError() {
+    open fun onLocationError() {
         Snackbar.make(findViewById(R.id.main), R.string.location_error, Snackbar.LENGTH_SHORT).show()
     }
 }
