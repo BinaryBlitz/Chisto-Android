@@ -20,10 +20,10 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_select_category.*
 import kotlinx.android.synthetic.main.toolbar_cart_icon.*
-import ru.binaryblitz.Chisto.EMPTY_STRING
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
+import ru.binaryblitz.Chisto.extension.clear
 import ru.binaryblitz.Chisto.extension.hideKeyboard
 import ru.binaryblitz.Chisto.extension.visible
 import ru.binaryblitz.Chisto.network.ServerApi
@@ -143,7 +143,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
                 main.requestFocus()
                 hideKeyboard()
             }
-            searchEditText.post { searchEditText.setText(EMPTY_STRING) }
+            searchEditText.post { searchEditText.clear() }
         }
 
         searchEditText.setOnFocusChangeListener { _, focus ->
@@ -159,19 +159,19 @@ class CategoryActivity : BaseActivity(), CategoryView {
             }
         }
         searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(p0: Editable?) {
+            override fun afterTextChanged(s: Editable?) {
 
             }
 
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (searchEditText.hasFocus()) {
-                    if (p0.isNullOrEmpty()) {
+                    if (s.isNullOrEmpty()) {
                         categoryPresenter.getAllItems()
                     } else {
-                        searchForItems(p0.toString())
+                        searchForItems(s.toString())
                     }
                 }
             }

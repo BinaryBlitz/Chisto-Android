@@ -1,9 +1,9 @@
 package ru.binaryblitz.Chisto.extension
 
 import android.app.Activity
-import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 
 
 fun View.visible(show: Boolean, gone: Boolean = true) {
@@ -16,7 +16,11 @@ fun View.visible(show: Boolean, gone: Boolean = true) {
     }
 }
 
-fun Context.hideKeyboard() {
+fun EditText.clear() {
+    setText("")
+}
+
+fun Activity.hideKeyboard() {
     val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
-    inputMethodManager?.hideSoftInputFromWindow((this as Activity).window?.currentFocus?.windowToken, 0)
+    inputMethodManager?.hideSoftInputFromWindow(window?.currentFocus?.windowToken, 0)
 }
