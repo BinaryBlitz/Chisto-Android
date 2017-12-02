@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/defaultBackgroundColor"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:focusable="true"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <FrameLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -22,32 +25,62 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="@color/colorPrimary"
-                app:layout_scrollFlags="scroll|enterAlways">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_scrollFlags="scroll|enterAlways" />
 
-            </android.support.v7.widget.Toolbar>
-
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <FrameLayout
+            <include
+                android:id="@+id/cartViewLayoutCategory"
+                layout="@layout/toolbar_cart_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_gravity="center_vertical|right">
-                <include layout="@layout/toolbar_cart_icon"></include>
-            </FrameLayout>
+                android:layout_marginRight="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/toolbar" />
 
+            <EditText
+                android:id="@+id/searchEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/search_edittext_back"
+                android:maxLength="40"
+                android:maxLines="1"
+                android:paddingRight="32dp"
+                android:drawableLeft="@drawable/ic_action_action_search"
+                android:inputType="text|textNoSuggestions"
+                android:hint="@string/search"
+                android:textColor="@color/textColor"
+                android:textColorHint="@color/whiteColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-        </FrameLayout>
+            <ImageButton
+                android:id="@+id/clearSearchImageButton"
+                style="@style/transparentIconButton"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:tint="@color/whiteColor"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/searchEditText"
+                app:layout_constraintEnd_toEndOf="@+id/searchEditText"
+                app:layout_constraintTop_toTopOf="@+id/searchEditText"
+                app:layout_constraintVertical_bias="0.75"
+                app:srcCompat="@drawable/ic_close24" />
+        </android.support.constraint.ConstraintLayout>
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ru.binaryblitz.Chisto.views.RecyclerListView
             android:id="@+id/recyclerView"
@@ -67,4 +100,4 @@
             android:layout_height="match_parent" />
 
     </LinearLayout>
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

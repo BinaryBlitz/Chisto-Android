@@ -8,13 +8,10 @@ import android.os.Bundle
 import android.support.v4.util.Pair
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
-import android.view.Menu
-import android.view.MenuItem
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import com.crashlytics.android.Crashlytics
-import com.miguelcatalan.materialsearchview.MaterialSearchView
 import com.mikepenz.materialdrawer.AccountHeader
 import com.mikepenz.materialdrawer.AccountHeaderBuilder
 import com.mikepenz.materialdrawer.DrawerBuilder
@@ -22,9 +19,13 @@ import com.mikepenz.materialdrawer.model.DividerDrawerItem
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_select_category.*
+import kotlinx.android.synthetic.main.toolbar_cart_icon.*
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
+import ru.binaryblitz.Chisto.extension.clear
+import ru.binaryblitz.Chisto.extension.hideKeyboard
+import ru.binaryblitz.Chisto.extension.visible
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.about.AboutActivity
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
@@ -39,6 +40,7 @@ import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.utils.Extras
 import ru.binaryblitz.Chisto.utils.OrderList
 import ru.binaryblitz.Chisto.views.RecyclerListView
+import timber.log.Timber
 import java.util.*
 
 class CategoryActivity : BaseActivity(), CategoryView {
@@ -52,13 +54,9 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private lateinit var categoryInfoAdapter: CategoryItemsAdapter
     private lateinit var allItemsAdapter: CategoryItemsAdapter
 
-    private lateinit var searchView: MaterialSearchView
     private lateinit var categoriesListView: RecyclerListView
     private lateinit var categoryItemsListView: RecyclerListView
-    private lateinit var cartBadgeTextView: TextView
-    private lateinit var cartView: ViewGroup
 
-    private var cartMenuItem: MenuItem? = null
     private lateinit var dialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,18 +112,6 @@ class CategoryActivity : BaseActivity(), CategoryView {
         categoryInfoAdapter.notifyDataSetChanged()
     }
 
-    override fun onBackPressed() {
-        if (searchView == null) {
-            return
-        }
-        if (searchView.isSearchOpen) {
-            searchView.closeSearch()
-        } else {
-            finish()
-        }
-    }
-
-
     private fun searchForItems(query: String) {
         if (allItemsAdapter.getCategories() == null) {
             return
@@ -143,9 +129,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private fun initToolbar() {
         toolbar.title = getString(R.string.select_part)
         setSupportActionBar(toolbar)
-        cartBadgeTextView = findViewById(R.id.badge_count_text) as TextView
-        cartView = findViewById(R.id.cart_view_layout) as ViewGroup
-        cartView.setOnClickListener {
+        cartViewLayoutCategory.setOnClickListener {
             val intent = Intent(this@CategoryActivity, OrdersActivity::class.java)
             intent.putExtra(Extras.EXTRA_COLOR, color)
             startActivity(intent)
@@ -154,52 +138,49 @@ class CategoryActivity : BaseActivity(), CategoryView {
     }
 
     private fun initSearchView() {
-        searchView = findViewById(R.id.search_view) as MaterialSearchView
-        searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
+        clearSearchImageButton.setOnClickListener {
+            main.post {
+                main.requestFocus()
+                hideKeyboard()
             }
+            searchEditText.post { searchEditText.clear() }
+        }
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isEmpty()) {
-                    categoryPresenter.getAllItems()
-                    return false
-                }
+        searchEditText.setOnFocusChangeListener { _, focus ->
+            Timber.d(focus.toString())
+            clearSearchImageButton.visible(focus)
 
-                searchForItems(newText)
-                return false
-            }
-        })
-
-        searchView.setOnSearchViewListener(object : MaterialSearchView.SearchViewListener {
-            override fun onSearchViewShown() {
-                cartView.visibility = View.INVISIBLE
+            if (!focus) {
+                categoryPresenter.getCategories()
+                categoriesListView.visible(true)
+                categoriesListView.adapter = categoryAdapter
+            } else {
                 categoryPresenter.getAllItems()
             }
+        }
+        searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
 
-            override fun onSearchViewClosed() {
-                cartView.visibility = View.VISIBLE
-                categoryPresenter.getCategories()
-                categoriesListView.visibility = View.VISIBLE
-                categoriesListView.adapter = categoryAdapter
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if (searchEditText.hasFocus()) {
+                    if (s.isNullOrEmpty()) {
+                        categoryPresenter.getAllItems()
+                    } else {
+                        searchForItems(s.toString())
+                    }
+                }
             }
         })
-
-        searchView.setVoiceSearch(false)
     }
 
     override fun onResume() {
         super.onResume()
         updateCartBadgeCount(OrderList.get()!!.size)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-
-        val item = menu.findItem(R.id.action_search)
-        searchView.setMenuItem(item)
-
-        return true
     }
 
     private fun initList() {
@@ -288,10 +269,10 @@ class CategoryActivity : BaseActivity(), CategoryView {
     private fun updateCartBadgeCount(count: Int) {
         runOnUiThread {
             if (count == 0) {
-                cartBadgeTextView.visibility = View.INVISIBLE
+                badge_count_text.visibility = View.INVISIBLE
             } else {
-                cartBadgeTextView.visibility = View.VISIBLE
-                cartBadgeTextView.text = count.toString()
+                badge_count_text.visibility = View.VISIBLE
+                badge_count_text.text = count.toString()
             }
         }
     }
