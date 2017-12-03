@@ -8,6 +8,7 @@ buildscript {
         retroft2_version = '2.3.0'
         android_play_services_version = '11.6.0'
         firebase_version = '11.6.0'
+        permissions_dispatcher_version = '3.0.1'
     }
     repositories {
         google()
