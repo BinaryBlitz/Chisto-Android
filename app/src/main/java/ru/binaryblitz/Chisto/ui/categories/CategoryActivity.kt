@@ -21,6 +21,7 @@ import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_select_category.*
 import kotlinx.android.synthetic.main.toolbar_cart_icon.*
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.ResourceManager
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.extension.clear
@@ -70,8 +71,12 @@ class CategoryActivity : BaseActivity(), CategoryView {
         initSearchView()
 
         categoryPresenter =
-                CategoryPresenterImpl(this,
-                        CategoryInteractorImpl(ServerApi.get(this).api()), this)
+                CategoryPresenterImpl(
+                        this,
+                        CategoryInteractorImpl(ServerApi.get(this).api()),
+                        this,
+                        ResourceManager(this)
+                )
         categoryPresenter.setView(this)
         categoryPresenter.getCategories()
     }
