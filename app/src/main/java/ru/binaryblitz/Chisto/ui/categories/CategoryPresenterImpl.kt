@@ -1,62 +1,100 @@
 package ru.binaryblitz.Chisto.ui.categories
 
 import android.content.Context
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.functions.BiFunction
+import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.ResourceManager
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.utils.ColorsList
+import timber.log.Timber
 import java.util.*
 
 
-class CategoryPresenterImpl(val context: Context, val interactor: CategoryInteractor,
-                            private var categoryView: CategoryView?) : CategoryPresenter {
+class CategoryPresenterImpl(
+        val context: Context,
+        private val interactor: CategoryInteractor,
+        private var view: CategoryView?,
+        private val resourceManager: ResourceManager
+) : CategoryPresenter {
+
+    private lateinit var allItems: List<CategoryItem>
 
     override fun setView(view: CategoryView) {
-        categoryView = view
+        this.view = view
     }
 
     fun getCategories() {
-        categoryView?.showProgress()
-        interactor.getCategories()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ categoryList ->
-                    categoryView?.hideProgress()
-                    categoryView?.showCategories(categoryList)
-                }, { error ->
-                    categoryView?.hideProgress()
-                    categoryView?.showError(error.toString())
+        interactor.getCategories().zipWith(
+                interactor.getAllItems(),
+                BiFunction<List<Category>, List<CategoryItem>, List<Category>> { categories, items ->
+                    allItems = items
+                    addCategoryWithAllItems(categories, items)
                 })
+                .doOnSubscribe { view?.showProgress() }
+                .doOnTerminate { view?.hideProgress() }
+                .subscribe(
+                        { categories ->
+                            Timber.d(categories.toString())
+                            view?.showCategories(categories)
+                        },
+                        { error ->
+                            Timber.d(error.toString())
+                            view?.showError(error.toString())
+                        }
+                )
     }
 
     fun getCategoriesItems(id: Int) {
-        categoryView?.showProgress()
-        interactor.getCategoriesItems(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ categoriesItems ->
-                    categoryView?.hideProgress()
-                    categoryView?.showCategoryInfo(categoriesItems)
-                }, { error ->
-                    categoryView?.hideProgress()
-                    categoryView?.showError(error.toString())
-                })
+        Timber.d(id.toString())
+        if (id == All_CATEGORY_ID) {
+            view?.showCategoryInfo(allItems)
+        } else {
+            interactor.getCategoriesItems(id)
+                    .doOnSubscribe { view?.showProgress() }
+                    .doOnTerminate { view?.hideProgress() }
+                    .subscribe(
+                            { categoriesItems -> view?.showCategoryInfo(categoriesItems) },
+                            { error ->
+                                view?.showError(error.toString())
+                                Timber.d(error.toString())
+                            }
+                    )
+        }
     }
 
     fun getAllItems() {
-        categoryView?.showProgress()
         interactor.getAllItems()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ categoriesItems ->
-                    categoryView?.hideProgress()
-                    ColorsList.load(context)
-                    categoryView?.showAllItems(categoriesItems)
-                }, { error ->
-                    categoryView?.hideProgress()
-                    categoryView?.showError(error.toString())
-                })
+                .doOnSubscribe { view?.showProgress() }
+                .doOnTerminate { view?.hideProgress() }
+                .subscribe(
+                        { categoriesItems ->
+                            ColorsList.load(context)
+                            view?.showAllItems(categoriesItems)
+                        },
+                        { error ->
+                            Timber.d(error.toString())
+                            view?.showError(error.toString())
+                        }
+                )
+    }
+
+    private fun addCategoryWithAllItems(
+            categories: List<Category>,
+            items: List<CategoryItem>
+    ): List<Category> {
+        val categoryWithAllItems = Category(
+                -1,
+                resourceManager.getString(R.string.all),
+                "",
+                ALL_CATEGORY_ICON,
+                ALL_CATEGORY_COLOR,
+                true,
+                items.size,
+                items.map { it.name }.toList()
+        )
+        (categories as MutableList<Category>).add(0, categoryWithAllItems)
+        return categories
     }
 
     private fun sortCategories(collection: ArrayList<Category>) {
@@ -79,4 +117,9 @@ class CategoryPresenterImpl(val context: Context, val interactor: CategoryIntera
         Collections.sort(collection) { categoryItem, t1 -> categoryItem.name.compareTo(t1.name) }
     }
 
+    private companion object {
+        private const val All_CATEGORY_ID = -1
+        private const val ALL_CATEGORY_ICON = "https://chisto-production.s3.amazonaws.com/uploads/category/icon/1/868ee14f44a78fbbb0a82602290b171e.png"
+        private const val ALL_CATEGORY_COLOR = "#42e295"
+    }
 }
