@@ -7,6 +7,7 @@ import ru.binaryblitz.Chisto.ResourceManager
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.utils.ColorsList
+import ru.binaryblitz.Chisto.utils.Image
 import timber.log.Timber
 import java.util.*
 
@@ -84,14 +85,14 @@ class CategoryPresenterImpl(
             items: List<CategoryItem>
     ): List<Category> {
         val categoryWithAllItems = Category(
-                -1,
-                resourceManager.getString(R.string.all),
-                "",
-                ALL_CATEGORY_ICON,
-                ALL_CATEGORY_COLOR,
-                true,
-                items.size,
-                items.map { it.name }.toList()
+                id = -1,
+                name = resourceManager.getString(R.string.all),
+                description = "",
+                iconUrl = Image.resIdToUri(context, R.drawable.icon_allcategory_action).toString(),
+                color = ALL_CATEGORY_COLOR,
+                featured = true,
+                itemsCount = items.size,
+                itemsPreview = items.map { it.name }.toList()
         )
         (categories as MutableList<Category>).add(0, categoryWithAllItems)
         return categories
@@ -119,7 +120,6 @@ class CategoryPresenterImpl(
 
     private companion object {
         private const val All_CATEGORY_ID = -1
-        private const val ALL_CATEGORY_ICON = "https://chisto-production.s3.amazonaws.com/uploads/category/icon/1/868ee14f44a78fbbb0a82602290b171e.png"
         private const val ALL_CATEGORY_COLOR = "#42e295"
     }
 }
