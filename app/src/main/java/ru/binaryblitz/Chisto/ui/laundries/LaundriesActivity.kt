@@ -86,9 +86,12 @@ class LaundriesActivity : BaseActivity() {
         intent.putExtra(EXTRA_ID, laundry!!.id)
         intent.putExtra(EXTRA_COLLECTION_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.collectionDate))
         intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
+        intent.putExtra(EXTRA_COLLECTION_BOUNDS, getCollectionPeriod(laundry!!))
+
         if (laundry!!.orderPrice!! < laundry!!.freeDeliveryFrom!!) {
             intent.putExtra(EXTRA_DELIVERY_FEE, laundry!!.deliveryFee!!)
         }
+
         intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry!!))
         startActivity(intent)
     }
@@ -97,6 +100,12 @@ class LaundriesActivity : BaseActivity() {
         return getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
                 getString(R.string.end_bound_code) +
                 DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
+    }
+
+    private fun getCollectionPeriod(laundry: Laundry): String {
+        return getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.collectionDateOpensAt) +
+                getString(R.string.end_bound_code) +
+                DateUtils.getTimeStringRepresentation(laundry.collectionDateClosesAt)
     }
 
     private fun initList() {
@@ -461,5 +470,6 @@ class LaundriesActivity : BaseActivity() {
         private val EXTRA_DELIVERY_FEE = "deliveryFee"
         private val EXTRA_COLLECTION_DATE = "collectionDate"
         private val EXTRA_DELIVERY_DATE = "deliveryDate"
+        private const val EXTRA_COLLECTION_BOUNDS = "extra_collection_bounds"
     }
 }
