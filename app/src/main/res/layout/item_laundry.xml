@@ -1,221 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:orientation="vertical"
-             android:layout_width="match_parent"
-             android:background="#ffffff"
-             android:layout_height="wrap_content">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-        <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="110dp">
-            <com.github.siyamed.shapeimageview.CircularImageView
-                    app:siBorderWidth="2dp"
-                    app:siBorderColor="#ffffff"
-                    android:scaleType="centerCrop"
-                    android:layout_width="64dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginStart="12dp"
-                    android:id="@+id/category_icon"
-                    android:layout_height="64dp"/>
-            <LinearLayout android:layout_width="match_parent"
-                          android:orientation="vertical"
-                          android:layout_gravity="center_vertical"
-                          android:layout_height="wrap_content">
-                <TextView android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/name"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginRight="12dp"
-                    android:textSize="16sp"
-                    android:textColor="#212121"
-                    android:layout_marginLeft="100dp"
-                    android:layout_gravity="top"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="44dp"
-                          android:id="@+id/description"
-                          android:textSize="14sp"
-                          android:layout_marginTop="4dp"
-                          android:layout_marginBottom="6dp"
-                          android:textColor="#727272"
-                          android:gravity="center_vertical"
-                          android:layout_marginStart="100dp"
-                          android:layout_marginLeft="100dp"
-                          android:maxLines="2"
-                          android:layout_marginEnd="12dp"
-                          android:layout_marginRight="12dp"
-                          android:layout_gravity="center_vertical"/>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#ffffff"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
 
-                <com.iarcuschin.simpleratingbar.SimpleRatingBar
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srb_starSize="12dp"
-                        app:srb_numberOfStars="5"
-                        app:srb_rating="3"
-                        app:srb_starBorderWidth="3"
-                        app:srb_stepSize="0.5"
-                        android:id="@+id/ratingBar"
-                        app:srb_starCornerRadius="2"
-                        android:layout_gravity="bottom"
-                        android:layout_marginStart="100dp"
-                        android:layout_marginLeft="100dp"
-                        app:srb_borderColor="@color/colorPrimary"
-                        app:srb_fillColor="@color/colorPrimary"
-                />
-            </LinearLayout>
-        </FrameLayout>
-        <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical"
-                android:layout_height="wrap_content">
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1.0"
-                    android:orientation="vertical"
-                    android:background="@drawable/right_border"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content">
-                <ImageView
-                        android:layout_width="44dp"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_courier"
-                        android:layout_height="44dp"/>
-                <TextView android:layout_width="wrap_content"
-                          android:text="@string/courier"
-                          android:textColor="@color/colorAccent"
-                          android:textSize="16sp"
-                          android:id="@+id/collection_title"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_marginTop="12dp"
-                          android:id="@+id/collection_date"
-                          android:layout_height="wrap_content"/>
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/categoryIconCircularImageView"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:siBorderColor="#ffffff"
+        app:siBorderWidth="2dp" />
 
-                <TextView android:layout_width="wrap_content"
-                          android:layout_marginTop="4dp"
-                          android:id="@+id/collection_period"
-                          android:textSize="12sp"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1.0"
-                    android:orientation="vertical"
-                    android:background="@drawable/right_border"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content">
-                <ImageView
-                        android:layout_width="44dp"
-                        android:src="@drawable/ic_delivery"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_height="44dp"/>
-                <TextView android:layout_width="wrap_content"
-                          android:text="@string/delivery"
-                          android:textColor="@color/colorAccent"
-                          android:textSize="16sp"
-                          android:id="@+id/delivery_title"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_marginTop="12dp"
-                          android:id="@+id/delivery_date"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textColor="#212121"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/minPriceLayout"
+        app:layout_constraintStart_toEndOf="@+id/categoryIconCircularImageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="sdfnljsdnf" />
 
-                <TextView android:layout_width="wrap_content"
-                          android:layout_marginTop="4dp"
-                          android:textSize="12sp"
-                          android:id="@+id/delivery_bounds"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1.0"
-                    android:id="@+id/basic_price_layout"
-                    android:visibility="gone"
-                    android:orientation="vertical"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="match_parent">
-                <ImageView
-                        android:layout_width="44dp"
-                        android:layout_gravity="center_horizontal|top"
-                        android:src="@drawable/ic_cost"
-                        android:padding="2dp"
-                        android:layout_height="44dp"/>
-                <TextView android:layout_width="wrap_content"
-                          android:text="@string/price"
-                          android:textColor="@color/colorAccent"
-                          android:textSize="16sp"
-                          android:id="@+id/price_title"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_marginTop="18dp"
-                          android:textSize="18sp"
-                          android:id="@+id/sum"
-                          android:textColor="#388E3C"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-            </LinearLayout>
+    <TextView
+        android:id="@+id/descriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="#727272"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/minPriceLayout"
+        app:layout_constraintStart_toEndOf="@+id/categoryIconCircularImageView"
+        app:layout_constraintTop_toBottomOf="@+id/nameTextView"
+        tools:text="sdfnljsdnf" />
 
-            <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_weight="1.0"
-                    android:orientation="vertical"
-                    android:id="@+id/minimum_price_layout"
-                    android:background="@drawable/right_border"
-                    android:layout_gravity="center_vertical"
-                    android:layout_height="wrap_content">
-                <ImageView
-                        android:layout_width="42dp"
-                        android:src="@drawable/ic_cost"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_height="42dp"/>
-                <TextView android:layout_width="wrap_content"
-                          android:text="@string/delivery"
-                          android:textSize="12sp"
-                          android:layout_marginTop="8dp"
-                          android:textColor="#b6b6b6"
-                          android:id="@+id/minimum_cost_title"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-                <TextView android:layout_width="match_parent"
-                          android:layout_marginTop="4dp"
-                          android:gravity="center"
-                          android:textColor="#b6b6b6"
-                          android:textSize="12sp"
-                          android:text="@string/minimum_order_price"
-                          android:id="@+id/minimum_cost_help"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
+    <com.iarcuschin.simpleratingbar.SimpleRatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/categoryIconCircularImageView"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextView"
+        app:srb_borderColor="@color/colorPrimary"
+        app:srb_fillColor="@color/colorPrimary"
+        app:srb_numberOfStars="5"
+        app:srb_rating="3"
+        app:srb_starBorderWidth="3"
+        app:srb_starCornerRadius="2"
+        app:srb_starSize="12dp"
+        app:srb_stepSize="0.5"
+        android:layout_marginLeft="8dp" />
 
-                <TextView android:layout_width="wrap_content"
-                          android:layout_marginTop="2dp"
-                          android:textSize="14sp"
-                          android:textColor="#333"
-                          android:id="@+id/minimum_cost_price"
-                          android:layout_gravity="center_horizontal"
-                          android:layout_height="wrap_content"/>
-            </LinearLayout>
-        </LinearLayout>
-        <View android:layout_width="match_parent"
-              android:layout_gravity="bottom"
-              android:layout_marginTop="8dp"
-              android:background="#b6b6b6"
-              android:layout_height="1px" />
-    </LinearLayout>
-    <FrameLayout android:layout_width="match_parent"
-                 android:background="?attr/selectableItemBackground"
-                 android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#388E3C"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5000" />
 
-    </FrameLayout>
-</FrameLayout>
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/minPriceLayout"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/labelMinPriceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/minimum_order_price"
+            android:textColor="#b6b6b6"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/miniPriceTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/miniPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#333"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/labelMinPriceTextView"
+            tools:text="342342" />
+    </android.support.constraint.ConstraintLayout>
+</android.support.constraint.ConstraintLayout>

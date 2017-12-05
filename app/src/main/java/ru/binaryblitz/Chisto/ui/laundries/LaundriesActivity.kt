@@ -111,7 +111,7 @@ class LaundriesActivity : BaseActivity() {
         layout!!.isEnabled = false
         layout!!.setColorSchemeResources(R.color.colorAccent)
 
-        adapter = LaundriesAdapter(this)
+        adapter = LaundriesAdapter()
         view.adapter = adapter
     }
 
