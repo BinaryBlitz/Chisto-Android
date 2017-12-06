@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.ProgressDialog
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -13,9 +14,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
-import com.google.android.gms.common.ConnectionResult
-import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.LocationServices
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import io.fabric.sdk.android.Fabric
@@ -27,8 +25,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.data.LocationProvider
 import ru.binaryblitz.Chisto.entities.City
 import ru.binaryblitz.Chisto.network.ServerApi
+import ru.binaryblitz.Chisto.presentation.SelectCityPresenter
+import ru.binaryblitz.Chisto.presentation.SelectLocationView
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.start.adapters.CitiesAdapter
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
@@ -40,32 +41,20 @@ import java.util.*
 
 @RuntimePermissions
 class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        SelectLocationView {
 
     private lateinit var phoneEditText: EditText
     private lateinit var cityEditText: EditText
-
     private val adapter by lazy { CitiesAdapter(this) }
-    private lateinit var googleApiClient: GoogleApiClient
-    private val fusedLocationClient by lazy {
-        LocationServices.getFusedLocationProviderClient(this)
-    }
+    private val presenter by lazy { SelectCityPresenter(this, LocationProvider(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ru.binaryblitz.Chisto.R.layout.activity_select_city)
         Fabric.with(this, Crashlytics())
 
-        if (!this::googleApiClient.isInitialized) {
-            googleApiClient = GoogleApiClient.Builder(this)
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
-                    .addApi(LocationServices.API)
-                    .build()
-        }
-
         back_btn.setOnClickListener { finish() }
-        my_loc_btn.setOnClickListener { getLocation() }
+        my_loc_btn.setOnClickListener { grantLocationPermissionsWithPermissionCheck() }
         city_not_found_btn.setOnClickListener { showDialog() }
 
         initList()
@@ -74,6 +63,16 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
             refresh.isEnabled = true
             load()
         }
+    }
+
+    override fun onPause() {
+        presenter.onPause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
     private fun initDialog(dialog: MaterialDialog) {
@@ -89,21 +88,22 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         load()
     }
 
-    override fun onConnected(bundle: Bundle?) {
-        getLocation()
+    override fun showUserPosition(location: Location) {
+        location.let { load(it.latitude, it.longitude) }
     }
 
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-    fun getLocation() {
-        refresh.isRefreshing = false
+    fun grantLocationPermissions() {
+        presenter.onLocationPermissionsGrant()
+    }
 
-        if (googleApiClient.isConnected) {
-            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-                location?.let { load(it.latitude, it.longitude) } ?: onLocationError()
-            }
-        } else {
-            googleApiClient.connect()
-        }
+    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun onLocationDenied() {
+        onLocationError()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     private fun load(latitude: Double, longitude: Double) {
@@ -123,24 +123,6 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         } catch (e: IOException) {
             LogUtil.logException(e)
         }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    override fun onConnectionSuspended(i: Int) {
-        googleApiClient.connect()
-    }
-
-    override fun onConnectionFailed(connectionResult: ConnectionResult) {
-        refresh.isRefreshing = false
-        onLocationError()
-    }
-
-    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
-    override fun onLocationError() {
-        super.onLocationError()
     }
 
     private fun cityError() {
@@ -244,6 +226,7 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     private fun checkDialogInput(): Boolean {
         var res = true
+
         if (!AndroidUtilities.validatePhone(phoneEditText.text.toString())) {
             phoneEditText.error = getString(R.string.wrong_phone_code)
             res = false
