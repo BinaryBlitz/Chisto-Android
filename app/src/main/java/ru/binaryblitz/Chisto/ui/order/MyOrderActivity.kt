@@ -311,10 +311,16 @@ class MyOrderActivity : BaseActivity() {
 
     private fun getCategoryFromJson(obj: JsonObject): CategoryItem {
         return CategoryItem(
-                AndroidUtilities.getIntFieldFromJson(obj.get("id")),
-                AndroidUtilities.getStringFieldFromJson(obj.get("icon_url")),
-                AndroidUtilities.getStringFieldFromJson(obj.get("name")),
-                "", false, 0, false)
+                id = AndroidUtilities.getIntFieldFromJson(obj.get("id")),
+                icon = AndroidUtilities.getStringFieldFromJson(obj.get("icon_url")),
+                name = AndroidUtilities.getStringFieldFromJson(obj.get("name")),
+                description = "",
+                userArea = false,
+                color = 0,
+                isLongTreatment = false,
+                categoryId = AndroidUtilities.getIntFieldFromJson(obj.get("categoryId")),
+                categoryColor = AndroidUtilities.getStringFieldFromJson(obj.get("categoryColor"))
+        )
     }
 
     private fun calculatePrices(obj: JsonObject, order: Order) {

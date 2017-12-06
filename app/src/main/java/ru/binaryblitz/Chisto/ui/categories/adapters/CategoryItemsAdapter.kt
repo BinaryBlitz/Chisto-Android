@@ -53,7 +53,7 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         holder.description.text = item.description
 
         Image.loadPhoto(context, item.icon, holder.icon)
-        holder.icon.setColorFilter(Color.parseColor(color))
+        holder.icon.setColorFilter(Color.parseColor(item.categoryColor))
 
         holder.longTreatmentIndicator.visibility = if (item.isLongTreatment) View.VISIBLE else View.GONE
 

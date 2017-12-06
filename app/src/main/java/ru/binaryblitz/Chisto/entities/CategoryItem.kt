@@ -17,8 +17,14 @@ data class CategoryItem(
         val userArea: Boolean,
         val color: Int,
         @SerializedName("long_treatment")
-        val isLongTreatment: Boolean) : Parcelable {
+        val isLongTreatment: Boolean,
+        @SerializedName("category_id")
+        val categoryId: Int,
+        @Transient
+        var categoryColor: String = DEFAULT_CATEGORY_COLOR
+) : Parcelable {
     companion object {
+        const val DEFAULT_CATEGORY_COLOR = "#212121"
         @JvmField val CREATOR: Parcelable.Creator<CategoryItem> = object : Parcelable.Creator<CategoryItem> {
             override fun createFromParcel(source: Parcel): CategoryItem = CategoryItem(source)
             override fun newArray(size: Int): Array<CategoryItem?> = arrayOfNulls(size)
@@ -32,7 +38,9 @@ data class CategoryItem(
             source.readString(),
             1 == source.readInt(),
             source.readInt(),
-            1 == source.readInt()
+            1 == source.readInt(),
+            source.readInt(),
+            source.readString()
     )
 
     override fun describeContents() = 0
@@ -45,6 +53,8 @@ data class CategoryItem(
         dest.writeInt((if (userArea) 1 else 0))
         dest.writeInt(color)
         dest.writeInt((if (isLongTreatment) 1 else 0))
+        dest.writeInt(categoryId)
+        dest.writeString(categoryColor)
     }
 }
 
