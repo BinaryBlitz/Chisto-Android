@@ -9,12 +9,6 @@
     android:focusable="true">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_logo"
-        android:scaleType="centerCrop" />
-
-    <ImageView
         android:id="@+id/material_drawer_account_header_background"
         android:layout_width="match_parent"
         android:layout_height="@dimen/material_drawer_account_header_height"
@@ -143,10 +137,12 @@
     </RelativeLayout>
 
     <ImageView
-        android:layout_gravity="center_vertical|end"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
         android:visibility="visible"
         android:tint="@color/whiteColor"
-        app:srcCompat="@drawable/ic_logo" />
+        app:srcCompat="@drawable/ic_logo"
+        android:layout_marginStart="24dp" />
 </FrameLayout>
