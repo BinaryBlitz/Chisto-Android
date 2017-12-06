@@ -75,6 +75,7 @@ class CategoryPresenterImpl(
 
     fun getAllItems() {
         interactor.getAllItems()
+                .doOnNext { setAllItemsCategoryColor(categories, it) }
                 .doOnSubscribe { view?.showProgress() }
                 .doOnTerminate { view?.hideProgress() }
                 .subscribe(
