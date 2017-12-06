@@ -10,8 +10,7 @@ import ru.binaryblitz.Chisto.extension.inflate
 import ru.binaryblitz.Chisto.utils.Image
 
 
-//Adapter without subitems order info
-class OrderSimpleContentAdapter : RecyclerView.Adapter<OrderSimpleContentAdapter.ViewHolder>() {
+class LaundryOrderAdapter : RecyclerView.Adapter<LaundryOrderAdapter.ViewHolder>() {
 
     data class Item(val name: String, val sum: Int, val count: Int, val icon: String, val color: Int)
 

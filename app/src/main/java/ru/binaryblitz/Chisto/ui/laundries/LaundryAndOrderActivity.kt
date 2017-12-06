@@ -26,7 +26,7 @@ import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.network.ServerConfig
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.order.ReviewsActivity
-import ru.binaryblitz.Chisto.ui.order.adapters.OrderSimpleContentAdapter
+import ru.binaryblitz.Chisto.ui.order.adapters.LaundryOrderAdapter
 import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity
 import ru.binaryblitz.Chisto.ui.profile.RegistrationActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
@@ -36,7 +36,7 @@ import ru.binaryblitz.Chisto.utils.OrderList
 import java.util.*
 
 class LaundryAndOrderActivity : BaseActivity() {
-    private val adapter by lazy { OrderSimpleContentAdapter() }
+    private val adapter by lazy { LaundryOrderAdapter() }
     private var deliveryFee = 0
     private var dialogOpened = false
     private var promoCodeId = 0
@@ -197,7 +197,7 @@ class LaundryAndOrderActivity : BaseActivity() {
     private fun createOrderListView() {
         OrderList.setDecorationPrice()
         val orderList = OrderList.get()
-        val listToShow = ArrayList<OrderSimpleContentAdapter.Item>()
+        val listToShow = ArrayList<LaundryOrderAdapter.Item>()
 
         orderList!!.indices
                 .map { orderList[it] }
@@ -224,10 +224,10 @@ class LaundryAndOrderActivity : BaseActivity() {
                 Integer.toString(totalPrice + deliveryFee) + getString(R.string.ruble_sign)
     }
 
-    private fun addItem(order: Order, listToShow: ArrayList<OrderSimpleContentAdapter.Item>) {
+    private fun addItem(order: Order, listToShow: ArrayList<LaundryOrderAdapter.Item>) {
         val sum = getFillSum(order)
 
-        val item = OrderSimpleContentAdapter.Item(
+        val item = LaundryOrderAdapter.Item(
                 order.category.name,
                 sum,
                 order.count,
