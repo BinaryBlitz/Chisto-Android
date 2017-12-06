@@ -10,7 +10,7 @@ import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
 import java.util.*
 
-class BaseApplication : Application() {
+class App : Application() {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
@@ -26,7 +26,10 @@ class BaseApplication : Application() {
         super.onCreate()
         JodaTimeAndroid.init(this)
         setLanguage(this, "ru")
-        if (BuildConfig.DEBUG) Timber.DebugTree()
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     fun setSystemLocaleLegacy(config: Configuration, locale: Locale) {
