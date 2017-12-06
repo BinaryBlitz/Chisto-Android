@@ -6,10 +6,10 @@ import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.ResourceManager
 import ru.binaryblitz.Chisto.entities.Category
 import ru.binaryblitz.Chisto.entities.CategoryItem
+import ru.binaryblitz.Chisto.entities.CategoryItem.Companion.DEFAULT_CATEGORY_COLOR
 import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.utils.Image
 import timber.log.Timber
-import java.util.*
 
 
 class CategoryPresenterImpl(
@@ -20,6 +20,7 @@ class CategoryPresenterImpl(
 ) : CategoryPresenter {
 
     private lateinit var allItems: List<CategoryItem>
+    private lateinit var categories: List<Category>
 
     override fun setView(view: CategoryView) {
         this.view = view
@@ -30,6 +31,8 @@ class CategoryPresenterImpl(
                 interactor.getAllItems(),
                 BiFunction<List<Category>, List<CategoryItem>, List<Category>> { categories, items ->
                     allItems = items
+                    this.categories = categories
+                    setAllItemsCategoryColor(categories, items)
                     addCategoryWithAllItems(categories, items)
                 })
                 .doOnSubscribe { view?.showProgress() }
@@ -47,11 +50,11 @@ class CategoryPresenterImpl(
     }
 
     fun getCategoriesItems(id: Int) {
-        Timber.d(id.toString())
         if (id == All_CATEGORY_ID) {
             view?.showCategoryInfo(allItems)
         } else {
             interactor.getCategoriesItems(id)
+                    .doOnNext { setItemsCategoryColor(it, id) }
                     .doOnSubscribe { view?.showProgress() }
                     .doOnTerminate { view?.hideProgress() }
                     .subscribe(
@@ -64,8 +67,15 @@ class CategoryPresenterImpl(
         }
     }
 
+    private fun setItemsCategoryColor(items: List<CategoryItem>, id: Int) {
+        items.forEach { item ->
+            item.categoryColor = categories.find { it.id == id }?.color ?: DEFAULT_CATEGORY_COLOR
+        }
+    }
+
     fun getAllItems() {
         interactor.getAllItems()
+                .doOnNext { setAllItemsCategoryColor(categories, it) }
                 .doOnSubscribe { view?.showProgress() }
                 .doOnTerminate { view?.hideProgress() }
                 .subscribe(
@@ -98,24 +108,13 @@ class CategoryPresenterImpl(
         return categories
     }
 
-    private fun sortCategories(collection: ArrayList<Category>) {
-        Collections.sort(collection) { category, t ->
-            if (category.featured && !t.featured) {
-                -1
-            } else if (!category.featured && t.featured) {
-                1
-            } else {
-                category.name.compareTo(t.name)
-            }
+    private fun setAllItemsCategoryColor(
+            categories: List<Category>,
+            items: List<CategoryItem>
+    ) {
+        items.forEach { item ->
+            item.categoryColor = categories.find { it.id == item.categoryId }?.color ?: DEFAULT_CATEGORY_COLOR
         }
-    }
-
-    private fun sortCategoryItems(collection: ArrayList<CategoryItem>) {
-        Collections.sort(collection) { categoryItem, t1 -> categoryItem.name.compareTo(t1.name) }
-    }
-
-    private fun sortAllItems(collection: ArrayList<CategoryItem>) {
-        Collections.sort(collection) { categoryItem, t1 -> categoryItem.name.compareTo(t1.name) }
     }
 
     private companion object {
