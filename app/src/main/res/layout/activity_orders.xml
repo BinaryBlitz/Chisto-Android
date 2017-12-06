@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:layout_marginBottom="56dp"></ru.binaryblitz.Chisto.views.RecyclerListView>
+        android:layout_marginBottom="56dp" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
 
                 <TextView
                     android:layout_marginStart="64dp"
-                    android:id="@+id/date_text_view"
+                    android:id="@+id/dateTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
@@ -54,25 +54,25 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="#ffffff"
                     android:textSize="22sp"
-                    android:typeface="sans" />
-
+                    android:typeface="sans"
+                    android:layout_marginLeft="64dp" />
             </FrameLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_item"
+        android:id="@+id/addItemButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="70dp"
         android:layout_marginRight="16dp"
         android:layout_gravity="bottom|right"
-        android:src="@drawable/ic_add"
+        app:srcCompat="@drawable/ic_add"
         android:visibility="gone" />
 
     <Button
-        android:id="@+id/textView2"
+        android:id="@+id/continueButton"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="match_parent"
         android:layout_height="68dp"

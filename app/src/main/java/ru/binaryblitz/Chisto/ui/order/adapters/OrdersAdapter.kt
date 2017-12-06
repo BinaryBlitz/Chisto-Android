@@ -15,7 +15,8 @@ import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.ui.order.ItemInfoActivity
 import ru.binaryblitz.Chisto.utils.Image
 import ru.binaryblitz.Chisto.utils.OrderList
-import java.util.ArrayList
+import timber.log.Timber
+import java.util.*
 
 class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var collection = ArrayList<Order>()
@@ -58,7 +59,7 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
 
         Image.loadPhoto(context, order.category.icon, holder.icon)
 
-        holder.icon.setColorFilter(Color.parseColor(color))
+        holder.icon.setColorFilter(Color.parseColor(order.category.categoryColor))
         setItemViewSelection(holder, holder.itemView)
 
         holder.itemView.setOnClickListener {
@@ -143,22 +144,12 @@ class OrdersAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
         onItemSelectAction.onNext(false)
     }
 
-    override fun getItemCount(): Int {
-        return collection.size
-    }
+    override fun getItemCount(): Int = collection.size
 
     fun setCollection(collection: ArrayList<Order>) {
+        Timber.d(collection.toString())
         this.collection = collection
-    }
-
-    fun remove(position: Int): Boolean {
-        val item = collection[position]
-
-        if (!collection.contains(item)) return false
-
-        OrderList.remove(position)
-        notifyItemRemoved(position)
-        return true
+        notifyDataSetChanged()
     }
 
     private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
