@@ -228,11 +228,11 @@ class LaundryAndOrderActivity : BaseActivity() {
         val sum = getFillSum(order)
 
         val item = LaundryOrderAdapter.Item(
-                order.category.name,
-                sum,
-                order.count,
-                order.category.icon,
-                order.color
+                name = order.category.name,
+                sum = sum,
+                count = order.count,
+                icon = order.category.icon,
+                color = order.color
         )
 
         listToShow.add(item)
