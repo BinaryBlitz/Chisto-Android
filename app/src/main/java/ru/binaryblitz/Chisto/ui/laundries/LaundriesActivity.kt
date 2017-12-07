@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.util.Pair
-import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.ImageView
@@ -35,17 +34,12 @@ import ru.binaryblitz.Chisto.utils.Animations
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.DateUtils
 import ru.binaryblitz.Chisto.utils.Image
-import ru.binaryblitz.Chisto.utils.LogUtil
 import ru.binaryblitz.Chisto.utils.OrderList
-import ru.binaryblitz.Chisto.views.RecyclerListView
-import java.text.SimpleDateFormat
 import java.util.*
 
 class LaundriesActivity : BaseActivity() {
 
-    private var adapter: LaundriesAdapter? = null
-    private var layout: SwipeRefreshLayout? = null
-
+    private val adapter by lazy { LaundriesAdapter() }
     private var selectedIndex = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +82,8 @@ class LaundriesActivity : BaseActivity() {
         intent.putExtra(EXTRA_DELIVERY_DATE, DateUtils.getDateStringRepresentationWithoutTime(laundry!!.deliveryDate))
         intent.putExtra(EXTRA_COLLECTION_BOUNDS, getCollectionPeriod(laundry!!))
 
-        if (laundry!!.orderPrice!! < laundry!!.freeDeliveryFrom!!) {
-            intent.putExtra(EXTRA_DELIVERY_FEE, laundry!!.deliveryFee!!)
+        if (laundry!!.orderPrice < laundry!!.freeDeliveryFrom) {
+            intent.putExtra(EXTRA_DELIVERY_FEE, laundry!!.deliveryFee)
         }
 
         intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry!!))
@@ -109,19 +103,19 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun initList() {
-        val view = findViewById(R.id.recyclerView) as RecyclerListView
-        view.layoutManager = LinearLayoutManager(this)
-        view.itemAnimator = DefaultItemAnimator()
-        view.setHasFixedSize(true)
-        view.emptyView = null
+        recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@LaundriesActivity)
+            itemAnimator = DefaultItemAnimator()
+            emptyView = null
+            adapter = this@LaundriesActivity.adapter
+        }
 
-        layout = findViewById(R.id.refresh) as SwipeRefreshLayout
-        layout!!.setOnRefreshListener(null)
-        layout!!.isEnabled = false
-        layout!!.setColorSchemeResources(R.color.colorAccent)
-
-        adapter = LaundriesAdapter()
-        view.adapter = adapter
+        refresh.apply {
+            setOnRefreshListener(null)
+            isEnabled = false
+            setColorSchemeResources(R.color.colorAccent)
+        }
     }
 
     private fun showDialog() {
@@ -144,30 +138,32 @@ class LaundriesActivity : BaseActivity() {
 
     private fun sort(which: Int) {
         when (which) {
-            0 -> adapter!!.sortByRating()
-            1 -> adapter!!.sortByCost()
-            2 -> adapter!!.sortBySpeed()
-            else -> {
-            }
+            0 -> adapter.sortByRating()
+            1 -> adapter.sortByCost()
+            2 -> adapter.sortBySpeed()
         }
     }
 
     private fun load() {
-        val request = if (longTreatment) ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id, true)
-            else ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id)
+        val request = if (longTreatment) {
+            ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id, true)
+        } else {
+            ServerApi.get(this).api().getLaundries(DeviceInfoStore.getCityObject(this)!!.id)
+        }
 
         request.enqueue(object : Callback<JsonArray> {
             override fun onResponse(call: Call<JsonArray>, response: Response<JsonArray>) {
-                layout!!.isRefreshing = false
+                refresh.isRefreshing = false
+
                 if (response.isSuccessful) {
-                    parseAnswer(response.body()!!)
+                    parseAnswer(response.body() as JsonArray)
                 } else {
                     onServerError(response)
                 }
             }
 
             override fun onFailure(call: Call<JsonArray>, t: Throwable) {
-                layout!!.isRefreshing = false
+                refresh.isRefreshing = false
                 onInternetConnectionError()
             }
         })
@@ -175,6 +171,7 @@ class LaundriesActivity : BaseActivity() {
 
     fun setLaundryTreatmentsIds(index: Int) {
         val laundryTreatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
+
         if (laundryTreatments.size() == 0) {
             return
         }
@@ -187,7 +184,7 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun findId(id: Int, array: JsonArray): Int {
-        (0..array.size() - 1)
+        (0 until array.size())
                 .map { array.get(it).asJsonObject }
                 .filter { AndroidUtilities.getIntFieldFromJson(it.get("treatment_id")) == id }
                 .forEach { return AndroidUtilities.getIntFieldFromJson(it.get("id")) }
@@ -199,49 +196,51 @@ class LaundriesActivity : BaseActivity() {
         Companion.array = array
         val collection = ArrayList<Laundry>()
 
-        for (i in 0..array.size() - 1) {
+        for (i in 0 until array.size()) {
             val obj = array.get(i).asJsonObject
             processOrderForLaundry(i, obj, collection)
         }
-        adapter!!.setCollection(collection)
-        adapter!!.notifyDataSetChanged()
-        adapter!!.sortByRating()
+        adapter.setCollection(collection)
+        adapter.notifyDataSetChanged()
+        adapter.sortByRating()
 
         loadLaundry()
     }
 
     private fun processOrderForLaundry(i: Int, obj: JsonObject, collection: ArrayList<Laundry>) {
         val laundry = parseLaundry(i, obj)
+
         if (!checkTreatments(obj)) {
             return
         }
+
         OrderList.resetDecorationPrices()
         OrderList.setLaundry(laundry)
         OrderList.setDecorationMultiplier(laundry.decorationMultipliers!!)
         countSums(i)
         OrderList.setDecorationPrice()
         laundry.orderPrice = totalPrice
+
         if (!checkMinimumCost(laundry, obj)) {
             laundry.isPassingMinimumPrice = false
         }
+
         collection.add(laundry)
     }
 
     private fun checkMinimumCost(laundry: Laundry, obj: JsonObject): Boolean {
         val minimum = AndroidUtilities.getIntFieldFromJson(obj.get("minimum_order_price"))
         laundry.minimumOrderPrice = minimum
-        return laundry.orderPrice!! >= minimum
+        return laundry.orderPrice >= minimum
     }
 
     private fun getDecorationMultipliers(array: JsonArray): ArrayList<Pair<Int, Double>> {
-        val multipliers = (0..array.size() - 1)
+        return (0 until array.size())
                 .map { array.get(it).asJsonObject }
-                .mapTo(ArrayList<Pair<Int, Double>>()) {
+                .mapTo(ArrayList()) {
                     Pair(AndroidUtilities.getIntFieldFromJson(it.get("item_id")),
                             AndroidUtilities.getDoubleFieldFromJson(it.get("decoration_multiplier")))
                 }
-
-        return multipliers
     }
 
     private fun parseLaundry(index: Int, obj: JsonObject): Laundry {
@@ -269,22 +268,21 @@ class LaundriesActivity : BaseActivity() {
 
     private fun getOrderPartPrice(order: Order): Int {
         if (order.treatments == null) return 0
-        var sum = (0..order.treatments!!.size - 1).sumBy { order.treatments!![it].price }
+        var sum = (0 until order.treatments!!.size).sumBy { order.treatments!![it].price }
         sum *= order.count
         return sum
     }
 
     private val totalPrice: Int
-        get() {
-            val price = (0..OrderList.get()!!.size - 1).sumBy { getOrderPartPrice(OrderList.get(it)!!) }
-            return price
-        }
+        get() = (0 until OrderList.get()!!.size).sumBy { getOrderPartPrice(OrderList.get(it)!!) }
 
     private fun checkTreatments(obj: JsonObject): Boolean {
         if (obj.get("laundry_treatments") == null || obj.get("laundry_treatments").isJsonNull) {
             return false
         }
+
         val treatments = obj.get("laundry_treatments").asJsonArray
+
         if (treatments.size() == 0) {
             return false
         }
@@ -296,11 +294,9 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun fillLaundryTreatments(treatments: JsonArray): ArrayList<Int> {
-        val laundryTreatments = (0..treatments.size() - 1)
+        return (0 until treatments.size())
                 .map { treatments.get(it).asJsonObject }
-                .mapTo(ArrayList<Int>()) { AndroidUtilities.getIntFieldFromJson(it.get("treatment_id")) }
-
-        return laundryTreatments
+                .mapTo(ArrayList()) { AndroidUtilities.getIntFieldFromJson(it.get("treatment_id")) }
     }
 
     private fun checkTreatmentsAvailability(orderTreatments: ArrayList<Treatment>, laundryTreatments: ArrayList<Int>): Boolean {
@@ -323,6 +319,7 @@ class LaundriesActivity : BaseActivity() {
 
     fun countSums(index: Int) {
         val treatments = array!!.get(index).asJsonObject.get("laundry_treatments").asJsonArray
+
         if (treatments.size() == 0) {
             return
         }
@@ -333,7 +330,7 @@ class LaundriesActivity : BaseActivity() {
         fillOrderList(orderTreatments, laundryTreatments)
     }
 
-    fun countSums(treatments: JsonArray) {
+    private fun countSums(treatments: JsonArray) {
         if (treatments.size() == 0) {
             return
         }
@@ -357,21 +354,19 @@ class LaundriesActivity : BaseActivity() {
     }
 
     private fun fillPrices(treatments: JsonArray): ArrayList<Pair<Int, Int>> {
-        val laundryTreatments = (0..treatments.size() - 1)
+        return (0 until treatments.size())
                 .map { treatments.get(it).asJsonObject }
-                .mapTo(ArrayList<Pair<Int, Int>>()) {
+                .mapTo(ArrayList()) {
                     Pair(AndroidUtilities.getIntFieldFromJson(it.get("treatment_id")),
                             AndroidUtilities.getIntFieldFromJson(it.get("price")))
                 }
-
-        return laundryTreatments
     }
 
     private fun loadLaundry() {
         val dialog = ProgressDialog(this)
         dialog.show()
 
-        for (i in 0..array!!.size() - 1) {
+        for (i in 0 until array!!.size()) {
             if (OrdersActivity.laundryId == AndroidUtilities.getIntFieldFromJson(array!!.get(i).asJsonObject.get("id"))) {
                 dialog.dismiss()
                 parseAnswer(i, array!!.get(i).asJsonObject)
@@ -410,8 +405,8 @@ class LaundriesActivity : BaseActivity() {
         setTextToField(R.id.name_text, laundry!!.name)
         setDates(laundry!!)
 
-        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById(R.id.back_image) as ImageView)
-        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById(R.id.logo_image) as ImageView)
+        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("background_image_url").asString, findViewById<ImageView>(R.id.back_image))
+        Image.loadPhoto(this, ServerConfig.imageUrl + obj.get("logo_url").asString, findViewById<ImageView>(R.id.logo_image))
 
         Handler().post {
             dialogOpened = true
@@ -429,34 +424,19 @@ class LaundriesActivity : BaseActivity() {
         setTextToField(R.id.curier_cost_dialog, getString(R.string.from_code) +
                 DateUtils.getTimeStringRepresentation(laundry.deliveryDateOpensAt) +
                 getString(R.string.end_bound_code) + DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt))
-        setTextToField(R.id.sum_dialog, (laundry.orderPrice!! + getDeliveryFee(laundry)).toString() + " \u20bd")
+        setTextToField(R.id.sum_dialog, (laundry.orderPrice + getDeliveryFee(laundry)).toString() + " \u20bd")
     }
 
     private fun getDeliveryFee(laundry: Laundry): Int {
-        if (laundry.orderPrice!! >= laundry.freeDeliveryFrom!!) {
-            return 0
+        return if (laundry.orderPrice >= laundry.freeDeliveryFrom) {
+            0
         } else {
-            return laundry.deliveryFee!!
+            laundry.deliveryFee
         }
     }
 
     private fun setTextToField(id: Int, text: String) {
-        (findViewById(id) as TextView).text = text
-    }
-
-    fun parseDate(obj: JsonObject, elementName: String, pattern: String): Date? {
-        if (obj.isJsonNull) return null
-
-        var date: Date? = null
-        try {
-            val format = SimpleDateFormat(pattern, Locale.US)
-            format.timeZone = TimeZone.getTimeZone("UTC")
-            date = format.parse(AndroidUtilities.getStringFieldFromJson(obj.get(elementName)))
-        } catch (e: Exception) {
-            LogUtil.logException(e)
-        }
-
-        return date
+        (findViewById<TextView>(id)).text = text
     }
 
     companion object {

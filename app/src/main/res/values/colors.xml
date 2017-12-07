@@ -17,5 +17,6 @@
     <color name="cleaningColor">#4ac2f8</color>
 
     <color name="textColor">#656C73</color>
+    <color name="dividerColor">#b6b6b6</color>
 
 </resources>
