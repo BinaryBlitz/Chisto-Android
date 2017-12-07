@@ -1,70 +1,70 @@
 package ru.binaryblitz.Chisto.ui.categories.adapters
 
-import android.app.Activity
+import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.squareup.picasso.Picasso
 import io.reactivex.subjects.PublishSubject
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_category.*
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.Category
+import ru.binaryblitz.Chisto.extension.inflate
 import java.util.*
 
-class CategoriesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CategoriesAdapter : RecyclerView.Adapter<CategoriesAdapter.ViewHolder>() {
 
-    private var categories: ArrayList<Category>
+    private var categories = mutableListOf<Category>()
     val onCategoryClickAction: PublishSubject<Category> = PublishSubject.create()
     private var selectedPosition = 0
-
-    init {
-        categories = ArrayList<Category>()
-    }
 
     fun setCategories(categories: ArrayList<Category>) {
         this.categories = categories
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_category, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            ViewHolder(
+                    parent.inflate(R.layout.item_category),
+                    { position ->
+                        selectedPosition = position
+                        notifyDataSetChanged()
+                        onCategoryClickAction.onNext(categories[position])
+                    }
+            )
 
-        return ViewHolder(itemView)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(categories[position], selectedPosition)
     }
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        val holder = viewHolder as ViewHolder
+    override fun getItemCount(): Int = categories.size
 
-        val category = categories[position]
+    class ViewHolder(
+            override val containerView: View,
+            private val listener: (position: Int) -> Unit
+    ) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        holder.name.text = category.name
-
-        Picasso.with(context)
-                .load(category.iconUrl)
-                .fit()
-                .into(holder.icon)
-
-        val color = if (selectedPosition == holder.adapterPosition) R.color.colorPrimary else R.color.greyColor
-        val contextColor = ContextCompat.getColor(context, color)
-        holder.name.setTextColor(contextColor)
-        holder.icon.setColorFilter(contextColor)
-
-        holder.itemView.setOnClickListener {
-            notifyItemChanged(selectedPosition)
-            selectedPosition = holder.adapterPosition
-            notifyItemChanged(selectedPosition)
-            onCategoryClickAction.onNext(categories[position])
+        init {
+            itemView.setOnClickListener { listener.invoke(adapterPosition) }
         }
-    }
 
-    override fun getItemCount(): Int {
-        return categories.size
-    }
+        fun bind(item: Category, selectedPosition: Int) {
+            name.text = item.name
 
-    private inner class ViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var name = itemView.findViewById(R.id.name) as TextView
-        internal var icon = itemView.findViewById(R.id.category_icon) as ImageView
+            Picasso.with(itemView.context)
+                    .load(item.iconUrl)
+                    .fit()
+                    .into(category_icon)
+
+            val color = if (selectedPosition == adapterPosition) {
+                Color.parseColor(item.color)
+            } else {
+                ContextCompat.getColor(itemView.context, R.color.greyColor)
+            }
+
+            name.setTextColor(color)
+            category_icon.setColorFilter(color)
+        }
     }
 }
