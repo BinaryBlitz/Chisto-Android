@@ -5,9 +5,6 @@ import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import com.iarcuschin.simpleratingbar.SimpleRatingBar
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_laundry.*
 import ru.binaryblitz.Chisto.R
@@ -170,6 +167,7 @@ class LaundriesAdapter : RecyclerView.Adapter<LaundriesAdapter.ViewHolder>() {
             }
 
             intent.putExtra(EXTRA_DELIVERY_BOUNDS, getPeriod(laundry))
+            intent.putExtra(EXTRA_COLLECTION_BOUNDS, getCollectionPeriod(laundry))
             itemView.context.startActivity(intent)
         }
 
@@ -179,6 +177,12 @@ class LaundriesAdapter : RecyclerView.Adapter<LaundriesAdapter.ViewHolder>() {
                     itemView.context.getString(R.string.end_bound_code) +
                     DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
         }
+
+        private fun getCollectionPeriod(laundry: Laundry): String {
+            return itemView.context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.collectionDateOpensAt) +
+                    itemView.context.getString(R.string.end_bound_code) +
+                    DateUtils.getTimeStringRepresentation(laundry.collectionDateClosesAt)
+        }
     }
 
     private companion object {
@@ -187,5 +191,6 @@ class LaundriesAdapter : RecyclerView.Adapter<LaundriesAdapter.ViewHolder>() {
         private const val EXTRA_DELIVERY_DATE = "deliveryDate"
         private const val EXTRA_DELIVERY_BOUNDS = "deliveryBounds"
         private const val EXTRA_DELIVERY_FEE = "deliveryFee"
+        private const val EXTRA_COLLECTION_BOUNDS = "extra_collection_bounds"
     }
 }
