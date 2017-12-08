@@ -25,7 +25,7 @@ android {
         applicationId "ru.binaryblitz.Chisto"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 56
+        versionCode 57
         versionName "1.0.1"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
