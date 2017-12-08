@@ -35,7 +35,7 @@ import ru.binaryblitz.Chisto.ui.categories.adapters.CategoryItemsAdapter
 import ru.binaryblitz.Chisto.ui.order.MyOrdersActivity
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
-import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
+import ru.binaryblitz.Chisto.ui.profile.RegistrationActivity
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
 import ru.binaryblitz.Chisto.utils.Extras
@@ -243,7 +243,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     when (drawerItem) {
-                        itemContactData -> openActivity(ContactInfoActivity::class.java)
+                        itemContactData -> openActivity(RegistrationActivity::class.java)
                         itemOrders -> openActivity(MyOrdersActivity::class.java)
                         itemAbout -> openActivity(AboutActivity::class.java)
                         itemRules -> {

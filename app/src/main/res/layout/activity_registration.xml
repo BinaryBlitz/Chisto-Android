@@ -30,7 +30,7 @@
         <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/phone"
+            android:id="@+id/phoneEditText"
                 android:textColor="#212121"
                 android:inputType="phone"
                 android:textSize="22sp"
@@ -70,7 +70,7 @@
         <com.rengwuxian.materialedittext.MaterialEditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/code_field"
+            android:id="@+id/codeEditText"
                 android:textColor="@color/colorAccent"
                 android:inputType="numberSigned"
                 android:gravity="center"
@@ -97,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/textView23"
+        android:id="@+id/labelSendCodeTextView"
             android:layout_gravity="center"
             android:visibility="visible"
             android:textSize="18sp"
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:id="@+id/title_text"
+        android:id="@+id/titleTextView"
             android:layout_gravity="center"
             android:visibility="visible"
             android:textSize="26sp"
@@ -188,13 +188,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/send"
-            android:id="@+id/button"
+        android:id="@+id/continueButton"
             android:layout_gravity="center"
-            android:background="@color/colorAccent"
+        android:background="@drawable/blue_button_selector"
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:layout_marginLeft="56dp"
             android:layout_marginRight="56dp"
-            android:layout_marginTop="112dp" />
+        android:layout_marginTop="112dp"
+        android:enabled="false" />
 
 </FrameLayout>
