@@ -178,6 +178,7 @@ class LaundriesAdapter : RecyclerView.Adapter<LaundriesAdapter.ViewHolder>() {
                     DateUtils.getTimeStringRepresentation(laundry.deliveryDateClosesAt)
         }
 
+        // Return string with the time schedule of the laundry of format "from 00:00 to 00:00"
         private fun getCollectionPeriod(laundry: Laundry): String {
             return itemView.context.getString(R.string.from_code) + DateUtils.getTimeStringRepresentation(laundry.collectionDateOpensAt) +
                     itemView.context.getString(R.string.end_bound_code) +
