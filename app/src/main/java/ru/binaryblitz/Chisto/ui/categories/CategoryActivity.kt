@@ -190,8 +190,8 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
     private fun initList() {
         dialog = ProgressDialog(this)
-        categoriesListView = findViewById(R.id.recyclerView) as RecyclerListView
-        categoryItemsListView = findViewById(R.id.categoriesItems) as RecyclerListView
+        categoriesListView = findViewById<RecyclerListView>(R.id.recyclerView)
+        categoryItemsListView = findViewById<RecyclerListView>(R.id.categoriesItems)
 
         categoriesListView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         categoriesListView.setHasFixedSize(true)
@@ -200,7 +200,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
         categoriesListView.setHasFixedSize(true)
 
         allItemsAdapter = CategoryItemsAdapter(this)
-        categoryAdapter = CategoriesAdapter(this)
+        categoryAdapter = CategoriesAdapter()
         categoryInfoAdapter = CategoryItemsAdapter(this)
         categoryAdapter.onCategoryClickAction.subscribe { category ->
             color = category.color
