@@ -70,7 +70,7 @@ class LocationProvider(activity: Activity) {
     private fun createLocationRequest(): LocationRequest = LocationRequest().also {
         it.interval = interval * MILLS_PER_SEC
         it.fastestInterval = fastestInterval * MILLS_PER_SEC
-        it.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        it.priority = LocationRequest.PRIORITY_LOW_POWER
     }
 
     /**

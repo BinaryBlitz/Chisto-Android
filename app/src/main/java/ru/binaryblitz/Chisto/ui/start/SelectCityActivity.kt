@@ -27,6 +27,7 @@ import retrofit2.Response
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.data.LocationProvider
 import ru.binaryblitz.Chisto.entities.City
+import ru.binaryblitz.Chisto.extension.showSettingsRequest
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.presentation.SelectCityPresenter
 import ru.binaryblitz.Chisto.presentation.SelectLocationView
@@ -50,7 +51,7 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(ru.binaryblitz.Chisto.R.layout.activity_select_city)
+        setContentView(R.layout.activity_select_city)
         Fabric.with(this, Crashlytics())
 
         back_btn.setOnClickListener { finish() }
@@ -99,7 +100,7 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onLocationDenied() {
-        onLocationError()
+        showSettingsRequest(R.string.location_error)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
