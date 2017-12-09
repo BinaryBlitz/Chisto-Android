@@ -104,31 +104,31 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
     override fun showAllItems(categoryItems: List<CategoryItem>) {
         categoriesListView.visibility = View.GONE
-        categoryItemsListView.adapter = allItemsAdapter
-        allItemsAdapter.setColor(color)
-        allItemsAdapter.setCategories(categoryItems)
-        allItemsAdapter.notifyDataSetChanged()
-    }
+        categoryItemsListView.apply {
+            translationY = categoryItemsListView.height.toFloat() / 2
+            alpha = 0f
+            adapter = allItemsAdapter
+        }
+        allItemsAdapter.apply {
+            setColor(color)
+            categories = categoryItems
+        }
 
+        categoryItemsListView.post {
+            categoryItemsListView.run {
+                animate().translationY(0f).alpha(1f).setDuration(250)
+            }
+        }
+    }
 
     override fun showCategoryInfo(categoryItems: List<CategoryItem>) {
         categoryItemsListView.adapter = categoryInfoAdapter
-        categoryInfoAdapter.setCategories(categoryItems)
-        categoryInfoAdapter.notifyDataSetChanged()
+        categoryInfoAdapter.categories = categoryItems
     }
 
     private fun searchForItems(query: String) {
-        if (allItemsAdapter.getCategories() == null) {
-            return
-        }
-
-        val foundItems = allItemsAdapter.getCategories()!!.filter { nameEqualsTo(it, query) }
-        allItemsAdapter.setCategories(foundItems)
-        allItemsAdapter.notifyDataSetChanged()
-    }
-
-    private fun nameEqualsTo(item: CategoryItem, query: String): Boolean {
-        return item.name.toLowerCase().contains(query)
+        allItemsAdapter.categories = categoryPresenter.allItems
+                .filter { it.name.startsWith(query, ignoreCase = true) }
     }
 
     private fun initToolbar() {
@@ -172,8 +172,9 @@ class CategoryActivity : BaseActivity(), CategoryView {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                Timber.d("change")
                 if (searchEditText.hasFocus()) {
-                    if (s.isNullOrEmpty()) {
+                    if (s.isNullOrEmpty() && categoryPresenter.allItems.isEmpty()) {
                         categoryPresenter.getAllItems()
                     } else {
                         searchForItems(s.toString())

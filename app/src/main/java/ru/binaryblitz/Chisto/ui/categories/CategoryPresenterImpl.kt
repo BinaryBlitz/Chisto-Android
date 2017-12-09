@@ -19,7 +19,7 @@ class CategoryPresenterImpl(
         private val resourceManager: ResourceManager
 ) : CategoryPresenter {
 
-    private lateinit var allItems: List<CategoryItem>
+    var allItems = listOf<CategoryItem>()
     private lateinit var categories: List<Category>
 
     override fun setView(view: CategoryView) {
