@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_registration.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.extension.toast
 import ru.binaryblitz.Chisto.extension.visible
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
