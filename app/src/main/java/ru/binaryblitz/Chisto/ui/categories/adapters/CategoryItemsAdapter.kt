@@ -34,15 +34,6 @@ class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter
         this.color = color
     }
 
-//    fun setCategories(categories: List<CategoryItem>) {
-//        this.categories = categories
-//        notifyDataSetChanged()
-//    }
-//
-//    fun getCategories(): List<CategoryItem> {
-//        return categories
-//    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_category_item, parent, false)
         return ViewHolder(itemView)
