@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_registration.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.extension.toast
 import ru.binaryblitz.Chisto.extension.visible
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
@@ -38,11 +37,11 @@ class RegistrationActivity : BaseActivity() {
 
     private val phoneMaskedTextChangedListener by lazy {
         MaskedTextChangedListener(
-                PHONE_MASK,
-                true,
-                phoneEditText,
-                null,
-                object : ValueListener {
+                format = PHONE_MASK,
+                autocomplete = true,
+                field = phoneEditText,
+                listener = null,
+                valueListener = object : ValueListener {
                     override fun onTextChanged(maskFilled: Boolean, extractedValue: String) {
                         continueButton.isEnabled = maskFilled
                     }
@@ -52,11 +51,11 @@ class RegistrationActivity : BaseActivity() {
 
     private val codeMaskedTextChangedListener by lazy {
         MaskedTextChangedListener(
-                CODE_MASK,
-                true,
-                codeEditText,
-                null,
-                object : ValueListener {
+                format = CODE_MASK,
+                autocomplete = true,
+                field = codeEditText,
+                listener = null,
+                valueListener = object : ValueListener {
                     override fun onTextChanged(maskFilled: Boolean, extractedValue: String) {
                         if (maskFilled) {
                             verifyRequest()
