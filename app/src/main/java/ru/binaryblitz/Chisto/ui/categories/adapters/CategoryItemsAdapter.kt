@@ -17,26 +17,21 @@ import ru.binaryblitz.Chisto.entities.Order
 import ru.binaryblitz.Chisto.ui.order.select_service.SelectServiceActivity
 import ru.binaryblitz.Chisto.utils.Extras.*
 import ru.binaryblitz.Chisto.utils.Image
-import java.util.*
 
 
 class CategoryItemsAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var categories: List<CategoryItem> = ArrayList()
+    var categories = listOf<CategoryItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
     private var color: String = Color.parseColor("#212121").toString()
 
     private var tooltip: Tooltip.TooltipView? = null
 
     fun setColor(color: String) {
         this.color = color
-    }
-
-    fun setCategories(categories: List<CategoryItem>) {
-        this.categories = categories
-    }
-
-    fun getCategories(): List<CategoryItem>? {
-        return categories
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
