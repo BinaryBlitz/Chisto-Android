@@ -5,7 +5,7 @@
     <string name="lost_connection">Потеряно соединение с интернетом.</string>
     <string name="nothing_selected">Ничего не выбрано</string>
     <string name="empty_field">Поле не может быть пустым</string>
-    <string name="wrong_code">Неверный код</string>
+    <string name="wrong_code">Код подтверждения введен неверно</string>
     <string name="wrong_data">Неверные данные</string>
     <string name="no_comment">Нет комментария.</string>
     <string name="payment_error">Ошибка оплаты.</string>

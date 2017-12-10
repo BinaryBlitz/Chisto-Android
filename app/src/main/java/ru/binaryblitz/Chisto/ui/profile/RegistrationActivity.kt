@@ -5,24 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.Snackbar
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.TextView
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.google.gson.JsonObject
 import com.nineoldandroids.animation.Animator
-import com.rengwuxian.materialedittext.MaterialEditText
+import com.redmadrobot.inputmask.MaskedTextChangedListener
+import com.redmadrobot.inputmask.MaskedTextChangedListener.ValueListener
 import kotlinx.android.synthetic.main.activity_registration.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.R
+import ru.binaryblitz.Chisto.extension.toast
+import ru.binaryblitz.Chisto.extension.visible
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
@@ -31,7 +29,6 @@ import ru.binaryblitz.Chisto.ui.order.WebActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.AnimationStartListener
 import ru.binaryblitz.Chisto.utils.AppConfig
-import ru.binaryblitz.Chisto.utils.CustomPhoneNumberTextWatcher
 
 class RegistrationActivity : BaseActivity() {
 
@@ -39,22 +36,51 @@ class RegistrationActivity : BaseActivity() {
     val EXTRA_SELECTED = "selected"
     val SELECTED_CONTACT_INFO_ACTIVITY = 2
 
+    private val phoneMaskedTextChangedListener by lazy {
+        MaskedTextChangedListener(
+                format = PHONE_MASK,
+                autocomplete = true,
+                field = phoneEditText,
+                listener = null,
+                valueListener = object : ValueListener {
+                    override fun onTextChanged(maskFilled: Boolean, extractedValue: String) {
+                        continueButton.isEnabled = maskFilled
+                    }
+                }
+        )
+    }
+
+    private val codeMaskedTextChangedListener by lazy {
+        MaskedTextChangedListener(
+                format = CODE_MASK,
+                autocomplete = true,
+                field = codeEditText,
+                listener = null,
+                valueListener = object : ValueListener {
+                    override fun onTextChanged(maskFilled: Boolean, extractedValue: String) {
+                        if (maskFilled) {
+                            verifyRequest()
+                        }
+                    }
+                }
+        )
+    }
+
     private var code = false
     private var price = 0
-    private var phoneEditText: MaterialEditText? = null
-    private var codeEditText: MaterialEditText? = null
-    private var continueButton: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration)
 
-        initElements()
+        phoneEditText.addTextChangedListener(phoneMaskedTextChangedListener)
+        codeEditText.addTextChangedListener(codeMaskedTextChangedListener)
+
         setOnClickListeners()
 
         price = intent.getIntExtra(EXTRA_PRICE, 0)
 
-        Handler().post { phoneEditText!!.requestFocus() }
+        Handler().post { phoneEditText.requestFocus() }
     }
 
     override fun onBackPressed() {
@@ -66,31 +92,12 @@ class RegistrationActivity : BaseActivity() {
         }
     }
 
-    private fun initElements() {
-        continueButton = findViewById(R.id.button) as Button
-        phoneEditText = findViewById(R.id.phone) as MaterialEditText
-        codeEditText = findViewById(R.id.code_field) as MaterialEditText
-        phoneEditText!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
-
-        codeEditText!!.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s!!.length == 5) {
-                    verifyRequest()
-                }
-            }
-        })
-    }
-
     private fun animateBackBtn() {
         YoYo.with(Techniques.SlideOutRight)
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        findViewById<View>(R.id.l1).visibility = View.VISIBLE
+                        findViewById<View>(R.id.l1).visible(true)
 
                         YoYo.with(Techniques.SlideInLeft)
                                 .duration(ANIMATION_DURATION.toLong())
@@ -104,17 +111,18 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun resetFields() {
-        codeEditText!!.setText("")
-        continueButton!!.visibility = View.VISIBLE
-        (findViewById(R.id.textView23) as TextView).text = getString(R.string.code_send)
-        (findViewById(R.id.title_text) as TextView).text = getString(R.string.type_phone)
+        codeEditText.setText("")
+        continueButton.visible(true)
+        labelSendCodeTextView.text = getString(R.string.code_send)
+        titleTextView.text = getString(R.string.type_phone)
         code = false
     }
 
     private fun processPhoneInput() {
-        val phoneText = phoneEditText!!.text.toString()
+        val phoneText = phoneEditText.text.toString()
+
         if (phoneText.isEmpty()) {
-            phoneEditText!!.error = getString(R.string.empty_field)
+            phoneEditText.error = getString(R.string.empty_field)
             return
         }
 
@@ -122,10 +130,7 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        continueButton!!.setOnClickListener { v ->
-            AndroidUtilities.hideKeyboard(v)
-            processPhoneInput()
-        }
+        continueButton.setOnClickListener { processPhoneInput() }
 
         browse.setOnClickListener {
             val intent = Intent(this@RegistrationActivity, WebActivity::class.java)
@@ -144,8 +149,8 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun checkCodeInput(): Boolean {
-        if (codeEditText!!.text.toString().isEmpty() || codeEditText!!.text.toString().length != 5) {
-            codeEditText!!.error = getString(R.string.wrong_code)
+        if (codeEditText.text.toString().isEmpty() || codeEditText.text.toString().length != 5) {
+            codeEditText.error = getString(R.string.wrong_code)
             return false
         }
 
@@ -160,7 +165,7 @@ class RegistrationActivity : BaseActivity() {
     }
 
     private fun saveInfo(obj: JsonObject) {
-        val phone = phoneEditText!!.text.toString()
+        val phone = phoneEditText.text.toString()
         savePhone(phone)
         saveToken(obj)
         finishActivity(phone)
@@ -168,6 +173,7 @@ class RegistrationActivity : BaseActivity() {
 
     private fun saveToken(obj: JsonObject) {
         val token = obj.get("api_token")
+
         if (!token.isJsonNull) {
             DeviceInfoStore.saveToken(this, token.asString)
         }
@@ -231,10 +237,11 @@ class RegistrationActivity : BaseActivity() {
                 object : Callback<JsonObject> {
                     override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                         dialog.dismiss()
+
                         if (response.isSuccessful) {
                             parseVerifyAnswer(response.body()!!)
                         } else {
-                            showCodeError()
+                            toast(getString(R.string.wrong_code))
                         }
                     }
 
@@ -248,16 +255,12 @@ class RegistrationActivity : BaseActivity() {
     private fun generateVerifyJson(): JsonObject {
         val obj = JsonObject()
         obj.addProperty("token", token)
-        obj.addProperty("code", codeEditText!!.text.toString())
+        obj.addProperty("code", codeEditText.text.toString())
 
         val toSend = JsonObject()
         toSend.add("verification_token", obj)
 
         return toSend
-    }
-
-    private fun showCodeError() {
-        Snackbar.make(findViewById(R.id.main), R.string.wrong_code, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun parseVerifyAnswer(obj: JsonObject) {
@@ -272,7 +275,7 @@ class RegistrationActivity : BaseActivity() {
 
     private fun authRequest(animate: Boolean) {
         if (!AndroidUtilities.validatePhone(phoneEditText!!.text.toString())) {
-            Snackbar.make(findViewById(R.id.main), getString(R.string.wrong_phone), Snackbar.LENGTH_SHORT).show()
+            toast(getString(R.string.wrong_phone))
             return
         }
 
@@ -285,6 +288,7 @@ class RegistrationActivity : BaseActivity() {
                         dialog.dismiss()
                         if (response.isSuccessful && response.body() != null) {
                             parseAuthRequestAnswer(response.body()!!)
+
                             if (animate) {
                                 playOutAnimation(findViewById(R.id.l1), findViewById(R.id.textView2))
                             }
@@ -305,7 +309,7 @@ class RegistrationActivity : BaseActivity() {
         code = true
         token = obj.get("token").asString
         phoneFromServer = obj.get("phone_number").asString
-        continueButton!!.visibility = View.GONE
+        continueButton.visible(false)
     }
 
     private fun processText(): JsonObject {
@@ -329,7 +333,7 @@ class RegistrationActivity : BaseActivity() {
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        findViewById<View>(R.id.l2).visibility = View.VISIBLE
+                        findViewById<View>(R.id.l2).visible(true)
                         YoYo.with(Techniques.SlideInRight)
                                 .duration(ANIMATION_DURATION.toLong())
                                 .playOn(findViewById(R.id.l2))
@@ -337,7 +341,7 @@ class RegistrationActivity : BaseActivity() {
 
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
-                        codeEditText!!.requestFocus()
+                        codeEditText.requestFocus()
                         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
                     }
                 })
@@ -347,10 +351,9 @@ class RegistrationActivity : BaseActivity() {
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        (findViewById(R.id.textView23) as TextView).text =
-                                getString(R.string.number_code) + " " + phoneEditText!!.text.toString() + getString(R.string.code_sent)
-
-                        (findViewById(R.id.title_text) as TextView).text = getString(R.string.code_title)
+                        labelSendCodeTextView.text = getString(R.string.number_code) + " " +
+                                phoneEditText.text.toString() + getString(R.string.code_sent)
+                        titleTextView.text = getString(R.string.code_title)
                     }
                 })
                 .playOn(v2)
@@ -363,5 +366,7 @@ class RegistrationActivity : BaseActivity() {
         private val EXTRA_TOKEN = "token"
         private val EXTRA_PROMO_CODE_ID = "promoCodeId"
         private var phoneFromServer: String? = null
+        private const val PHONE_MASK = "+[0] [000] [000]-[00]-[00]"
+        private const val CODE_MASK = "[00000]"
     }
 }
