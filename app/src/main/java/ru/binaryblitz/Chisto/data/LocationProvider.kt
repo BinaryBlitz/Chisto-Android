@@ -3,11 +3,16 @@ package ru.binaryblitz.Chisto.data
 import android.app.Activity
 import android.location.Location
 import android.os.Looper
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsStatusCodes
+import timber.log.Timber
 
 
 class LocationProvider(activity: Activity) {
@@ -70,7 +75,7 @@ class LocationProvider(activity: Activity) {
     private fun createLocationRequest(): LocationRequest = LocationRequest().also {
         it.interval = interval * MILLS_PER_SEC
         it.fastestInterval = fastestInterval * MILLS_PER_SEC
-        it.priority = LocationRequest.PRIORITY_LOW_POWER
+        it.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
     }
 
     /**
@@ -88,8 +93,24 @@ class LocationProvider(activity: Activity) {
      */
     private fun createLocationCallback() = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult) {
+            Timber.d("onLocationResult")
             onUpdated(result.lastLocation)
         }
+    }
+
+    fun checkLocationSettings(onSuccess: () -> Unit, onException: (ResolvableApiException) -> Unit) {
+        settingsClient.checkLocationSettings(locationSettingsRequest)
+                .addOnSuccessListener { onSuccess.invoke() }
+                .addOnFailureListener {
+                    val statusCode = (it as ApiException).statusCode
+                    Timber.d(statusCode.toString())
+
+                    when (statusCode) {
+                        CommonStatusCodes.RESOLUTION_REQUIRED -> onException(it as ResolvableApiException)
+                        LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                        }
+                    }
+                }
     }
 
     /**
@@ -98,6 +119,8 @@ class LocationProvider(activity: Activity) {
      */
     fun startLocationUpdates(onComplete: (Boolean) -> Unit) {
         if (!permissionsGranted) return
+        Timber.d("startLocationUpdates")
+        if (requestingLocationUpdates) return
 
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
                 .addOnSuccessListener { requestingLocationUpdates = true }

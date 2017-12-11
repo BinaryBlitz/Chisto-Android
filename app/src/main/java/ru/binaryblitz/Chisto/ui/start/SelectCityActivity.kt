@@ -1,7 +1,9 @@
 package ru.binaryblitz.Chisto.ui.start
 
 import android.Manifest
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -14,6 +16,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.common.api.ResolvableApiException
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import io.fabric.sdk.android.Fabric
@@ -105,6 +108,19 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    override fun showLocationSettings(e: ResolvableApiException) {
+        e.startResolutionForResult(this, REQUEST_CHECK_SETTINGS)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            REQUEST_CHECK_SETTINGS -> {
+                if (resultCode == Activity.RESULT_OK) presenter.startLocationUpdates()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun load(latitude: Double, longitude: Double) {
@@ -239,5 +255,9 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         }
 
         return res
+    }
+
+    private companion object {
+        private const val REQUEST_CHECK_SETTINGS = 1
     }
 }

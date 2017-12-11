@@ -2,7 +2,9 @@ package ru.binaryblitz.Chisto.presentation
 
 
 import android.location.Location
+import com.google.android.gms.common.api.ResolvableApiException
 import ru.binaryblitz.Chisto.data.LocationProvider
+import timber.log.Timber
 
 
 class SelectCityPresenter(
@@ -14,16 +16,17 @@ class SelectCityPresenter(
     }
 
     fun onLocationPermissionsGrant() {
+        Timber.d("onLocationPermissionsGrant")
         locationProvider.permissionsGranted = true
-        startLocationUpdates()
+        locationProvider.checkLocationSettings(this::startLocationUpdates, this::onResolutionRequired)
     }
 
     fun onResume() {
         startLocationUpdates()
     }
 
-    private fun startLocationUpdates() {
-        locationProvider.startLocationUpdates { onUpdatingChanged(it) }
+    fun startLocationUpdates() {
+        locationProvider.startLocationUpdates(this::onUpdatingChanged)
     }
 
     fun onPause() {
@@ -35,6 +38,10 @@ class SelectCityPresenter(
 
     private fun onLocationUpdated(location: Location) {
         view?.showUserPosition(location)
+    }
+
+    private fun onResolutionRequired(e: ResolvableApiException) {
+        view?.showLocationSettings(e)
     }
 
     fun onDestroy() {
