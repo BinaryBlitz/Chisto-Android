@@ -1,6 +1,5 @@
 package ru.binaryblitz.Chisto.presentation
 
-
 import android.location.Location
 import com.google.android.gms.common.api.ResolvableApiException
 import ru.binaryblitz.Chisto.data.LocationProvider
