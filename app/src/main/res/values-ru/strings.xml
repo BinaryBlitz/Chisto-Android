@@ -237,4 +237,5 @@
     <string name="select_order">Выбор</string>
     <string name="all">Все</string>
     <string name="settings">Настройки</string>
+    <string name="changes_saved">Изменения сохранены</string>
 </resources>

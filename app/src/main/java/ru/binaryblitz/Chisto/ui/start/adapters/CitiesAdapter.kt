@@ -1,31 +1,27 @@
 package ru.binaryblitz.Chisto.ui.start.adapters
 
 import android.app.Activity
-import android.content.Intent
 import android.location.Location
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import ru.binaryblitz.Chisto.R
-import ru.binaryblitz.Chisto.entities.User
-import ru.binaryblitz.Chisto.network.DeviceInfoStore
-import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
+import ru.binaryblitz.Chisto.extension.inflate
 import java.util.*
 
-class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CitiesAdapter(
+        private val context: Activity,
+        private val listener: (ru.binaryblitz.Chisto.entities.City) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     class City(val city: ru.binaryblitz.Chisto.entities.City, var selected: Boolean)
 
     private var collection = ArrayList<City>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false)
-        return ViewHolder(itemView)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
+            ViewHolder(parent.inflate(R.layout.item_city))
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val holder = viewHolder as ViewHolder
@@ -38,16 +34,7 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
             setDeselected(holder)
         }
 
-        holder.itemView.setOnClickListener {
-            val intent = Intent(context, CategoryActivity::class.java)
-            DeviceInfoStore.saveCity(context, city)
-            if (DeviceInfoStore.getToken(context) == "null") {
-                saveUser(city)
-            }
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            context.startActivity(intent)
-            context.finish()
-        }
+        holder.itemView.setOnClickListener { listener.invoke(city) }
     }
 
     private fun setSelected(holder: ViewHolder) {
@@ -58,12 +45,6 @@ class CitiesAdapter(private val context: Activity) : RecyclerView.Adapter<Recycl
     private fun setDeselected(holder: ViewHolder) {
         holder.name.setTextColor(ContextCompat.getColor(context, R.color.greyColor))
         holder.marker.visibility = View.GONE
-    }
-
-    private fun saveUser(city: ru.binaryblitz.Chisto.entities.City) {
-        val user = User.createDefault()
-        user.city = city.name
-        DeviceInfoStore.saveUser(context, user)
     }
 
     override fun getItemCount(): Int {

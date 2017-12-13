@@ -261,6 +261,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
 
     private fun openActivity(activity: Class<out Activity>) {
         val intent = Intent(this@CategoryActivity, activity)
+        intent.putExtra(RegistrationActivity.EXTRA_SELECTED, RegistrationActivity.SELECTED_CONTACT_INFO_ACTIVITY)
         startActivity(intent)
     }
 

@@ -1,537 +1,569 @@
 <?xml version="1.0" encoding="utf-8"?>
 <io.codetail.widget.RevealFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                          xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                          android:orientation="vertical"
-                                                          android:layout_width="match_parent"
-                                                          android:layout_height="match_parent"
-                                                          android:id="@+id/main">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/main">
 
     <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="110dp"
+        android:layout_marginTop="56dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_marginBottom="110dp"
-            android:layout_marginTop="56dp"
             android:layout_height="wrap_content">
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-                      android:orientation="vertical"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content">
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="48dp">
-                <ImageView
-                        android:layout_width="56dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_user_grey"
-                        android:padding="10dp"
-                        android:layout_height="56dp"/>
-
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textStyle="bold"
-                          android:layout_marginEnd="20dp"
-                          android:text="@string/contact_info"
-                          android:layout_marginRight="20dp"
-                          android:textSize="18sp"
-                          android:textColor="@color/colorAccent"
-                          android:layout_gravity="center_vertical"/>
-            </LinearLayout>
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/name_text"
-                    android:textColor="@color/greyColor"
-                    android:inputType="textCapWords"
-                    android:textSize="16sp"
-                    android:lines="1"
-                    android:hint="@string/name"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginLeft="56dp"
-                    app:met_underlineColor="@color/greyColor"
-                    app:met_baseColor="@color/blackColor"
-                    app:met_textColor="@color/blackColor"
-                    app:met_errorColor="@color/blackColor"
-                    app:met_floatingLabel="normal"
-                    app:met_helperTextColor="@color/greyColor"
-                    app:met_primaryColor="@color/blackColor"
-                    android:textColorHint="@color/greyColor"
-                    android:layout_gravity="bottom" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/lastname_text"
-                    android:textColor="@color/greyColor"
-                    android:inputType="textCapWords"
-                    android:textSize="16sp"
-                    android:lines="1"
-                    android:hint="@string/lastname"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginLeft="56dp"
-                    android:layout_marginTop="12dp"
-                    app:met_underlineColor="@color/greyColor"
-                    app:met_baseColor="@color/blackColor"
-                    app:met_textColor="@color/blackColor"
-                    app:met_errorColor="@color/blackColor"
-                    app:met_floatingLabel="normal"
-                    app:met_helperTextColor="@color/greyColor"
-                    app:met_primaryColor="@color/blackColor"
-                    android:textColorHint="@color/greyColor"
-                    android:layout_gravity="bottom" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/phone"
-                    android:textColor="@color/greyColor"
-                    android:inputType="phone"
-                    android:textSize="16sp"
-                    android:maxLength="25"
-                    android:lines="1"
-                    android:hint="@string/phone"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginLeft="56dp"
-                    android:layout_marginTop="12dp"
-                    app:met_underlineColor="@color/greyColor"
-                    app:met_baseColor="@color/blackColor"
-                    app:met_textColor="@color/blackColor"
-                    app:met_errorColor="@color/blackColor"
-                    app:met_floatingLabel="normal"
-                    app:met_helperTextColor="@color/greyColor"
-                    app:met_primaryColor="@color/blackColor"
-                    android:textColorHint="@color/greyColor"
-                    android:layout_gravity="bottom" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/email"
-                    android:textColor="@color/greyColor"
-                    android:inputType="textEmailAddress"
-                    android:textSize="16sp"
-                    android:lines="1"
-                    android:hint="@string/e_mail"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginLeft="56dp"
-                    android:layout_marginTop="12dp"
-                    app:met_underlineColor="@color/greyColor"
-                    app:met_baseColor="@color/blackColor"
-                    app:met_textColor="@color/blackColor"
-                    app:met_errorColor="@color/blackColor"
-                    app:met_floatingLabel="normal"
-                    app:met_helperTextColor="@color/greyColor"
-                    app:met_primaryColor="@color/blackColor"
-                    android:textColorHint="@color/greyColor"
-                    android:layout_gravity="bottom" />
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="48dp">
-                <ImageView
-                        android:layout_width="56dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_address"
-                        android:padding="10dp"
-                        android:layout_height="56dp"/>
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="48dp">
 
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textStyle="bold"
-                          android:id="@+id/address_btn"
-                          android:layout_marginEnd="100dp"
-                          android:text="@string/delivery_address"
-                          android:layout_marginRight="100dp"
-                          android:textSize="18sp"
-                          android:textColor="@color/colorAccent"
-                          android:layout_gravity="center_vertical"/>
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_user_grey"
+                    android:padding="10dp"
+                    android:layout_height="56dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/contact_info"
+                    android:layout_marginRight="20dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_gravity="center_vertical" />
             </LinearLayout>
 
             <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/city_text"
-                    android:textColor="@color/greyColor"
-                    android:inputType="textCapWords"
-                    android:textSize="16sp"
-                    android:lines="1"
-                    android:hint="@string/city"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:enabled="false"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginLeft="56dp"
-                    app:met_underlineColor="@color/greyColor"
-                    app:met_baseColor="@color/blackColor"
-                    app:met_textColor="@color/blackColor"
-                    app:met_errorColor="@color/blackColor"
-                    app:met_floatingLabel="normal"
-                    app:met_helperTextColor="@color/greyColor"
-                    app:met_primaryColor="@color/blackColor"
-                    android:textColorHint="@color/greyColor"
-                    android:layout_gravity="bottom" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/name_text"
+                android:textColor="@color/greyColor"
+                android:inputType="textCapWords"
+                android:textSize="16sp"
+                android:lines="1"
+                android:hint="@string/name"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                app:met_underlineColor="@color/greyColor"
+                app:met_baseColor="@color/blackColor"
+                app:met_textColor="@color/blackColor"
+                app:met_errorColor="@color/blackColor"
+                app:met_floatingLabel="normal"
+                app:met_helperTextColor="@color/greyColor"
+                app:met_primaryColor="@color/blackColor"
+                android:textColorHint="@color/greyColor"
+                android:layout_gravity="bottom" />
 
-            <FrameLayout android:layout_width="match_parent"
-                         android:layout_marginRight="24dp"
-                         android:layout_marginEnd="24dp"
-                         android:layout_marginStart="56dp"
-                         android:layout_marginLeft="56dp"
-                         android:layout_marginTop="12dp"
-                         android:layout_height="wrap_content">
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/lastname_text"
+                android:textColor="@color/greyColor"
+                android:inputType="textCapWords"
+                android:textSize="16sp"
+                android:lines="1"
+                android:hint="@string/lastname"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="12dp"
+                app:met_underlineColor="@color/greyColor"
+                app:met_baseColor="@color/blackColor"
+                app:met_textColor="@color/blackColor"
+                app:met_errorColor="@color/blackColor"
+                app:met_floatingLabel="normal"
+                app:met_helperTextColor="@color/greyColor"
+                app:met_primaryColor="@color/blackColor"
+                android:textColorHint="@color/greyColor"
+                android:layout_gravity="bottom" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/phone"
+                android:textColor="@color/greyColor"
+                android:inputType="phone"
+                android:textSize="16sp"
+                android:maxLength="25"
+                android:lines="1"
+                android:hint="@string/phone"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="12dp"
+                app:met_underlineColor="@color/greyColor"
+                app:met_baseColor="@color/blackColor"
+                app:met_textColor="@color/blackColor"
+                app:met_errorColor="@color/blackColor"
+                app:met_floatingLabel="normal"
+                app:met_helperTextColor="@color/greyColor"
+                app:met_primaryColor="@color/blackColor"
+                android:textColorHint="@color/greyColor"
+                android:layout_gravity="bottom" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/email"
+                android:textColor="@color/greyColor"
+                android:inputType="textEmailAddress"
+                android:textSize="16sp"
+                android:lines="1"
+                android:hint="@string/e_mail"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="12dp"
+                app:met_underlineColor="@color/greyColor"
+                app:met_baseColor="@color/blackColor"
+                app:met_textColor="@color/blackColor"
+                app:met_errorColor="@color/blackColor"
+                app:met_floatingLabel="normal"
+                app:met_helperTextColor="@color/greyColor"
+                app:met_primaryColor="@color/blackColor"
+                android:textColorHint="@color/greyColor"
+                android:layout_gravity="bottom" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_address"
+                    android:padding="10dp"
+                    android:layout_height="56dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:id="@+id/address_btn"
+                    android:layout_marginEnd="100dp"
+                    android:text="@string/delivery_address"
+                    android:layout_marginRight="100dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/city_text"
+                android:textColor="@color/greyColor"
+                android:inputType="textCapWords"
+                android:textSize="16sp"
+                android:lines="1"
+                android:hint="@string/city"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:enabled="false"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                app:met_underlineColor="@color/greyColor"
+                app:met_baseColor="@color/blackColor"
+                app:met_textColor="@color/blackColor"
+                app:met_errorColor="@color/blackColor"
+                app:met_floatingLabel="normal"
+                app:met_helperTextColor="@color/greyColor"
+                app:met_primaryColor="@color/blackColor"
+                android:textColorHint="@color/greyColor"
+                android:layout_gravity="bottom" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="12dp"
+                android:layout_height="wrap_content">
+
                 <com.rengwuxian.materialedittext.MaterialEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/street_text"
-                        android:textColor="@color/greyColor"
-                        android:inputType="textCapWords"
-                        android:textSize="16sp"
-                        android:lines="1"
-                        android:hint="@string/street"
-                        app:met_underlineColor="@color/greyColor"
-                        app:met_baseColor="@color/blackColor"
-                        app:met_textColor="@color/blackColor"
-                        app:met_errorColor="@color/blackColor"
-                        app:met_floatingLabel="normal"
-                        app:met_helperTextColor="@color/greyColor"
-                        app:met_primaryColor="@color/blackColor"
-                        android:textColorHint="@color/greyColor"
-                        android:layout_gravity="bottom" />
-                <FrameLayout android:layout_width="match_parent"
-                             android:clickable="true"
-                             android:id="@+id/street_btn"
-                             android:layout_height="match_parent">
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/street_text"
+                    android:textColor="@color/greyColor"
+                    android:inputType="textCapWords"
+                    android:textSize="16sp"
+                    android:lines="1"
+                    android:hint="@string/street"
+                    app:met_underlineColor="@color/greyColor"
+                    app:met_baseColor="@color/blackColor"
+                    app:met_textColor="@color/blackColor"
+                    app:met_errorColor="@color/blackColor"
+                    app:met_floatingLabel="normal"
+                    app:met_helperTextColor="@color/greyColor"
+                    app:met_primaryColor="@color/blackColor"
+                    android:textColorHint="@color/greyColor"
+                    android:layout_gravity="bottom" />
 
-                </FrameLayout>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:clickable="true"
+                    android:id="@+id/street_btn"
+                    android:layout_height="match_parent" />
             </FrameLayout>
 
             <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
                 <com.rengwuxian.materialedittext.MaterialEditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.0"
-                        android:id="@+id/house_text"
-                        android:textColor="@color/greyColor"
-                        android:inputType="textCapWords"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:id="@+id/house_text"
+                    android:textColor="@color/greyColor"
+                    android:inputType="textCapWords"
+                    android:textSize="16sp"
+                    android:lines="1"
+                    android:nextFocusDown="@+id/flat_text"
+                    android:hint="@string/house"
+                    android:layout_marginStart="56dp"
+                    android:layout_marginLeft="56dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="12dp"
+                    app:met_underlineColor="@color/greyColor"
+                    app:met_baseColor="@color/blackColor"
+                    app:met_textColor="@color/blackColor"
+                    app:met_errorColor="@color/blackColor"
+                    app:met_floatingLabel="normal"
+                    app:met_helperTextColor="@color/greyColor"
+                    app:met_primaryColor="@color/blackColor"
+                    android:textColorHint="@color/greyColor"
+                    android:layout_gravity="bottom" />
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1.0"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/flat_text"
+                    android:textColor="@color/greyColor"
+                    android:inputType="textCapWords"
+                    android:textSize="16sp"
+                    android:lines="1"
+                    android:hint="@string/flat"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginTop="24dp"
+                    app:met_underlineColor="@color/greyColor"
+                    app:met_baseColor="@color/blackColor"
+                    app:met_textColor="@color/blackColor"
+                    app:met_errorColor="@color/blackColor"
+                    app:met_floatingLabel="normal"
+                    app:met_helperTextColor="@color/greyColor"
+                    app:met_primaryColor="@color/blackColor"
+                    android:textColorHint="@color/greyColor"
+                    android:layout_gravity="bottom" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_comment_grey"
+                    android:id="@+id/category_icon"
+                    android:padding="10dp"
+                    android:layout_height="56dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/comment_title"
+                    android:layout_marginRight="20dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/comment_text"
+                android:textColor="@color/greyColor"
+                android:inputType="textCapWords"
+                android:textSize="16sp"
+                android:lines="1"
+                android:hint="@string/comment"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                app:met_underlineColor="@color/greyColor"
+                app:met_baseColor="@color/blackColor"
+                app:met_textColor="@color/blackColor"
+                app:met_errorColor="@color/blackColor"
+                app:met_floatingLabel="normal"
+                app:met_helperTextColor="@color/greyColor"
+                app:met_primaryColor="@color/blackColor"
+                android:textColorHint="@color/greyColor"
+                android:layout_gravity="bottom" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_height="48dp">
+
+                <ImageView
+                    android:layout_width="56dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_wallet"
+                    android:padding="10dp"
+                    android:layout_height="56dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="100dp"
+                    android:text="@string/payment_type"
+                    android:layout_marginRight="100dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_height="56dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="@string/card"
+                        android:textColor="#212121"
                         android:textSize="16sp"
-                        android:lines="1"
-                        android:nextFocusDown="@+id/flat_text"
-                        android:hint="@string/house"
-                        android:layout_marginStart="56dp"
-                        android:layout_marginLeft="56dp"
-                        android:layout_marginRight="12dp"
+                        android:id="@+id/bank_text"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginEnd="12dp"
-                        android:layout_marginTop="12dp"
-                        app:met_underlineColor="@color/greyColor"
-                        app:met_baseColor="@color/blackColor"
-                        app:met_textColor="@color/blackColor"
-                        app:met_errorColor="@color/blackColor"
-                        app:met_floatingLabel="normal"
-                        app:met_helperTextColor="@color/greyColor"
-                        app:met_primaryColor="@color/blackColor"
-                        android:textColorHint="@color/greyColor"
-                        android:layout_gravity="bottom" />
-
-                <com.rengwuxian.materialedittext.MaterialEditText
-                        android:layout_width="0dp"
-                        android:layout_weight="1.0"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/flat_text"
-                        android:textColor="@color/greyColor"
-                        android:inputType="textCapWords"
-                        android:textSize="16sp"
-                        android:lines="1"
-                        android:hint="@string/flat"
                         android:layout_marginRight="12dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginTop="24dp"
-                        app:met_underlineColor="@color/greyColor"
-                        app:met_baseColor="@color/blackColor"
-                        app:met_textColor="@color/blackColor"
-                        app:met_errorColor="@color/blackColor"
-                        app:met_floatingLabel="normal"
-                        app:met_helperTextColor="@color/greyColor"
-                        app:met_primaryColor="@color/blackColor"
-                        android:textColorHint="@color/greyColor"
-                        android:layout_gravity="bottom" />
-            </LinearLayout>
+                        android:layout_height="wrap_content" />
 
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="48dp">
-                <ImageView
-                        android:layout_width="56dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_comment_grey"
-                        android:id="@+id/category_icon"
-                        android:padding="10dp"
-                        android:layout_height="56dp"/>
-
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/name"
-                          android:textStyle="bold"
-                          android:layout_marginEnd="20dp"
-                          android:text="@string/comment_title"
-                          android:layout_marginRight="20dp"
-                          android:textSize="18sp"
-                          android:textColor="@color/colorAccent"
-                          android:layout_gravity="center_vertical"/>
-            </LinearLayout>
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/comment_text"
-                    android:textColor="@color/greyColor"
-                    android:inputType="textCapWords"
-                    android:textSize="16sp"
-                    android:lines="1"
-                    android:hint="@string/comment"
-                    android:layout_marginRight="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="56dp"
-                    android:layout_marginLeft="56dp"
-                    app:met_underlineColor="@color/greyColor"
-                    app:met_baseColor="@color/blackColor"
-                    app:met_textColor="@color/blackColor"
-                    app:met_errorColor="@color/blackColor"
-                    app:met_floatingLabel="normal"
-                    app:met_helperTextColor="@color/greyColor"
-                    app:met_primaryColor="@color/blackColor"
-                    android:textColorHint="@color/greyColor"
-                    android:layout_gravity="bottom" />
-
-            <LinearLayout
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="12dp"
-                    android:layout_height="48dp">
-                <ImageView
-                        android:layout_width="56dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_wallet"
-                        android:padding="10dp"
-                        android:layout_height="56dp"/>
-
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textStyle="bold"
-                          android:layout_marginEnd="100dp"
-                          android:text="@string/payment_type"
-                          android:layout_marginRight="100dp"
-                          android:textSize="18sp"
-                          android:textColor="@color/colorAccent"
-                          android:layout_gravity="center_vertical"/>
-            </LinearLayout>
-
-            <FrameLayout android:layout_width="match_parent"
-                         android:layout_marginRight="24dp"
-                         android:layout_marginEnd="24dp"
-                         android:layout_marginStart="56dp"
-                         android:layout_marginLeft="56dp"
-                         android:layout_height="56dp">
-                <LinearLayout android:layout_width="wrap_content"
-                              android:orientation="horizontal"
-                              android:layout_height="match_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:text="@string/card"
-                              android:textColor="#212121"
-                              android:textSize="16sp"
-                              android:id="@+id/bank_text"
-                              android:layout_gravity="center_vertical"
-                              android:layout_marginEnd="12dp"
-                              android:layout_marginRight="12dp"
-                              android:layout_height="wrap_content"/>
                     <ImageView
-                            android:layout_width="48dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_visa"
-                            android:padding="10dp"
-                            android:id="@+id/visa"
-                            android:layout_height="56dp"/>
+                        android:layout_width="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_visa"
+                        android:padding="10dp"
+                        android:id="@+id/visa"
+                        android:layout_height="56dp" />
+
                     <ImageView
-                            android:layout_width="48dp"
-                            android:layout_gravity="center_vertical"
-                            android:src="@drawable/ic_master_card"
-                            android:padding="10dp"
-                            android:id="@+id/master_card"
-                            android:layout_marginLeft="-16dp"
-                            android:layout_marginStart="-16dp"
-                            android:layout_height="56dp"/>
+                        android:layout_width="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_master_card"
+                        android:padding="10dp"
+                        android:id="@+id/master_card"
+                        android:layout_marginLeft="-16dp"
+                        android:layout_marginStart="-16dp"
+                        android:layout_height="56dp" />
                 </LinearLayout>
 
                 <cn.refactor.library.SmoothCheckBox
-                        android:layout_width="30dp"
-                        android:layout_gravity="center_vertical|end"
-                        android:id="@+id/cardCheckBox"
-                        android:layout_marginBottom="35dp"
-                        app:stroke_width="0dp"
-                        app:color_checked="@color/colorAccent"
-                        app:color_unchecked_stroke="#CFCFCF"
-                        android:layout_marginTop="35dp"
-                        android:layout_height="30dp"/>
+                    android:layout_width="30dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:id="@+id/cardCheckBox"
+                    android:layout_marginBottom="35dp"
+                    app:stroke_width="0dp"
+                    app:color_checked="@color/colorAccent"
+                    app:color_unchecked_stroke="#CFCFCF"
+                    android:layout_marginTop="35dp"
+                    android:layout_height="30dp" />
 
-                <FrameLayout android:layout_width="match_parent"
-                             android:clickable="true"
-                             android:id="@+id/bank_btn"
-                             android:layout_height="match_parent"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:clickable="true"
+                    android:id="@+id/bank_btn"
+                    android:layout_height="match_parent" />
             </FrameLayout>
-            <FrameLayout android:layout_width="match_parent"
-                         android:layout_marginRight="24dp"
-                         android:layout_marginEnd="24dp"
-                         android:layout_marginStart="56dp"
-                         android:layout_marginLeft="56dp"
-                         android:layout_height="56dp">
-                <LinearLayout android:layout_width="wrap_content"
-                              android:orientation="horizontal"
-                              android:layout_height="match_parent">
-                    <TextView android:layout_width="wrap_content"
-                              android:text="@string/cash"
-                              android:textColor="#212121"
-                              android:textSize="16sp"
-                              android:id="@+id/money_text"
-                              android:layout_gravity="center_vertical"
-                              android:layout_marginEnd="12dp"
-                              android:layout_marginRight="12dp"
-                              android:layout_height="wrap_content"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_height="56dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="@string/cash"
+                        android:textColor="#212121"
+                        android:textSize="16sp"
+                        android:id="@+id/money_text"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginRight="12dp"
+                        android:layout_height="wrap_content" />
                 </LinearLayout>
 
                 <cn.refactor.library.SmoothCheckBox
-                        android:layout_width="30dp"
-                        android:layout_gravity="center_vertical|end"
-                        android:id="@+id/cashCheckBox"
-                        app:stroke_width="0dp"
-                        app:color_checked="@color/colorAccent"
-                        app:color_unchecked_stroke="#CFCFCF"
-                        android:layout_marginBottom="35dp"
-                        android:layout_marginTop="35dp"
-                        android:layout_height="30dp"/>
+                    android:layout_width="30dp"
+                    android:layout_gravity="center_vertical|end"
+                    android:id="@+id/cashCheckBox"
+                    app:stroke_width="0dp"
+                    app:color_checked="@color/colorAccent"
+                    app:color_unchecked_stroke="#CFCFCF"
+                    android:layout_marginBottom="35dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_height="30dp" />
 
-                <FrameLayout android:layout_width="match_parent"
-                             android:clickable="true"
-                             android:id="@+id/money_btn"
-                             android:layout_height="match_parent"/>
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:clickable="true"
+                    android:id="@+id/money_btn"
+                    android:layout_height="match_parent" />
             </FrameLayout>
         </LinearLayout>
     </ScrollView>
 
     <FrameLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="8dp"
-            android:background="#ffffff"
-            android:layout_marginBottom="50dp"
-            android:layout_height="56dp">
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="8dp"
+        android:background="#ffffff"
+        android:layout_marginBottom="50dp"
+        android:layout_height="56dp">
+
         <ImageView
-                android:layout_width="56dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_cost"
-                android:padding="10dp"
-                android:layout_height="56dp"/>
+            android:layout_width="56dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_cost"
+            android:padding="10dp"
+            android:layout_height="56dp" />
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginEnd="50dp"
-                  android:text="@string/cost_reg"
-                  android:layout_marginRight="100dp"
-                  android:textSize="18sp"
-                  android:layout_marginStart="60dp"
-                  android:layout_marginLeft="60dp"
-                  android:textColor="@color/colorAccent"
-                  android:layout_gravity="center_vertical"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="50dp"
+            android:text="@string/cost_reg"
+            android:layout_marginRight="100dp"
+            android:textSize="18sp"
+            android:layout_marginStart="60dp"
+            android:layout_marginLeft="60dp"
+            android:textColor="@color/colorAccent"
+            android:layout_gravity="center_vertical" />
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:layout_marginEnd="12dp"
-                  android:layout_marginRight="12dp"
-                  android:id="@+id/price"
-                  android:textSize="18sp"
-                  android:textColor="@color/colorAccent"
-                  android:layout_gravity="end|center_vertical"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:id="@+id/price"
+            android:textSize="18sp"
+            android:textColor="@color/colorAccent"
+            android:layout_gravity="end|center_vertical" />
     </FrameLayout>
 
     <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:theme="@style/BrandButtonStyle"
-            android:text="@string/continue_btn"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:id="@+id/continue_btn"
-            android:layout_marginRight="-12dp"
-            android:layout_marginLeft="-12dp"
-            android:layout_marginBottom="-8dp"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            android:layout_gravity="bottom"
-            android:gravity="center"/>
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:theme="@style/BrandButtonStyle"
+        android:text="@string/continue_btn"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:id="@+id/continue_btn"
+        android:layout_marginRight="-12dp"
+        android:layout_marginLeft="-12dp"
+        android:layout_marginBottom="-8dp"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:layout_gravity="bottom"
+        android:gravity="center" />
 
     <android.support.design.widget.AppBarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize">
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:contentInsetStart="0dp"
-                android:contentInsetLeft="0dp"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                android:background="@color/colorPrimary"
-                android:minHeight="?attr/actionBarSize">
-            <FrameLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/action_bar">
+                android:layout_height="match_parent"
+                android:id="@+id/action_bar">
 
                 <ImageView
-                        android:id="@+id/left_btn"
-                        android:layout_width="56dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerInside"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:src="@drawable/ic_back"
-                        android:padding="13dp"
-                        android:layout_gravity="start"/>
+                    android:id="@+id/left_btn"
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerInside"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_back"
+                    android:padding="13dp"
+                    android:layout_gravity="start" />
 
                 <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:text="@string/order"
-                        android:layout_gravity="center"
-                        android:id="@+id/date_text_view"
-                        android:gravity="center_vertical"
-                        android:typeface="sans"
-                        android:textSize="20sp"
-                        android:textColor="#ffffff" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/order"
+                    android:layout_gravity="center"
+                    android:id="@+id/date_text_view"
+                    android:gravity="center_vertical"
+                    android:typeface="sans"
+                    android:textSize="20sp"
+                    android:textColor="#ffffff" />
             </FrameLayout>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
+
     <FrameLayout
-            android:layout_width="match_parent"
-            android:background="#99000000"
-            android:id="@+id/dialog"
-            android:visibility="gone"
-            android:elevation="8dp"
-            android:clickable="true"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:background="#99000000"
+        android:id="@+id/dialog"
+        android:visibility="gone"
+        android:elevation="8dp"
+        android:clickable="true"
+        android:layout_height="match_parent">
 
         <include layout="@layout/popup_your_order" />
-
     </FrameLayout>
 </io.codetail.widget.RevealFrameLayout>
