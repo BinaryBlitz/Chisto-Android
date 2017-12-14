@@ -13,7 +13,6 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonObject
 import com.jakewharton.rxbinding2.widget.textChanges
 import com.redmadrobot.inputmask.MaskedTextChangedListener
-import com.rengwuxian.materialedittext.MaterialEditText
 import io.fabric.sdk.android.Fabric
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -38,7 +37,6 @@ import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.CASH
 import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.GREY_COLOR
 import ru.binaryblitz.Chisto.ui.start.SelectCityActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
-import java.util.regex.Pattern
 
 typealias AllContactFields = Function6<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>
 
@@ -376,53 +374,6 @@ class ContactInfoActivity : BaseActivity() {
         if (text != null && !text.isEmpty() && text != "null") {
             editText.setText(text)
         }
-    }
-
-    private fun validateFields(): Boolean {
-        var res = validateField(nameEditText, true)
-        res = res and validateField(cityEditText, true)
-        res = res and validateField(streetEditText, false)
-        res = res and validateField(houseEditText, false)
-        res = res and validateField(flatEditText, false)
-        res = res and validatePhoneField(phoneEditText)
-
-        return res
-    }
-
-    private fun validatePhoneField(editText: MaterialEditText): Boolean {
-        if (!AndroidUtilities.validatePhone(editText.text.toString())) {
-            editText.error = getString(R.string.wrong_data)
-            return false
-        }
-
-        return true
-    }
-
-    private fun validateField(editText: MaterialEditText, numbers: Boolean): Boolean {
-        var count = 0
-
-        if (numbers) {
-            count = findNumbers(editText)
-        }
-
-        if (editText.text.toString().isEmpty() || count != 0) {
-            editText.error = getString(R.string.wrong_data)
-            return false
-        }
-
-        return true
-    }
-
-    private fun findNumbers(editText: MaterialEditText): Int {
-        val pattern = Pattern.compile("-?\\d+")
-        val matcher = pattern.matcher(editText.text.toString())
-        var count = 0
-
-        while (matcher.find()) {
-            count++
-        }
-
-        return count
     }
 
     companion object {

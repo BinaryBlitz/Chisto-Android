@@ -261,14 +261,9 @@ public class MapActivity extends BaseActivity
                 activityRootView.getWindowVisibleDisplayFrame(r);
                 int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
 
-                if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
-                    if (searchBox != null) {
-                        searchBox.setCursorVisible(true);
-                    }
-                } else {
-                    if (searchBox != null) {
-                        searchBox.setCursorVisible(false);
-                    }
+                if (searchBox != null) {
+                    boolean isKeyboard = heightDiff > 100;
+                    searchBox.setCursorVisible(isKeyboard);
                 }
             }
         });
