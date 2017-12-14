@@ -24,6 +24,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.User
+import ru.binaryblitz.Chisto.extension.setCheckEditText
 import ru.binaryblitz.Chisto.extension.toast
 import ru.binaryblitz.Chisto.extension.visible
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
@@ -46,31 +47,37 @@ class ContactInfoActivity : BaseActivity() {
     private val phoneObservable by lazy {
         phoneEditText.textChanges()
                 .map { numberPhoneMaskFilled }
+                .doOnNext { phoneEditText.setCheckEditText(it) }
     }
 
     private val nameObservable by lazy {
         nameEditText.textChanges()
                 .map { it.isNotBlank() }
+                .doOnNext { nameEditText.setCheckEditText(it) }
     }
 
     private val cityObservable by lazy {
         cityEditText.textChanges()
                 .map { it.isNotBlank() }
+                .doOnNext { cityEditText.setCheckEditText(it) }
     }
 
     private val streetObservable by lazy {
         streetEditText.textChanges()
                 .map { it.isNotBlank() }
+                .doOnNext { streetEditText.setCheckEditText(it) }
     }
 
     private val houseObservable by lazy {
         houseEditText.textChanges()
                 .map { it.isNotBlank() }
+                .doOnNext { houseEditText.setCheckEditText(it) }
     }
 
     private val flatObservable by lazy {
         flatEditText.textChanges()
                 .map { it.isNotBlank() }
+                .doOnNext { flatEditText.setCheckEditText(it) }
     }
 
     private var disposable: Disposable? = null

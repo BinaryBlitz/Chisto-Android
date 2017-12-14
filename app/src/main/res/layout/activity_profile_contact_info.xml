@@ -477,7 +477,7 @@
                 android:layout_marginRight="24dp"
                 android:layout_marginStart="48dp"
                 android:layout_marginBottom="24dp"
-                android:hint="@string/comment"
+                android:hint="@string/optional"
                 android:inputType="textCapSentences"
                 android:lines="1"
                 android:textColor="@color/greyColor"
