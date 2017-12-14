@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -14,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -128,7 +130,7 @@ public class MapActivity extends BaseActivity
     }
 
     private void initAutocomplete() {
-        searchBox = (AutoCompleteTextView) findViewById(R.id.search_box);
+        searchBox = findViewById(R.id.search_box);
 
         searchBox.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
         searchBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -247,8 +249,27 @@ public class MapActivity extends BaseActivity
                 Geocoder geocoder;
                 geocoder = new Geocoder(MapActivity.this, Locale.getDefault());
                 saveUser(geocoder);
-
                 finish();
+            }
+        });
+
+        final View activityRootView = findViewById(R.id.main);
+        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                activityRootView.getWindowVisibleDisplayFrame(r);
+                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+
+                if (heightDiff > 100) { // if more than 100 pixels, its probably a keyboard...
+                    if (searchBox != null) {
+                        searchBox.setCursorVisible(true);
+                    }
+                } else {
+                    if (searchBox != null) {
+                        searchBox.setCursorVisible(false);
+                    }
+                }
             }
         });
     }
