@@ -93,17 +93,17 @@ class RegistrationActivity : BaseActivity() {
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        findViewById<View>(R.id.l1).visible(true)
+                        phoneEditText.visible(true)
 
                         YoYo.with(Techniques.SlideInLeft)
                                 .duration(ANIMATION_DURATION.toLong())
-                                .playOn(findViewById(R.id.l1))
+                                .playOn(phoneEditText)
 
                         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         imm.showSoftInput(phoneEditText, InputMethodManager.SHOW_IMPLICIT)
                     }
                 })
-                .playOn(findViewById(R.id.l2))
+                .playOn(codeEditText)
     }
 
     private fun resetFields() {
@@ -286,7 +286,7 @@ class RegistrationActivity : BaseActivity() {
                             parseAuthRequestAnswer(response.body()!!)
 
                             if (animate) {
-                                playOutAnimation(findViewById(R.id.l1), findViewById(R.id.textView2))
+                                playOutAnimation(phoneEditText, textView2)
                             }
                         } else {
                             onServerError(response)
@@ -329,10 +329,10 @@ class RegistrationActivity : BaseActivity() {
                 .duration(ANIMATION_DURATION.toLong())
                 .withListener(object : AnimationStartListener() {
                     override fun onStart() {
-                        findViewById<View>(R.id.l2).visible(true)
+                        codeEditText.visible(true)
                         YoYo.with(Techniques.SlideInRight)
                                 .duration(ANIMATION_DURATION.toLong())
-                                .playOn(findViewById(R.id.l2))
+                                .playOn(codeEditText)
                     }
 
                     override fun onAnimationEnd(animation: Animator?) {
