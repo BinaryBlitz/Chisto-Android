@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import ru.binaryblitz.Chisto.R
 
 
 fun View.visible(show: Boolean, gone: Boolean = true) {
@@ -35,4 +36,12 @@ fun ViewGroup.inflate(@LayoutRes layoutId: Int, attachToRoot: Boolean = false): 
 
 fun Context.toast(msg: String, toastLength: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, msg, toastLength).show()
+}
+
+fun EditText.setCheckEditText(check: Boolean) {
+    if (check) {
+        setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check, 0)
+    } else {
+        setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+    }
 }

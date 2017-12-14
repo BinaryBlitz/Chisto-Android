@@ -30,11 +30,15 @@ import retrofit2.Response
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.data.LocationProvider
 import ru.binaryblitz.Chisto.entities.City
+import ru.binaryblitz.Chisto.entities.User
 import ru.binaryblitz.Chisto.extension.showSettingsRequest
+import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.presentation.SelectCityPresenter
 import ru.binaryblitz.Chisto.presentation.SelectLocationView
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
+import ru.binaryblitz.Chisto.ui.categories.CategoryActivity
+import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.ui.start.adapters.CitiesAdapter
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 import ru.binaryblitz.Chisto.utils.CustomPhoneNumberTextWatcher
@@ -49,7 +53,13 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
 
     private lateinit var phoneEditText: EditText
     private lateinit var cityEditText: EditText
-    private val adapter by lazy { CitiesAdapter(this) }
+    private val adapter by lazy {
+        CitiesAdapter(
+                context = this,
+                listener = this::finishSelectCity
+        )
+    }
+
     private val presenter by lazy { SelectCityPresenter(this, LocationProvider(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -218,6 +228,28 @@ class SelectCityActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener,
         toSend.add("subscription", `object`)
 
         return toSend
+    }
+
+    private fun finishSelectCity(city: City) {
+        DeviceInfoStore.saveCity(this, city)
+
+        if (DeviceInfoStore.getToken(this) == "null") {
+            saveUser(city)
+        }
+
+        if (intent.getIntExtra(ContactInfoActivity.EXTRA_CHECK_RESULT, 0) == 0) {
+            val intent = Intent(this, CategoryActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        finish()
+    }
+
+    private fun saveUser(city: ru.binaryblitz.Chisto.entities.City) {
+        val user = User.createDefault()
+        user.city = city.name
+        DeviceInfoStore.saveUser(this, user)
     }
 
     private fun sendSubscription(dialog: MaterialDialog) {

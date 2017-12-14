@@ -2,55 +2,129 @@ package ru.binaryblitz.Chisto.ui.profile
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import android.widget.EditText
 import com.afollestad.materialdialogs.MaterialDialog
 import com.crashlytics.android.Crashlytics
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.JsonObject
-import com.rengwuxian.materialedittext.MaterialEditText
+import com.jakewharton.rxbinding2.widget.textChanges
+import com.redmadrobot.inputmask.MaskedTextChangedListener
 import io.fabric.sdk.android.Fabric
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function6
 import kotlinx.android.synthetic.main.activity_profile_contact_info.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import ru.binaryblitz.Chisto.R
 import ru.binaryblitz.Chisto.entities.User
+import ru.binaryblitz.Chisto.extension.setCheckEditText
+import ru.binaryblitz.Chisto.extension.toast
+import ru.binaryblitz.Chisto.extension.visible
 import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.push.MyInstanceIDListenerService
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
 import ru.binaryblitz.Chisto.ui.map.MapActivity
+import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.BLACK_COLOR
+import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.CARD
+import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.CASH
+import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.GREY_COLOR
+import ru.binaryblitz.Chisto.ui.start.SelectCityActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
-import ru.binaryblitz.Chisto.utils.CustomPhoneNumberTextWatcher
-import java.util.regex.Pattern
+
+typealias AllContactFields = Function6<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>
 
 class ContactInfoActivity : BaseActivity() {
-    private var name: MaterialEditText? = null
-    private var lastname: MaterialEditText? = null
-    private var city: MaterialEditText? = null
-    private var street: MaterialEditText? = null
-    private var house: MaterialEditText? = null
-    private var flat: MaterialEditText? = null
-    private var comment: MaterialEditText? = null
-    private var email: MaterialEditText? = null
-    private var phone: MaterialEditText? = null
 
+    private val phoneObservable by lazy {
+        phoneEditText.textChanges()
+                .map { numberPhoneMaskFilled }
+                .doOnNext { phoneEditText.setCheckEditText(it) }
+    }
+
+    private val nameObservable by lazy {
+        nameEditText.textChanges()
+                .map { it.isNotBlank() }
+                .doOnNext { nameEditText.setCheckEditText(it) }
+    }
+
+    private val cityObservable by lazy {
+        cityEditText.textChanges()
+                .map { it.isNotBlank() }
+                .doOnNext { cityEditText.setCheckEditText(it) }
+    }
+
+    private val streetObservable by lazy {
+        streetEditText.textChanges()
+                .map { it.isNotBlank() }
+                .doOnNext { streetEditText.setCheckEditText(it) }
+    }
+
+    private val houseObservable by lazy {
+        houseEditText.textChanges()
+                .map { it.isNotBlank() }
+                .doOnNext { houseEditText.setCheckEditText(it) }
+    }
+
+    private val flatObservable by lazy {
+        flatEditText.textChanges()
+                .map { it.isNotBlank() }
+                .doOnNext { flatEditText.setCheckEditText(it) }
+    }
+
+    private var disposable: Disposable? = null
     private var user: User? = null
+    private var selectedPaymentType = CASH
+    private var numberPhoneMaskFilled = false
 
-    private val EXTRA_TOKEN = "token"
-    private val EXTRA_PHONE = "phone"
+    private val phoneMaskedTextChangedListener by lazy {
+        MaskedTextChangedListener(
+                format = RegistrationActivity.PHONE_MASK,
+                autocomplete = true,
+                field = phoneEditText,
+                listener = null,
+                valueListener = object : MaskedTextChangedListener.ValueListener {
+                    override fun onTextChanged(maskFilled: Boolean, extractedValue: String) {
+                        numberPhoneMaskFilled = maskFilled
+                    }
+                }
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fabric.with(this, Crashlytics())
         setContentView(R.layout.activity_profile_contact_info)
 
-        initFields()
         setOnClickListeners()
 
+        phoneEditText.addTextChangedListener(phoneMaskedTextChangedListener)
+
+        disposable = Observable.combineLatest(
+                phoneObservable,
+                nameObservable,
+                cityObservable,
+                streetObservable,
+                houseObservable,
+                flatObservable,
+                AllContactFields { phone, name, city, street, house, flat ->
+                    phone && name && city && street && house && flat
+                }
+        ).subscribe({ saveButton.isEnabled = it })
+
+
         Handler().post { getUser() }
+    }
+
+    override fun onDestroy() {
+        disposable?.dispose()
+        super.onDestroy()
     }
 
     private fun getUser() {
@@ -80,14 +154,17 @@ class ContactInfoActivity : BaseActivity() {
             user = User.createDefault()
         }
 
-        user.id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
-        user.firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
-        user.lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
-        user.streetName = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
-        user.apartmentNumber = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
-        user.notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
-        user.houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
-        user.email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
+        user.apply {
+            id = AndroidUtilities.getIntFieldFromJson(obj.get("id"))
+            firstName = AndroidUtilities.getStringFieldFromJson(obj.get("first_name"))
+            lastname = AndroidUtilities.getStringFieldFromJson(obj.get("last_name"))
+            streetName = AndroidUtilities.getStringFieldFromJson(obj.get("street_name"))
+            apartmentNumber = AndroidUtilities.getStringFieldFromJson(obj.get("house_number"))
+            notes = AndroidUtilities.getStringFieldFromJson(obj.get("notes"))
+            houseNumber = AndroidUtilities.getStringFieldFromJson(obj.get("apartment_number"))
+            email = AndroidUtilities.getStringFieldFromJson(obj.get("email"))
+        }
+
         DeviceInfoStore.saveUser(this, user)
         setInfo()
     }
@@ -100,15 +177,7 @@ class ContactInfoActivity : BaseActivity() {
         if (DeviceInfoStore.getToken(this) == "null") {
             finishIfNotLoggedIn()
         } else {
-            finishIfLoggedIn()
-        }
-    }
-
-    private fun finishIfLoggedIn() {
-        if (!validateFields()) {
-            showDialog()
-        } else {
-            setData()
+            finish()
         }
     }
 
@@ -122,32 +191,18 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setOnClickListeners() {
-        left_btn.setOnClickListener {
-            if (!validateFields()) {
-                showDialog()
-            } else {
-                setData()
-            }
+        left_btn.setOnClickListener { onBackPressed() }
+        bankLayout.setOnClickListener(payClickListener)
+        moneyLayout.setOnClickListener(payClickListener)
+        addressLayout.setOnClickListener {
+            val intent = Intent(this@ContactInfoActivity, SelectCityActivity::class.java)
+            intent.putExtra(EXTRA_CHECK_RESULT, GET_CITY_REQUEST)
+            startActivityForResult(intent, GET_CITY_REQUEST)
         }
-
-        address_btn.setOnClickListener {
-            startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
-        }
-
         street_btn.setOnClickListener {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
-    }
-
-    private fun showDialog() {
-        MaterialDialog.Builder(this)
-                .title(R.string.app_name)
-                .content(getString(R.string.profile_wrong_fields))
-                .positiveText(R.string.yes_code)
-                .negativeText(R.string.no_code)
-                .onPositive { dialog, action -> run { finish() } }
-                .onNegative { dialog, action -> run { dialog.dismiss() } }
-                .show()
+        saveButton.setOnClickListener { setData() }
     }
 
     private fun showDialogIfNotLoggedIn() {
@@ -156,37 +211,67 @@ class ContactInfoActivity : BaseActivity() {
                 .content(getString(R.string.registration_not_completed_error))
                 .positiveText(R.string.yes_code)
                 .negativeText(R.string.no_code)
-                .onPositive { dialog, action -> run { finish() } }
-                .onNegative { dialog, action -> run { dialog.dismiss() } }
+                .onPositive { _, _ -> run { finish() } }
+                .onNegative { dialog, _ -> run { dialog.dismiss() } }
                 .show()
     }
 
-    private fun initFields() {
-        name = findViewById(R.id.name_text) as MaterialEditText
-        lastname = findViewById(R.id.lastname_text) as MaterialEditText
-        city = findViewById(R.id.city_text) as MaterialEditText
-        street = findViewById(R.id.street_text) as MaterialEditText
-        house = findViewById(R.id.house_text) as MaterialEditText
-        flat = findViewById(R.id.flat_text) as MaterialEditText
-        phone = findViewById(R.id.phone) as MaterialEditText
-        comment = findViewById(R.id.comment_text) as MaterialEditText
-        email = findViewById(R.id.email) as MaterialEditText
-        phone!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
+    private fun selectBankCard() {
+        bankTextView.setTextColor(Color.parseColor(BLACK_COLOR))
+        moneyTextView.setTextColor(Color.parseColor(GREY_COLOR))
+
+        visaImageView.setImageResource(R.drawable.ic_visa)
+        masterCardImageView.setImageResource(R.drawable.ic_master_card)
+
+        cardCheckBox.isChecked = true
+        cashCheckBox.isChecked = false
+
+        selectedPaymentType = CARD
+        contactLayout.visible(true)
+    }
+
+    private val payClickListener: (View) -> Unit = { view ->
+        if (contactLayout.visibility == View.GONE) {
+            contactLayout.apply {
+                visible(true)
+                alpha = 0f
+                animate().alpha(1.0f).duration = 350
+            }
+        }
+
+        when (view.id) {
+            bankLayout.id -> selectBankCard()
+            moneyLayout.id -> selectCash()
+        }
+    }
+
+    private fun selectCash() {
+        moneyTextView.setTextColor(Color.parseColor(BLACK_COLOR))
+        bankTextView.setTextColor(Color.parseColor(GREY_COLOR))
+
+        visaImageView.setImageResource(R.drawable.ic_visa_no_active)
+        masterCardImageView.setImageResource(R.drawable.ic_master_card_no_active)
+
+        cashCheckBox.isChecked = true
+        cardCheckBox.isChecked = false
+
+        selectedPaymentType = CASH
     }
 
     private fun generateUserJson(): JsonObject {
-        val obj = JsonObject()
-        obj.addProperty("first_name", name!!.text.toString())
-        obj.addProperty("last_name", lastname!!.text.toString())
-        obj.addProperty("apartment_number", flat!!.text.toString())
-        obj.addProperty("house_number", house!!.text.toString())
-        obj.addProperty("street_name", street!!.text.toString())
-        obj.addProperty("notes", comment!!.text.toString())
-        obj.addProperty("phone_number", AndroidUtilities.processText(phone!!))
-        obj.addProperty("city_id", DeviceInfoStore.getCityObject(this).id)
-        obj.addProperty("email", email!!.text.toString())
-        obj.addProperty("device_token", FirebaseInstanceId.getInstance().token)
-        obj.addProperty("platform", "android")
+        val obj = JsonObject().apply {
+            addProperty("first_name", nameEditText.text.toString())
+            addProperty("payment_method", selectedPaymentType)
+            addProperty("apartment_number", flatEditText.text.toString())
+            addProperty("house_number", houseEditText.text.toString())
+            addProperty("street_name", streetEditText.text.toString())
+            addProperty("notes", commentEditText.text.toString())
+            addProperty("phone_number", AndroidUtilities.processText(phoneEditText))
+            addProperty("city_id", DeviceInfoStore.getCityObject(this@ContactInfoActivity).id)
+            addProperty("device_token", FirebaseInstanceId.getInstance().token)
+            addProperty("platform", "android")
+        }
+
         if (DeviceInfoStore.getToken(this) == null || DeviceInfoStore.getToken(this) == "null") {
             obj.addProperty("verification_token", intent.getStringExtra(EXTRA_TOKEN))
         }
@@ -199,6 +284,7 @@ class ContactInfoActivity : BaseActivity() {
 
     private fun parseUserAnswer(obj: JsonObject) {
         DeviceInfoStore.saveToken(this, obj.get("api_token").asString)
+
         if (AndroidUtilities.checkPlayServices(this)) {
             val intent = Intent(this@ContactInfoActivity, MyInstanceIDListenerService::class.java)
             startService(intent)
@@ -214,7 +300,9 @@ class ContactInfoActivity : BaseActivity() {
         ServerApi.get(this).api().createUser(generateUserJson()).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
+
                 if (response.isSuccessful) {
+                    toast(getString(R.string.changes_saved))
                     parseUserAnswer(response.body()!!)
                 } else {
                     onServerError(response)
@@ -229,37 +317,31 @@ class ContactInfoActivity : BaseActivity() {
     }
 
     private fun setInfo() {
-        user = DeviceInfoStore.getUserObject(this)
-
-        if (user == null) {
-            setTextToField(phone!!, intent.getStringExtra(EXTRA_PHONE))
-            return
-        }
-
-        setTextToField(email!!, user!!.email)
-        setTextToField(city!!, DeviceInfoStore.getCityObject(this).name)
-        setTextToField(name!!, user!!.firstName)
-        setTextToField(lastname!!, user!!.lastname)
-        setTextToField(flat!!, user!!.apartmentNumber)
-        setTextToField(phone!!, user!!.phone)
-        setTextToField(house!!, user!!.houseNumber)
-        setTextToField(street!!, user!!.streetName)
-        setTextToField(phone!!, user!!.phone)
-        setTextToField(comment!!, user!!.notes)
+        DeviceInfoStore.getUserObject(this)?.run {
+            setTextToField(cityEditText, DeviceInfoStore.getCityObject(this@ContactInfoActivity).name)
+            setTextToField(nameEditText, firstName)
+            setTextToField(flatEditText, apartmentNumber)
+            setTextToField(phoneEditText, phone)
+            setTextToField(houseEditText, houseNumber)
+            setTextToField(streetEditText, streetName)
+            setTextToField(phoneEditText, phone)
+            setTextToField(commentEditText, notes)
+        } ?: setTextToField(phoneEditText, intent.getStringExtra(EXTRA_PHONE))
     }
 
     private fun setData() {
         if (user == null) user = User.createDefault()
 
-        user!!.firstName = name!!.text.toString()
-        user!!.lastname = lastname!!.text.toString()
-        user!!.city = city!!.text.toString()
-        user!!.apartmentNumber = flat!!.text.toString()
-        user!!.phone = phone!!.text.toString()
-        user!!.streetName = street!!.text.toString()
-        user!!.houseNumber = house!!.text.toString()
-        user!!.email = email!!.text.toString()
-        user!!.notes = comment!!.text.toString()
+        user?.apply {
+            firstName = nameTextView.text.toString()
+            city = cityEditText.text.toString()
+            apartmentNumber = flatEditText.text.toString()
+            phone = phoneEditText.text.toString()
+            streetName = streetEditText.text.toString()
+            houseNumber = houseEditText.toString()
+            notes = commentEditText.text.toString()
+        }
+
         DeviceInfoStore.saveUser(this, user)
 
         if (DeviceInfoStore.getToken(this) == "null") {
@@ -276,11 +358,13 @@ class ContactInfoActivity : BaseActivity() {
         ServerApi.get(this).api().updateUser(generateUserJson(), DeviceInfoStore.getToken(this)).enqueue(object : Callback<JsonObject> {
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 dialog.dismiss()
+                toast(getString(R.string.changes_saved))
                 finish()
             }
 
             override fun onFailure(call: Call<JsonObject>, t: Throwable) {
                 dialog.dismiss()
+                toast(getString(R.string.changes_saved))
                 finish()
             }
         })
@@ -292,61 +376,10 @@ class ContactInfoActivity : BaseActivity() {
         }
     }
 
-    private fun validateFields(): Boolean {
-        var res = validateField(name!!, true)
-        res = res and validateField(lastname!!, true)
-        res = res and validateField(city!!, true)
-        res = res and validateField(street!!, false)
-        res = res and validateField(house!!, false)
-        res = res and validateField(flat!!, false)
-        res = res and validatePhoneField(phone!!)
-        res = res and validateEmailField(email!!)
-
-        return res
-    }
-
-    private fun validateEmailField(editText: MaterialEditText): Boolean {
-        if (!AndroidUtilities.validateEmail(editText.text.toString())) {
-            editText.error = getString(R.string.wrong_data)
-            return false
-        }
-
-        return true
-    }
-
-    private fun validatePhoneField(editText: MaterialEditText): Boolean {
-        if (!AndroidUtilities.validatePhone(editText.text.toString())) {
-            editText.error = getString(R.string.wrong_data)
-            return false
-        }
-
-        return true
-    }
-
-    private fun validateField(editText: MaterialEditText, numbers: Boolean): Boolean {
-        var count = 0
-
-        if (numbers) {
-            count = findNumbers(editText)
-        }
-
-        if (editText.text.toString().isEmpty() || count != 0) {
-            editText.error = getString(R.string.wrong_data)
-            return false
-        }
-
-        return true
-    }
-
-    private fun findNumbers(editText: MaterialEditText): Int {
-        val pattern = Pattern.compile("-?\\d+")
-        val matcher = pattern.matcher(editText.text.toString())
-
-        var count = 0
-        while (matcher.find()) {
-            count++
-        }
-
-        return count
+    companion object {
+        private const val EXTRA_TOKEN = "token"
+        private const val EXTRA_PHONE = "phone"
+        const val GET_CITY_REQUEST = 1
+        const val EXTRA_CHECK_RESULT = "extra_check_result"
     }
 }

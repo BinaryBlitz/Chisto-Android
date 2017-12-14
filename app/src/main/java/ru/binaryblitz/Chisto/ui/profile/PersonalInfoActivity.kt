@@ -40,13 +40,6 @@ import java.util.*
 import java.util.regex.Pattern
 
 class PersonalInfoActivity : BaseActivity() {
-    val EXTRA_PHONE = "phone"
-    val REQUEST_WEB = 100
-
-    val CASH = "cash"
-    val CARD = "card"
-    val GREY_COLOR = "#727272"
-    val BLACK_COLOR = "#212121"
     private var greyColor: Int = Color.parseColor("#CFCFCF")
 
     private var firstName: MaterialEditText? = null
@@ -248,27 +241,27 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun selectBankCard() {
-        (findViewById(R.id.bank_text) as TextView).setTextColor(Color.parseColor(BLACK_COLOR))
-        (findViewById(R.id.money_text) as TextView).setTextColor(Color.parseColor(GREY_COLOR))
+        (findViewById<TextView>(R.id.bank_text)).setTextColor(Color.parseColor(BLACK_COLOR))
+        (findViewById<TextView>(R.id.money_text)).setTextColor(Color.parseColor(GREY_COLOR))
 
-        (findViewById(R.id.visa) as ImageView).setImageResource(R.drawable.ic_visa)
-        (findViewById(R.id.master_card) as ImageView).setImageResource(R.drawable.ic_master_card)
+        (findViewById<ImageView>(R.id.visa)).setImageResource(R.drawable.ic_visa)
+        (findViewById<ImageView>(R.id.master_card)).setImageResource(R.drawable.ic_master_card)
 
-        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isChecked = true
-        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isChecked = false
+        (findViewById<SmoothCheckBox>(R.id.cardCheckBox)).isChecked = true
+        (findViewById<SmoothCheckBox>(R.id.cashCheckBox)).isChecked = false
 
         selectedPaymentType = CARD
     }
 
     private fun selectCash() {
-        (findViewById(R.id.money_text) as TextView).setTextColor(Color.parseColor(BLACK_COLOR))
-        (findViewById(R.id.bank_text) as TextView).setTextColor(Color.parseColor(GREY_COLOR))
+        (findViewById<TextView>(R.id.money_text)).setTextColor(Color.parseColor(BLACK_COLOR))
+        (findViewById<TextView>(R.id.bank_text)).setTextColor(Color.parseColor(GREY_COLOR))
 
-        (findViewById(R.id.visa) as ImageView).setImageResource(R.drawable.ic_visa_no_active)
-        (findViewById(R.id.master_card) as ImageView).setImageResource(R.drawable.ic_master_card_no_active)
+        (findViewById<ImageView>(R.id.visa)).setImageResource(R.drawable.ic_visa_no_active)
+        (findViewById<ImageView>(R.id.master_card)).setImageResource(R.drawable.ic_master_card_no_active)
 
-        (findViewById(R.id.cashCheckBox) as SmoothCheckBox).isChecked = true
-        (findViewById(R.id.cardCheckBox) as SmoothCheckBox).isChecked = false
+        (findViewById<SmoothCheckBox>(R.id.cashCheckBox)).isChecked = true
+        (findViewById<SmoothCheckBox>(R.id.cardCheckBox)).isChecked = false
 
         selectedPaymentType = CASH
     }
@@ -301,25 +294,25 @@ class PersonalInfoActivity : BaseActivity() {
     }
 
     private fun initFields() {
-        firstName = findViewById(R.id.name_text) as MaterialEditText
-        lastName = findViewById(R.id.lastname_text) as MaterialEditText
-        city = findViewById(R.id.city_text) as MaterialEditText
-        streetName = findViewById(R.id.street_text) as MaterialEditText
-        houseNumber = findViewById(R.id.house_text) as MaterialEditText
-        apartmentNumber = findViewById(R.id.flat_text) as MaterialEditText
-        phone = findViewById(R.id.phone) as MaterialEditText
-        comment = findViewById(R.id.comment_text) as MaterialEditText
-        email = findViewById(R.id.email) as MaterialEditText
+        firstName = findViewById<MaterialEditText>(R.id.name_text)
+        lastName = findViewById<MaterialEditText>(R.id.lastname_text)
+        city = findViewById<MaterialEditText>(R.id.city_text)
+        streetName = findViewById<MaterialEditText>(R.id.street_text)
+        houseNumber = findViewById<MaterialEditText>(R.id.house_text)
+        apartmentNumber = findViewById<MaterialEditText>(R.id.flat_text)
+        phone = findViewById<MaterialEditText>(R.id.phone)
+        comment = findViewById<MaterialEditText>(R.id.comment_text)
+        email = findViewById<MaterialEditText>(R.id.email)
         phone!!.addTextChangedListener(CustomPhoneNumberTextWatcher())
 
         initCheckBoxes()
 
-        (findViewById(R.id.price) as TextView).text = intent.getIntExtra(EXTRA_PRICE, 0).toString() + getString(R.string.ruble_sign)
+        (findViewById<TextView>(R.id.price)).text = intent.getIntExtra(EXTRA_PRICE, 0).toString() + getString(R.string.ruble_sign)
     }
 
     private fun initCheckBoxes() {
-        initCheckBox((findViewById(R.id.cashCheckBox) as SmoothCheckBox))
-        initCheckBox((findViewById(R.id.cardCheckBox) as SmoothCheckBox))
+        initCheckBox((findViewById<SmoothCheckBox>(R.id.cashCheckBox)))
+        initCheckBox((findViewById<SmoothCheckBox>(R.id.cardCheckBox)))
         selectBankCard()
     }
 
@@ -523,5 +516,11 @@ class PersonalInfoActivity : BaseActivity() {
         private val EXTRA_TOKEN = "token"
         private val EXTRA_PROMO_CODE_ID = "promoCodeId"
         var orderId: Int = 0
+        const val GREY_COLOR = "#727272"
+        const val BLACK_COLOR = "#212121"
+        private const val EXTRA_PHONE = "phone"
+        private const val REQUEST_WEB = 100
+        const val CASH = "cash"
+        const val CARD = "card"
     }
 }

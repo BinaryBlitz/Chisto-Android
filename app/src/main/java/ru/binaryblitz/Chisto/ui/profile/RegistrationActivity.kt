@@ -32,10 +32,6 @@ import ru.binaryblitz.Chisto.utils.AppConfig
 
 class RegistrationActivity : BaseActivity() {
 
-    val EXTRA_PHONE = "phone"
-    val EXTRA_SELECTED = "selected"
-    val SELECTED_CONTACT_INFO_ACTIVITY = 2
-
     private val phoneMaskedTextChangedListener by lazy {
         MaskedTextChangedListener(
                 format = PHONE_MASK,
@@ -366,7 +362,10 @@ class RegistrationActivity : BaseActivity() {
         private val EXTRA_TOKEN = "token"
         private val EXTRA_PROMO_CODE_ID = "promoCodeId"
         private var phoneFromServer: String? = null
-        private const val PHONE_MASK = "+[0] [000] [000]-[00]-[00]"
+        const val PHONE_MASK = "+[0] [000] [000]-[00]-[00]"
         private const val CODE_MASK = "[00000]"
+        const val EXTRA_PHONE = "phone"
+        const val EXTRA_SELECTED = "selected"
+        const val SELECTED_CONTACT_INFO_ACTIVITY = 2
     }
 }
