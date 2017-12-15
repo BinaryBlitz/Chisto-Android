@@ -79,4 +79,10 @@ public class DeviceInfoStore {
                 ServerConfig.INSTANCE.getPrefsName(), Context.MODE_PRIVATE);
         prefs.edit().putString(ServerConfig.INSTANCE.getUserEntity(), "null").apply();
     }
+
+    public static void logout(Context context) {
+        resetCity(context);
+        resetUser(context);
+        resetToken(context);
+    }
 }
