@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.2.0'
+        kotlin_version = '1.2.10'
         android_support_version = '27.0.2'
         okhttp_version = '3.9.0'
         retroft2_version = '2.3.0'
@@ -18,7 +18,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'io.fabric.tools:gradle:1.25.0'
+        classpath 'io.fabric.tools:gradle:1.25.1'
         classpath 'com.google.gms:google-services:3.1.0'
         
         // NOTE: Do not place your application dependencies here; they belong
