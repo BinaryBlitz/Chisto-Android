@@ -257,12 +257,13 @@ public class MapActivity extends BaseActivity
         activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Rect r = new Rect();
-                activityRootView.getWindowVisibleDisplayFrame(r);
-                int heightDiff = activityRootView.getRootView().getHeight() - (r.bottom - r.top);
+                Rect visibleDisplayFrame = new Rect();
+                activityRootView.getWindowVisibleDisplayFrame(visibleDisplayFrame);
+                int heightDifferent = activityRootView.getRootView().getHeight() -
+                        (visibleDisplayFrame.bottom - visibleDisplayFrame.top);
 
                 if (searchBox != null) {
-                    boolean isKeyboard = heightDiff > 100;
+                    boolean isKeyboard = heightDifferent > 100;
                     searchBox.setCursorVisible(isKeyboard);
                 }
             }
