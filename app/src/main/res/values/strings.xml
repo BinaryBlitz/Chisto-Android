@@ -94,7 +94,7 @@
     <string name="code_send">We will send a 5-digit verification code</string>
     <string name="number_code">A code has been sent to</string>
     <string name="code_sent">""</string>
-    <string name="type_phone">Enter your phone number</string>
+    <string name="type_phone">Enter phone number</string>
     <string name="code_title">Enter confirmation code</string>
 
     <string name="delivery">Delivery Fee</string>
