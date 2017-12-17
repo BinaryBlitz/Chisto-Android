@@ -97,7 +97,7 @@
     <string name="code_send">На этот номер будет отправлен 5-значный код</string>
     <string name="number_code">На номер</string>
     <string name="code_sent">" был отправлен код"</string>
-    <string name="type_phone">Введите номер\nвашего телефона</string>
+    <string name="type_phone">Введите номер вашего телефона</string>
     <string name="code_title">Введите код</string>
 
     <string name="delivery">Доставка</string>
