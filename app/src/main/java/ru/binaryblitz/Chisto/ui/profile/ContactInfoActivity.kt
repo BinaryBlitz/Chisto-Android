@@ -36,6 +36,7 @@ import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.CARD
 import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.CASH
 import ru.binaryblitz.Chisto.ui.profile.PersonalInfoActivity.Companion.GREY_COLOR
 import ru.binaryblitz.Chisto.ui.start.SelectCityActivity
+import ru.binaryblitz.Chisto.ui.start.StartActivity
 import ru.binaryblitz.Chisto.utils.AndroidUtilities
 
 typealias AllContactFields = Function6<Boolean, Boolean, Boolean, Boolean, Boolean, Boolean, Boolean>
@@ -103,7 +104,6 @@ class ContactInfoActivity : BaseActivity() {
         setContentView(R.layout.activity_profile_contact_info)
 
         setOnClickListeners()
-
         phoneEditText.addTextChangedListener(phoneMaskedTextChangedListener)
 
         disposable = Observable.combineLatest(
@@ -203,6 +203,13 @@ class ContactInfoActivity : BaseActivity() {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
         saveButton.setOnClickListener { setData() }
+
+        logoutImageView.setOnClickListener {
+            DeviceInfoStore.logout(this)
+            val intent = Intent(this, StartActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 
     private fun showDialogIfNotLoggedIn() {
