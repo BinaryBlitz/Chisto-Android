@@ -203,13 +203,25 @@ class ContactInfoActivity : BaseActivity() {
             startActivity(Intent(this@ContactInfoActivity, MapActivity::class.java))
         }
         saveButton.setOnClickListener { setData() }
+        logoutImageView.setOnClickListener { showLogoutDialog() }
+    }
 
-        logoutImageView.setOnClickListener {
-            DeviceInfoStore.logout(this)
-            val intent = Intent(this, StartActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
+    private fun showLogoutDialog() {
+        MaterialDialog.Builder(this)
+                .title(R.string.app_name)
+                .content(getString(R.string.logout_question))
+                .positiveText(R.string.yes_code)
+                .negativeText(R.string.no_code)
+                .onPositive { _, _ -> run { logout() } }
+                .onNegative { dialog, _ -> run { dialog.dismiss() } }
+                .show()
+    }
+
+    private fun logout() {
+        DeviceInfoStore.logout(this)
+        val intent = Intent(this, StartActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 
     private fun showDialogIfNotLoggedIn() {

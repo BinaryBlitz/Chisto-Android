@@ -239,4 +239,5 @@
     <string name="settings">Настройки</string>
     <string name="changes_saved">Изменения сохранены</string>
     <string name="optional">Опционально</string>
+    <string name="logout_question">Выйти из приложения?</string>
 </resources>
