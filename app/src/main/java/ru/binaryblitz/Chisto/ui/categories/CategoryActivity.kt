@@ -27,6 +27,7 @@ import ru.binaryblitz.Chisto.entities.CategoryItem
 import ru.binaryblitz.Chisto.extension.clear
 import ru.binaryblitz.Chisto.extension.hideKeyboard
 import ru.binaryblitz.Chisto.extension.visible
+import ru.binaryblitz.Chisto.network.DeviceInfoStore
 import ru.binaryblitz.Chisto.network.ServerApi
 import ru.binaryblitz.Chisto.ui.about.AboutActivity
 import ru.binaryblitz.Chisto.ui.base.BaseActivity
@@ -35,6 +36,7 @@ import ru.binaryblitz.Chisto.ui.categories.adapters.CategoryItemsAdapter
 import ru.binaryblitz.Chisto.ui.order.MyOrdersActivity
 import ru.binaryblitz.Chisto.ui.order.OrdersActivity
 import ru.binaryblitz.Chisto.ui.order.WebActivity
+import ru.binaryblitz.Chisto.ui.profile.ContactInfoActivity
 import ru.binaryblitz.Chisto.ui.profile.RegistrationActivity
 import ru.binaryblitz.Chisto.utils.AppConfig
 import ru.binaryblitz.Chisto.utils.ColorsList
@@ -244,7 +246,7 @@ class CategoryActivity : BaseActivity(), CategoryView {
                 )
                 .withOnDrawerItemClickListener { _, _, drawerItem ->
                     when (drawerItem) {
-                        itemContactData -> openActivity(RegistrationActivity::class.java)
+                        itemContactData -> openItemContactData()
                         itemOrders -> openActivity(MyOrdersActivity::class.java)
                         itemAbout -> openActivity(AboutActivity::class.java)
                         itemRules -> {
@@ -265,9 +267,16 @@ class CategoryActivity : BaseActivity(), CategoryView {
         startActivity(intent)
     }
 
+    private fun openItemContactData() {
+        if (DeviceInfoStore.getToken(this) == "null") {
+            openActivity(RegistrationActivity::class.java)
+        } else {
+            openActivity(ContactInfoActivity::class.java)
+        }
+    }
+
     private fun save(collection: List<Category>) {
-        for (i in collection.indices) {
-            val (id, _, _, _, color) = collection[i]
+        for ((id, _, _, _, color) in collection) {
             ColorsList.add(Pair(id, Color.parseColor(color)))
         }
         ColorsList.saveColors(this)
